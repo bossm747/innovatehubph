@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -12,6 +13,7 @@ import Footer from '@/components/Footer';
 import CircuitBackground from '@/components/CircuitBackground';
 import ClientsShowcase from '@/components/ClientsShowcase';
 import YoutubeVideo from '@/components/YoutubeVideo';
+import BlogHighlight from '@/components/BlogHighlight';
 
 const Index = () => {
   useEffect(() => {
@@ -131,6 +133,7 @@ const Index = () => {
       <PlataPay />
       <YoutubeVideo />
       <Services />
+      <BlogHighlight />
       <ClientsShowcase maxItems={8} />
       <Testimonials />
       <TeamSection />

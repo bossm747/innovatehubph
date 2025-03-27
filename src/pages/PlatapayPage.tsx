@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -10,6 +11,7 @@ import PlatapayAgentInfo from '@/components/PlatapayAgentInfo';
 import PlatapayPartners from '@/components/PlatapayPartners';
 import ClientsShowcase from '@/components/ClientsShowcase';
 import FacebookFeed from '@/components/FacebookFeed';
+import { Facebook, MessageCircle } from 'lucide-react';
 
 const PlatapayPage = () => {
   useEffect(() => {
@@ -75,7 +77,28 @@ const PlatapayPage = () => {
               </p>
             </div>
             
-            <div className="flex justify-center fade-up">
+            <div className="flex flex-col items-center fade-up">
+              <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 mb-8">
+                <a 
+                  href="https://www.facebook.com/share/16BCXuyguU/?mibextid=wwXIfr" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  <Facebook size={20} />
+                  Follow on Facebook
+                </a>
+                <a 
+                  href="https://m.me/100090689281474" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                  <MessageCircle size={20} />
+                  Message Us
+                </a>
+              </div>
+              
               <FacebookFeed 
                 pageUrl="https://www.facebook.com/share/16BCXuyguU/?mibextid=wwXIfr" 
                 width={500}

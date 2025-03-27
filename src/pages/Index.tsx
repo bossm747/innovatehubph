@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -14,6 +15,7 @@ import ClientsShowcase from '@/components/ClientsShowcase';
 import YoutubeVideo from '@/components/YoutubeVideo';
 import BlogHighlight from '@/components/BlogHighlight';
 import FacebookFeed from '@/components/FacebookFeed';
+import { Facebook, MessageCircle } from 'lucide-react';
 
 const Index = () => {
   useEffect(() => {
@@ -144,17 +146,24 @@ const Index = () => {
               <p className="text-gray-600 mb-6">
                 Follow PlataPay on Facebook to stay updated with the latest news, promotions, and events. Join our growing community of agents and users!
               </p>
-              <div className="flex space-x-4">
+              <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
                 <a 
                   href="https://www.facebook.com/share/16BCXuyguU/?mibextid=wwXIfr" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-facebook">
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                  </svg>
+                  <Facebook size={20} />
                   Follow on Facebook
+                </a>
+                <a 
+                  href="https://m.me/100090689281474" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                  <MessageCircle size={20} />
+                  Message Us
                 </a>
               </div>
             </div>

@@ -104,9 +104,9 @@ const PARTNERS: Partner[] = [
 
 const PlatapayPartners = () => {
   return (
-    <section className="py-16 px-6 md:px-12 bg-gradient-to-t from-innovate-50 to-white">
-      <div className="container mx-auto">
-        <div className="text-center mb-10 fade-up">
+    <section className="py-16 px-0 w-full bg-gradient-to-t from-innovate-50 to-white">
+      <div className="container mx-auto px-0 md:px-4">
+        <div className="text-center mb-10 fade-up px-6">
           <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
             Trusted Partnerships
           </span>
@@ -117,7 +117,7 @@ const PlatapayPartners = () => {
           </p>
         </div>
         
-        <div className="max-w-5xl mx-auto px-8 fade-up">
+        <div className="w-full fade-up">
           <Carousel 
             opts={{
               align: "start",
@@ -127,10 +127,10 @@ const PlatapayPartners = () => {
           >
             <CarouselContent className="-ml-2 md:-ml-4">
               {PARTNERS.map((partner) => (
-                <CarouselItem key={partner.id} className="pl-2 md:pl-4 md:basis-1/3 lg:basis-1/4">
+                <CarouselItem key={partner.id} className="pl-2 md:pl-4 md:basis-1/3 lg:basis-1/5">
                   <div className="p-1">
                     <div className="flex flex-col items-center">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white rounded-xl shadow-sm overflow-hidden flex items-center justify-center p-3 border border-gray-100">
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 bg-white rounded-xl shadow-sm overflow-hidden flex items-center justify-center p-3 border border-gray-100">
                         <img 
                           src={partner.logo} 
                           alt={partner.name}

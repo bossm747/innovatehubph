@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Brain, Zap, Code, CircuitBoard } from "lucide-react";
+import { Brain, Zap, Code, CircuitBoard, Award, CloudComputing, Shield, Globe } from "lucide-react";
 
 const AboutUs = () => {
   return (
@@ -51,44 +51,35 @@ const AboutUs = () => {
               <div className="absolute inset-0 bg-innovate-900/10"></div>
             </div>
             
-            {/* AI Technology Showcase - Replaces Stats Card */}
+            {/* Replacing AI Technology Showcase (Stats Card) with Company Achievement Badges */}
             <div className="absolute -bottom-8 -right-8 bg-white rounded-xl p-6 shadow-medium max-w-xs">
               <div className="space-y-4">
                 <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-lg font-semibold text-innovate-800">AI Development</h3>
-                  <Brain className="h-5 w-5 text-innovate-600" />
+                  <h3 className="text-lg font-semibold text-innovate-800">Our Achievements</h3>
+                  <Award className="h-5 w-5 text-innovate-600" />
                 </div>
                 
-                <div className="space-y-3">
-                  {/* Technology Progress Bars */}
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>Machine Learning</span>
-                      <span className="text-innovate-600">85%</span>
+                <div className="grid grid-cols-3 gap-4">
+                  {/* Achievement Badges */}
+                  <div className="flex flex-col items-center">
+                    <div className="w-12 h-12 rounded-full bg-innovate-50 flex items-center justify-center mb-1">
+                      <Shield className="h-6 w-6 text-innovate-600" />
                     </div>
-                    <div className="h-2 bg-gray-100 rounded-full">
-                      <div className="h-full bg-gradient-to-r from-innovate-400 to-innovate-600 rounded-full" style={{ width: '85%' }}></div>
-                    </div>
+                    <span className="text-xs text-center">Trusted Security</span>
                   </div>
                   
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>Computer Vision</span>
-                      <span className="text-innovate-600">70%</span>
+                  <div className="flex flex-col items-center">
+                    <div className="w-12 h-12 rounded-full bg-innovate-50 flex items-center justify-center mb-1">
+                      <Globe className="h-6 w-6 text-innovate-600" />
                     </div>
-                    <div className="h-2 bg-gray-100 rounded-full">
-                      <div className="h-full bg-gradient-to-r from-innovate-400 to-innovate-600 rounded-full" style={{ width: '70%' }}></div>
-                    </div>
+                    <span className="text-xs text-center">Global Reach</span>
                   </div>
                   
-                  <div>
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>NLP</span>
-                      <span className="text-innovate-600">90%</span>
+                  <div className="flex flex-col items-center">
+                    <div className="w-12 h-12 rounded-full bg-innovate-50 flex items-center justify-center mb-1">
+                      <CloudComputing className="h-6 w-6 text-innovate-600" />
                     </div>
-                    <div className="h-2 bg-gray-100 rounded-full">
-                      <div className="h-full bg-gradient-to-r from-innovate-400 to-innovate-600 rounded-full" style={{ width: '90%' }}></div>
-                    </div>
+                    <span className="text-xs text-center">Cloud Innovation</span>
                   </div>
                 </div>
               </div>

@@ -10,6 +10,7 @@ import PlatapayTestimonials from '@/components/PlatapayTestimonials';
 import PlatapayAgentInfo from '@/components/PlatapayAgentInfo';
 import PlatapayPartners from '@/components/PlatapayPartners';
 import ClientsShowcase from '@/components/ClientsShowcase';
+import FacebookFeed from '@/components/FacebookFeed';
 
 const PlatapayPage = () => {
   // Add scroll reveal effect
@@ -68,6 +69,31 @@ const PlatapayPage = () => {
       <div className="w-full pt-16">
         <PlatapayHero />
         <PlatapayServices />
+        
+        {/* Facebook Feed Section */}
+        <section className="py-16 px-6 md:px-12 bg-gradient-to-r from-white to-gray-50">
+          <div className="container mx-auto">
+            <div className="text-center mb-10 fade-up">
+              <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
+                Social Media
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Follow PlataPay on Facebook</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Stay updated with our latest news, promotions, and events through our official Facebook page.
+              </p>
+            </div>
+            
+            <div className="flex justify-center fade-up">
+              <FacebookFeed 
+                pageUrl="https://www.facebook.com/platapay.official/" 
+                width={500}
+                height={600}
+                showTimeline={true}
+              />
+            </div>
+          </div>
+        </section>
+        
         <PlatapayPartners />
         <ClientsShowcase 
           title="PlataPay Agent Success Stories" 

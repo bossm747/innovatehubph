@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -14,6 +13,7 @@ import CircuitBackground from '@/components/CircuitBackground';
 import ClientsShowcase from '@/components/ClientsShowcase';
 import YoutubeVideo from '@/components/YoutubeVideo';
 import BlogHighlight from '@/components/BlogHighlight';
+import FacebookFeed from '@/components/FacebookFeed';
 
 const Index = () => {
   useEffect(() => {
@@ -132,6 +132,45 @@ const Index = () => {
       <AboutUs />
       <PlataPay />
       <YoutubeVideo />
+      
+      <section className="py-16 px-6 md:px-12 bg-gradient-to-r from-white to-gray-50">
+        <div className="container mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="md:w-1/2 fade-up">
+              <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
+                Connect With Us
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Join Our Social Community</h2>
+              <p className="text-gray-600 mb-6">
+                Follow PlataPay on Facebook to stay updated with the latest news, promotions, and events. Join our growing community of agents and users!
+              </p>
+              <div className="flex space-x-4">
+                <a 
+                  href="https://www.facebook.com/platapay.official/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-facebook">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                  </svg>
+                  Follow on Facebook
+                </a>
+              </div>
+            </div>
+            <div className="md:w-1/2 fade-up flex justify-center">
+              <FacebookFeed 
+                pageUrl="https://www.facebook.com/platapay.official/" 
+                width={340}
+                height={450}
+                showTimeline={true}
+                smallHeader={true}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+      
       <Services />
       <BlogHighlight />
       <ClientsShowcase maxItems={8} />

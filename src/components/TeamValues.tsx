@@ -1,6 +1,13 @@
 
 import React from 'react';
-import { Lightbulb, Shield, Rocket, Users } from 'lucide-react';
+import { 
+  Award, 
+  Clock, 
+  Shield, 
+  Users, 
+  Lightbulb, 
+  Heart 
+} from 'lucide-react';
 
 interface ValueCardProps {
   icon: React.ReactNode;
@@ -11,7 +18,7 @@ interface ValueCardProps {
 
 const ValueCard = ({ icon, title, description, delay = 0 }: ValueCardProps) => (
   <div 
-    className="bg-white rounded-xl p-8 shadow-soft card-hover fade-up"
+    className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 opacity-0"
     style={{ 
       animationName: 'fadeUp',
       animationDuration: '0.6s',
@@ -20,10 +27,10 @@ const ValueCard = ({ icon, title, description, delay = 0 }: ValueCardProps) => (
       animationDelay: `${delay}ms`
     }}
   >
-    <div className="w-14 h-14 bg-innovate-100 rounded-full flex items-center justify-center mb-6">
+    <div className="bg-innovate-100 text-innovate-700 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
       {icon}
     </div>
-    <h3 className="text-xl font-semibold mb-3">{title}</h3>
+    <h3 className="text-xl font-semibold mb-2">{title}</h3>
     <p className="text-gray-600">{description}</p>
   </div>
 );
@@ -31,49 +38,62 @@ const ValueCard = ({ icon, title, description, delay = 0 }: ValueCardProps) => (
 const TeamValues = () => {
   const values = [
     {
-      icon: <Lightbulb className="h-7 w-7 text-innovate-700" />,
+      icon: <Shield className="h-6 w-6" />,
+      title: "Trust & Security",
+      description: "We prioritize safety and reliability in every solution we deliver, ensuring our clients' data and transactions are always protected."
+    },
+    {
+      icon: <Clock className="h-6 w-6" />,
+      title: "Timeliness",
+      description: "We value your time and deliver our solutions promptly without compromising on quality or attention to detail."
+    },
+    {
+      icon: <Users className="h-6 w-6" />,
+      title: "Community Focus",
+      description: "We build technology that empowers local communities and creates economic opportunities for micropreneurs across the Philippines."
+    },
+    {
+      icon: <Lightbulb className="h-6 w-6" />,
       title: "Innovation",
-      description: "We constantly explore new technologies and approaches to create cutting-edge solutions for our clients.",
-      delay: 0
+      description: "We continuously explore new technologies and approaches to solve complex challenges in creative and effective ways."
     },
     {
-      icon: <Shield className="h-7 w-7 text-innovate-700" />,
-      title: "Integrity",
-      description: "We uphold the highest ethical standards in all our business dealings and relationships.",
-      delay: 150
+      icon: <Heart className="h-6 w-6" />,
+      title: "Customer First",
+      description: "Our clients' success is our success. We listen carefully to their needs and tailor our solutions accordingly."
     },
     {
-      icon: <Users className="h-7 w-7 text-innovate-700" />,
-      title: "Collaboration",
-      description: "We believe in the power of teamwork and partnerships to deliver exceptional results.",
-      delay: 300
-    },
-    {
-      icon: <Rocket className="h-7 w-7 text-innovate-700" />,
+      icon: <Award className="h-6 w-6" />,
       title: "Excellence",
-      description: "We strive for excellence in everything we do, from code quality to client satisfaction.",
-      delay: 450
+      description: "We pursue excellence in everything we do, from code quality to customer service and business operations."
     }
   ];
 
   return (
-    <section className="py-16 px-6 md:px-12 lg:px-24 bg-gray-50">
+    <section className="relative py-20 px-6 md:px-12 lg:px-24 bg-gray-50 overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-innovate-100 rounded-full opacity-30 -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-72 h-72 bg-innovate-200 rounded-full opacity-30 translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
+      
       <div className="container mx-auto">
         <div className="text-center mb-16 fade-up">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Core Values</h2>
+          <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
+            Our Values
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">The Principles That Guide Us</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            These principles guide our approach to business and technology.
+            At InnovateHub, our team is united by a shared set of values that define how we work together and serve our clients.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {values.map((value, index) => (
-            <ValueCard
+            <ValueCard 
               key={index}
               icon={value.icon}
               title={value.title}
               description={value.description}
-              delay={value.delay}
+              delay={index * 150}
             />
           ))}
         </div>

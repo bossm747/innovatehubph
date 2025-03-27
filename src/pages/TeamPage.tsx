@@ -5,6 +5,8 @@ import Footer from '@/components/Footer';
 import TeamSection from '@/components/TeamSection';
 import TeamValues from '@/components/TeamValues';
 import CircuitBackground from '@/components/CircuitBackground';
+import TeamPageHeader from '@/components/TeamPageHeader';
+import { Helmet } from 'react-helmet';
 
 const TeamPage = () => {
   // Add scroll reveal effect
@@ -34,6 +36,11 @@ const TeamPage = () => {
 
   return (
     <div className="min-h-screen h-full w-full overflow-x-hidden relative">
+      <Helmet>
+        <title>Our Team | InnovateHub Inc.</title>
+        <meta name="description" content="Meet the talented team behind InnovateHub's success. Our experienced professionals work together to deliver exceptional fintech and digital solutions." />
+      </Helmet>
+      
       {/* Background patterns */}
       <CircuitBackground 
         pattern="circuit-branches" 
@@ -61,22 +68,7 @@ const TeamPage = () => {
       {/* Main content */}
       <Navbar />
       <div className="w-full pt-16">
-        <section className="py-16 px-6 md:px-12 lg:px-24">
-          <div className="container mx-auto">
-            <div className="text-center mb-16 fade-up">
-              <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
-                Our People
-              </span>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 hero-text-gradient">
-                Meet The InnovateHub Team
-              </h1>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                We're a passionate team of tech experts dedicated to transforming businesses through innovative digital solutions.
-              </p>
-            </div>
-          </div>
-        </section>
-        
+        <TeamPageHeader />
         <TeamValues />
         <TeamSection />
         <Footer />

@@ -28,7 +28,6 @@ const Navbar = () => {
     { label: "About", href: "/about" },
     // Services dropdown is handled separately
     { label: "PlataPay", href: "/platapay" },
-    { label: "Facebook", href: "/facebook" },
     { label: "Team", href: "/team" },
     { label: "Clients", href: "/clients" },
     { label: "Blog", href: "/blog" },

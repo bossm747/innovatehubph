@@ -3,7 +3,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, useNavigationType } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Index from "./pages/Index";
 import AboutPage from "./pages/AboutPage";
 import ServicesPage from "./pages/ServicesPage";
@@ -18,8 +19,35 @@ import DigitalCustomizationsPage from "./pages/DigitalCustomizationsPage";
 import EcommercePage from "./pages/EcommercePage";
 import AiSolutionsPage from "./pages/AiSolutionsPage";
 import GlobalExpansionPage from "./pages/GlobalExpansionPage";
+import LoadingIndicator from "./components/LoadingIndicator";
 
 const queryClient = new QueryClient();
+
+// ScrollToTop component to handle scrolling to top on navigation
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  const navigationType = useNavigationType();
+  const [isLoading, setIsLoading] = useState(false);
+  
+  useEffect(() => {
+    // Scroll to top when pathname changes
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  
+  useEffect(() => {
+    // Only trigger loading for PUSH navigation (clicking links)
+    if (navigationType === 'PUSH') {
+      setIsLoading(true);
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 800); // Adjust timing as needed
+      
+      return () => clearTimeout(timer);
+    }
+  }, [pathname, navigationType]);
+  
+  return <LoadingIndicator isLoading={isLoading} />;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -27,6 +55,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<AboutPage />} />

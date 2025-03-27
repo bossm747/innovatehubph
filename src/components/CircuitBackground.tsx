@@ -6,7 +6,8 @@ interface CircuitBackgroundProps {
              'laptop' | 'circuit-lines' | 'circle' | 'dots-grid' | 'triangle' | 'curved-line' | 'arrow' | 'digital-circuit' | 'diagonal' |
              'gradient-triangle' | 'gradient-circle' | 'circuit-simple' | 'angle-right' | 'angle-left' | 'blue-switch' | 'dark-triangle' |
              'blue-device' | 'blue-cloud' | 'blue-settings' | 'curvy-line' | 'handshake' | 'blue-wave' | 'ih-logo' | 
-             'circuit-branches' | 'blue-curve' | 'blue-triangle' | 'small-blue-triangle' | 'dotted-grid' | 'tech-circle';
+             'circuit-branches' | 'blue-curve' | 'blue-triangle' | 'small-blue-triangle' | 'dotted-grid' | 'tech-circle' | 
+             'circuit-lines-horizontal';
   opacity?: number;
   rotate?: number;
   flipX?: boolean;

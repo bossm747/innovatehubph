@@ -33,8 +33,8 @@ const ContactSectionInfo = () => {
             </div>
             <div className="ml-4">
               <h3 className="text-xl font-semibold mb-1">Address</h3>
-              <p className="text-gray-600">RMCL Bldg., New Bypass Rd.,</p>
-              <p className="text-gray-600">Bayanan, San Pascual, Batangas</p>
+              <p className="text-gray-600">Unit 13 InnovateHub Commercial Building,</p>
+              <p className="text-gray-600">National Highway, San Antonio, San Pascual Batangas.</p>
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@ const ContactSectionInfo = () => {
       {/* Map */}
       <div className="bg-white rounded-xl shadow-soft overflow-hidden h-64">
         <iframe 
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3870.0367593038266!2d121.0429683!3d14.083428699999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd69b0a598b549%3A0x3ba9b96d354c9328!2sSan%20Pascual%2C%20Batangas!5e0!3m2!1sen!2sph!4v1628580000000!5m2!1sen!2sph" 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3870.321193931947!2d120.9157831!3d14.0634344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd78505318f7d7%3A0x6e5322e2b627e2dc!2sInnovate%20Hub!5e0!3m2!1sen!2sph!4v1700000000000!5m2!1sen!2sph" 
           width="100%" 
           height="100%" 
           style={{ border: 0 }} 

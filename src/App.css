@@ -15,6 +15,11 @@ html, body {
   overflow-x: hidden;
 }
 
+body {
+  min-height: 100vh;
+  position: relative;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -65,6 +70,19 @@ html, body {
   padding-right: 0 !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .container, 
+  .container-fluid,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl,
+  .container-xxl {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
 }
 
 section {

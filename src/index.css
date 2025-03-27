@@ -55,6 +55,16 @@ body {
   padding: 0;
   overflow-x: hidden;
   box-sizing: border-box;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Added standard mobile padding */
+@media (max-width: 768px) {
+  section, div.container, footer > div {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
 }
 
 *, *::before, *::after {

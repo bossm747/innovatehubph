@@ -70,10 +70,9 @@ const FacebookFeed: React.FC<FacebookFeedProps> = ({
   }, [pageUrl]);
 
   return (
-    <div className="fb-page-container relative overflow-hidden rounded-lg shadow-lg bg-white">
+    <div className="fb-page-container relative overflow-hidden rounded-lg shadow-lg">
       <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-blue-100 opacity-50"></div>
       <div className="relative z-10 p-4">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">Connect with us on Facebook</h3>
         <div 
           className="fb-page" 
           data-href={pageUrl}

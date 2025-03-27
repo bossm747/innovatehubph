@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
@@ -6,6 +5,18 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const menuItems = [
+    { label: "Home", href: "/" },
+    { label: "About", href: "/about" },
+    { label: "Services", href: "/services" },
+    { label: "PlataPay", href: "/platapay" },
+    { label: "Facebook", href: "/facebook" },
+    { label: "Team", href: "/team" },
+    { label: "Clients", href: "/clients" },
+    { label: "Blog", href: "/blog" },
+    { label: "Contact", href: "/contact" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,12 +61,9 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center space-x-8">
           <nav className="flex items-center space-x-8">
-            <Link to="/" className="nav-link">Home</Link>
-            <Link to="/about" className="nav-link">About</Link>
-            <Link to="/services" className="nav-link">Services</Link>
-            <Link to="/platapay" className="nav-link">PlataPay</Link>
-            <Link to="/team" className="nav-link">Our Team</Link>
-            <Link to="/contact" className="nav-link">Contact</Link>
+            {menuItems.map((item, index) => (
+              <Link key={index} to={item.href} className="nav-link">{item.label}</Link>
+            ))}
           </nav>
           <Button 
             className="bg-innovate-600 hover:bg-innovate-700 text-white rounded-md px-6 py-2 transition-all btn-shine" 
@@ -87,12 +95,9 @@ const Navbar = () => {
         isMobileMenuOpen ? 'max-h-screen py-4 opacity-100' : 'max-h-0 py-0 opacity-0 overflow-hidden'
       }`}>
         <nav className="flex flex-col space-y-4 px-6">
-          <Link to="/" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
-          <Link to="/about" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
-          <Link to="/services" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
-          <Link to="/platapay" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>PlataPay</Link>
-          <Link to="/team" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Our Team</Link>
-          <Link to="/contact" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+          {menuItems.map((item, index) => (
+            <Link key={index} to={item.href} className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>{item.label}</Link>
+          ))}
           <Button 
             className="bg-innovate-600 hover:bg-innovate-700 text-white w-full mt-2" 
             onClick={() => setIsMobileMenuOpen(false)}

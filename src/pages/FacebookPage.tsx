@@ -8,6 +8,10 @@ import { Facebook, MessageCircle, Share2, Bell, Users, ChevronRight, Mailbox } f
 import FacebookFeed from '@/components/FacebookFeed';
 
 const FacebookPage = () => {
+  // Constants for Facebook links
+  const FACEBOOK_PAGE_URL = "https://www.facebook.com/share/16BCXuyguU/?mibextid=wwXIfr";
+  const FACEBOOK_MESSENGER_URL = "https://www.facebook.com/platapayinc";
+  
   useEffect(() => {
     const handleScroll = () => {
       const fadeElements = document.querySelectorAll('.fade-up');
@@ -68,7 +72,7 @@ const FacebookPage = () => {
                   <Button 
                     size="lg" 
                     className="flex gap-2 bg-blue-600 hover:bg-blue-700 transition-colors"
-                    onClick={() => window.open('https://www.facebook.com/share/16BCXuyguU/?mibextid=wwXIfr', '_blank')}
+                    onClick={() => window.open(FACEBOOK_PAGE_URL, '_blank')}
                   >
                     <Facebook size={20} />
                     Follow on Facebook
@@ -77,7 +81,7 @@ const FacebookPage = () => {
                     size="lg" 
                     variant="outline"
                     className="flex gap-2 border-blue-500 text-blue-600 hover:bg-blue-50"
-                    onClick={() => window.open('https://m.me/100090689281474', '_blank')}
+                    onClick={() => window.open(FACEBOOK_MESSENGER_URL, '_blank')}
                   >
                     <MessageCircle size={20} />
                     Message Us
@@ -111,7 +115,7 @@ const FacebookPage = () => {
             <div className="flex justify-center fade-up">
               <div className="bg-white shadow-xl rounded-xl p-6 max-w-2xl w-full">
                 <FacebookFeed 
-                  pageUrl="https://www.facebook.com/share/16BCXuyguU/?mibextid=wwXIfr" 
+                  pageUrl={FACEBOOK_PAGE_URL}
                   width={540}
                   height={700}
                   showTimeline={true}
@@ -202,7 +206,7 @@ const FacebookPage = () => {
               <Button 
                 size="lg" 
                 className="bg-blue-600 hover:bg-blue-700 transition-colors"
-                onClick={() => window.open('https://www.facebook.com/share/16BCXuyguU/?mibextid=wwXIfr', '_blank')}
+                onClick={() => window.open(FACEBOOK_PAGE_URL, '_blank')}
               >
                 Join our Facebook Community
                 <ChevronRight size={16} />

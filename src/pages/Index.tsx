@@ -18,6 +18,10 @@ import FacebookFeed from '@/components/FacebookFeed';
 import { Facebook, MessageCircle } from 'lucide-react';
 
 const Index = () => {
+  // Constants for Facebook links
+  const FACEBOOK_PAGE_URL = "https://www.facebook.com/share/16BCXuyguU/?mibextid=wwXIfr";
+  const FACEBOOK_MESSENGER_URL = "https://www.facebook.com/platapayinc";
+  
   useEffect(() => {
     const handleScroll = () => {
       const fadeElements = document.querySelectorAll('.fade-up');
@@ -148,7 +152,7 @@ const Index = () => {
               </p>
               <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
                 <a 
-                  href="https://www.facebook.com/share/16BCXuyguU/?mibextid=wwXIfr" 
+                  href={FACEBOOK_PAGE_URL}
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -157,7 +161,7 @@ const Index = () => {
                   Follow on Facebook
                 </a>
                 <a 
-                  href="https://m.me/100090689281474" 
+                  href={FACEBOOK_MESSENGER_URL}
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
@@ -169,7 +173,7 @@ const Index = () => {
             </div>
             <div className="md:w-1/2 fade-up flex justify-center">
               <FacebookFeed 
-                pageUrl="https://www.facebook.com/share/16BCXuyguU/?mibextid=wwXIfr" 
+                pageUrl={FACEBOOK_PAGE_URL}
                 width={340}
                 height={450}
                 showTimeline={true}

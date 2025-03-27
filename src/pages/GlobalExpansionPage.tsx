@@ -6,7 +6,7 @@ import ContactSection from '@/components/ContactSection';
 import CircuitBackground from '@/components/CircuitBackground';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ArrowRight, Bank, Building, Compass, FileText, Globe, BarChart3, Scale, Briefcase, MapPin } from 'lucide-react';
+import { ArrowRight, Building, Compass, FileText, Globe, BarChart3, Scale, Briefcase, MapPin, Landmark } from 'lucide-react';
 import { toast } from 'sonner';
 
 const GlobalExpansionPage = () => {
@@ -50,7 +50,7 @@ const GlobalExpansionPage = () => {
     {
       title: "International Fintech Reach",
       description: "Strategic guidance to expand your fintech operations into international markets with regulatory compliance.",
-      icon: <Bank className="h-10 w-10" />,
+      icon: <Landmark className="h-10 w-10" />,
       features: [
         "Regulatory compliance strategy",
         "Cross-border payment solutions",

@@ -91,7 +91,32 @@ const Features = () => {
   ];
 
   return (
-    <section className="py-20 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-white to-gray-50">
+    <section className="py-20 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+      {/* Circuit board decorative elements */}
+      <div className="absolute top-0 right-0 -z-10">
+        <img 
+          src="public/lovable-uploads/3f2bfe12-61d3-47da-b6a5-c633e9bb4d1a.png" 
+          alt="" 
+          className="w-64 h-auto opacity-20"
+        />
+      </div>
+      <div className="absolute bottom-0 left-0 -z-10">
+        <img 
+          src="public/lovable-uploads/e3f92cf2-08dc-4378-842a-da1ca1df4d15.png" 
+          alt="" 
+          className="w-72 h-auto opacity-20"
+        />
+      </div>
+      
+      {/* Network node icon */}
+      <div className="absolute top-1/4 right-1/4 -z-10">
+        <img 
+          src="public/lovable-uploads/b84a4b7b-96c8-4b01-9281-38b31f17fa75.png" 
+          alt="" 
+          className="w-16 h-auto opacity-30"
+        />
+      </div>
+      
       <div className="container mx-auto">
         <div className="text-center mb-16 opacity-0 translate-y-4" style={{ 
           animationName: 'fadeUp',
@@ -108,7 +133,16 @@ const Features = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 relative">
+          {/* Circuit diagram in background */}
+          <div className="absolute inset-0 -z-10 flex justify-center items-center opacity-5">
+            <img 
+              src="public/lovable-uploads/c3b4d9e4-1983-4f74-845a-cdd10db3d092.png" 
+              alt="" 
+              className="w-full max-w-4xl h-auto"
+            />
+          </div>
+          
           {features.map((feature, index) => (
             <Feature 
               key={index}
@@ -118,6 +152,15 @@ const Features = () => {
               delay={index * 100}
             />
           ))}
+          
+          {/* Toggle switches decoration */}
+          <div className="absolute -bottom-4 right-4 -z-10">
+            <img 
+              src="public/lovable-uploads/aaef245b-56e2-437c-81d7-d753e215eb60.png" 
+              alt="" 
+              className="w-16 h-auto opacity-40"
+            />
+          </div>
         </div>
       </div>
     </section>

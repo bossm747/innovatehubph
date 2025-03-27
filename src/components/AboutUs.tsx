@@ -3,7 +3,41 @@ import { Button } from "@/components/ui/button";
 
 const AboutUs = () => {
   return (
-    <section id="about" className="py-20 px-6 md:px-12 lg:px-24 bg-white">
+    <section id="about" className="py-20 px-6 md:px-12 lg:px-24 bg-white relative overflow-hidden">
+      {/* Circuit board decorative elements */}
+      <div className="absolute top-20 right-20 -z-10">
+        <img 
+          src="public/lovable-uploads/60fc5fce-299b-4f14-b006-947a5cd409ba.png" 
+          alt="" 
+          className="w-20 h-auto opacity-30"
+        />
+      </div>
+      <div className="absolute bottom-10 left-10 -z-10">
+        <img 
+          src="public/lovable-uploads/2346f5e5-b8ef-42cd-be11-be6d1c85e007.png" 
+          alt="" 
+          className="w-16 h-auto opacity-30"
+        />
+      </div>
+      
+      {/* Circuit corner decoration */}
+      <div className="absolute top-0 right-0 -z-10">
+        <img 
+          src="public/lovable-uploads/889fa9a3-7688-472c-9782-dcd7b2766e3f.png" 
+          alt="" 
+          className="w-48 h-auto opacity-20"
+        />
+      </div>
+      
+      {/* Circuit pattern in background */}
+      <div className="absolute inset-0 -z-10 flex justify-center items-center opacity-5">
+        <img 
+          src="public/lovable-uploads/e465451c-ac7c-4d41-855b-63954db5d9d8.png" 
+          alt="" 
+          className="w-full max-w-5xl h-auto"
+        />
+      </div>
+      
       <div className="container mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="relative">

@@ -54,14 +54,14 @@ const Navbar = () => {
             <Link to="/about" className="nav-link">About</Link>
             <Link to="/services" className="nav-link">Services</Link>
             <Link to="/platapay" className="nav-link">PlataPay</Link>
-            <a href="#team" className="nav-link">Our Team</a>
-            <a href="#contact" className="nav-link">Contact</a>
+            <Link to="/team" className="nav-link">Our Team</Link>
+            <Link to="/contact" className="nav-link">Contact</Link>
           </nav>
           <Button 
             className="bg-innovate-600 hover:bg-innovate-700 text-white rounded-md px-6 py-2 transition-all btn-shine" 
             asChild
           >
-            <a href="#contact">Get Started</a>
+            <Link to="/contact">Get Started</Link>
           </Button>
         </div>
 
@@ -91,13 +91,14 @@ const Navbar = () => {
           <Link to="/about" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
           <Link to="/services" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
           <Link to="/platapay" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>PlataPay</Link>
-          <a href="#team" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Our Team</a>
-          <a href="#contact" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact</a>
+          <Link to="/team" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Our Team</Link>
+          <Link to="/contact" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
           <Button 
             className="bg-innovate-600 hover:bg-innovate-700 text-white w-full mt-2" 
             onClick={() => setIsMobileMenuOpen(false)}
+            asChild
           >
-            <a href="#contact" className="w-full text-center">Get Started</a>
+            <Link to="/contact" className="w-full text-center">Get Started</Link>
           </Button>
         </nav>
       </div>

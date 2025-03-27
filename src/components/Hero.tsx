@@ -115,7 +115,7 @@ const Hero = () => {
                   ))}
                 </div>
                 <p className="text-sm text-gray-600">
-                  <span className="font-medium">4.9</span> from our <span className="font-medium">500+</span> clients
+                  <span className="font-medium">4.8</span> from our <span className="font-medium">50+</span> clients
                 </p>
               </div>
             </div>

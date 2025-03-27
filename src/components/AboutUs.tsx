@@ -50,23 +50,23 @@ const AboutUs = () => {
               <div className="absolute inset-0 bg-innovate-900/10"></div>
             </div>
             
-            {/* Stats card */}
+            {/* Stats card - Updated with more realistic startup numbers */}
             <div className="absolute -bottom-8 -right-8 bg-white rounded-xl p-6 shadow-medium max-w-xs">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-4xl font-bold text-innovate-700">12+</p>
+                  <p className="text-4xl font-bold text-innovate-700">3+</p>
                   <p className="text-gray-600">Years Experience</p>
                 </div>
                 <div>
-                  <p className="text-4xl font-bold text-innovate-700">500+</p>
+                  <p className="text-4xl font-bold text-innovate-700">50+</p>
                   <p className="text-gray-600">Happy Clients</p>
                 </div>
                 <div>
-                  <p className="text-4xl font-bold text-innovate-700">150+</p>
+                  <p className="text-4xl font-bold text-innovate-700">15+</p>
                   <p className="text-gray-600">Team Members</p>
                 </div>
                 <div>
-                  <p className="text-4xl font-bold text-innovate-700">98%</p>
+                  <p className="text-4xl font-bold text-innovate-700">92%</p>
                   <p className="text-gray-600">Success Rate</p>
                 </div>
               </div>
@@ -85,10 +85,10 @@ const AboutUs = () => {
             </span>
             <h2 className="text-3xl md:text-4xl font-bold">Driving Innovation and Digital Transformation</h2>
             <p className="text-gray-600">
-              Innovate Hub is a leading technology company in the Philippines, dedicated to helping businesses leverage the power of technology to drive growth and innovation. With over 12 years of experience, we've partnered with companies of all sizes to transform their operations through cutting-edge digital solutions.
+              Innovate Hub is an emerging technology company in the Philippines, dedicated to helping businesses leverage the power of technology to drive growth and innovation. With our passion and expertise, we've partnered with businesses of all sizes to transform their operations through cutting-edge digital solutions.
             </p>
             <p className="text-gray-600">
-              Our team of experts is committed to delivering excellence in every project, whether it's developing custom software, implementing digital transformation strategies, or providing IT consultation services.
+              Our growing team of experts is committed to delivering excellence in every project, whether it's developing custom software, implementing digital transformation strategies, or providing IT consultation services.
             </p>
             
             <div className="pt-4 space-y-4">

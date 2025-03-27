@@ -17,21 +17,21 @@ const AboutHero = () => {
           </p>
           
           <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
-            {/* Stats */}
+            {/* Stats - Updated with more realistic startup numbers */}
             <div className="text-center">
-              <p className="text-4xl font-bold text-innovate-700">12+</p>
+              <p className="text-4xl font-bold text-innovate-700">3+</p>
               <p className="text-gray-600">Years Experience</p>
             </div>
             <div className="text-center">
-              <p className="text-4xl font-bold text-innovate-700">500+</p>
+              <p className="text-4xl font-bold text-innovate-700">50+</p>
               <p className="text-gray-600">Happy Clients</p>
             </div>
             <div className="text-center">
-              <p className="text-4xl font-bold text-innovate-700">150+</p>
+              <p className="text-4xl font-bold text-innovate-700">15+</p>
               <p className="text-gray-600">Team Members</p>
             </div>
             <div className="text-center">
-              <p className="text-4xl font-bold text-innovate-700">98%</p>
+              <p className="text-4xl font-bold text-innovate-700">92%</p>
               <p className="text-gray-600">Success Rate</p>
             </div>
           </div>

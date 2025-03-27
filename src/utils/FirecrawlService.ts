@@ -18,6 +18,7 @@ type CrawlResponse = CrawlStatusResponse | ErrorResponse;
 
 export class FirecrawlService {
   private static API_KEY_STORAGE_KEY = 'firecrawl_api_key';
+  private static CRAWL_RESULTS_KEY = 'firecrawl_results';
 
   static saveApiKey(apiKey: string): void {
     localStorage.setItem(this.API_KEY_STORAGE_KEY, apiKey);
@@ -113,6 +114,9 @@ export class FirecrawlService {
       const responseData = await crawlResponse.json();
       console.log('Crawl successful:', responseData);
       
+      // Store the crawl result in local storage
+      this.storeCrawlResult(url, responseData);
+      
       return { 
         success: true,
         data: responseData 
@@ -124,5 +128,55 @@ export class FirecrawlService {
         error: error instanceof Error ? error.message : 'Failed to connect to Firecrawl API' 
       };
     }
+  }
+
+  static storeCrawlResult(url: string, data: any): void {
+    try {
+      // Get existing results or initialize empty object
+      const existingResultsJSON = localStorage.getItem(this.CRAWL_RESULTS_KEY) || '{}';
+      const existingResults = JSON.parse(existingResultsJSON);
+      
+      // Add new result with timestamp
+      existingResults[url] = {
+        data,
+        timestamp: new Date().toISOString()
+      };
+      
+      // Save back to local storage
+      localStorage.setItem(this.CRAWL_RESULTS_KEY, JSON.stringify(existingResults));
+      console.log(`Crawl result for ${url} stored in local storage`);
+    } catch (error) {
+      console.error('Error storing crawl result in local storage:', error);
+    }
+  }
+
+  static getCrawlResult(url: string): { data: any; timestamp: string } | null {
+    try {
+      const resultsJSON = localStorage.getItem(this.CRAWL_RESULTS_KEY);
+      if (!resultsJSON) return null;
+      
+      const results = JSON.parse(resultsJSON);
+      return results[url] || null;
+    } catch (error) {
+      console.error('Error retrieving crawl result from local storage:', error);
+      return null;
+    }
+  }
+
+  static getAllCrawlResults(): Record<string, { data: any; timestamp: string }> {
+    try {
+      const resultsJSON = localStorage.getItem(this.CRAWL_RESULTS_KEY);
+      if (!resultsJSON) return {};
+      
+      return JSON.parse(resultsJSON);
+    } catch (error) {
+      console.error('Error retrieving all crawl results from local storage:', error);
+      return {};
+    }
+  }
+
+  static clearCrawlResults(): void {
+    localStorage.removeItem(this.CRAWL_RESULTS_KEY);
+    console.log('All crawl results cleared from local storage');
   }
 }

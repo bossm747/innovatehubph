@@ -88,6 +88,24 @@ export const CrawlForm = ({ initialApiKey }: CrawlFormProps) => {
     e.preventDefault();
     setIsLoading(true);
     setProgress(10);
+    
+    // Check if we have this result in local storage
+    const cachedResult = FirecrawlService.getCrawlResult(url);
+    if (cachedResult) {
+      console.log('Using cached crawl result for:', url);
+      toast({
+        title: "Success",
+        description: "Using cached website data",
+      });
+      setCrawlResult({
+        success: true,
+        data: cachedResult.data
+      });
+      setIsLoading(false);
+      setProgress(100);
+      return;
+    }
+    
     setCrawlResult(null);
     
     try {

@@ -6,6 +6,8 @@ import ContactSection from '@/components/ContactSection';
 import CircuitBackground from '@/components/CircuitBackground';
 import ServicesHero from '@/components/ServicesHero';
 import ServiceTiles from '@/components/ServiceTiles';
+import PlatapayServices from '@/components/PlatapayServices';
+import Features from '@/components/Features';
 import { Toaster } from 'sonner';
 
 const ServicesPage = () => {
@@ -67,6 +69,8 @@ const ServicesPage = () => {
       <main className="w-full pt-16">
         <ServicesHero />
         <ServiceTiles />
+        <Features />
+        <PlatapayServices />
         <ContactSection />
         <Footer />
       </main>

@@ -7,9 +7,10 @@ interface FeatureProps {
   description: string;
   className?: string;
   delay?: number;
+  illustration?: string;
 }
 
-const Feature = ({ icon, title, description, className, delay = 0 }: FeatureProps) => (
+const Feature = ({ icon, title, description, className, delay = 0, illustration }: FeatureProps) => (
   <div 
     className={cn(
       "bg-white rounded-xl p-6 shadow-soft flex flex-col items-start card-hover",
@@ -24,9 +25,19 @@ const Feature = ({ icon, title, description, className, delay = 0 }: FeatureProp
       animationTimingFunction: 'ease-out'
     }}
   >
-    <div className="w-12 h-12 rounded-full bg-innovate-100 flex items-center justify-center mb-4">
-      {icon}
-    </div>
+    {illustration ? (
+      <div className="flex justify-center w-full mb-4">
+        <img 
+          src={illustration} 
+          alt={title} 
+          className="h-20 w-auto object-contain transition-transform hover:scale-105 duration-300" 
+        />
+      </div>
+    ) : (
+      <div className="w-12 h-12 rounded-full bg-innovate-100 flex items-center justify-center mb-4">
+        {icon}
+      </div>
+    )}
     <h3 className="text-xl font-semibold mb-2">{title}</h3>
     <p className="text-gray-600">{description}</p>
   </div>
@@ -41,7 +52,8 @@ const Features = () => {
         </svg>
       ),
       title: "Software Development",
-      description: "Custom software development for your business needs, built with the latest technologies."
+      description: "Custom software development for your business needs, built with the latest technologies.",
+      illustration: "/lovable-uploads/2234e28c-d0f8-4e86-85fb-035b56dbd54c.png"
     },
     {
       icon: (
@@ -50,7 +62,8 @@ const Features = () => {
         </svg>
       ),
       title: "Digital Transformation",
-      description: "Comprehensive solutions to transform your business operations into digital processes."
+      description: "Comprehensive solutions to transform your business operations into digital processes.",
+      illustration: "/lovable-uploads/736f7833-0e12-477f-8bfd-66cfcfe6b29d.png"
     },
     {
       icon: (
@@ -59,7 +72,8 @@ const Features = () => {
         </svg>
       ),
       title: "IT Consultation",
-      description: "Strategic IT consultation to help you navigate the complex technology landscape."
+      description: "Strategic IT consultation to help you navigate the complex technology landscape.",
+      illustration: "/lovable-uploads/13165526-621e-41b9-9e68-4ef94cb85f92.png"
     },
     {
       icon: (
@@ -68,7 +82,8 @@ const Features = () => {
         </svg>
       ),
       title: "AI & Machine Learning",
-      description: "Cutting-edge AI solutions that help you leverage data for intelligent decision-making."
+      description: "Cutting-edge AI solutions that help you leverage data for intelligent decision-making.",
+      illustration: "/lovable-uploads/23b26e14-b67d-4040-a007-bb84e835ce3f.png"
     },
     {
       icon: (
@@ -77,7 +92,8 @@ const Features = () => {
         </svg>
       ),
       title: "Digital Marketing",
-      description: "Strategic digital marketing to help you reach your target audience effectively."
+      description: "Strategic digital marketing to help you reach your target audience effectively.",
+      illustration: "/lovable-uploads/6317c877-9b06-4673-820a-b8bf5b59bb11.png"
     },
     {
       icon: (
@@ -86,7 +102,8 @@ const Features = () => {
         </svg>
       ),
       title: "Cybersecurity",
-      description: "Comprehensive cybersecurity solutions to protect your business from digital threats."
+      description: "Comprehensive cybersecurity solutions to protect your business from digital threats.",
+      illustration: "/lovable-uploads/2f0b8c81-6247-449a-94da-77c4752ef50a.png"
     }
   ];
 
@@ -95,14 +112,14 @@ const Features = () => {
       {/* Circuit board decorative elements */}
       <div className="absolute top-0 right-0 -z-10">
         <img 
-          src="public/lovable-uploads/3f2bfe12-61d3-47da-b6a5-c633e9bb4d1a.png" 
+          src="/lovable-uploads/3f2bfe12-61d3-47da-b6a5-c633e9bb4d1a.png" 
           alt="" 
           className="w-64 h-auto opacity-20"
         />
       </div>
       <div className="absolute bottom-0 left-0 -z-10">
         <img 
-          src="public/lovable-uploads/e3f92cf2-08dc-4378-842a-da1ca1df4d15.png" 
+          src="/lovable-uploads/e3f92cf2-08dc-4378-842a-da1ca1df4d15.png" 
           alt="" 
           className="w-72 h-auto opacity-20"
         />
@@ -111,7 +128,7 @@ const Features = () => {
       {/* Network node icon */}
       <div className="absolute top-1/4 right-1/4 -z-10">
         <img 
-          src="public/lovable-uploads/b84a4b7b-96c8-4b01-9281-38b31f17fa75.png" 
+          src="/lovable-uploads/b84a4b7b-96c8-4b01-9281-38b31f17fa75.png" 
           alt="" 
           className="w-16 h-auto opacity-30"
         />
@@ -137,7 +154,7 @@ const Features = () => {
           {/* Circuit diagram in background */}
           <div className="absolute inset-0 -z-10 flex justify-center items-center opacity-5">
             <img 
-              src="public/lovable-uploads/c3b4d9e4-1983-4f74-845a-cdd10db3d092.png" 
+              src="/lovable-uploads/c3b4d9e4-1983-4f74-845a-cdd10db3d092.png" 
               alt="" 
               className="w-full max-w-4xl h-auto"
             />
@@ -150,13 +167,14 @@ const Features = () => {
               title={feature.title}
               description={feature.description}
               delay={index * 100}
+              illustration={feature.illustration}
             />
           ))}
           
           {/* Toggle switches decoration */}
           <div className="absolute -bottom-4 right-4 -z-10">
             <img 
-              src="public/lovable-uploads/aaef245b-56e2-437c-81d7-d753e215eb60.png" 
+              src="/lovable-uploads/aaef245b-56e2-437c-81d7-d753e215eb60.png" 
               alt="" 
               className="w-16 h-auto opacity-40"
             />

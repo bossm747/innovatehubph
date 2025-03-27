@@ -18,6 +18,7 @@ interface ServiceTile {
   highlight?: boolean;
   isInternalLink?: boolean;
   logo?: string;
+  illustrationPath?: string;
 }
 
 const ServiceTiles = () => {
@@ -45,7 +46,8 @@ const ServiceTiles = () => {
       ctaLink: "/platapay",
       highlight: true,
       isInternalLink: true,
-      logo: "/lovable-uploads/9b23899d-8537-4e7c-996b-5fdc791cbde2.png"
+      logo: "/lovable-uploads/9b23899d-8537-4e7c-996b-5fdc791cbde2.png",
+      illustrationPath: "/lovable-uploads/5f09f5a6-e6df-47ae-83c4-34a9569a40c5.png"
     },
     {
       id: 2,
@@ -62,7 +64,8 @@ const ServiceTiles = () => {
       color: "bg-gradient-to-br from-purple-500 to-indigo-700",
       ctaText: "Explore Digital Customizations",
       ctaLink: "/digital-customizations",
-      isInternalLink: true
+      isInternalLink: true,
+      illustrationPath: "/lovable-uploads/b1b10466-6ded-4df0-81b5-d40c00d62010.png"
     },
     {
       id: 3,
@@ -79,7 +82,8 @@ const ServiceTiles = () => {
       color: "bg-gradient-to-br from-emerald-500 to-teal-700",
       ctaText: "Explore E-Commerce Solutions",
       ctaLink: "/ecommerce",
-      isInternalLink: true
+      isInternalLink: true,
+      illustrationPath: "/lovable-uploads/7e4e3f02-54c1-4ac3-b820-bf997cf2226d.png"
     },
     {
       id: 4,
@@ -96,7 +100,8 @@ const ServiceTiles = () => {
       color: "bg-gradient-to-br from-amber-500 to-orange-700",
       ctaText: "Discover AI Solutions",
       ctaLink: "/ai-solutions",
-      isInternalLink: true
+      isInternalLink: true,
+      illustrationPath: "/lovable-uploads/2da10da7-aef0-4d88-b480-d864d7b2daf7.png"
     },
     {
       id: 5,
@@ -113,7 +118,8 @@ const ServiceTiles = () => {
       color: "bg-gradient-to-br from-blue-500 to-cyan-700",
       ctaText: "Learn About Global Expansion",
       ctaLink: "/global-expansion",
-      isInternalLink: true
+      isInternalLink: true,
+      illustrationPath: "/lovable-uploads/25a1a8fc-1d81-411c-aeb7-4c26e9020a38.png"
     }
   ];
 
@@ -183,6 +189,16 @@ const ServiceTiles = () => {
                     </li>
                   ))}
                 </ul>
+                
+                {service.illustrationPath && (
+                  <div className="mb-6 flex justify-center">
+                    <img 
+                      src={service.illustrationPath} 
+                      alt={`${service.title} Illustration`} 
+                      className="h-24 w-auto object-contain transition-transform hover:scale-105 duration-300"
+                    />
+                  </div>
+                )}
                 
                 <div className="space-y-3">
                   <Button 

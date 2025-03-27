@@ -6,6 +6,7 @@ interface ServiceCard {
   icon: React.ReactNode;
   title: string;
   description: string;
+  illustration?: string;
 }
 
 const PlatapayServices = () => {
@@ -17,7 +18,8 @@ const PlatapayServices = () => {
         </svg>
       ),
       title: "Digital Wallet",
-      description: "Secure mobile wallet for sending money, paying bills, and managing funds with just a few taps."
+      description: "Secure mobile wallet for sending money, paying bills, and managing funds with just a few taps.",
+      illustration: "/lovable-uploads/8baff974-6b6e-4b3d-bdb9-d010bfe64a3f.png" 
     },
     {
       icon: (
@@ -26,7 +28,8 @@ const PlatapayServices = () => {
         </svg>
       ),
       title: "Bills Payment",
-      description: "Convenient payment of utilities, government fees, loans, and other bills through our app."
+      description: "Convenient payment of utilities, government fees, loans, and other bills through our app.",
+      illustration: "/lovable-uploads/57027968-9711-4cbc-827b-76680c864f7b.png"
     },
     {
       icon: (
@@ -35,7 +38,8 @@ const PlatapayServices = () => {
         </svg>
       ),
       title: "Remittance",
-      description: "Fast and secure money transfers to friends and family across the Philippines and internationally."
+      description: "Fast and secure money transfers to friends and family across the Philippines and internationally.",
+      illustration: "/lovable-uploads/40489a38-a6ac-4622-be28-4a142fd83467.png"
     },
     {
       icon: (
@@ -44,7 +48,8 @@ const PlatapayServices = () => {
         </svg>
       ),
       title: "E-Loading",
-      description: "Quick and easy load service for all major mobile networks at competitive rates."
+      description: "Quick and easy load service for all major mobile networks at competitive rates.",
+      illustration: "/lovable-uploads/8edd591f-9b08-4686-bf94-3211d6ec905e.png"
     },
     {
       icon: (
@@ -53,7 +58,8 @@ const PlatapayServices = () => {
         </svg>
       ),
       title: "QR Payments",
-      description: "Contactless transactions with QR code scanning for fast and secure payments to merchants."
+      description: "Contactless transactions with QR code scanning for fast and secure payments to merchants.",
+      illustration: "/lovable-uploads/f1032971-3378-40d4-9f65-a5c7b6a1cf5c.png"
     },
     {
       icon: (
@@ -62,7 +68,8 @@ const PlatapayServices = () => {
         </svg>
       ),
       title: "Agent Network",
-      description: "Become a PlataPay agent and earn commissions by offering financial services in your community."
+      description: "Become a PlataPay agent and earn commissions by offering financial services in your community.",
+      illustration: "/lovable-uploads/c03b06dd-60d4-4871-b02c-f751fe1ff161.png"
     }
   ];
 
@@ -97,11 +104,20 @@ const PlatapayServices = () => {
               className="p-8 hover:shadow-lg transition-all duration-300 border-t-4 border-innovate-500 fade-up"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="text-innovate-600 mb-4">
-                {service.icon}
+              <div className="flex flex-col items-center mb-6">
+                {service.illustration && (
+                  <img 
+                    src={service.illustration} 
+                    alt={service.title} 
+                    className="h-24 w-auto mb-4 transition-transform hover:scale-105 duration-300"
+                  />
+                )}
+                <div className="text-innovate-600">
+                  {service.icon}
+                </div>
               </div>
-              <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
-              <p className="text-gray-600">{service.description}</p>
+              <h3 className="text-xl font-semibold mb-3 text-center">{service.title}</h3>
+              <p className="text-gray-600 text-center">{service.description}</p>
             </Card>
           ))}
         </div>

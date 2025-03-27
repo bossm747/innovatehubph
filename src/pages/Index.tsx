@@ -132,19 +132,17 @@ const Index = () => {
         />
       </div>
       
-      {/* Main content with full width sections */}
+      {/* Main content - removed the inner container div */}
       <Navbar />
-      <div className="w-full p-0 m-0">
-        <Hero />
-        <Features />
-        <AboutUs />
-        <PlataPay />
-        <Services />
-        <Testimonials />
-        <TeamSection />
-        <ContactSection />
-        <Footer />
-      </div>
+      <Hero />
+      <Features />
+      <AboutUs />
+      <PlataPay />
+      <Services />
+      <Testimonials />
+      <TeamSection />
+      <ContactSection />
+      <Footer />
     </div>
   );
 };

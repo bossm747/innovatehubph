@@ -40,168 +40,114 @@ const Index = () => {
     <div className="min-h-screen overflow-x-hidden relative">
       {/* Large background circuit patterns */}
       <CircuitBackground 
-        pattern="right" 
+        pattern="circuit-simple" 
         className="fixed top-0 right-0" 
         size="lg" 
         opacity={0.05} 
+        color="primary"
       />
       <CircuitBackground 
-        pattern="left" 
+        pattern="circuit-simple" 
         className="fixed bottom-0 left-0" 
         size="lg" 
         opacity={0.05} 
+        color="primary"
+        rotate={180}
       />
       
       {/* New circuit patterns */}
       <CircuitBackground 
-        pattern="digital-circuit" 
-        className="fixed top-10 left-10" 
+        pattern="angle-right" 
+        className="fixed top-1/3 right-0" 
         size="lg" 
-        opacity={0.08} 
-      />
-      <CircuitBackground 
-        pattern="curved-line" 
-        className="fixed bottom-20 right-20" 
-        size="md" 
         opacity={0.1} 
+        color="primary"
       />
       <CircuitBackground 
-        pattern="circle" 
-        className="fixed bottom-1/3 left-1/3" 
+        pattern="angle-left" 
+        className="fixed bottom-1/3 left-0" 
+        size="lg" 
+        opacity={0.1} 
+        color="primary"
+      />
+      <CircuitBackground 
+        pattern="gradient-circle" 
+        className="fixed top-20 left-20" 
         size="xl" 
-        opacity={0.03} 
-      />
-      <CircuitBackground 
-        pattern="dots-grid" 
-        className="fixed top-1/4 right-1/4" 
-        size="xl" 
-        opacity={0.05} 
-      />
-      
-      {/* Circuit paths at different positions */}
-      <CircuitBackground 
-        pattern="circuit-blue" 
-        className="fixed top-1/4 left-0" 
-        size="md" 
         opacity={0.2} 
       />
       <CircuitBackground 
-        pattern="lines" 
-        className="fixed bottom-1/4 right-0" 
-        size="sm" 
-        opacity={0.3} 
-      />
-      <CircuitBackground 
-        pattern="circuit-lines" 
-        className="fixed bottom-10 left-10" 
-        size="md" 
-        opacity={0.15} 
-      />
-      <CircuitBackground 
-        pattern="triangle" 
-        className="fixed top-20 right-20" 
-        size="sm" 
+        pattern="gradient-circle" 
+        className="fixed bottom-20 right-20" 
+        size="xl" 
         opacity={0.2} 
+        flipX={true}
+        flipY={true}
       />
       
-      {/* Laptop security illustration */}
-      <div className="fixed bottom-10 right-10 -z-10 opacity-20 hidden lg:block">
+      {/* Blue tech icons */}
+      <div className="fixed top-40 right-10 -z-10 opacity-30 hidden md:block">
         <img 
-          src="public/lovable-uploads/c6d34d14-93e3-4090-8fe9-051cd0488981.png" 
+          src="public/lovable-uploads/1b2458e2-2999-4791-b568-4c34cfd90824.png" 
           alt="" 
-          className="w-64 h-auto"
+          className="w-10 h-auto"
+        />
+      </div>
+      <div className="fixed bottom-40 left-10 -z-10 opacity-30 hidden md:block">
+        <img 
+          src="public/lovable-uploads/e0d195e2-9fce-4899-9cb5-2842af7d93fb.png" 
+          alt="" 
+          className="w-10 h-auto"
+        />
+      </div>
+      <div className="fixed top-1/2 left-10 -z-10 opacity-30 hidden md:block">
+        <img 
+          src="public/lovable-uploads/d5154064-a4e9-4584-936e-fbe00d0d935e.png" 
+          alt="" 
+          className="w-10 h-auto"
         />
       </div>
       
-      {/* Switch toggle elements - decorative */}
+      {/* Switch toggle elements */}
       <div className="fixed top-20 left-4 -z-10 opacity-30 hidden md:block">
         <img 
-          src="public/lovable-uploads/aaef245b-56e2-437c-81d7-d753e215eb60.png" 
+          src="public/lovable-uploads/72bb2298-25ec-40dc-842a-896786d952c3.png" 
           alt="" 
           className="w-10 h-auto"
         />
       </div>
       <div className="fixed bottom-20 right-4 -z-10 opacity-30 hidden md:block">
         <img 
-          src="public/lovable-uploads/aaef245b-56e2-437c-81d7-d753e215eb60.png" 
-          alt="" 
-          className="w-10 h-auto"
-        />
-      </div>
-      <div className="fixed top-1/2 right-6 -z-10 opacity-30 hidden md:block">
-        <img 
-          src="public/lovable-uploads/aaf2257f-9aa4-42cc-b206-e4cacde97301.png" 
-          alt="" 
-          className="w-10 h-auto"
-        />
-      </div>
-      <div className="fixed top-1/3 left-6 -z-10 opacity-30 hidden md:block">
-        <img 
-          src="public/lovable-uploads/b71bb214-0fa4-498f-af3b-d77895ad12c8.png" 
+          src="public/lovable-uploads/72bb2298-25ec-40dc-842a-896786d952c3.png" 
           alt="" 
           className="w-10 h-auto"
         />
       </div>
       
-      {/* New tech icons - circuit board */}
-      <div className="fixed top-40 left-1/3 -z-10 opacity-15 hidden lg:block">
+      {/* Dark triangle */}
+      <div className="fixed -bottom-20 -right-20 -z-10 opacity-70 hidden lg:block">
         <img 
-          src="public/lovable-uploads/606df92a-2e30-4cf6-a583-6cca447e01f4.png" 
+          src="public/lovable-uploads/686c3f44-693f-43c9-a6b4-7d52ba6b6eba.png" 
           alt="" 
-          className="w-10 h-auto"
-        />
-      </div>
-      <div className="fixed bottom-40 right-1/3 -z-10 opacity-15 hidden lg:block">
-        <img 
-          src="public/lovable-uploads/d06dbf6f-eafc-4d26-97e4-b5ee5dac0416.png" 
-          alt="" 
-          className="w-10 h-auto"
+          className="w-96 h-auto"
         />
       </div>
       
-      {/* Corner backgrounds */}
-      <CircuitBackground 
-        pattern="corner-dots" 
-        className="fixed top-0 right-0" 
-        size="md" 
-        opacity={0.15} 
-      />
-      <CircuitBackground 
-        pattern="corner-dots" 
-        className="fixed bottom-0 left-0" 
-        size="md" 
-        opacity={0.15}
-        flipX={true}
-        flipY={true}
-      />
-      <CircuitBackground 
-        pattern="diagonal" 
-        className="fixed top-0 left-0" 
-        size="md" 
-        opacity={0.1}
-      />
-      <CircuitBackground 
-        pattern="diagonal" 
-        className="fixed bottom-0 right-0" 
-        size="md" 
-        opacity={0.1}
-        flipX={true}
-        flipY={true}
-      />
-      
-      {/* Wave patterns for aesthetics */}
-      <div className="fixed top-0 left-0 -z-20 opacity-10">
+      {/* Circuit board background */}
+      <div className="fixed inset-0 -z-20 flex justify-center items-center opacity-5 pointer-events-none">
         <img 
-          src="public/lovable-uploads/d51f3d08-0518-4808-af9d-83ddda86ee94.png" 
+          src="public/lovable-uploads/4efa4d52-e062-4876-bb34-db38b208d925.png" 
           alt="" 
-          className="w-64 h-auto"
+          className="w-full max-w-5xl h-auto"
         />
       </div>
-      <div className="fixed bottom-0 right-0 -z-20 opacity-10">
+      
+      {/* Gradient triangle decoration */}
+      <div className="fixed -top-20 -left-20 -z-20 opacity-50 hidden lg:block">
         <img 
-          src="public/lovable-uploads/b94823e3-a419-4cb5-9ef6-8e2bafbac686.png" 
+          src="public/lovable-uploads/6d28e722-42ae-4e08-a330-f810f8694f61.png" 
           alt="" 
-          className="w-64 h-auto"
+          className="w-96 h-auto"
         />
       </div>
       

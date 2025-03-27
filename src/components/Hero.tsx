@@ -10,33 +10,37 @@ const Hero = () => {
       
       {/* Circuit decorative elements using the enhanced component */}
       <CircuitBackground 
-        pattern="right" 
+        pattern="circuit-simple" 
         className="top-20 right-0" 
         size="md"
         opacity={0.3}
+        color="primary"
       />
       
       <CircuitBackground 
-        pattern="left" 
+        pattern="circuit-simple" 
         className="bottom-0 left-0" 
         size="lg"
         opacity={0.3}
+        color="primary"
+        rotate={180}
       />
       
-      {/* Blue wave decorative element */}
+      {/* Gradient circle */}
       <CircuitBackground 
-        pattern="wave" 
+        pattern="gradient-circle" 
         className="top-1/4 right-1/4" 
         size="sm"
-        opacity={0.2}
+        opacity={0.7}
       />
       
-      {/* Circuit lines */}
+      {/* Angle right */}
       <CircuitBackground 
-        pattern="lines" 
-        className="top-1/3 left-20" 
+        pattern="angle-right" 
+        className="top-1/3 right-0" 
         size="md"
         opacity={0.15}
+        color="primary"
       />
       
       {/* Decorative elements */}
@@ -46,13 +50,14 @@ const Hero = () => {
       <div className="container mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8 animate-fade-in">
-            {/* Blue circuit network */}
-            <CircuitBackground 
-              pattern="circuit-blue" 
-              className="-left-10 bottom-12" 
-              size="sm"
-              opacity={0.3}
-            />
+            {/* Blue device icon */}
+            <div className="absolute top-32 left-8 -z-10 opacity-30 hidden md:block">
+              <img 
+                src="public/lovable-uploads/1b2458e2-2999-4791-b568-4c34cfd90824.png" 
+                alt="" 
+                className="w-12 h-auto"
+              />
+            </div>
           
             <div className="space-y-4">
               <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full">
@@ -126,13 +131,23 @@ const Hero = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
               
-              {/* Circuit board corner decoration */}
-              <CircuitBackground 
-                pattern="corner" 
-                className="top-0 right-0" 
-                size="sm"
-                opacity={0.4}
-              />
+              {/* Dark triangle corner decoration */}
+              <div className="absolute -top-10 -right-10 -z-10 opacity-40">
+                <img 
+                  src="public/lovable-uploads/686c3f44-693f-43c9-a6b4-7d52ba6b6eba.png" 
+                  alt="" 
+                  className="w-48 h-auto"
+                />
+              </div>
+              
+              {/* Blue switch toggle */}
+              <div className="absolute top-4 right-4 z-10 opacity-80">
+                <img 
+                  src="public/lovable-uploads/72bb2298-25ec-40dc-842a-896786d952c3.png" 
+                  alt="" 
+                  className="w-10 h-auto"
+                />
+              </div>
               
               {/* Stats cards floating on the image */}
               <div className="absolute -bottom-8 -left-8 glass-card rounded-xl p-4 animate-float shadow-medium">

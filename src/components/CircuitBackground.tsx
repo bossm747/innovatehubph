@@ -4,13 +4,15 @@ import React from 'react';
 interface CircuitBackgroundProps {
   className?: string;
   pattern?: 'left' | 'right' | 'bottom' | 'corner' | 'lines' | 'dots' | 'circuit-blue' | 'corner-dots' | 'wave' | 
-             'laptop' | 'circuit-lines' | 'circle' | 'dots-grid' | 'triangle' | 'curved-line' | 'arrow' | 'digital-circuit' | 'diagonal';
+             'laptop' | 'circuit-lines' | 'circle' | 'dots-grid' | 'triangle' | 'curved-line' | 'arrow' | 'digital-circuit' | 'diagonal' |
+             'gradient-triangle' | 'gradient-circle' | 'circuit-simple' | 'angle-right' | 'angle-left' | 'blue-switch' | 'dark-triangle' |
+             'blue-device' | 'blue-cloud' | 'blue-settings';
   opacity?: number;
   rotate?: number;
   flipX?: boolean;
   flipY?: boolean;
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
-  color?: 'blue' | 'purple' | 'gradient' | 'default';
+  color?: 'blue' | 'purple' | 'gradient' | 'default' | 'primary' | 'secondary' | 'light-blue';
 }
 
 const CircuitBackground: React.FC<CircuitBackgroundProps> = ({ 
@@ -61,6 +63,27 @@ const CircuitBackground: React.FC<CircuitBackgroundProps> = ({
         return "public/lovable-uploads/11c920b6-8f80-407f-9b90-304589379231.png";
       case 'diagonal':
         return "public/lovable-uploads/508dbb7c-7812-431c-9af3-eb4874902930.png";
+      // Adding new patterns from the uploaded images
+      case 'circuit-simple':
+        return "public/lovable-uploads/4efa4d52-e062-4876-bb34-db38b208d925.png";
+      case 'angle-right':
+        return "public/lovable-uploads/59a7de47-c051-4875-99bf-46e08a70aa92.png";
+      case 'angle-left':
+        return "public/lovable-uploads/f0b7b62c-13ce-4b9c-bb0b-49b6bbd3e183.png";
+      case 'gradient-circle':
+        return "public/lovable-uploads/b23b419e-732c-4872-88a0-64f6ac5dc04f.png";
+      case 'blue-switch':
+        return "public/lovable-uploads/72bb2298-25ec-40dc-842a-896786d952c3.png";
+      case 'dark-triangle':
+        return "public/lovable-uploads/686c3f44-693f-43c9-a6b4-7d52ba6b6eba.png";
+      case 'blue-device':
+        return "public/lovable-uploads/1b2458e2-2999-4791-b568-4c34cfd90824.png";
+      case 'blue-cloud':
+        return "public/lovable-uploads/e0d195e2-9fce-4899-9cb5-2842af7d93fb.png";
+      case 'blue-settings':
+        return "public/lovable-uploads/d5154064-a4e9-4584-936e-fbe00d0d935e.png";
+      case 'gradient-triangle':
+        return "public/lovable-uploads/6d28e722-42ae-4e08-a330-f810f8694f61.png";
       default:
         return "public/lovable-uploads/e465451c-ac7c-4d41-855b-63954db5d9d8.png";
     }
@@ -91,6 +114,12 @@ const CircuitBackground: React.FC<CircuitBackgroundProps> = ({
         return "text-purple-500 filter-purple";
       case 'gradient':
         return "text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-600";
+      case 'primary':
+        return "text-innovate-600 filter-primary";
+      case 'secondary':
+        return "text-innovate-400 filter-secondary";
+      case 'light-blue':
+        return "text-blue-300 filter-light-blue";
       default:
         return "";
     }

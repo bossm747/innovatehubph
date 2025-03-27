@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Features from '@/components/Features';
@@ -99,7 +98,7 @@ const Index = () => {
       {/* Digital elements - Payment, AI, E-commerce icons */}
       <div className="fixed top-4 right-4 opacity-30 hidden lg:block">
         <img 
-          src="public/lovable-uploads/41923896-2fb4-4137-b3b8-78bb35bbd3e5.png" 
+          src="/lovable-uploads/41923896-2fb4-4137-b3b8-78bb35bbd3e5.png" 
           alt="IH Logo" 
           className="w-16 h-auto"
         />
@@ -108,7 +107,7 @@ const Index = () => {
       {/* QR code icon - representing digital payments */}
       <div className="fixed bottom-20 right-10 -z-10 opacity-30 hidden md:block">
         <img 
-          src="public/lovable-uploads/4d5b3eaa-0065-48e8-9976-3931a1836f81.png" 
+          src="/lovable-uploads/4d5b3eaa-0065-48e8-9976-3931a1836f81.png" 
           alt="QR Payment" 
           className="w-12 h-auto"
         />
@@ -117,7 +116,7 @@ const Index = () => {
       {/* AI icon */}
       <div className="fixed top-1/2 left-10 -z-10 opacity-30 hidden md:block">
         <img 
-          src="public/lovable-uploads/81342b57-5480-4e45-8f13-6d31826abff6.png" 
+          src="/lovable-uploads/81342b57-5480-4e45-8f13-6d31826abff6.png" 
           alt="AI" 
           className="w-16 h-auto"
         />
@@ -126,7 +125,7 @@ const Index = () => {
       {/* E-commerce icon */}
       <div className="fixed bottom-1/3 right-1/3 -z-10 opacity-20 hidden lg:block">
         <img 
-          src="public/lovable-uploads/ff53bb94-04a4-4198-896b-3a71c7adf699.png" 
+          src="/lovable-uploads/ff53bb94-04a4-4198-896b-3a71c7adf699.png" 
           alt="E-commerce" 
           className="w-32 h-auto"
         />

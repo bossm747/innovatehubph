@@ -3,73 +3,42 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 
 interface ServiceCard {
-  icon: React.ReactNode;
+  icon: string;
   title: string;
   description: string;
-  illustration?: string;
 }
 
 const PlatapayServices = () => {
   const services: ServiceCard[] = [
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-        </svg>
-      ),
+      icon: "/lovable-uploads/60c28117-5e6a-45ad-ae8f-38d4c7c0240f.png",
       title: "Digital Wallet",
-      description: "Secure mobile wallet for sending money, paying bills, and managing funds with just a few taps.",
-      illustration: "/lovable-uploads/8baff974-6b6e-4b3d-bdb9-d010bfe64a3f.png" 
+      description: "Secure mobile wallet for sending money, paying bills, and managing funds with just a few taps."
     },
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-        </svg>
-      ),
+      icon: "/lovable-uploads/8a83083d-1f94-4e7d-98d1-a1e602e39ff6.png",
       title: "Bills Payment",
-      description: "Convenient payment of utilities, government fees, loans, and other bills through our app.",
-      illustration: "/lovable-uploads/57027968-9711-4cbc-827b-76680c864f7b.png"
+      description: "Convenient payment of utilities, government fees, loans, and other bills through our app."
     },
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-        </svg>
-      ),
+      icon: "/lovable-uploads/3f4072eb-1c6d-4923-a9ba-65dec4af9f12.png",
       title: "Remittance",
-      description: "Fast and secure money transfers to friends and family across the Philippines and internationally.",
-      illustration: "/lovable-uploads/40489a38-a6ac-4622-be28-4a142fd83467.png"
+      description: "Fast and secure money transfers to friends and family across the Philippines and internationally."
     },
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-        </svg>
-      ),
+      icon: "/lovable-uploads/13d6fdac-7203-4f96-86da-e4730af74b31.png",
       title: "E-Loading",
-      description: "Quick and easy load service for all major mobile networks at competitive rates.",
-      illustration: "/lovable-uploads/8edd591f-9b08-4686-bf94-3211d6ec905e.png"
+      description: "Quick and easy load service for all major mobile networks at competitive rates."
     },
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-        </svg>
-      ),
+      icon: "/lovable-uploads/e631387a-febd-43e4-a620-a6bdc8a4f081.png",
       title: "QR Payments",
-      description: "Contactless transactions with QR code scanning for fast and secure payments to merchants.",
-      illustration: "/lovable-uploads/f1032971-3378-40d4-9f65-a5c7b6a1cf5c.png"
+      description: "Contactless transactions with QR code scanning for fast and secure payments to merchants."
     },
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-      ),
+      icon: "/lovable-uploads/0e79bef6-ea26-4da9-8c17-6bb4bacc118a.png",
       title: "Agent Network",
-      description: "Become a PlataPay agent and earn commissions by offering financial services in your community.",
-      illustration: "/lovable-uploads/c03b06dd-60d4-4871-b02c-f751fe1ff161.png"
+      description: "Become a PlataPay agent and earn commissions by offering financial services in your community."
     }
   ];
 
@@ -105,16 +74,11 @@ const PlatapayServices = () => {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="flex flex-col items-center mb-6">
-                {service.illustration && (
-                  <img 
-                    src={service.illustration} 
-                    alt={service.title} 
-                    className="h-24 w-auto mb-4 transition-transform hover:scale-105 duration-300"
-                  />
-                )}
-                <div className="text-innovate-600">
-                  {service.icon}
-                </div>
+                <img 
+                  src={service.icon} 
+                  alt={service.title} 
+                  className="h-32 w-auto mb-4 transition-transform hover:scale-105 duration-300"
+                />
               </div>
               <h3 className="text-xl font-semibold mb-3 text-center">{service.title}</h3>
               <p className="text-gray-600 text-center">{service.description}</p>

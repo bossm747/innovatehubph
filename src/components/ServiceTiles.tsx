@@ -3,14 +3,13 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Shield, Globe, ShoppingBag, Bot, Cpu } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface ServiceTile {
   id: number;
   title: string;
   description: string;
-  icon: React.ReactNode;
   features: string[];
   color: string;
   ctaText: string;
@@ -18,7 +17,7 @@ interface ServiceTile {
   highlight?: boolean;
   isInternalLink?: boolean;
   logo?: string;
-  illustrationPath?: string;
+  icon: string;
 }
 
 const ServiceTiles = () => {
@@ -33,7 +32,7 @@ const ServiceTiles = () => {
       id: 1,
       title: "PlataPay",
       description: "Digital Wallet and Financial Services Platform",
-      icon: <Shield className="h-10 w-10" />,
+      icon: "/lovable-uploads/8e59a0de-c852-49fd-bd6d-27a95f97e079.png",
       features: [
         "Digital Wallet",
         "Bills Payment",
@@ -46,14 +45,13 @@ const ServiceTiles = () => {
       ctaLink: "/platapay",
       highlight: true,
       isInternalLink: true,
-      logo: "/lovable-uploads/9b23899d-8537-4e7c-996b-5fdc791cbde2.png",
-      illustrationPath: "/lovable-uploads/5f09f5a6-e6df-47ae-83c4-34a9569a40c5.png"
+      logo: "/lovable-uploads/9b23899d-8537-4e7c-996b-5fdc791cbde2.png"
     },
     {
       id: 2,
       title: "Digital Customizations",
       description: "Tailored Digital Solutions for Your Business",
-      icon: <Cpu className="h-10 w-10" />,
+      icon: "/lovable-uploads/184545ab-3005-4f2b-8b3d-ef576aff4877.png",
       features: [
         "Custom Software",
         "Business Model Development",
@@ -64,14 +62,13 @@ const ServiceTiles = () => {
       color: "bg-gradient-to-br from-purple-500 to-indigo-700",
       ctaText: "Explore Digital Customizations",
       ctaLink: "/digital-customizations",
-      isInternalLink: true,
-      illustrationPath: "/lovable-uploads/b1b10466-6ded-4df0-81b5-d40c00d62010.png"
+      isInternalLink: true
     },
     {
       id: 3,
       title: "E-Commerce Development",
       description: "Complete Online Store Solutions",
-      icon: <ShoppingBag className="h-10 w-10" />,
+      icon: "/lovable-uploads/1ba10581-63f4-48e7-b872-fc97ae9f9f79.png",
       features: [
         "Online Stores",
         "Payment Integration",
@@ -82,14 +79,13 @@ const ServiceTiles = () => {
       color: "bg-gradient-to-br from-emerald-500 to-teal-700",
       ctaText: "Explore E-Commerce Solutions",
       ctaLink: "/ecommerce",
-      isInternalLink: true,
-      illustrationPath: "/lovable-uploads/7e4e3f02-54c1-4ac3-b820-bf997cf2226d.png"
+      isInternalLink: true
     },
     {
       id: 4,
       title: "AI Solutions",
       description: "Intelligent Automation for Business Growth",
-      icon: <Bot className="h-10 w-10" />,
+      icon: "/lovable-uploads/520fec44-f8fe-4fcf-b3fb-dc9156169e22.png",
       features: [
         "Chatbots",
         "Predictive Analytics",
@@ -100,14 +96,13 @@ const ServiceTiles = () => {
       color: "bg-gradient-to-br from-amber-500 to-orange-700",
       ctaText: "Discover AI Solutions",
       ctaLink: "/ai-solutions",
-      isInternalLink: true,
-      illustrationPath: "/lovable-uploads/2da10da7-aef0-4d88-b480-d864d7b2daf7.png"
+      isInternalLink: true
     },
     {
       id: 5,
       title: "Global Expansion",
       description: "Extend Your Business to International Markets",
-      icon: <Globe className="h-10 w-10" />,
+      icon: "/lovable-uploads/ed1ffe66-3b7c-4957-aa5f-53948529fdee.png",
       features: [
         "Dubai Trade License",
         "International Fintech Reach",
@@ -118,8 +113,7 @@ const ServiceTiles = () => {
       color: "bg-gradient-to-br from-blue-500 to-cyan-700",
       ctaText: "Learn About Global Expansion",
       ctaLink: "/global-expansion",
-      isInternalLink: true,
-      illustrationPath: "/lovable-uploads/25a1a8fc-1d81-411c-aeb7-4c26e9020a38.png"
+      isInternalLink: true
     }
   ];
 
@@ -167,15 +161,18 @@ const ServiceTiles = () => {
                     <h3 className="text-2xl font-semibold">{service.title}</h3>
                   </div>
                 ) : (
-                  <>
-                    <div className={`w-16 h-16 rounded-xl flex items-center justify-center mb-6 text-white ${service.color} shadow-lg transform transition-transform duration-300 hover:scale-105 hover:shadow-xl`}>
-                      {service.icon}
-                    </div>
-                    <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
-                  </>
+                  <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
                 )}
                 
                 <p className="text-gray-600 mb-6">{service.description}</p>
+                
+                <div className="mb-6 flex justify-center">
+                  <img 
+                    src={service.icon} 
+                    alt={`${service.title} Illustration`} 
+                    className="h-32 w-auto object-contain transition-transform hover:scale-105 duration-300"
+                  />
+                </div>
                 
                 <ul className="mb-8 space-y-2">
                   {service.features.map((feature, index) => (
@@ -189,16 +186,6 @@ const ServiceTiles = () => {
                     </li>
                   ))}
                 </ul>
-                
-                {service.illustrationPath && (
-                  <div className="mb-6 flex justify-center">
-                    <img 
-                      src={service.illustrationPath} 
-                      alt={`${service.title} Illustration`} 
-                      className="h-24 w-auto object-contain transition-transform hover:scale-105 duration-300"
-                    />
-                  </div>
-                )}
                 
                 <div className="space-y-3">
                   <Button 

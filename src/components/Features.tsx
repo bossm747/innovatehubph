@@ -2,18 +2,17 @@
 import { cn } from "@/lib/utils";
 
 interface FeatureProps {
-  icon: React.ReactNode;
+  icon: string;
   title: string;
   description: string;
   className?: string;
   delay?: number;
-  illustration?: string;
 }
 
-const Feature = ({ icon, title, description, className, delay = 0, illustration }: FeatureProps) => (
+const Feature = ({ icon, title, description, className, delay = 0 }: FeatureProps) => (
   <div 
     className={cn(
-      "bg-white rounded-xl p-6 shadow-soft flex flex-col items-start card-hover",
+      "bg-white rounded-xl p-6 shadow-soft flex flex-col items-center card-hover",
       "opacity-0 translate-y-4",
       className
     )}
@@ -25,85 +24,47 @@ const Feature = ({ icon, title, description, className, delay = 0, illustration 
       animationTimingFunction: 'ease-out'
     }}
   >
-    {illustration ? (
-      <div className="flex justify-center w-full mb-4">
-        <img 
-          src={illustration} 
-          alt={title} 
-          className="h-20 w-auto object-contain transition-transform hover:scale-105 duration-300" 
-        />
-      </div>
-    ) : (
-      <div className="w-12 h-12 rounded-full bg-innovate-100 flex items-center justify-center mb-4">
-        {icon}
-      </div>
-    )}
-    <h3 className="text-xl font-semibold mb-2">{title}</h3>
-    <p className="text-gray-600">{description}</p>
+    <img 
+      src={icon} 
+      alt={title} 
+      className="h-28 w-auto object-contain mb-6 transition-transform hover:scale-105 duration-300" 
+    />
+    <h3 className="text-xl font-semibold mb-2 text-center">{title}</h3>
+    <p className="text-gray-600 text-center">{description}</p>
   </div>
 );
 
 const Features = () => {
   const features = [
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-innovate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-        </svg>
-      ),
+      icon: "/lovable-uploads/cd2085af-aad8-4b80-bba9-675dbee01908.png",
       title: "Software Development",
-      description: "Custom software development for your business needs, built with the latest technologies.",
-      illustration: "/lovable-uploads/2234e28c-d0f8-4e86-85fb-035b56dbd54c.png"
+      description: "Custom software development for your business needs, built with the latest technologies."
     },
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-innovate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-        </svg>
-      ),
+      icon: "/lovable-uploads/91381d0d-4da4-4d24-bb11-5970f5e2d23e.png",
       title: "Digital Transformation",
-      description: "Comprehensive solutions to transform your business operations into digital processes.",
-      illustration: "/lovable-uploads/736f7833-0e12-477f-8bfd-66cfcfe6b29d.png"
+      description: "Comprehensive solutions to transform your business operations into digital processes."
     },
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-innovate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      ),
+      icon: "/lovable-uploads/6ad1a40f-6765-4470-9c90-9e9f8aebc540.png",
       title: "IT Consultation",
-      description: "Strategic IT consultation to help you navigate the complex technology landscape.",
-      illustration: "/lovable-uploads/13165526-621e-41b9-9e68-4ef94cb85f92.png"
+      description: "Strategic IT consultation to help you navigate the complex technology landscape."
     },
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-innovate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-        </svg>
-      ),
+      icon: "/lovable-uploads/ae1af8ab-fd44-41f7-a04f-cc8817d2b3e5.png",
       title: "AI & Machine Learning",
-      description: "Cutting-edge AI solutions that help you leverage data for intelligent decision-making.",
-      illustration: "/lovable-uploads/23b26e14-b67d-4040-a007-bb84e835ce3f.png"
+      description: "Cutting-edge AI solutions that help you leverage data for intelligent decision-making."
     },
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-innovate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-        </svg>
-      ),
+      icon: "/lovable-uploads/7f87021f-ff1f-40c1-9928-adcf5f825dd9.png",
       title: "Digital Marketing",
-      description: "Strategic digital marketing to help you reach your target audience effectively.",
-      illustration: "/lovable-uploads/6317c877-9b06-4673-820a-b8bf5b59bb11.png"
+      description: "Strategic digital marketing to help you reach your target audience effectively."
     },
     {
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-innovate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-        </svg>
-      ),
+      icon: "/lovable-uploads/aa140611-8402-49e4-856c-760e84dd4a61.png",
       title: "Cybersecurity",
-      description: "Comprehensive cybersecurity solutions to protect your business from digital threats.",
-      illustration: "/lovable-uploads/2f0b8c81-6247-449a-94da-77c4752ef50a.png"
+      description: "Comprehensive cybersecurity solutions to protect your business from digital threats."
     }
   ];
 
@@ -167,7 +128,6 @@ const Features = () => {
               title={feature.title}
               description={feature.description}
               delay={index * 100}
-              illustration={feature.illustration}
             />
           ))}
           

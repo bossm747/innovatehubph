@@ -1,6 +1,6 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ImageIcon, CodeIcon, LayoutIcon, LinkIcon, PaletteIcon } from "lucide-react";
+import { Code, FolderTree, ImageIcon, LayoutDashboard, PaletteIcon } from "lucide-react";
 import { OverviewTab } from './OverviewTab';
 import { ImagesTab } from './ImagesTab';
 import { ColorsTab } from './ColorsTab';
@@ -30,7 +30,7 @@ export const ResultsTabs = ({
     <Tabs value={activeTab} onValueChange={setActiveTab}>
       <TabsList className="grid grid-cols-5 mb-6">
         <TabsTrigger value="overview" className="flex items-center gap-2">
-          <LayoutIcon className="h-4 w-4" />
+          <LayoutDashboard className="h-4 w-4" />
           <span className="hidden sm:inline">Overview</span>
         </TabsTrigger>
         <TabsTrigger value="images" className="flex items-center gap-2">
@@ -42,11 +42,11 @@ export const ResultsTabs = ({
           <span className="hidden sm:inline">Colors</span>
         </TabsTrigger>
         <TabsTrigger value="links" className="flex items-center gap-2">
-          <LinkIcon className="h-4 w-4" />
+          <FolderTree className="h-4 w-4" />
           <span className="hidden sm:inline">Structure</span>
         </TabsTrigger>
         <TabsTrigger value="code" className="flex items-center gap-2">
-          <CodeIcon className="h-4 w-4" />
+          <Code className="h-4 w-4" />
           <span className="hidden sm:inline">Code</span>
         </TabsTrigger>
       </TabsList>

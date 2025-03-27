@@ -2,14 +2,9 @@
 import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { APIKeyInput } from './website-analyzer/APIKeyInput';
 import { URLForm } from './website-analyzer/URLForm';
 import { ResultsTabs } from './website-analyzer/ResultsTabs';
 import { extractImagesFromHtml, extractColorsFromCss, extractLinksFromHtml } from './website-analyzer/dataUtils';
-
-interface CrawlFormProps {
-  initialApiKey?: string;
-}
 
 interface WebsiteData {
   url: string;
@@ -18,10 +13,9 @@ interface WebsiteData {
   timestamp: string;
 }
 
-export const CrawlForm = ({ initialApiKey }: CrawlFormProps) => {
+export const CrawlForm = () => {
   const { toast } = useToast();
   const [url, setUrl] = useState('https://example.com');
-  const [apiKey, setApiKey] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [activeTab, setActiveTab] = useState('overview');
@@ -35,17 +29,6 @@ export const CrawlForm = ({ initialApiKey }: CrawlFormProps) => {
   const [pages, setPages] = useState<any[]>([]);
 
   useEffect(() => {
-    // Load API key from local storage
-    const savedKey = localStorage.getItem('api_key');
-    if (initialApiKey) {
-      setApiKey(initialApiKey);
-      if (!savedKey) {
-        localStorage.setItem('api_key', initialApiKey);
-      }
-    } else if (savedKey) {
-      setApiKey(savedKey);
-    }
-    
     // Load previously stored website data if exists
     const storedData = localStorage.getItem('website_data');
     if (storedData) {
@@ -57,7 +40,7 @@ export const CrawlForm = ({ initialApiKey }: CrawlFormProps) => {
         console.error('Error parsing stored website data:', error);
       }
     }
-  }, [initialApiKey]);
+  }, []);
   
   const processWebsiteData = (data: WebsiteData) => {
     // Extract images from HTML
@@ -176,14 +159,12 @@ export const CrawlForm = ({ initialApiKey }: CrawlFormProps) => {
     <div className="w-full max-w-4xl mx-auto p-6 space-y-8">
       <Card>
         <CardHeader>
-          <CardTitle className="text-innovate-700">InnovateHub Website Analyzer</CardTitle>
+          <CardTitle className="text-innovate-700">Website Analyzer</CardTitle>
           <CardDescription>
             Analyze website design, structure, and graphics
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <APIKeyInput apiKey={apiKey} setApiKey={setApiKey} />
-          
           <URLForm 
             url={url}
             setUrl={setUrl}

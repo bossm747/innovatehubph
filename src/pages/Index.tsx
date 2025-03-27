@@ -9,12 +9,8 @@ import TeamSection from '@/components/TeamSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import CircuitBackground from '@/components/CircuitBackground';
-import { CrawlForm } from '@/components/CrawlForm';
-import { Button } from '@/components/ui/button';
 
 const Index = () => {
-  const [showCrawler, setShowCrawler] = useState(false);
-  
   // Add scroll reveal effect
   useEffect(() => {
     const handleScroll = () => {
@@ -133,23 +129,6 @@ const Index = () => {
           className="w-32 h-auto"
         />
       </div>
-      
-      {/* Crawler toggle button */}
-      <div className="fixed bottom-4 left-4 z-50">
-        <Button 
-          onClick={() => setShowCrawler(!showCrawler)}
-          className="bg-innovate-700 hover:bg-innovate-800 text-white shadow-lg"
-        >
-          {showCrawler ? "Hide Website Analyzer" : "Show Website Analyzer"}
-        </Button>
-      </div>
-      
-      {/* Website crawler overlay */}
-      {showCrawler && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 overflow-auto pt-20 pb-20">
-          <CrawlForm initialApiKey="fc-51e4174a541d45eb9d702b3ba806207f" />
-        </div>
-      )}
       
       {/* Main content with full width sections */}
       <Navbar />

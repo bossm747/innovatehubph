@@ -77,7 +77,7 @@ const PlatapayPage = () => {
             
             <div className="flex justify-center fade-up">
               <FacebookFeed 
-                pageUrl="https://www.facebook.com/platapay.official" 
+                pageUrl="https://www.facebook.com/share/16BCXuyguU/?mibextid=wwXIfr" 
                 width={500}
                 height={600}
                 showTimeline={true}

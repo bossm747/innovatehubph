@@ -32,23 +32,8 @@ export class FirecrawlService {
     try {
       console.log('Testing API key with Firecrawl API');
       
-      // Since the /auth/verify endpoint doesn't work (as seen in console logs),
-      // Let's try a different endpoint for testing
-      const response = await fetch('https://api.firecrawl.dev/status', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      // If we get a successful response, the API key is likely valid
-      if (response.ok) {
-        return true;
-      }
-      
-      // If status endpoint fails, try a minimal crawl as a fallback test
-      const testResponse = await fetch('https://api.firecrawl.dev/crawl', {
+      // Skip the status endpoint test and directly try a minimal crawl
+      const testResponse = await fetch('https://api.firecrawl.dev/v1/crawl', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${apiKey}`,
@@ -56,11 +41,33 @@ export class FirecrawlService {
         },
         body: JSON.stringify({
           url: 'https://example.com',
-          limit: 1
+          limit: 1,
+          scrapeOptions: {
+            formats: ['markdown']
+          }
         })
       });
       
-      return testResponse.ok;
+      // Check if the API key was accepted
+      if (testResponse.ok) {
+        return true;
+      }
+      
+      // Check specific error status
+      if (testResponse.status === 401 || testResponse.status === 403) {
+        console.error('API key authentication failed with status:', testResponse.status);
+        return false;
+      }
+      
+      // If we got another error (like 429 rate limit), 
+      // but not an auth error, we assume the key is valid
+      const errorData = await testResponse.json();
+      console.log('API test response:', errorData);
+      
+      // If the error is not auth-related, consider the key valid
+      return !errorData.error?.toLowerCase().includes('auth') && 
+             !errorData.error?.toLowerCase().includes('key');
+      
     } catch (error) {
       console.error('Error testing API key:', error);
       return false;
@@ -76,8 +83,8 @@ export class FirecrawlService {
     try {
       console.log('Making crawl request to Firecrawl API');
       
-      // Start the crawl
-      const crawlResponse = await fetch('https://api.firecrawl.dev/crawl', {
+      // Make the crawl request to the correct endpoint
+      const crawlResponse = await fetch('https://api.firecrawl.dev/v1/crawl', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${apiKey}`,
@@ -99,7 +106,7 @@ export class FirecrawlService {
         const errorData = await crawlResponse.json();
         return { 
           success: false, 
-          error: errorData.message || 'Failed to crawl website' 
+          error: errorData.message || errorData.error || 'Failed to crawl website' 
         };
       }
 

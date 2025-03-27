@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 const CompanyOverview = () => {
   return (
@@ -72,31 +73,46 @@ const CompanyOverview = () => {
           <div className="fade-up">
             <h3 className="text-2xl font-bold mb-6">From Batangas to Dubai: Our Growth Journey</h3>
             <p className="text-gray-600 mb-6">
-              Founded in 2010 in San Pascual, Batangas, InnovateHub began as a small team of passionate developers 
-              with a vision to transform the local tech landscape. Over the years, we've grown steadily, expanding 
-              our team and capabilities to meet the evolving needs of our clients.
+              Founded in early 2024 in San Pascual, Batangas, InnovateHub began as a small team of passionate developers 
+              with a vision to transform the local tech landscape. In a short time, we've achieved significant milestones,
+              including receiving our BSP registration as an Operator of Payment System (OPS).
             </p>
             <p className="text-gray-600 mb-6">
-              In 2018, we established our presence in Dubai, marking a significant milestone in our international 
-              expansion. This strategic move has allowed us to serve a global clientele and bring our innovative 
+              We're currently expanding our presence to Dubai, marking a significant milestone in our international 
+              journey. This strategic move will allow us to serve a global clientele and bring our innovative 
               solutions to new markets.
             </p>
             <p className="text-gray-600">
-              Today, with offices in the Philippines and Dubai, we continue to push the boundaries of what's possible 
-              in fintech, AI solutions, and e-commerce development, helping businesses of all sizes navigate the 
-              digital landscape with confidence.
+              With our BSP certification in place, we are now awaiting our PlataPay license for international remittance 
+              services through partnerships with LBC and local Dubai banks. This will enable us to offer comprehensive
+              financial technology solutions that bridge the Philippines and the UAE.
             </p>
+            
+            <div className="mt-6 flex flex-wrap gap-2">
+              <Badge variant="outline" className="bg-innovate-50 text-innovate-700 border-innovate-200">BSP Registered</Badge>
+              <Badge variant="outline" className="bg-innovate-50 text-innovate-700 border-innovate-200">OPS Certified</Badge>
+              <Badge variant="outline" className="bg-innovate-50 text-innovate-700 border-innovate-200">International Expansion</Badge>
+            </div>
           </div>
           
           <div className="relative fade-up">
-            <img 
-              src="public/lovable-uploads/d06dbf6f-eafc-4d26-97e4-b5ee5dac0416.png" 
-              alt="Our journey" 
-              className="w-full h-auto rounded-xl shadow-medium"
-            />
-            <div className="absolute -bottom-6 -right-6 bg-innovate-600 text-white rounded-lg p-4 shadow-medium">
-              <p className="text-2xl font-bold">Since 2010</p>
-              <p className="text-sm">Delivering Excellence</p>
+            <div className="grid grid-cols-1 gap-6">
+              <img 
+                src="/lovable-uploads/2c9c4cc6-9f50-452f-b40e-dfa7117b0645.png" 
+                alt="BSP OPS Certification" 
+                className="w-full h-auto rounded-xl shadow-medium border border-gray-100"
+              />
+              <div className="relative">
+                <img 
+                  src="/lovable-uploads/d06dbf6f-eafc-4d26-97e4-b5ee5dac0416.png" 
+                  alt="Our journey" 
+                  className="w-full h-auto rounded-xl shadow-medium"
+                />
+                <div className="absolute -bottom-6 -right-6 bg-innovate-600 text-white rounded-lg p-4 shadow-medium">
+                  <p className="text-2xl font-bold">Est. 2024</p>
+                  <p className="text-sm">Delivering Excellence</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

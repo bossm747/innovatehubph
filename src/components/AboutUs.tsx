@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Brain, Zap, Code, CircuitBoard, Award, CloudComputing, Shield, Globe } from "lucide-react";
+import { Brain, Zap, Code, CircuitBoard, Award, Shield, Globe, Cloud } from "lucide-react";
 
 const AboutUs = () => {
   return (
@@ -77,7 +77,7 @@ const AboutUs = () => {
                   
                   <div className="flex flex-col items-center">
                     <div className="w-12 h-12 rounded-full bg-innovate-50 flex items-center justify-center mb-1">
-                      <CloudComputing className="h-6 w-6 text-innovate-600" />
+                      <Cloud className="h-6 w-6 text-innovate-600" />
                     </div>
                     <span className="text-xs text-center">Cloud Innovation</span>
                   </div>

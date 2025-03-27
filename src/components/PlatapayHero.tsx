@@ -17,7 +17,7 @@ const PlatapayHero = () => {
                 <div className="absolute inset-0 bg-black/80 rounded-full blur-sm transition-all duration-300"></div>
                 {/* Logo with dark background */}
                 <img 
-                  src="/lovable-uploads/9a2fc4d0-82f0-46c9-a231-cc9050b9deda.png" 
+                  src="/lovable-uploads/72b0dc34-2910-4b7c-9375-43945bf8c9db.png" 
                   alt="PlataPay Logo" 
                   className="h-16 w-16 relative z-10 transition-transform duration-300"
                   style={{ filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.3))' }}

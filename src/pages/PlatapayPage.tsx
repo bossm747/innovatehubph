@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -13,7 +12,6 @@ import ClientsShowcase from '@/components/ClientsShowcase';
 import FacebookFeed from '@/components/FacebookFeed';
 
 const PlatapayPage = () => {
-  // Add scroll reveal effect
   useEffect(() => {
     const handleScroll = () => {
       const fadeElements = document.querySelectorAll('.fade-up');
@@ -28,19 +26,15 @@ const PlatapayPage = () => {
       });
     };
     
-    // Initial check
     handleScroll();
     
-    // Add scroll event listener
     window.addEventListener('scroll', handleScroll);
     
-    // Clean up listener
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden relative">
-      {/* Background patterns */}
       <CircuitBackground 
         pattern="tech-circle" 
         className="fixed top-20 right-20" 
@@ -64,13 +58,11 @@ const PlatapayPage = () => {
         opacity={0.1}
       />
       
-      {/* Main content */}
       <Navbar />
       <div className="w-full pt-16">
         <PlatapayHero />
         <PlatapayServices />
         
-        {/* Facebook Feed Section */}
         <section className="py-16 px-6 md:px-12 bg-gradient-to-r from-white to-gray-50">
           <div className="container mx-auto">
             <div className="text-center mb-10 fade-up">
@@ -85,7 +77,7 @@ const PlatapayPage = () => {
             
             <div className="flex justify-center fade-up">
               <FacebookFeed 
-                pageUrl="https://www.facebook.com/platapay.official/" 
+                pageUrl="https://www.facebook.com/platapay.official" 
                 width={500}
                 height={600}
                 showTimeline={true}

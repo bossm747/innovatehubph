@@ -1,14 +1,38 @@
 
 import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserRound } from "lucide-react";
 
 interface TeamMemberProps {
   name: string;
   role: string;
-  image: string;
   delay?: number;
 }
 
-const TeamMember = ({ name, role, image, delay = 0 }: TeamMemberProps) => (
+const getInitials = (name: string) => {
+  return name
+    .split(' ')
+    .map(part => part[0])
+    .join('')
+    .toUpperCase()
+    .substring(0, 2);
+};
+
+const getAvatarColor = (name: string) => {
+  // Generate a deterministic color based on the name
+  const colors = [
+    "bg-blue-500", "bg-green-500", "bg-purple-500", 
+    "bg-amber-500", "bg-rose-500", "bg-cyan-500",
+    "bg-indigo-500", "bg-emerald-500", "bg-orange-500",
+    "bg-lime-500", "bg-pink-500", "bg-teal-500"
+  ];
+  
+  // Sum the character codes in the name to get a deterministic index
+  const sum = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return colors[sum % colors.length];
+};
+
+const TeamMember = ({ name, role, delay = 0 }: TeamMemberProps) => (
   <Card className="border-0 shadow-none bg-transparent overflow-hidden opacity-0" style={{ 
     animationName: 'fadeUp',
     animationDuration: '0.6s',
@@ -16,13 +40,15 @@ const TeamMember = ({ name, role, image, delay = 0 }: TeamMemberProps) => (
     animationFillMode: 'forwards',
     animationDelay: `${delay}ms`
   }}>
-    <div className="relative overflow-hidden rounded-lg group">
-      <img
-        src={image}
-        alt={name}
-        className="w-full h-72 object-cover object-center transition-transform duration-500 group-hover:scale-105"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+    <div className="relative overflow-hidden rounded-lg group flex flex-col items-center">
+      <div className="w-40 h-40 relative mb-4">
+        <Avatar className={`w-full h-full ${getAvatarColor(name)}`}>
+          <AvatarFallback className="text-3xl font-bold text-white">
+            {getInitials(name)}
+          </AvatarFallback>
+        </Avatar>
+        <div className="absolute inset-0 rounded-full shadow-inner"></div>
+      </div>
       
       <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
         <div className="flex justify-center space-x-3">
@@ -55,63 +81,51 @@ const TeamSection = () => {
   const teamMembers = [
     {
       name: "Marc Roland Agbay",
-      role: "Chairman of the Board",
-      image: "/lovable-uploads/7e0be886-0190-497f-9eba-eeafd77af074.png"
+      role: "Chairman of the Board"
     },
     {
       name: "Lyn Plata Agbay",
-      role: "CEO & Founder",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      role: "CEO & Founder"
     },
     {
       name: "Venus Pagunsan",
-      role: "Operation & Corporate Relations Manager",
-      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      role: "Operation & Corporate Relations Manager"
     },
     {
       name: "Maryann Mercado",
-      role: "Admin & Finance Manager",
-      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      role: "Admin & Finance Manager"
     },
     {
       name: "Zarah Caparro",
-      role: "Project Manager",
-      image: "https://images.unsplash.com/photo-1589638723387-0c13980ffa35?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      role: "Project Manager"
     },
     {
       name: "Prince Cano",
-      role: "Marketing Associates",
-      image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      role: "Marketing Associates"
     },
     {
       name: "Rico Payoyo",
-      role: "Sales Officer",
-      image: "https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      role: "Sales Officer"
     },
     {
       name: "Gladys Marco",
-      role: "Marketing Officer",
-      image: "https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      role: "Marketing Officer"
     },
     {
       name: "Jonalyn Plata",
-      role: "Finance & Support",
-      image: "https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      role: "Finance & Support"
     },
     {
       name: "Aron",
-      role: "UI Designer & Support",
-      image: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      role: "UI Designer & Support"
     },
     {
       name: "John Gerald Catague",
-      role: "Back End, Security & Support",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      role: "Back End, Security & Support"
     },
     {
       name: "BITS Solutions",
-      role: "Software DEV Team",
-      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      role: "Software DEV Team"
     }
   ];
 
@@ -139,7 +153,6 @@ const TeamSection = () => {
               key={index}
               name={member.name}
               role={member.role}
-              image={member.image}
               delay={index * 150}
             />
           ))}

@@ -29,7 +29,7 @@ const ServicesHero = () => {
       {/* Hero image */}
       <div className="mt-16 relative max-w-6xl mx-auto overflow-hidden rounded-xl shadow-medium">
         <img 
-          src="public/lovable-uploads/d51f3d08-0518-4808-af9d-83ddda86ee94.png" 
+          src="/lovable-uploads/d51f3d08-0518-4808-af9d-83ddda86ee94.png" 
           alt="InnovateHub Services" 
           className="w-full h-auto"
         />

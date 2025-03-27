@@ -32,6 +32,11 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
         <Link to="/" className="flex items-center">
+          <img 
+            src="/lovable-uploads/a63fe766-14df-42eb-aa18-cefb71993afa.png" 
+            alt="InnovateHub Logo" 
+            className="h-10 w-10 mr-2"
+          />
           <span className="text-2xl font-display font-bold text-innovate-800 tracking-tight">Innovate<span className="text-innovate-500">Hub</span></span>
         </Link>
 

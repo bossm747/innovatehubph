@@ -49,7 +49,7 @@ const PlatapayHero = () => {
             <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-100 rounded-lg -z-10"></div>
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img 
-                src="/public/lovable-uploads/d06dbf6f-eafc-4d26-97e4-b5ee5dac0416.png" 
+                src="/lovable-uploads/d06dbf6f-eafc-4d26-97e4-b5ee5dac0416.png" 
                 alt="PlataPay Digital Wallet" 
                 className="w-full h-auto rounded-2xl"
               />

@@ -32,8 +32,9 @@ export class FirecrawlService {
     try {
       console.log('Testing API key with Firecrawl API');
       
-      // Use a proper endpoint for testing the API key
-      const response = await fetch('https://api.firecrawl.dev/auth/verify', {
+      // Since the /auth/verify endpoint doesn't work (as seen in console logs),
+      // Let's try a different endpoint for testing
+      const response = await fetch('https://api.firecrawl.dev/status', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${apiKey}`,
@@ -41,7 +42,25 @@ export class FirecrawlService {
         }
       });
       
-      return response.ok;
+      // If we get a successful response, the API key is likely valid
+      if (response.ok) {
+        return true;
+      }
+      
+      // If status endpoint fails, try a minimal crawl as a fallback test
+      const testResponse = await fetch('https://api.firecrawl.dev/crawl', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          url: 'https://example.com',
+          limit: 1
+        })
+      });
+      
+      return testResponse.ok;
     } catch (error) {
       console.error('Error testing API key:', error);
       return false;

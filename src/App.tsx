@@ -14,6 +14,10 @@ import ClientsPage from "./pages/ClientsPage";
 import BlogPage from "./pages/BlogPage";
 import FacebookPage from "./pages/FacebookPage";
 import NotFound from "./pages/NotFound";
+import DigitalCustomizationsPage from "./pages/DigitalCustomizationsPage";
+import EcommercePage from "./pages/EcommercePage";
+import AiSolutionsPage from "./pages/AiSolutionsPage";
+import GlobalExpansionPage from "./pages/GlobalExpansionPage";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +37,10 @@ const App = () => (
           <Route path="/clients" element={<ClientsPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/facebook" element={<FacebookPage />} />
+          <Route path="/digital-customizations" element={<DigitalCustomizationsPage />} />
+          <Route path="/ecommerce" element={<EcommercePage />} />
+          <Route path="/ai-solutions" element={<AiSolutionsPage />} />
+          <Route path="/global-expansion" element={<GlobalExpansionPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

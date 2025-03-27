@@ -60,8 +60,9 @@ const ServiceTiles = () => {
         "System Integration"
       ],
       color: "bg-gradient-to-br from-purple-500 to-indigo-700",
-      ctaText: "Request Consultation",
-      ctaLink: "#contact"
+      ctaText: "Explore Digital Customizations",
+      ctaLink: "/digital-customizations",
+      isInternalLink: true
     },
     {
       id: 3,
@@ -77,7 +78,8 @@ const ServiceTiles = () => {
       ],
       color: "bg-gradient-to-br from-emerald-500 to-teal-700",
       ctaText: "Explore E-Commerce Solutions",
-      ctaLink: "#contact"
+      ctaLink: "/ecommerce",
+      isInternalLink: true
     },
     {
       id: 4,
@@ -93,7 +95,8 @@ const ServiceTiles = () => {
       ],
       color: "bg-gradient-to-br from-amber-500 to-orange-700",
       ctaText: "Discover AI Solutions",
-      ctaLink: "#contact"
+      ctaLink: "/ai-solutions",
+      isInternalLink: true
     },
     {
       id: 5,
@@ -108,8 +111,9 @@ const ServiceTiles = () => {
         "Cross-border Transactions"
       ],
       color: "bg-gradient-to-br from-blue-500 to-cyan-700",
-      ctaText: "Expand Globally",
-      ctaLink: "#contact"
+      ctaText: "Learn About Global Expansion",
+      ctaLink: "/global-expansion",
+      isInternalLink: true
     }
   ];
 

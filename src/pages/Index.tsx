@@ -39,7 +39,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden relative p-0 m-0">
+    <div className="min-h-screen h-full w-full overflow-x-hidden relative p-0 m-0">
       {/* Main background patterns inspired by InnovateHub.ph */}
       <CircuitBackground 
         pattern="curvy-line" 

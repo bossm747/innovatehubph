@@ -51,7 +51,7 @@ const AboutUs = () => {
               <div className="absolute inset-0 bg-innovate-900/10"></div>
             </div>
             
-            {/* Replacing AI Technology Showcase (Stats Card) with Company Achievement Badges */}
+            {/* Company Achievement Badges */}
             <div className="absolute -bottom-8 -right-8 bg-white rounded-xl p-6 shadow-medium max-w-xs">
               <div className="space-y-4">
                 <div className="flex items-center justify-between mb-2">

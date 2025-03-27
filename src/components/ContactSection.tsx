@@ -9,8 +9,7 @@ const ContactSection = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
-    subject: '',
+    company: '',
     message: ''
   });
 
@@ -34,8 +33,7 @@ const ContactSection = () => {
     setFormData({
       name: '',
       email: '',
-      phone: '',
-      subject: '',
+      company: '',
       message: ''
     });
   };
@@ -47,9 +45,9 @@ const ContactSection = () => {
           <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
             Contact Us
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Get in Touch With Us</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Collaborate? Let's Talk!</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Have a question or ready to start your next project? Reach out to us and we'll get back to you as soon as possible.
+            Reach out and let's co-create your digital future. We're here to help you transform your business with innovative technology solutions.
           </p>
         </div>
 
@@ -65,8 +63,7 @@ const ContactSection = () => {
                   </div>
                   <div className="ml-4">
                     <h3 className="text-xl font-semibold mb-1">Phone</h3>
-                    <p className="text-gray-600">+63 2 8876 5432</p>
-                    <p className="text-gray-600">+63 917 123 4567</p>
+                    <p className="text-gray-600">+63 917 685 1216</p>
                   </div>
                 </div>
                 
@@ -78,8 +75,7 @@ const ContactSection = () => {
                   </div>
                   <div className="ml-4">
                     <h3 className="text-xl font-semibold mb-1">Email</h3>
-                    <p className="text-gray-600">info@innovatehub.ph</p>
-                    <p className="text-gray-600">support@innovatehub.ph</p>
+                    <p className="text-gray-600">businessdevelopment@innovatehub.ph</p>
                   </div>
                 </div>
                 
@@ -92,8 +88,8 @@ const ContactSection = () => {
                   </div>
                   <div className="ml-4">
                     <h3 className="text-xl font-semibold mb-1">Address</h3>
-                    <p className="text-gray-600">123 Innovation Street</p>
-                    <p className="text-gray-600">Makati City, Metro Manila, Philippines</p>
+                    <p className="text-gray-600">RMCL Bldg., New Bypass Rd.,</p>
+                    <p className="text-gray-600">Bayanan, San Pascual, Batangas</p>
                   </div>
                 </div>
               </div>
@@ -115,6 +111,19 @@ const ContactSection = () => {
                   <span className="font-medium">Closed</span>
                 </div>
               </div>
+            </div>
+            
+            {/* Map placeholder */}
+            <div className="bg-white rounded-xl shadow-soft overflow-hidden h-64">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3870.0367593038266!2d121.0429683!3d14.083428699999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd69b0a598b549%3A0x3ba9b96d354c9328!2sSan%20Pascual%2C%20Batangas!5e0!3m2!1sen!2sph!4v1628580000000!5m2!1sen!2sph" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
           </div>
           
@@ -150,29 +159,17 @@ const ContactSection = () => {
                     required 
                   />
                 </div>
-                
-                <div className="space-y-2">
-                  <label htmlFor="phone" className="text-sm font-medium text-gray-700">Phone Number</label>
-                  <Input 
-                    id="phone" 
-                    name="phone" 
-                    value={formData.phone} 
-                    onChange={handleChange} 
-                    placeholder="+63 917 123 4567" 
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <label htmlFor="subject" className="text-sm font-medium text-gray-700">Subject</label>
-                  <Input 
-                    id="subject" 
-                    name="subject" 
-                    value={formData.subject} 
-                    onChange={handleChange} 
-                    placeholder="e.g. Project Inquiry" 
-                    required 
-                  />
-                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <label htmlFor="company" className="text-sm font-medium text-gray-700">Company</label>
+                <Input 
+                  id="company" 
+                  name="company" 
+                  value={formData.company} 
+                  onChange={handleChange} 
+                  placeholder="Your Company" 
+                />
               </div>
               
               <div className="space-y-2">
@@ -194,6 +191,10 @@ const ContactSection = () => {
               >
                 Send Message
               </Button>
+              
+              <p className="text-xs text-gray-500 text-center">
+                By submitting this form, you agree to our Privacy Policy and consent to receive updates from our company.
+              </p>
             </form>
           </div>
         </div>

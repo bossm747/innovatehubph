@@ -61,13 +61,13 @@ const Hero = () => {
           
             <div className="space-y-4">
               <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full">
-                Innovation for the Future
+                Digital Innovation
               </span>
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight tracking-tight">
-                Transforming Ideas into <span className="hero-text-gradient">Digital Reality</span>
+                Empowering the Future with <span className="hero-text-gradient">Digital Innovation</span>
               </h1>
               <p className="text-lg md:text-xl text-gray-600 max-w-lg">
-                We help businesses innovate, transform, and grow through cutting-edge technology solutions and strategic partnerships.
+                Customized fintech, AI, and e-commerce solutions for a connected world.
               </p>
             </div>
             
@@ -76,14 +76,14 @@ const Hero = () => {
                 size="lg" 
                 className="bg-innovate-600 hover:bg-innovate-700 text-white rounded-md px-8 py-6 text-lg transition-all btn-shine"
               >
-                Get Started
+                Let's Build Together
               </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
                 className="bg-white/80 hover:bg-white border-innovate-200 text-innovate-800 rounded-md px-8 py-6 text-lg"
               >
-                Learn More
+                Explore PlataPay
               </Button>
             </div>
 
@@ -115,7 +115,7 @@ const Hero = () => {
                   ))}
                 </div>
                 <p className="text-sm text-gray-600">
-                  <span className="font-medium">4.9</span> from over <span className="font-medium">500</span> reviews
+                  <span className="font-medium">4.9</span> from our <span className="font-medium">500+</span> clients
                 </p>
               </div>
             </div>
@@ -125,7 +125,7 @@ const Hero = () => {
             <div className="relative w-full h-[500px] animate-fade-in">
               <img 
                 src="public/lovable-uploads/7c51de5e-2a54-4a16-8c38-3aed5f77004a.png" 
-                alt="Innovate Hub Team" 
+                alt="InnovateHub Team" 
                 className="absolute inset-0 w-full h-full object-cover rounded-2xl shadow-soft"
                 style={{ objectPosition: 'center 20%' }}
               />
@@ -149,18 +149,18 @@ const Hero = () => {
                 />
               </div>
               
-              {/* Stats cards floating on the image */}
+              {/* PlataPay Card - New element */}
               <div className="absolute -bottom-8 -left-8 glass-card rounded-xl p-4 animate-float shadow-medium">
                 <div className="flex items-center space-x-3">
                   <div className="flex items-center justify-center w-10 h-10 rounded-full bg-innovate-100">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-innovate-700" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 100-12 6 6 0 000 12z" clipRule="evenodd" />
-                      <path d="M10 4a1 1 0 011 1v4.586l2.707 2.707a1 1 0 01-1.414 1.414l-3-3A1 1 0 019 10V5a1 1 0 011-1z" />
+                      <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                      <path fillRule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clipRule="evenodd" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Delivery Time</p>
-                    <p className="font-medium">2-3 Weeks</p>
+                    <p className="text-sm text-gray-600">Featured Product</p>
+                    <p className="font-medium">PlataPay</p>
                   </div>
                 </div>
               </div>
@@ -173,8 +173,8 @@ const Hero = () => {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Clients</p>
-                    <p className="font-medium">500+</p>
+                    <p className="text-sm text-gray-600">Global Reach</p>
+                    <p className="font-medium">Batangas to Dubai</p>
                   </div>
                 </div>
               </div>

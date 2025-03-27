@@ -5,6 +5,8 @@ import Hero from '@/components/Hero';
 import Features from '@/components/Features';
 import AboutUs from '@/components/AboutUs';
 import Services from '@/components/Services';
+import PlataPay from '@/components/PlataPay';
+import Testimonials from '@/components/Testimonials';
 import TeamSection from '@/components/TeamSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
@@ -136,7 +138,9 @@ const Index = () => {
         <Hero />
         <Features />
         <AboutUs />
+        <PlataPay />
         <Services />
+        <Testimonials />
         <TeamSection />
         <ContactSection />
         <Footer />

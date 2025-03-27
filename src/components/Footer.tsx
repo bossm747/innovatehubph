@@ -55,10 +55,10 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gray-50 pt-20 pb-8 relative overflow-hidden">
-      {/* Background shapes */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-innovate-100 rounded-full opacity-30 blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-innovate-200 rounded-full opacity-20 blur-3xl transform -translate-x-1/2 translate-y-1/4"></div>
+    <footer className="bg-black pt-20 pb-8 relative overflow-hidden text-white">
+      {/* Background shapes - more subtle in dark theme */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-gray-800 rounded-full opacity-10 blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-gray-800 rounded-full opacity-10 blur-3xl transform -translate-x-1/2 translate-y-1/4"></div>
       
       <div className="container mx-auto px-6 md:px-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
@@ -70,9 +70,9 @@ const Footer = () => {
                 alt="InnovateHub Logo" 
                 className="h-10 w-10 mr-3"
               />
-              <span className="text-xl font-display font-bold text-innovate-800">Innovate<span className="text-innovate-500">Hub</span></span>
+              <span className="text-xl font-display font-bold text-white">Innovate<span className="text-innovate-500">Hub</span></span>
             </div>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-300 mb-6">
               Empowering businesses through innovative digital solutions and financial technology. From custom software to global expansion, we bring your vision to life.
             </p>
             <div className="flex space-x-3">
@@ -82,7 +82,7 @@ const Footer = () => {
                   href={link.path} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full flex items-center justify-center bg-white shadow-sm hover:shadow-md hover:bg-innovate-50 text-innovate-600 transition-all"
+                  className="w-9 h-9 rounded-full flex items-center justify-center bg-gray-800 hover:bg-gray-700 text-white transition-all"
                   aria-label={link.label}
                 >
                   {link.icon}
@@ -93,15 +93,15 @@ const Footer = () => {
           
           {/* Our Services */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 text-gray-800">Our Services</h3>
+            <h3 className="text-lg font-semibold mb-6 text-white">Our Services</h3>
             <ul className="space-y-3">
               {serviceLinks.map((link, index) => (
                 <li key={index}>
                   <Link 
                     to={link.path} 
-                    className="text-gray-600 hover:text-innovate-600 flex items-center group"
+                    className="text-gray-300 hover:text-innovate-400 flex items-center group"
                   >
-                    <ArrowRight className="h-3.5 w-3.5 mr-2 text-innovate-400 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="h-3.5 w-3.5 mr-2 text-innovate-500 transition-transform group-hover:translate-x-1" />
                     {link.name}
                   </Link>
                 </li>
@@ -111,15 +111,15 @@ const Footer = () => {
           
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 text-gray-800">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-6 text-white">Quick Links</h3>
             <ul className="space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={index}>
                   <Link 
                     to={link.path} 
-                    className="text-gray-600 hover:text-innovate-600 flex items-center group"
+                    className="text-gray-300 hover:text-innovate-400 flex items-center group"
                   >
-                    <ArrowRight className="h-3.5 w-3.5 mr-2 text-innovate-400 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="h-3.5 w-3.5 mr-2 text-innovate-500 transition-transform group-hover:translate-x-1" />
                     {link.name}
                   </Link>
                 </li>
@@ -129,7 +129,7 @@ const Footer = () => {
           
           {/* Contact Info */}
           <div>
-            <h3 className="text-lg font-semibold mb-6 text-gray-800">Contact Us</h3>
+            <h3 className="text-lg font-semibold mb-6 text-white">Contact Us</h3>
             <ul className="space-y-4">
               {contactInfo.map((info, index) => (
                 <li key={index}>
@@ -140,7 +140,7 @@ const Footer = () => {
                     rel={info.href.startsWith('http') ? "noopener noreferrer" : undefined}
                   >
                     <span className="flex-shrink-0 mt-1">{info.icon}</span>
-                    <span className="ml-3 text-gray-600 group-hover:text-innovate-600">{info.text}</span>
+                    <span className="ml-3 text-gray-300 group-hover:text-innovate-400">{info.text}</span>
                   </a>
                 </li>
               ))}
@@ -148,14 +148,14 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="pt-8 border-t border-gray-200 text-center md:flex justify-between items-center">
-          <p className="text-gray-500 text-sm mb-4 md:mb-0">
+        <div className="pt-8 border-t border-gray-800 text-center md:flex justify-between items-center">
+          <p className="text-gray-400 text-sm mb-4 md:mb-0">
             &copy; {currentYear} InnovateHub Inc. All rights reserved.
           </p>
           
-          <div className="flex space-x-6 justify-center md:justify-end text-sm text-gray-500">
-            <Link to="/privacy-policy" className="hover:text-innovate-600">Privacy Policy</Link>
-            <Link to="/terms-of-service" className="hover:text-innovate-600">Terms of Service</Link>
+          <div className="flex space-x-6 justify-center md:justify-end text-sm text-gray-400">
+            <Link to="/privacy-policy" className="hover:text-innovate-400">Privacy Policy</Link>
+            <Link to="/terms-of-service" className="hover:text-innovate-400">Terms of Service</Link>
           </div>
         </div>
       </div>

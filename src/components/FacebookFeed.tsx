@@ -10,6 +10,25 @@ interface FacebookFeedProps {
   hideCover?: boolean;
 }
 
+// Define the FB SDK interface
+interface FacebookSDK {
+  init: (params: {
+    xfbml: boolean;
+    version: string;
+  }) => void;
+  XFBML: {
+    parse: (element?: HTMLElement) => void;
+  };
+}
+
+// Add type definition for window.FB and fbAsyncInit
+declare global {
+  interface Window {
+    FB: FacebookSDK;
+    fbAsyncInit: () => void;
+  }
+}
+
 const FacebookFeed: React.FC<FacebookFeedProps> = ({
   pageUrl,
   width = 340,
@@ -30,7 +49,7 @@ const FacebookFeed: React.FC<FacebookFeedProps> = ({
       
       // Initialize FB SDK
       window.fbAsyncInit = function() {
-        FB.init({
+        window.FB.init({
           xfbml: true,
           version: 'v16.0'
         });
@@ -42,7 +61,7 @@ const FacebookFeed: React.FC<FacebookFeedProps> = ({
       loadFacebookSDK();
     } else {
       // If already loaded, parse XFBML again to render the plugin
-      FB.XFBML.parse();
+      window.FB.XFBML.parse();
     }
 
     return () => {
@@ -74,13 +93,5 @@ const FacebookFeed: React.FC<FacebookFeedProps> = ({
     </div>
   );
 };
-
-// Add type definition for window.FB and fbAsyncInit
-declare global {
-  interface Window {
-    FB: any;
-    fbAsyncInit: () => void;
-  }
-}
 
 export default FacebookFeed;

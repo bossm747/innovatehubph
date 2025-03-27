@@ -105,7 +105,7 @@ const PARTNERS: Partner[] = [
 const PlatapayPartners = () => {
   return (
     <section className="py-16 px-0 w-full bg-gradient-to-t from-innovate-50 to-white">
-      <div className="container mx-auto px-0 md:px-4">
+      <div className="w-full px-0">
         <div className="text-center mb-10 fade-up px-6">
           <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
             Trusted Partnerships

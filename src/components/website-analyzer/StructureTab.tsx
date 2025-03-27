@@ -2,10 +2,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface StructureTabProps {
-  crawlResult: any;
+  pages: any[];
 }
 
-export const StructureTab = ({ crawlResult }: StructureTabProps) => {
+export const StructureTab = ({ pages }: StructureTabProps) => {
   return (
     <Card>
       <CardHeader className="pb-2">
@@ -13,9 +13,9 @@ export const StructureTab = ({ crawlResult }: StructureTabProps) => {
       </CardHeader>
       <CardContent className="max-h-96 overflow-y-auto">
         <ul className="space-y-2">
-          {crawlResult?.data?.pages?.map((page: any, index: number) => (
+          {pages.map((page: any, index: number) => (
             <li key={index}>
-              <p className="font-medium text-innovate-700">{page.url}</p>
+              <p className="font-medium text-innovate-700">{page.url || "Unknown page"}</p>
               {page.links && (
                 <ul className="ml-5 mt-1 space-y-1">
                   {page.links.map((link: string, linkIndex: number) => (

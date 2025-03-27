@@ -1,87 +1,81 @@
 
 import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
-import { FirecrawlService } from '@/utils/FirecrawlService';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { APIKeyInput } from './website-analyzer/APIKeyInput';
 import { URLForm } from './website-analyzer/URLForm';
 import { ResultsTabs } from './website-analyzer/ResultsTabs';
-import { extractImagesFromResult, extractColorsFromResult } from './website-analyzer/dataUtils';
+import { extractImagesFromHtml, extractColorsFromCss, extractLinksFromHtml } from './website-analyzer/dataUtils';
 
 interface CrawlFormProps {
   initialApiKey?: string;
 }
 
-interface CrawlResult {
-  success: boolean;
-  status?: string;
-  completed?: number;
-  total?: number;
-  creditsUsed?: number;
-  expiresAt?: string;
-  data?: any;
+interface WebsiteData {
+  url: string;
+  html: string;
+  css: string;
+  timestamp: string;
 }
 
 export const CrawlForm = ({ initialApiKey }: CrawlFormProps) => {
   const { toast } = useToast();
-  const [url, setUrl] = useState('https://innovatehub.ph');
+  const [url, setUrl] = useState('https://example.com');
   const [apiKey, setApiKey] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [crawlResult, setCrawlResult] = useState<CrawlResult | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
+  
+  // Website data state
+  const [websiteData, setWebsiteData] = useState<WebsiteData | null>(null);
+  
+  // Derived data
+  const [images, setImages] = useState<string[]>([]);
+  const [colors, setColors] = useState<string[]>([]);
+  const [pages, setPages] = useState<any[]>([]);
 
   useEffect(() => {
-    const savedKey = FirecrawlService.getApiKey();
+    // Load API key from local storage
+    const savedKey = localStorage.getItem('api_key');
     if (initialApiKey) {
       setApiKey(initialApiKey);
       if (!savedKey) {
-        handleSetApiKey(initialApiKey);
+        localStorage.setItem('api_key', initialApiKey);
       }
     } else if (savedKey) {
       setApiKey(savedKey);
     }
-  }, [initialApiKey]);
-
-  const handleSetApiKey = async (keyToSet: string = apiKey) => {
-    if (!keyToSet.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter a valid API key",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      const isValid = await FirecrawlService.testApiKey(keyToSet);
-      if (isValid) {
-        FirecrawlService.saveApiKey(keyToSet);
-        toast({
-          title: "Success",
-          description: "API key saved successfully",
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: "Invalid API key or API service is unavailable",
-          variant: "destructive",
-        });
+    
+    // Load previously stored website data if exists
+    const storedData = localStorage.getItem('website_data');
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData) as WebsiteData;
+        setWebsiteData(parsedData);
+        processWebsiteData(parsedData);
+      } catch (error) {
+        console.error('Error parsing stored website data:', error);
       }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to validate API key",
-        variant: "destructive",
-      });
     }
+  }, [initialApiKey]);
+  
+  const processWebsiteData = (data: WebsiteData) => {
+    // Extract images from HTML
+    const extractedImages = extractImagesFromHtml(data.html);
+    setImages(extractedImages);
+    
+    // Extract colors from CSS
+    const extractedColors = extractColorsFromCss(data.css);
+    setColors(extractedColors);
+    
+    // Extract links from HTML
+    const links = extractLinksFromHtml(data.html);
+    
+    // Create a mock page structure
+    setPages([{
+      url: data.url,
+      links: links
+    }]);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -89,67 +83,92 @@ export const CrawlForm = ({ initialApiKey }: CrawlFormProps) => {
     setIsLoading(true);
     setProgress(10);
     
-    // Check if we have this result in local storage
-    const cachedResult = FirecrawlService.getCrawlResult(url);
-    if (cachedResult) {
-      console.log('Using cached crawl result for:', url);
-      toast({
-        title: "Success",
-        description: "Using cached website data",
-      });
-      setCrawlResult({
-        success: true,
-        data: cachedResult.data
-      });
-      setIsLoading(false);
-      setProgress(100);
-      return;
-    }
-    
-    setCrawlResult(null);
-    
-    try {
-      const savedApiKey = FirecrawlService.getApiKey();
-      if (!savedApiKey) {
-        await handleSetApiKey();
-        if (!FirecrawlService.getApiKey()) {
+    // Check if we already have this URL cached
+    const storedData = localStorage.getItem('website_data');
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData) as WebsiteData;
+        if (parsedData.url === url) {
+          setWebsiteData(parsedData);
+          processWebsiteData(parsedData);
           setIsLoading(false);
+          setProgress(100);
+          toast({
+            title: "Success",
+            description: "Using cached website data",
+          });
           return;
         }
+      } catch (error) {
+        console.error('Error parsing stored website data:', error);
       }
-
-      console.log('Starting crawl for URL:', url);
+    }
+    
+    try {
       setProgress(30);
       
-      const result = await FirecrawlService.crawlWebsite(url);
-      setProgress(90);
+      // Mock fetch website data (in a real app, this would be an API call)
+      const mockHtml = `
+        <html>
+          <head><title>Example Page</title></head>
+          <body>
+            <h1>Example Website</h1>
+            <p>This is a sample website content.</p>
+            <img src="https://example.com/image1.jpg" alt="Example image 1">
+            <img src="https://example.com/image2.jpg" alt="Example image 2">
+            <a href="https://example.com/page1">Page 1</a>
+            <a href="https://example.com/page2">Page 2</a>
+          </body>
+        </html>
+      `;
       
-      if (result.success) {
-        toast({
-          title: "Success",
-          description: "Website crawled successfully",
-        });
-        setCrawlResult({
-          success: true,
-          data: result.data
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: result.error || "Failed to crawl website",
-          variant: "destructive",
-        });
-      }
+      const mockCss = `
+        body {
+          font-family: Arial, sans-serif;
+          color: #333333;
+          background-color: #f5f5f5;
+        }
+        h1 {
+          color: #0066cc;
+        }
+        .button {
+          background-color: #00aa55;
+          color: rgba(255, 255, 255, 0.9);
+        }
+      `;
+      
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setProgress(70);
+      
+      // Create website data object
+      const data: WebsiteData = {
+        url,
+        html: mockHtml,
+        css: mockCss,
+        timestamp: new Date().toISOString()
+      };
+      
+      // Save to local storage
+      localStorage.setItem('website_data', JSON.stringify(data));
+      
+      setWebsiteData(data);
+      processWebsiteData(data);
+      
+      setProgress(100);
+      toast({
+        title: "Success",
+        description: "Website analyzed successfully",
+      });
     } catch (error) {
-      console.error('Error crawling website:', error);
+      console.error('Error analyzing website:', error);
       toast({
         title: "Error",
-        description: "Failed to crawl website",
+        description: "Failed to analyze website",
         variant: "destructive",
       });
     } finally {
       setIsLoading(false);
-      setProgress(100);
     }
   };
 
@@ -159,7 +178,7 @@ export const CrawlForm = ({ initialApiKey }: CrawlFormProps) => {
         <CardHeader>
           <CardTitle className="text-innovate-700">InnovateHub Website Analyzer</CardTitle>
           <CardDescription>
-            Crawl the innovatehub.ph website to analyze its design, structure, and graphics
+            Analyze website design, structure, and graphics
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -175,25 +194,27 @@ export const CrawlForm = ({ initialApiKey }: CrawlFormProps) => {
         </CardContent>
       </Card>
 
-      {crawlResult && crawlResult.success && (
+      {websiteData && (
         <Card>
           <CardHeader>
             <CardTitle className="text-innovate-700">Analysis Results</CardTitle>
             <CardDescription>
-              Details gathered from crawling {url}
+              Details gathered from analyzing {websiteData.url}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <ResultsTabs 
-              crawlResult={crawlResult} 
               activeTab={activeTab}
               setActiveTab={setActiveTab}
-              extractImagesFromResult={() => extractImagesFromResult(crawlResult)}
-              extractColorsFromResult={() => extractColorsFromResult(crawlResult)}
+              htmlContent={websiteData.html}
+              cssContent={websiteData.css}
+              images={images}
+              colors={colors}
+              pages={pages}
             />
           </CardContent>
           <CardFooter className="text-sm text-gray-500">
-            Data captured at {new Date().toLocaleString()}
+            Data captured at {new Date(websiteData.timestamp).toLocaleString()}
           </CardFooter>
         </Card>
       )}

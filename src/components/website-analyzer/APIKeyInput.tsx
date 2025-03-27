@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { FirecrawlService } from '@/utils/FirecrawlService';
 
 interface APIKeyInputProps {
   apiKey: string;
@@ -23,42 +22,27 @@ export const APIKeyInput = ({ apiKey, setApiKey }: APIKeyInputProps) => {
       return;
     }
 
-    try {
-      const isValid = await FirecrawlService.testApiKey(apiKey);
-      if (isValid) {
-        FirecrawlService.saveApiKey(apiKey);
-        toast({
-          title: "Success",
-          description: "API key saved successfully",
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: "Invalid API key or API service is unavailable",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to validate API key",
-        variant: "destructive",
-      });
-    }
+    // Store API key in local storage
+    localStorage.setItem('api_key', apiKey);
+    
+    toast({
+      title: "Success",
+      description: "API key saved successfully",
+    });
   };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
       <div className="md:col-span-3 space-y-2">
         <label htmlFor="apiKey" className="text-sm font-medium text-gray-700">
-          Firecrawl API Key
+          API Key
         </label>
         <Input
           id="apiKey"
           type="password"
           value={apiKey}
           onChange={(e) => setApiKey(e.target.value)}
-          placeholder="Enter your Firecrawl API key"
+          placeholder="Enter your API key"
           className="transition-all duration-200"
         />
       </div>

@@ -2,21 +2,21 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface OverviewTabProps {
-  crawlResult: any;
-  extractImagesFromResult: () => string[];
+  pages: any[];
+  imageCount: number;
 }
 
-export const OverviewTab = ({ crawlResult, extractImagesFromResult }: OverviewTabProps) => {
+export const OverviewTab = ({ pages, imageCount }: OverviewTabProps) => {
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Pages Crawled</CardTitle>
+            <CardTitle className="text-base">Pages Analyzed</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-innovate-700">
-              {crawlResult?.data?.pages?.length || 0}
+              {pages.length || 0}
             </p>
           </CardContent>
         </Card>
@@ -26,7 +26,7 @@ export const OverviewTab = ({ crawlResult, extractImagesFromResult }: OverviewTa
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-innovate-700">
-              {extractImagesFromResult().length}
+              {imageCount}
             </p>
           </CardContent>
         </Card>
@@ -38,9 +38,9 @@ export const OverviewTab = ({ crawlResult, extractImagesFromResult }: OverviewTa
         </CardHeader>
         <CardContent>
           <ul className="space-y-1 max-h-60 overflow-y-auto">
-            {crawlResult?.data?.pages?.map((page: any, index: number) => (
+            {pages.map((page: any, index: number) => (
               <li key={index} className="text-sm truncate hover:text-innovate-700">
-                {page.url}
+                {page.url || "Unknown page"}
               </li>
             ))}
           </ul>

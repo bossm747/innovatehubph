@@ -1,5 +1,4 @@
 
-import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
@@ -25,7 +24,7 @@ export const URLForm = ({ url, setUrl, isLoading, progress, onSubmit }: URLFormP
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           className="transition-all duration-200"
-          placeholder="https://innovatehub.ph"
+          placeholder="https://example.com"
           required
         />
       </div>
@@ -33,7 +32,7 @@ export const URLForm = ({ url, setUrl, isLoading, progress, onSubmit }: URLFormP
       {isLoading && (
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
-            <span>Crawling website...</span>
+            <span>Processing website...</span>
             <span>{progress}%</span>
           </div>
           <Progress value={progress} className="w-full" />
@@ -45,7 +44,7 @@ export const URLForm = ({ url, setUrl, isLoading, progress, onSubmit }: URLFormP
         disabled={isLoading}
         className="w-full bg-innovate-600 hover:bg-innovate-700 text-white transition-all duration-200"
       >
-        {isLoading ? "Crawling..." : "Analyze Website"}
+        {isLoading ? "Processing..." : "Analyze Website"}
       </Button>
     </form>
   );

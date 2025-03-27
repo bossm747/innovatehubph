@@ -8,23 +8,24 @@ import { StructureTab } from './StructureTab';
 import { CodeTab } from './CodeTab';
 
 interface ResultsTabsProps {
-  crawlResult: any;
   activeTab: string;
   setActiveTab: (value: string) => void;
-  extractImagesFromResult: () => string[];
-  extractColorsFromResult: () => string[];
+  htmlContent: string;
+  cssContent: string;
+  images: string[];
+  colors: string[];
+  pages: any[];
 }
 
 export const ResultsTabs = ({ 
-  crawlResult, 
   activeTab, 
   setActiveTab,
-  extractImagesFromResult,
-  extractColorsFromResult
+  htmlContent,
+  cssContent,
+  images,
+  colors,
+  pages
 }: ResultsTabsProps) => {
-  const images = extractImagesFromResult();
-  const colors = extractColorsFromResult();
-
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab}>
       <TabsList className="grid grid-cols-5 mb-6">
@@ -52,8 +53,8 @@ export const ResultsTabs = ({
       
       <TabsContent value="overview">
         <OverviewTab 
-          crawlResult={crawlResult} 
-          extractImagesFromResult={extractImagesFromResult}
+          pages={pages}
+          imageCount={images.length}
         />
       </TabsContent>
       
@@ -66,11 +67,11 @@ export const ResultsTabs = ({
       </TabsContent>
       
       <TabsContent value="links">
-        <StructureTab crawlResult={crawlResult} />
+        <StructureTab pages={pages} />
       </TabsContent>
       
       <TabsContent value="code">
-        <CodeTab crawlResult={crawlResult} />
+        <CodeTab htmlContent={htmlContent} cssContent={cssContent} />
       </TabsContent>
     </Tabs>
   );

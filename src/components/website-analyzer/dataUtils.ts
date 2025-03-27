@@ -1,34 +1,46 @@
 
-export const extractImagesFromResult = (crawlResult: any): string[] => {
-  if (!crawlResult?.data?.pages) return [];
+export const extractImagesFromHtml = (html: string): string[] => {
+  if (!html) return [];
   
+  const imgRegex = /<img[^>]+src="([^">]+)"/g;
   const images: string[] = [];
-  crawlResult.data.pages.forEach((page: any) => {
-    if (page.images && Array.isArray(page.images)) {
-      page.images.forEach((img: string) => {
-        if (!images.includes(img)) {
-          images.push(img);
-        }
-      });
+  let match;
+  
+  while ((match = imgRegex.exec(html)) !== null) {
+    if (match[1] && !images.includes(match[1])) {
+      images.push(match[1]);
     }
-  });
+  }
   
   return images;
 };
 
-export const extractColorsFromResult = (crawlResult: any): string[] => {
-  if (!crawlResult?.data?.pages) return [];
+export const extractColorsFromCss = (css: string): string[] => {
+  if (!css) return [];
   
+  const colorRegex = /#[0-9A-Fa-f]{3,8}|rgba?\([^)]+\)|hsla?\([^)]+\)/g;
   const colors = new Set<string>();
-  crawlResult.data.pages.forEach((page: any) => {
-    if (page.styles) {
-      const colorRegex = /#[0-9A-Fa-f]{3,8}|rgba?\([^)]+\)|hsla?\([^)]+\)/g;
-      const matches = page.styles.match(colorRegex);
-      if (matches) {
-        matches.forEach((color: string) => colors.add(color));
-      }
-    }
-  });
+  const matches = css.match(colorRegex);
+  
+  if (matches) {
+    matches.forEach((color: string) => colors.add(color));
+  }
   
   return Array.from(colors);
+};
+
+export const extractLinksFromHtml = (html: string): string[] => {
+  if (!html) return [];
+  
+  const linkRegex = /<a[^>]+href="([^">]+)"/g;
+  const links: string[] = [];
+  let match;
+  
+  while ((match = linkRegex.exec(html)) !== null) {
+    if (match[1] && !links.includes(match[1])) {
+      links.push(match[1]);
+    }
+  }
+  
+  return links;
 };

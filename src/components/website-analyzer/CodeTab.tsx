@@ -4,14 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface CodeTabProps {
-  crawlResult: any;
+  htmlContent: string;
+  cssContent: string;
 }
 
-export const CodeTab = ({ crawlResult }: CodeTabProps) => {
+export const CodeTab = ({ htmlContent, cssContent }: CodeTabProps) => {
   const [codeType, setCodeType] = useState("html");
-  
-  const htmlContent = crawlResult?.data?.pages?.[0]?.html || "No HTML data available";
-  const cssContent = crawlResult?.data?.pages?.[0]?.styles || "No CSS data available";
   
   return (
     <Card>

@@ -39,7 +39,7 @@ const Navbar = () => {
           <nav className="flex items-center space-x-8">
             <Link to="/" className="nav-link">Home</Link>
             <Link to="/about" className="nav-link">About</Link>
-            <a href="#services" className="nav-link">Services</a>
+            <Link to="/services" className="nav-link">Services</Link>
             <a href="#team" className="nav-link">Our Team</a>
             <a href="#contact" className="nav-link">Contact</a>
           </nav>
@@ -75,7 +75,7 @@ const Navbar = () => {
         <nav className="flex flex-col space-y-4 px-6">
           <Link to="/" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
           <Link to="/about" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
-          <a href="#services" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Services</a>
+          <Link to="/services" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
           <a href="#team" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Our Team</a>
           <a href="#contact" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact</a>
           <Button 

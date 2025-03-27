@@ -1,5 +1,6 @@
 
 import { Button } from "@/components/ui/button";
+import { Brain, Zap, Code, CircuitBoard } from "lucide-react";
 
 const AboutUs = () => {
   return (
@@ -7,14 +8,14 @@ const AboutUs = () => {
       {/* Circuit board decorative elements */}
       <div className="absolute top-20 right-20 -z-10">
         <img 
-          src="public/lovable-uploads/60fc5fce-299b-4f14-b006-947a5cd409ba.png" 
+          src="/lovable-uploads/60fc5fce-299b-4f14-b006-947a5cd409ba.png" 
           alt="" 
           className="w-20 h-auto opacity-30"
         />
       </div>
       <div className="absolute bottom-10 left-10 -z-10">
         <img 
-          src="public/lovable-uploads/2346f5e5-b8ef-42cd-be11-be6d1c85e007.png" 
+          src="/lovable-uploads/2346f5e5-b8ef-42cd-be11-be6d1c85e007.png" 
           alt="" 
           className="w-16 h-auto opacity-30"
         />
@@ -23,7 +24,7 @@ const AboutUs = () => {
       {/* Circuit corner decoration */}
       <div className="absolute top-0 right-0 -z-10">
         <img 
-          src="public/lovable-uploads/889fa9a3-7688-472c-9782-dcd7b2766e3f.png" 
+          src="/lovable-uploads/889fa9a3-7688-472c-9782-dcd7b2766e3f.png" 
           alt="" 
           className="w-48 h-auto opacity-20"
         />
@@ -32,7 +33,7 @@ const AboutUs = () => {
       {/* Circuit pattern in background */}
       <div className="absolute inset-0 -z-10 flex justify-center items-center opacity-5">
         <img 
-          src="public/lovable-uploads/e465451c-ac7c-4d41-855b-63954db5d9d8.png" 
+          src="/lovable-uploads/e465451c-ac7c-4d41-855b-63954db5d9d8.png" 
           alt="" 
           className="w-full max-w-5xl h-auto"
         />
@@ -43,31 +44,52 @@ const AboutUs = () => {
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden shadow-medium">
               <img 
-                src="public/lovable-uploads/682f90d9-02d8-49f0-b70f-855d715c4166.png" 
+                src="/lovable-uploads/682f90d9-02d8-49f0-b70f-855d715c4166.png" 
                 alt="Team collaboration" 
                 className="w-full h-auto"
               />
               <div className="absolute inset-0 bg-innovate-900/10"></div>
             </div>
             
-            {/* Stats card - Updated with more realistic startup numbers */}
+            {/* AI Technology Showcase - Replaces Stats Card */}
             <div className="absolute -bottom-8 -right-8 bg-white rounded-xl p-6 shadow-medium max-w-xs">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-4xl font-bold text-innovate-700">3+</p>
-                  <p className="text-gray-600">Years Experience</p>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-lg font-semibold text-innovate-800">AI Development</h3>
+                  <Brain className="h-5 w-5 text-innovate-600" />
                 </div>
-                <div>
-                  <p className="text-4xl font-bold text-innovate-700">50+</p>
-                  <p className="text-gray-600">Happy Clients</p>
-                </div>
-                <div>
-                  <p className="text-4xl font-bold text-innovate-700">15+</p>
-                  <p className="text-gray-600">Team Members</p>
-                </div>
-                <div>
-                  <p className="text-4xl font-bold text-innovate-700">92%</p>
-                  <p className="text-gray-600">Success Rate</p>
+                
+                <div className="space-y-3">
+                  {/* Technology Progress Bars */}
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span>Machine Learning</span>
+                      <span className="text-innovate-600">85%</span>
+                    </div>
+                    <div className="h-2 bg-gray-100 rounded-full">
+                      <div className="h-full bg-gradient-to-r from-innovate-400 to-innovate-600 rounded-full" style={{ width: '85%' }}></div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span>Computer Vision</span>
+                      <span className="text-innovate-600">70%</span>
+                    </div>
+                    <div className="h-2 bg-gray-100 rounded-full">
+                      <div className="h-full bg-gradient-to-r from-innovate-400 to-innovate-600 rounded-full" style={{ width: '70%' }}></div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span>NLP</span>
+                      <span className="text-innovate-600">90%</span>
+                    </div>
+                    <div className="h-2 bg-gray-100 rounded-full">
+                      <div className="h-full bg-gradient-to-r from-innovate-400 to-innovate-600 rounded-full" style={{ width: '90%' }}></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -91,40 +113,44 @@ const AboutUs = () => {
               Our growing team of experts is committed to delivering excellence in every project, whether it's developing custom software, implementing digital transformation strategies, or providing IT consultation services.
             </p>
             
-            <div className="pt-4 space-y-4">
-              <div className="flex items-start">
-                <div className="flex-shrink-0 mt-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-innovate-600" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
+            <div className="pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex items-start p-3 rounded-lg bg-innovate-50 border border-innovate-100">
+                <div className="flex-shrink-0 mt-1 p-2 rounded-full bg-innovate-100">
+                  <Brain className="h-5 w-5 text-innovate-700" />
                 </div>
                 <div className="ml-3">
-                  <h4 className="font-medium">Excellence in Innovation</h4>
-                  <p className="text-gray-600">We constantly pursue innovation to deliver the best solutions.</p>
+                  <h4 className="font-medium">AI Solutions</h4>
+                  <p className="text-sm text-gray-600">Custom AI models to automate and optimize business processes</p>
                 </div>
               </div>
               
-              <div className="flex items-start">
-                <div className="flex-shrink-0 mt-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-innovate-600" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
+              <div className="flex items-start p-3 rounded-lg bg-innovate-50 border border-innovate-100">
+                <div className="flex-shrink-0 mt-1 p-2 rounded-full bg-innovate-100">
+                  <Code className="h-5 w-5 text-innovate-700" />
                 </div>
                 <div className="ml-3">
-                  <h4 className="font-medium">Client-Centric Approach</h4>
-                  <p className="text-gray-600">We prioritize understanding your needs to deliver tailored solutions.</p>
+                  <h4 className="font-medium">Custom Development</h4>
+                  <p className="text-sm text-gray-600">Tailored software solutions for your unique business needs</p>
                 </div>
               </div>
               
-              <div className="flex items-start">
-                <div className="flex-shrink-0 mt-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-innovate-600" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
+              <div className="flex items-start p-3 rounded-lg bg-innovate-50 border border-innovate-100">
+                <div className="flex-shrink-0 mt-1 p-2 rounded-full bg-innovate-100">
+                  <CircuitBoard className="h-5 w-5 text-innovate-700" />
                 </div>
                 <div className="ml-3">
-                  <h4 className="font-medium">Sustainable Growth</h4>
-                  <p className="text-gray-600">We focus on long-term solutions that drive sustainable growth.</p>
+                  <h4 className="font-medium">Fintech Innovation</h4>
+                  <p className="text-sm text-gray-600">Financial technology solutions with PlataPay integration</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start p-3 rounded-lg bg-innovate-50 border border-innovate-100">
+                <div className="flex-shrink-0 mt-1 p-2 rounded-full bg-innovate-100">
+                  <Zap className="h-5 w-5 text-innovate-700" />
+                </div>
+                <div className="ml-3">
+                  <h4 className="font-medium">Digital Transformation</h4>
+                  <p className="text-sm text-gray-600">Comprehensive strategies for business modernization</p>
                 </div>
               </div>
             </div>

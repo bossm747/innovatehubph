@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -61,20 +62,20 @@ const Footer = () => {
               <li><Link to="/about" className="text-gray-400 hover:text-white transition-colors">About Us</Link></li>
               <li><Link to="/services" className="text-gray-400 hover:text-white transition-colors">Services</Link></li>
               <li><Link to="/platapay" className="text-gray-400 hover:text-white transition-colors">PlataPay</Link></li>
-              <li><a href="#team" className="text-gray-400 hover:text-white transition-colors">Our Team</a></li>
-              <li><a href="#contact" className="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+              <li><Link to="/team" className="text-gray-400 hover:text-white transition-colors">Our Team</Link></li>
+              <li><Link to="/contact" className="text-gray-400 hover:text-white transition-colors">Contact</Link></li>
             </ul>
           </div>
           
           <div>
             <h3 className="text-lg font-semibold mb-6">Services</h3>
             <ul className="space-y-3">
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Digital Wallet</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">E-Commerce Development</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Custom Software Development</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">AI Solutions</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Remittance Services</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Global Expansion</a></li>
+              <li><Link to="/platapay" className="text-gray-400 hover:text-white transition-colors">Digital Wallet</Link></li>
+              <li><Link to="/ecommerce" className="text-gray-400 hover:text-white transition-colors">E-Commerce Development</Link></li>
+              <li><Link to="/digital-customizations" className="text-gray-400 hover:text-white transition-colors">Custom Software Development</Link></li>
+              <li><Link to="/ai-solutions" className="text-gray-400 hover:text-white transition-colors">AI Solutions</Link></li>
+              <li><Link to="/platapay" className="text-gray-400 hover:text-white transition-colors">Remittance Services</Link></li>
+              <li><Link to="/global-expansion" className="text-gray-400 hover:text-white transition-colors">Global Expansion</Link></li>
             </ul>
           </div>
           

@@ -9,9 +9,12 @@ import PlatapayServices from '@/components/PlatapayServices';
 import PlatapayTestimonials from '@/components/PlatapayTestimonials';
 import PlatapayAgentInfo from '@/components/PlatapayAgentInfo';
 import PlatapayPartners from '@/components/PlatapayPartners';
+import PlatapayComparisonTable from '@/components/PlatapayComparisonTable';
+import PlatapayAgentMap from '@/components/PlatapayAgentMap';
 import ClientsShowcase from '@/components/ClientsShowcase';
 import FacebookFeed from '@/components/FacebookFeed';
 import { Facebook, MessageCircle } from 'lucide-react';
+import { Helmet } from 'react-helmet';
 
 const PlatapayPage = () => {
   useEffect(() => {
@@ -37,6 +40,11 @@ const PlatapayPage = () => {
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden relative">
+      <Helmet>
+        <title>PlataPay | Digital Wallet & Payment Solutions | InnovateHub Inc.</title>
+        <meta name="description" content="PlataPay revolutionizes how communities access financial services with its comprehensive digital wallet platform. Offering bills payment, remittance, e-loading, and QR payments." />
+      </Helmet>
+    
       <CircuitBackground 
         pattern="tech-circle" 
         className="fixed top-20 right-20" 
@@ -64,6 +72,8 @@ const PlatapayPage = () => {
       <div className="w-full pt-16">
         <PlatapayHero />
         <PlatapayServices />
+        <PlatapayComparisonTable />
+        <PlatapayAgentMap />
         
         <section className="py-16 px-6 md:px-12 bg-gradient-to-r from-white to-gray-50">
           <div className="container mx-auto">

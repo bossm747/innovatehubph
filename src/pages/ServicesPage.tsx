@@ -6,6 +6,7 @@ import ContactSection from '@/components/ContactSection';
 import CircuitBackground from '@/components/CircuitBackground';
 import ServicesHero from '@/components/ServicesHero';
 import ServiceTiles from '@/components/ServiceTiles';
+import { Toaster } from 'sonner';
 
 const ServicesPage = () => {
   // Add scroll reveal effect
@@ -34,7 +35,9 @@ const ServicesPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden relative">
+    <div className="min-h-screen w-full overflow-x-hidden relative bg-gradient-to-b from-gray-50 to-white">
+      <Toaster position="top-right" />
+      
       {/* Background patterns */}
       <CircuitBackground 
         pattern="curvy-line" 
@@ -61,12 +64,12 @@ const ServicesPage = () => {
       
       {/* Main content */}
       <Navbar />
-      <div className="w-full pt-16">
+      <main className="w-full pt-16">
         <ServicesHero />
         <ServiceTiles />
         <ContactSection />
         <Footer />
-      </div>
+      </main>
     </div>
   );
 };

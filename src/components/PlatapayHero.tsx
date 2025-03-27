@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 
@@ -17,7 +16,7 @@ const PlatapayHero = () => {
                 <div className="absolute inset-0 bg-black/80 rounded-full blur-sm transition-all duration-300"></div>
                 {/* Logo with dark background */}
                 <img 
-                  src="/lovable-uploads/72b0dc34-2910-4b7c-9375-43945bf8c9db.png" 
+                  src="/lovable-uploads/9b23899d-8537-4e7c-996b-5fdc791cbde2.png" 
                   alt="PlataPay Logo" 
                   className="h-16 w-16 relative z-10 transition-transform duration-300"
                   style={{ filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.3))' }}
@@ -72,7 +71,6 @@ const PlatapayHero = () => {
         </div>
       </div>
       
-      {/* Floating shaped */}
       <div className="absolute top-20 left-10 w-16 h-16 bg-blue-500/10 rounded-full blur-xl"></div>
       <div className="absolute bottom-20 right-10 w-24 h-24 bg-innovate-500/10 rounded-full blur-xl"></div>
     </section>

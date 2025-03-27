@@ -39,7 +39,7 @@ const Navbar = () => {
             <div className="absolute inset-0 bg-white/30 rounded-full filter blur-sm group-hover:blur-md transition-all duration-300"></div>
             {/* Logo with transparent background */}
             <img 
-              src="/lovable-uploads/3287ce1f-38a9-4720-9d6c-0bce80464122.png" 
+              src="/lovable-uploads/e0b50f3f-fb7b-4832-8041-8c82e7f630ad.png" 
               alt="InnovateHub Logo" 
               className="h-14 w-14 mr-3 relative z-10 transition-transform duration-300 group-hover:scale-105"
               style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.3))' }}

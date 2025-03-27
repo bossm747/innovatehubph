@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -14,7 +13,7 @@ const Footer = () => {
               <div className="relative">
                 <div className="absolute inset-0 bg-innovate-400/20 rounded-full blur-md scale-110"></div>
                 <img 
-                  src="/lovable-uploads/3287ce1f-38a9-4720-9d6c-0bce80464122.png" 
+                  src="/lovable-uploads/e0b50f3f-fb7b-4832-8041-8c82e7f630ad.png" 
                   alt="InnovateHub Logo" 
                   className="h-12 w-12 mr-2 relative z-10"
                   style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.3))' }}

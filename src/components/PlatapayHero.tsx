@@ -11,9 +11,24 @@ const PlatapayHero = () => {
             <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-6">
               Client Spotlight
             </span>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 hero-text-gradient">
-              PlataPay
-            </h1>
+            <div className="flex items-center mb-4">
+              <div className="relative mr-4">
+                {/* Background shining element */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-100/50 to-blue-300/30 rounded-full blur-md group-hover:blur-lg transition-all duration-300 scale-110 group-hover:scale-125"></div>
+                {/* Subtle radial glow */}
+                <div className="absolute inset-0 bg-white/40 rounded-full filter blur-sm transition-all duration-300"></div>
+                {/* Logo with transparent background */}
+                <img 
+                  src="/lovable-uploads/a8af37d4-1b48-41f9-bd00-008fbfdb60a8.png" 
+                  alt="PlataPay Logo" 
+                  className="h-16 w-16 relative z-10 transition-transform duration-300"
+                  style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.4))' }}
+                />
+              </div>
+              <h1 className="text-4xl md:text-5xl font-bold hero-text-gradient">
+                PlataPay
+              </h1>
+            </div>
             <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-gray-700">
               Empowering Micropreneurs Through Digital Finance
             </h2>

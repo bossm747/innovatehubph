@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -15,6 +14,7 @@ interface ServiceTile {
   ctaLink: string;
   highlight?: boolean;
   isInternalLink?: boolean;
+  logo?: string;
 }
 
 const ServiceTiles = () => {
@@ -39,7 +39,8 @@ const ServiceTiles = () => {
       ctaText: "Learn More about PlataPay",
       ctaLink: "/platapay",
       highlight: true,
-      isInternalLink: true
+      isInternalLink: true,
+      logo: "/lovable-uploads/a8af37d4-1b48-41f9-bd00-008fbfdb60a8.png"
     },
     {
       id: 2,
@@ -145,11 +146,29 @@ const ServiceTiles = () => {
             >
               <div className={`absolute top-0 left-0 w-2 h-full ${service.color.split(' ')[0]}`}></div>
               <div className="p-8">
-                <div className={`w-16 h-16 rounded-lg flex items-center justify-center mb-6 text-white ${service.color}`}>
-                  {service.icon}
-                </div>
+                {service.logo ? (
+                  <div className="flex items-center mb-4">
+                    <div className="relative mr-3">
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-100/40 to-blue-300/20 rounded-full blur-md transition-all duration-300 scale-110"></div>
+                      <div className="absolute inset-0 bg-white/30 rounded-full filter blur-sm transition-all duration-300"></div>
+                      <img 
+                        src={service.logo} 
+                        alt={`${service.title} Logo`} 
+                        className="h-12 w-12 relative z-10"
+                        style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.3))' }}
+                      />
+                    </div>
+                    <h3 className="text-xl font-semibold">{service.title}</h3>
+                  </div>
+                ) : (
+                  <>
+                    <div className={`w-16 h-16 rounded-lg flex items-center justify-center mb-6 text-white ${service.color}`}>
+                      {service.icon}
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
+                  </>
+                )}
                 
-                <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
                 <p className="text-gray-600 mb-6">{service.description}</p>
                 
                 <ul className="mb-8 space-y-2">

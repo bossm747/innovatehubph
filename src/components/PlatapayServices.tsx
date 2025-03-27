@@ -70,7 +70,20 @@ const PlatapayServices = () => {
     <section id="platapay-services" className="py-20 px-6 md:px-12">
       <div className="container mx-auto">
         <div className="mb-16 text-center fade-up">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Our Digital Finance Services</h2>
+          <div className="flex items-center justify-center mb-6">
+            <div className="relative mr-3">
+              {/* Logo glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-100/40 to-blue-300/20 rounded-full blur-md transition-all duration-300 scale-110"></div>
+              <div className="absolute inset-0 bg-white/30 rounded-full filter blur-sm transition-all duration-300"></div>
+              <img 
+                src="/lovable-uploads/a8af37d4-1b48-41f9-bd00-008fbfdb60a8.png" 
+                alt="PlataPay Logo" 
+                className="h-14 w-14 relative z-10"
+                style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.3))' }}
+              />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold">Our Digital Finance Services</h2>
+          </div>
           <p className="text-gray-600 max-w-3xl mx-auto">
             PlataPay offers a comprehensive suite of financial services designed to make everyday transactions 
             easier, faster, and more secure for individuals and businesses.

@@ -22,7 +22,7 @@ const PlataPay = () => {
             <div className="relative">
               <div className="relative rounded-2xl overflow-hidden shadow-xl">
                 <img 
-                  src="public/lovable-uploads/d06dbf6f-eafc-4d26-97e4-b5ee5dac0416.png" 
+                  src="/lovable-uploads/d06dbf6f-eafc-4d26-97e4-b5ee5dac0416.png" 
                   alt="PlataPay App Interface" 
                   className="w-full h-auto"
                 />
@@ -34,7 +34,7 @@ const PlataPay = () => {
                 <div className="flex items-center space-x-3">
                   <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
                     <img 
-                      src="public/lovable-uploads/4d5b3eaa-0065-48e8-9976-3931a1836f81.png"
+                      src="/lovable-uploads/4d5b3eaa-0065-48e8-9976-3931a1836f81.png"
                       alt="QR Payment" 
                       className="w-8 h-auto"
                     />
@@ -67,7 +67,20 @@ const PlataPay = () => {
             <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full">
               Our Flagship Product
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold">PlataPay – Empowering Micropreneurs</h2>
+            <div className="flex items-center mb-4">
+              <div className="relative mr-4">
+                {/* Logo glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-100/50 to-blue-300/30 rounded-full blur-md group-hover:blur-lg transition-all duration-300 scale-110"></div>
+                <div className="absolute inset-0 bg-white/40 rounded-full filter blur-sm transition-all duration-300"></div>
+                <img 
+                  src="/lovable-uploads/a8af37d4-1b48-41f9-bd00-008fbfdb60a8.png" 
+                  alt="PlataPay Logo" 
+                  className="h-14 w-14 relative z-10"
+                  style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.3))' }}
+                />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold">PlataPay – Empowering Micropreneurs</h2>
+            </div>
             <p className="text-gray-600">
               PlataPay is a secure and income-generating platform for communities. Our digital finance solution empowers micropreneurs with easy access to:
             </p>

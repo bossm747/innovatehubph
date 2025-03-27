@@ -62,7 +62,20 @@ const PlatapayAgentInfo = () => {
             <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-6">
               Join Our Network
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">How to Become a PlataPay Agent</h2>
+            <div className="flex items-center mb-4">
+              <div className="relative mr-3">
+                {/* Logo glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-200/40 to-blue-400/20 rounded-full blur-md transition-all duration-300 scale-110"></div>
+                <div className="absolute inset-0 bg-white/30 rounded-full filter blur-sm transition-all duration-300"></div>
+                <img 
+                  src="/lovable-uploads/a8af37d4-1b48-41f9-bd00-008fbfdb60a8.png" 
+                  alt="PlataPay Logo" 
+                  className="h-12 w-12 relative z-10"
+                  style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.3))' }}
+                />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold">How to Become a PlataPay Agent</h2>
+            </div>
             <p className="text-gray-600 mb-8">
               Becoming a PlataPay agent allows you to offer essential financial services to your community 
               while earning additional income through commissions. Follow these simple steps to get started.

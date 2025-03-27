@@ -57,7 +57,20 @@ const PlatapayTestimonials = () => {
           <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-6">
             Success Stories
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Agent Testimonials</h2>
+          <div className="flex items-center justify-center mb-4">
+            <div className="relative mr-3">
+              {/* Logo glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-100/40 to-blue-300/20 rounded-full blur-md transition-all duration-300 scale-110"></div>
+              <div className="absolute inset-0 bg-white/30 rounded-full filter blur-sm transition-all duration-300"></div>
+              <img 
+                src="/lovable-uploads/a8af37d4-1b48-41f9-bd00-008fbfdb60a8.png" 
+                alt="PlataPay Logo" 
+                className="h-12 w-12 relative z-10"
+                style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.3))' }}
+              />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold">Agent Testimonials</h2>
+          </div>
           <p className="text-gray-600 max-w-3xl mx-auto">
             Hear from our PlataPay agents and users about how our digital financial services platform 
             has transformed their businesses and daily lives.

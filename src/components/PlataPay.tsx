@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import CircuitBackground from "./CircuitBackground";
@@ -124,14 +123,13 @@ const PlataPay = () => {
             </span>
             <div className="flex items-center mb-4">
               <div className="relative mr-4">
-                {/* Logo glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-100/50 to-blue-300/30 rounded-full blur-md group-hover:blur-lg transition-all duration-300 scale-110"></div>
-                <div className="absolute inset-0 bg-white/40 rounded-full filter blur-sm transition-all duration-300"></div>
+                {/* Dark circular background */}
+                <div className="absolute inset-0 bg-black/80 rounded-full blur-sm transition-all duration-300"></div>
                 <img 
-                  src="/lovable-uploads/a8af37d4-1b48-41f9-bd00-008fbfdb60a8.png" 
+                  src="/lovable-uploads/9a2fc4d0-82f0-46c9-a231-cc9050b9deda.png" 
                   alt="PlataPay Logo" 
                   className="h-14 w-14 relative z-10"
-                  style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.3))' }}
+                  style={{ filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.3))' }}
                 />
               </div>
               <h2 className="text-3xl md:text-4xl font-bold">PlataPay – Empowering Micropreneurs</h2>

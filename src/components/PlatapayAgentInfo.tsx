@@ -64,14 +64,13 @@ const PlatapayAgentInfo = () => {
             </span>
             <div className="flex items-center mb-4">
               <div className="relative mr-3">
-                {/* Logo glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-200/40 to-blue-400/20 rounded-full blur-md transition-all duration-300 scale-110"></div>
-                <div className="absolute inset-0 bg-white/30 rounded-full filter blur-sm transition-all duration-300"></div>
+                {/* Dark circular background */}
+                <div className="absolute inset-0 bg-black/80 rounded-full blur-sm transition-all duration-300"></div>
                 <img 
-                  src="/lovable-uploads/a8af37d4-1b48-41f9-bd00-008fbfdb60a8.png" 
+                  src="/lovable-uploads/9a2fc4d0-82f0-46c9-a231-cc9050b9deda.png" 
                   alt="PlataPay Logo" 
                   className="h-12 w-12 relative z-10"
-                  style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.3))' }}
+                  style={{ filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.3))' }}
                 />
               </div>
               <h2 className="text-3xl md:text-4xl font-bold">How to Become a PlataPay Agent</h2>

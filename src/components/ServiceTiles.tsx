@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -40,7 +41,7 @@ const ServiceTiles = () => {
       ctaLink: "/platapay",
       highlight: true,
       isInternalLink: true,
-      logo: "/lovable-uploads/a8af37d4-1b48-41f9-bd00-008fbfdb60a8.png"
+      logo: "/lovable-uploads/9a2fc4d0-82f0-46c9-a231-cc9050b9deda.png"
     },
     {
       id: 2,
@@ -149,13 +150,13 @@ const ServiceTiles = () => {
                 {service.logo ? (
                   <div className="flex items-center mb-4">
                     <div className="relative mr-3">
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-100/40 to-blue-300/20 rounded-full blur-md transition-all duration-300 scale-110"></div>
-                      <div className="absolute inset-0 bg-white/30 rounded-full filter blur-sm transition-all duration-300"></div>
+                      {/* Dark circular background */}
+                      <div className="absolute inset-0 bg-black/80 rounded-full blur-sm transition-all duration-300"></div>
                       <img 
                         src={service.logo} 
                         alt={`${service.title} Logo`} 
                         className="h-12 w-12 relative z-10"
-                        style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.3))' }}
+                        style={{ filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.3))' }}
                       />
                     </div>
                     <h3 className="text-xl font-semibold">{service.title}</h3>

@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Link } from 'react-router-dom';
 
 interface ServiceTile {
   id: number;
@@ -13,6 +14,7 @@ interface ServiceTile {
   ctaText: string;
   ctaLink: string;
   highlight?: boolean;
+  isInternalLink?: boolean;
 }
 
 const ServiceTiles = () => {
@@ -36,7 +38,8 @@ const ServiceTiles = () => {
       color: "bg-gradient-to-br from-innovate-500 to-innovate-700",
       ctaText: "Learn More about PlataPay",
       ctaLink: "/platapay",
-      highlight: true
+      highlight: true,
+      isInternalLink: true
     },
     {
       id: 2,
@@ -166,9 +169,16 @@ const ServiceTiles = () => {
                       ? 'bg-innovate-600 hover:bg-innovate-700' 
                       : 'bg-gray-800 hover:bg-gray-900'
                   } text-white transition-colors`}
-                  asChild
                 >
-                  <a href={service.ctaLink}>{service.ctaText}</a>
+                  {service.isInternalLink ? (
+                    <Link to={service.ctaLink} className="w-full h-full flex items-center justify-center">
+                      {service.ctaText}
+                    </Link>
+                  ) : (
+                    <a href={service.ctaLink} className="w-full h-full flex items-center justify-center">
+                      {service.ctaText}
+                    </a>
+                  )}
                 </Button>
               </div>
             </Card>

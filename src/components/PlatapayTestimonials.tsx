@@ -21,7 +21,7 @@ const PlatapayTestimonials = () => {
       author: "Maria Santos",
       role: "PlataPay Agent",
       location: "Batangas City",
-      image: "/public/lovable-uploads/45881ff2-13a3-4bc4-a639-da000d90c94a.png"
+      image: "/lovable-uploads/45881ff2-13a3-4bc4-a639-da000d90c94a.png"
     },
     {
       id: 2,
@@ -29,7 +29,7 @@ const PlatapayTestimonials = () => {
       author: "Juan Dela Cruz",
       role: "PlataPay User",
       location: "San Pascual",
-      image: "/public/lovable-uploads/2346f5e5-b8ef-42cd-be11-be6d1c85e007.png"
+      image: "/lovable-uploads/e0d195e2-9fce-4899-9cb5-2842af7d93fb.png"
     },
     {
       id: 3,
@@ -37,7 +37,7 @@ const PlatapayTestimonials = () => {
       author: "Elena Reyes",
       role: "Sari-Sari Store Owner & Agent",
       location: "Lemery",
-      image: "/public/lovable-uploads/35a5cc72-be03-4410-879b-3f1ad0ad3b00.png"
+      image: "/lovable-uploads/35a5cc72-be03-4410-879b-3f1ad0ad3b00.png"
     }
   ];
 

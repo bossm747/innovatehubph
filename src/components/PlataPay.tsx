@@ -1,6 +1,61 @@
 
+import React from 'react';
 import { Button } from "@/components/ui/button";
 import CircuitBackground from "./CircuitBackground";
+import { 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+
+interface Partner {
+  id: number;
+  logo: string;
+  name: string;
+}
+
+const FEATURED_PARTNERS: Partner[] = [
+  {
+    id: 1,
+    name: "GCash",
+    logo: "/lovable-uploads/4f756ea6-6648-419a-89f0-06dee6ad1ed6.png"
+  },
+  {
+    id: 2,
+    name: "eCPAY",
+    logo: "/lovable-uploads/11f56e14-e9a9-430c-b0e1-464fdb0fddc4.png"
+  },
+  {
+    id: 3,
+    name: "Maya",
+    logo: "/lovable-uploads/168a523b-1812-45fb-8088-ba72e0c90411.png"
+  },
+  {
+    id: 4,
+    name: "Globe",
+    logo: "/lovable-uploads/bc0779f5-10a8-4d36-b470-9478ddb3ea3f.png"
+  },
+  {
+    id: 5,
+    name: "Smart",
+    logo: "/lovable-uploads/ee574fbf-d6c3-4db3-94b5-ceb02ee20f32.png"
+  },
+  {
+    id: 6,
+    name: "VISA",
+    logo: "/lovable-uploads/2b076737-e1c1-4f95-90c1-ed7befc22280.png"
+  },
+  {
+    id: 7,
+    name: "Mastercard",
+    logo: "/lovable-uploads/0831c807-9c51-4945-b543-6aa09dd81d02.png"
+  },
+  {
+    id: 8,
+    name: "QR Ph",
+    logo: "/lovable-uploads/68eff130-096d-4fd2-80a8-66b17487294d.png"
+  }
+];
 
 const PlataPay = () => {
   return (
@@ -141,6 +196,38 @@ const PlataPay = () => {
               </Button>
             </div>
           </div>
+        </div>
+        
+        {/* Partners logos carousel */}
+        <div className="mt-16 pt-8 border-t border-gray-100">
+          <div className="text-center mb-8">
+            <p className="text-gray-500 text-sm uppercase font-medium tracking-wider">Trusted by the Philippines' Leading Brands</p>
+          </div>
+          
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+              dragFree: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {FEATURED_PARTNERS.map((partner) => (
+                <CarouselItem key={partner.id} className="pl-2 md:pl-4 basis-1/3 md:basis-1/4 lg:basis-1/6">
+                  <div className="h-16 flex items-center justify-center p-2">
+                    <div className="w-12 h-12 bg-white rounded-lg shadow-sm overflow-hidden flex items-center justify-center p-2">
+                      <img 
+                        src={partner.logo} 
+                        alt={partner.name}
+                        className="max-w-full max-h-full object-contain"
+                      />
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         </div>
       </div>
     </section>

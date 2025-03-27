@@ -8,6 +8,7 @@ import PlatapayHero from '@/components/PlatapayHero';
 import PlatapayServices from '@/components/PlatapayServices';
 import PlatapayTestimonials from '@/components/PlatapayTestimonials';
 import PlatapayAgentInfo from '@/components/PlatapayAgentInfo';
+import PlatapayPartners from '@/components/PlatapayPartners';
 
 const PlatapayPage = () => {
   // Add scroll reveal effect
@@ -66,6 +67,7 @@ const PlatapayPage = () => {
       <div className="w-full pt-16">
         <PlatapayHero />
         <PlatapayServices />
+        <PlatapayPartners />
         <PlatapayTestimonials />
         <PlatapayAgentInfo />
         <ContactSection />

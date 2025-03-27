@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -38,7 +39,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden relative">
+    <div className="min-h-screen w-full overflow-x-hidden relative p-0 m-0">
       {/* Main background patterns inspired by InnovateHub.ph */}
       <CircuitBackground 
         pattern="curvy-line" 
@@ -133,7 +134,7 @@ const Index = () => {
       
       {/* Main content with full width sections */}
       <Navbar />
-      <div className="w-full">
+      <div className="w-full p-0 m-0">
         <Hero />
         <Features />
         <AboutUs />

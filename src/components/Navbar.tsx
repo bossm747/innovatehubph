@@ -37,8 +37,8 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center space-x-8">
           <nav className="flex items-center space-x-8">
-            <a href="#home" className="nav-link">Home</a>
-            <a href="#about" className="nav-link">About</a>
+            <Link to="/" className="nav-link">Home</Link>
+            <Link to="/about" className="nav-link">About</Link>
             <a href="#services" className="nav-link">Services</a>
             <a href="#team" className="nav-link">Our Team</a>
             <a href="#contact" className="nav-link">Contact</a>
@@ -73,8 +73,8 @@ const Navbar = () => {
         isMobileMenuOpen ? 'max-h-screen py-4 opacity-100' : 'max-h-0 py-0 opacity-0 overflow-hidden'
       }`}>
         <nav className="flex flex-col space-y-4 px-6">
-          <a href="#home" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
-          <a href="#about" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>About</a>
+          <Link to="/" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+          <Link to="/about" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
           <a href="#services" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Services</a>
           <a href="#team" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Our Team</a>
           <a href="#contact" className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact</a>

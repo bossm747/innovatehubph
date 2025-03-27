@@ -32,8 +32,8 @@ export class FirecrawlService {
     try {
       console.log('Testing API key with Firecrawl API');
       
-      // A simple test request to verify the API key
-      const response = await fetch('https://api.firecrawl.dev/check-auth', {
+      // Use a proper endpoint for testing the API key
+      const response = await fetch('https://api.firecrawl.dev/auth/verify', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${apiKey}`,

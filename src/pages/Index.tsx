@@ -41,7 +41,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen overflow-x-hidden relative">
+    <div className="min-h-screen overflow-x-hidden relative w-full">
       {/* Main background patterns inspired by innovatehub.ph */}
       <CircuitBackground 
         pattern="curvy-line" 
@@ -147,19 +147,21 @@ const Index = () => {
       {/* Website crawler overlay */}
       {showCrawler && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 overflow-auto pt-20 pb-20">
-          <CrawlForm />
+          <CrawlForm initialApiKey="fc-51e4174a541d45eb9d702b3ba806207f" />
         </div>
       )}
       
-      {/* Main content */}
+      {/* Main content with full width sections */}
       <Navbar />
-      <Hero />
-      <Features />
-      <AboutUs />
-      <Services />
-      <TeamSection />
-      <ContactSection />
-      <Footer />
+      <div className="w-full">
+        <Hero />
+        <Features />
+        <AboutUs />
+        <Services />
+        <TeamSection />
+        <ContactSection />
+        <Footer />
+      </div>
     </div>
   );
 };

@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from "@/components/ui/use-toast"; 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +15,10 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ImageIcon, CodeIcon, LayoutIcon, LinkIcon, PaletteIcon } from "lucide-react";
 
+interface CrawlFormProps {
+  initialApiKey?: string;
+}
+
 interface CrawlResult {
   success: boolean;
   status?: string;
@@ -26,7 +29,7 @@ interface CrawlResult {
   data?: any;
 }
 
-export const CrawlForm = () => {
+export const CrawlForm = ({ initialApiKey }: CrawlFormProps) => {
   const { toast } = useToast();
   const [url, setUrl] = useState('https://innovatehub.ph');
   const [apiKey, setApiKey] = useState('');
@@ -35,8 +38,20 @@ export const CrawlForm = () => {
   const [crawlResult, setCrawlResult] = useState<CrawlResult | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
 
-  const handleSetApiKey = async () => {
-    if (!apiKey.trim()) {
+  useEffect(() => {
+    const savedKey = FirecrawlService.getApiKey();
+    if (initialApiKey) {
+      setApiKey(initialApiKey);
+      if (!savedKey) {
+        handleSetApiKey(initialApiKey);
+      }
+    } else if (savedKey) {
+      setApiKey(savedKey);
+    }
+  }, [initialApiKey]);
+
+  const handleSetApiKey = async (keyToSet: string = apiKey) => {
+    if (!keyToSet.trim()) {
       toast({
         title: "Error",
         description: "Please enter a valid API key",
@@ -46,9 +61,9 @@ export const CrawlForm = () => {
     }
 
     try {
-      const isValid = await FirecrawlService.testApiKey(apiKey);
+      const isValid = await FirecrawlService.testApiKey(keyToSet);
       if (isValid) {
-        FirecrawlService.saveApiKey(apiKey);
+        FirecrawlService.saveApiKey(keyToSet);
         toast({
           title: "Success",
           description: "API key saved successfully",
@@ -56,7 +71,7 @@ export const CrawlForm = () => {
       } else {
         toast({
           title: "Error",
-          description: "Invalid API key",
+          description: "Invalid API key or API service is unavailable",
           variant: "destructive",
         });
       }
@@ -78,13 +93,11 @@ export const CrawlForm = () => {
     try {
       const savedApiKey = FirecrawlService.getApiKey();
       if (!savedApiKey) {
-        toast({
-          title: "Error",
-          description: "Please set your API key first",
-          variant: "destructive",
-        });
-        setIsLoading(false);
-        return;
+        await handleSetApiKey();
+        if (!FirecrawlService.getApiKey()) {
+          setIsLoading(false);
+          return;
+        }
       }
 
       console.log('Starting crawl for URL:', url);
@@ -122,7 +135,7 @@ export const CrawlForm = () => {
     }
   };
 
-  const extractImagesFromResult = () => {
+  function extractImagesFromResult() {
     if (!crawlResult?.data?.pages) return [];
     
     const images: string[] = [];
@@ -137,15 +150,14 @@ export const CrawlForm = () => {
     });
     
     return images;
-  };
+  }
 
-  const extractColorsFromResult = () => {
+  function extractColorsFromResult() {
     if (!crawlResult?.data?.pages) return [];
     
     const colors = new Set<string>();
     crawlResult.data.pages.forEach((page: any) => {
       if (page.styles) {
-        // Extract color properties from CSS
         const colorRegex = /#[0-9A-Fa-f]{3,8}|rgba?\([^)]+\)|hsla?\([^)]+\)/g;
         const matches = page.styles.match(colorRegex);
         if (matches) {
@@ -155,7 +167,7 @@ export const CrawlForm = () => {
     });
     
     return Array.from(colors);
-  };
+  }
 
   return (
     <div className="w-full max-w-4xl mx-auto p-6 space-y-8">
@@ -183,7 +195,7 @@ export const CrawlForm = () => {
                 />
               </div>
               <Button 
-                onClick={handleSetApiKey}
+                onClick={() => handleSetApiKey()}
                 className="bg-innovate-600 hover:bg-innovate-700 text-white"
               >
                 Save API Key

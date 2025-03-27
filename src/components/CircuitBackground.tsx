@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface CircuitBackgroundProps {
@@ -6,7 +5,8 @@ interface CircuitBackgroundProps {
   pattern?: 'left' | 'right' | 'bottom' | 'corner' | 'lines' | 'dots' | 'circuit-blue' | 'corner-dots' | 'wave' | 
              'laptop' | 'circuit-lines' | 'circle' | 'dots-grid' | 'triangle' | 'curved-line' | 'arrow' | 'digital-circuit' | 'diagonal' |
              'gradient-triangle' | 'gradient-circle' | 'circuit-simple' | 'angle-right' | 'angle-left' | 'blue-switch' | 'dark-triangle' |
-             'blue-device' | 'blue-cloud' | 'blue-settings';
+             'blue-device' | 'blue-cloud' | 'blue-settings' | 'curvy-line' | 'handshake' | 'blue-wave' | 'ih-logo' | 
+             'circuit-branches' | 'blue-curve' | 'blue-triangle' | 'small-blue-triangle' | 'dotted-grid' | 'tech-circle';
   opacity?: number;
   rotate?: number;
   flipX?: boolean;
@@ -63,7 +63,6 @@ const CircuitBackground: React.FC<CircuitBackgroundProps> = ({
         return "public/lovable-uploads/11c920b6-8f80-407f-9b90-304589379231.png";
       case 'diagonal':
         return "public/lovable-uploads/508dbb7c-7812-431c-9af3-eb4874902930.png";
-      // Adding new patterns from the uploaded images
       case 'circuit-simple':
         return "public/lovable-uploads/4efa4d52-e062-4876-bb34-db38b208d925.png";
       case 'angle-right':
@@ -84,6 +83,28 @@ const CircuitBackground: React.FC<CircuitBackgroundProps> = ({
         return "public/lovable-uploads/d5154064-a4e9-4584-936e-fbe00d0d935e.png";
       case 'gradient-triangle':
         return "public/lovable-uploads/6d28e722-42ae-4e08-a330-f810f8694f61.png";
+      case 'curvy-line':
+        return "public/lovable-uploads/d3161942-4526-4d67-b71b-ff98113136f7.png";
+      case 'handshake':
+        return "public/lovable-uploads/4d5b3eaa-0065-48e8-9976-3931a1836f81.png";
+      case 'blue-wave':
+        return "public/lovable-uploads/81342b57-5480-4e45-8f13-6d31826abff6.png";
+      case 'ih-logo':
+        return "public/lovable-uploads/41923896-2fb4-4137-b3b8-78bb35bbd3e5.png";
+      case 'circuit-branches':
+        return "public/lovable-uploads/5ed80487-00a8-45bc-900e-9dc36009fc5e.png";
+      case 'blue-curve':
+        return "public/lovable-uploads/769542b9-804c-45db-a9db-c4002dd84e1f.png";
+      case 'circuit-lines-horizontal':
+        return "public/lovable-uploads/706dbe13-1f9f-4249-893e-f7d9022624f2.png";
+      case 'blue-triangle':
+        return "public/lovable-uploads/a5f18855-9410-4b02-a4a1-03863fdefeaf.png";
+      case 'small-blue-triangle':
+        return "public/lovable-uploads/f22526ba-7535-4b6a-ac4e-294c574f4b09.png";
+      case 'dotted-grid':
+        return "public/lovable-uploads/9addb438-3989-43cb-8704-f18c72e911ce.png";
+      case 'tech-circle':
+        return "public/lovable-uploads/ff53bb94-04a4-4198-896b-3a71c7adf699.png";
       default:
         return "public/lovable-uploads/e465451c-ac7c-4d41-855b-63954db5d9d8.png";
     }

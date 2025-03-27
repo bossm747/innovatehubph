@@ -127,20 +127,22 @@ const CLIENTS: Client[] = [
 
 const ClientCard = ({ client }: { client: Client }) => {
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl">
-      <div className="p-5 flex flex-col items-center">
-        <div className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full overflow-hidden flex items-center justify-center mb-4 border-2 border-gray-100">
+    <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl h-64 flex flex-col">
+      <div className="p-5 flex flex-col items-center justify-between h-full">
+        <div className="w-24 h-24 bg-white rounded-full overflow-hidden flex items-center justify-center mb-4 border-2 border-gray-100 flex-shrink-0">
           <img 
             src={client.logo} 
             alt={client.name}
             className="w-full h-full object-contain p-2"
           />
         </div>
-        <h3 className="text-lg font-semibold text-center">{client.name}</h3>
-        <p className="text-sm text-gray-500 mb-2">{client.date}</p>
-        <span className={`px-3 py-1 text-xs rounded-full ${getTypeColor(client.type)}`}>
-          {formatType(client.type)}
-        </span>
+        <div className="flex flex-col items-center flex-grow justify-center">
+          <h3 className="text-lg font-semibold text-center mb-2">{client.name}</h3>
+          <p className="text-sm text-gray-500 mb-2">{client.date}</p>
+          <span className={`px-3 py-1 text-xs rounded-full ${getTypeColor(client.type)}`}>
+            {formatType(client.type)}
+          </span>
+        </div>
       </div>
     </div>
   );

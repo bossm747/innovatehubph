@@ -70,18 +70,20 @@ const PlatapayServices = () => {
           {services.map((service, index) => (
             <Card 
               key={index} 
-              className="p-8 hover:shadow-lg transition-all duration-300 border-t-4 border-innovate-500 fade-up"
+              className="p-8 hover:shadow-lg transition-all duration-300 border-t-4 border-innovate-500 fade-up h-[360px] flex flex-col"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="flex flex-col items-center mb-6">
+              <div className="flex flex-col items-center mb-6 flex-shrink-0">
                 <img 
                   src={service.icon} 
                   alt={service.title} 
                   className="h-32 w-auto mb-4 transition-transform hover:scale-105 duration-300"
                 />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-center">{service.title}</h3>
-              <p className="text-gray-600 text-center">{service.description}</p>
+              <div className="flex flex-col flex-grow">
+                <h3 className="text-xl font-semibold mb-3 text-center">{service.title}</h3>
+                <p className="text-gray-600 text-center">{service.description}</p>
+              </div>
             </Card>
           ))}
         </div>

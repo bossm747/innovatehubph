@@ -9,6 +9,7 @@ import PlatapayServices from '@/components/PlatapayServices';
 import PlatapayTestimonials from '@/components/PlatapayTestimonials';
 import PlatapayAgentInfo from '@/components/PlatapayAgentInfo';
 import PlatapayPartners from '@/components/PlatapayPartners';
+import ClientsShowcase from '@/components/ClientsShowcase';
 
 const PlatapayPage = () => {
   // Add scroll reveal effect
@@ -68,6 +69,12 @@ const PlatapayPage = () => {
         <PlatapayHero />
         <PlatapayServices />
         <PlatapayPartners />
+        <ClientsShowcase 
+          title="PlataPay Agent Success Stories" 
+          subtitle="Join these successful PlataPay agents who are transforming their businesses and communities"
+          showFilters={false}
+          maxItems={6}
+        />
         <PlatapayTestimonials />
         <PlatapayAgentInfo />
         <ContactSection />

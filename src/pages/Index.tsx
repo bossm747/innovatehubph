@@ -11,6 +11,7 @@ import TeamSection from '@/components/TeamSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import CircuitBackground from '@/components/CircuitBackground';
+import ClientsShowcase from '@/components/ClientsShowcase';
 
 const Index = () => {
   // Add scroll reveal effect
@@ -139,6 +140,7 @@ const Index = () => {
       <AboutUs />
       <PlataPay />
       <Services />
+      <ClientsShowcase maxItems={8} />
       <Testimonials />
       <TeamSection />
       <ContactSection />

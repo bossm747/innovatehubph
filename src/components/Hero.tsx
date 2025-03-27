@@ -1,5 +1,6 @@
 
 import { Button } from "@/components/ui/button";
+import CircuitBackground from "./CircuitBackground";
 
 const Hero = () => {
   return (
@@ -7,30 +8,36 @@ const Hero = () => {
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-blue-50/80 to-transparent -z-10"></div>
       
-      {/* Circuit board decorative elements */}
-      <div className="absolute top-20 right-0 -z-10">
-        <img 
-          src="public/lovable-uploads/c610c63d-5dbd-44b8-a03d-78a855bac6b4.png" 
-          alt="" 
-          className="w-48 h-auto opacity-30"
-        />
-      </div>
-      <div className="absolute bottom-0 left-0 -z-10">
-        <img 
-          src="public/lovable-uploads/35a5cc72-be03-4410-879b-3f1ad0ad3b00.png" 
-          alt="" 
-          className="w-72 h-auto opacity-30"
-        />
-      </div>
+      {/* Circuit decorative elements using the enhanced component */}
+      <CircuitBackground 
+        pattern="right" 
+        className="top-20 right-0" 
+        size="md"
+        opacity={0.3}
+      />
+      
+      <CircuitBackground 
+        pattern="left" 
+        className="bottom-0 left-0" 
+        size="lg"
+        opacity={0.3}
+      />
       
       {/* Blue wave decorative element */}
-      <div className="absolute top-1/4 right-1/4 -z-10">
-        <img 
-          src="public/lovable-uploads/c3401e6f-08ef-42f9-8cdc-726c1427349c.png" 
-          alt="" 
-          className="w-32 h-auto opacity-20"
-        />
-      </div>
+      <CircuitBackground 
+        pattern="wave" 
+        className="top-1/4 right-1/4" 
+        size="sm"
+        opacity={0.2}
+      />
+      
+      {/* Circuit lines */}
+      <CircuitBackground 
+        pattern="lines" 
+        className="top-1/3 left-20" 
+        size="md"
+        opacity={0.15}
+      />
       
       {/* Decorative elements */}
       <div className="absolute top-32 right-0 w-72 h-72 bg-innovate-200/30 rounded-full blur-3xl -z-10"></div>
@@ -40,13 +47,12 @@ const Hero = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8 animate-fade-in">
             {/* Blue circuit network */}
-            <div className="absolute -left-10 bottom-12 -z-10 opacity-20 lg:opacity-30">
-              <img 
-                src="public/lovable-uploads/1d233b48-79d9-4700-a54c-b847a5451315.png" 
-                alt="" 
-                className="w-32 h-auto"
-              />
-            </div>
+            <CircuitBackground 
+              pattern="circuit-blue" 
+              className="-left-10 bottom-12" 
+              size="sm"
+              opacity={0.3}
+            />
           
             <div className="space-y-4">
               <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full">
@@ -121,13 +127,12 @@ const Hero = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
               
               {/* Circuit board corner decoration */}
-              <div className="absolute top-0 right-0 -z-10">
-                <img 
-                  src="public/lovable-uploads/88144f1c-1a17-4962-a8bd-b785fa59e7d9.png" 
-                  alt="" 
-                  className="w-24 h-auto opacity-40"
-                />
-              </div>
+              <CircuitBackground 
+                pattern="corner" 
+                className="top-0 right-0" 
+                size="sm"
+                opacity={0.4}
+              />
               
               {/* Stats cards floating on the image */}
               <div className="absolute -bottom-8 -left-8 glass-card rounded-xl p-4 animate-float shadow-medium">

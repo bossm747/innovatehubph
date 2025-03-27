@@ -38,23 +38,35 @@ const Index = () => {
 
   return (
     <div className="min-h-screen overflow-x-hidden relative">
-      {/* Circuit background elements */}
-      <div className="fixed top-0 right-0 w-1/3 h-screen -z-20 opacity-5">
-        <img 
-          src="public/lovable-uploads/c482324a-e57b-4e5c-a15a-137cf7868b9a.png" 
-          alt="" 
-          className="h-full object-cover object-left"
-        />
-      </div>
-      <div className="fixed bottom-0 left-0 w-1/3 h-screen -z-20 opacity-5">
-        <img 
-          src="public/lovable-uploads/a4c52ef6-debc-4a07-959f-f5fdc741231e.png" 
-          alt="" 
-          className="h-full object-cover object-right"
-        />
-      </div>
+      {/* Large background circuit patterns */}
+      <CircuitBackground 
+        pattern="right" 
+        className="fixed top-0 right-0" 
+        size="lg" 
+        opacity={0.05} 
+      />
+      <CircuitBackground 
+        pattern="left" 
+        className="fixed bottom-0 left-0" 
+        size="lg" 
+        opacity={0.05} 
+      />
       
-      {/* Switch toggle elements */}
+      {/* Circuit paths at different positions */}
+      <CircuitBackground 
+        pattern="circuit-blue" 
+        className="fixed top-1/4 left-0" 
+        size="md" 
+        opacity={0.2} 
+      />
+      <CircuitBackground 
+        pattern="lines" 
+        className="fixed bottom-1/4 right-0" 
+        size="sm" 
+        opacity={0.3} 
+      />
+      
+      {/* Switch toggle elements - decorative */}
       <div className="fixed top-20 left-4 -z-10 opacity-30 hidden md:block">
         <img 
           src="public/lovable-uploads/aaef245b-56e2-437c-81d7-d753e215eb60.png" 
@@ -81,6 +93,38 @@ const Index = () => {
           src="public/lovable-uploads/b71bb214-0fa4-498f-af3b-d77895ad12c8.png" 
           alt="" 
           className="w-10 h-auto"
+        />
+      </div>
+      
+      {/* Corner backgrounds */}
+      <CircuitBackground 
+        pattern="corner-dots" 
+        className="fixed top-0 right-0" 
+        size="md" 
+        opacity={0.15} 
+      />
+      <CircuitBackground 
+        pattern="corner-dots" 
+        className="fixed bottom-0 left-0" 
+        size="md" 
+        opacity={0.15}
+        flipX={true}
+        flipY={true}
+      />
+      
+      {/* Wave patterns for aesthetics */}
+      <div className="fixed top-0 left-0 -z-20 opacity-10">
+        <img 
+          src="public/lovable-uploads/d51f3d08-0518-4808-af9d-83ddda86ee94.png" 
+          alt="" 
+          className="w-64 h-auto"
+        />
+      </div>
+      <div className="fixed bottom-0 right-0 -z-20 opacity-10">
+        <img 
+          src="public/lovable-uploads/b94823e3-a419-4cb5-9ef6-8e2bafbac686.png" 
+          alt="" 
+          className="w-64 h-auto"
         />
       </div>
       

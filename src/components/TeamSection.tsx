@@ -54,24 +54,64 @@ const TeamMember = ({ name, role, image, delay = 0 }: TeamMemberProps) => (
 const TeamSection = () => {
   const teamMembers = [
     {
-      name: "Maria Santos",
+      name: "Marc Roland Agbay",
+      role: "Chairman of the Board",
+      image: "/lovable-uploads/7e0be886-0190-497f-9eba-eeafd77af074.png"
+    },
+    {
+      name: "Lyn Plata Agbay",
       role: "CEO & Founder",
       image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
     },
     {
-      name: "Juan Reyes",
-      role: "CTO",
+      name: "Venus Pagunsan",
+      role: "Operation & Corporate Relations Manager",
       image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
     },
     {
-      name: "Anna Cruz",
-      role: "Design Director",
+      name: "Maryann Mercado",
+      role: "Admin & Finance Manager",
       image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
     },
     {
-      name: "Miguel Gonzales",
-      role: "Lead Developer",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      name: "Zarah Caparro",
+      role: "Project Manager",
+      image: "https://images.unsplash.com/photo-1589638723387-0c13980ffa35?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      name: "Prince Cano",
+      role: "Marketing Associates",
+      image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      name: "Rico Payoyo",
+      role: "Sales Officer",
+      image: "https://images.unsplash.com/photo-1557862921-37829c790f19?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      name: "Gladys Marco",
+      role: "Marketing Officer",
+      image: "https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      name: "Jonalyn Plata",
+      role: "Finance & Support",
+      image: "https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      name: "Aron",
+      role: "UI Designer & Support",
+      image: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      name: "John Gerald Catague",
+      role: "Back End, Security & Support",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      name: "BITS Solutions",
+      role: "Software DEV Team",
+      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
     }
   ];
 
@@ -87,9 +127,9 @@ const TeamSection = () => {
           <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
             Our Team
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Meet Our Expert Team</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">InnovateHub Management Team</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Our talented team of experts is dedicated to delivering exceptional results for our clients.
+            Meet the talented team behind InnovateHub's success. Our experienced professionals work together to deliver exceptional solutions.
           </p>
         </div>
 

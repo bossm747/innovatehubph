@@ -13,6 +13,8 @@ html, body {
   padding: 0;
   box-sizing: border-box;
   overflow-x: hidden;
+  /* Removing any potential smooth scrolling properties that could cause stuttering */
+  scroll-behavior: auto;
 }
 
 body {

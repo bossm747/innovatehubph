@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -13,7 +14,7 @@ import CircuitBackground from '@/components/CircuitBackground';
 import ClientsShowcase from '@/components/ClientsShowcase';
 
 const Index = () => {
-  // Add scroll reveal effect
+  // Add scroll reveal effect with simpler implementation
   useEffect(() => {
     const handleScroll = () => {
       const fadeElements = document.querySelectorAll('.fade-up');
@@ -31,8 +32,8 @@ const Index = () => {
     // Initial check
     handleScroll();
     
-    // Add scroll event listener
-    window.addEventListener('scroll', handleScroll);
+    // Use passive true for better scroll performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     // Clean up listener
     return () => window.removeEventListener('scroll', handleScroll);

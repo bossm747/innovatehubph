@@ -31,12 +31,20 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
-        <Link to="/" className="flex items-center">
-          <img 
-            src="/lovable-uploads/a63fe766-14df-42eb-aa18-cefb71993afa.png" 
-            alt="InnovateHub Logo" 
-            className="h-10 w-10 mr-2"
-          />
+        <Link to="/" className="flex items-center group">
+          <div className="relative">
+            {/* Background shining element */}
+            <div className="absolute inset-0 bg-gradient-to-r from-innovate-100/40 to-innovate-500/20 rounded-full blur-md group-hover:blur-lg transition-all duration-300 scale-110 group-hover:scale-125"></div>
+            {/* Subtle radial glow */}
+            <div className="absolute inset-0 bg-white/30 rounded-full filter blur-sm group-hover:blur-md transition-all duration-300"></div>
+            {/* Logo with transparent background */}
+            <img 
+              src="/lovable-uploads/a63fe766-14df-42eb-aa18-cefb71993afa.png" 
+              alt="InnovateHub Logo" 
+              className="h-14 w-14 mr-3 relative z-10 transition-transform duration-300 group-hover:scale-105"
+              style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.3))' }}
+            />
+          </div>
           <span className="text-2xl font-display font-bold text-innovate-800 tracking-tight">Innovate<span className="text-innovate-500">Hub</span></span>
         </Link>
 

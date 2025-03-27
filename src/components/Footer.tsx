@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -10,12 +9,16 @@ const Footer = () => {
       <div className="container mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="md:col-span-1">
-            <div className="flex items-center mb-4">
-              <img 
-                src="/lovable-uploads/a63fe766-14df-42eb-aa18-cefb71993afa.png" 
-                alt="InnovateHub Logo" 
-                className="h-12 w-12 mr-2 bg-white rounded-full p-1"
-              />
+            <div className="flex items-center mb-4 group">
+              <div className="relative">
+                <div className="absolute inset-0 bg-innovate-400/20 rounded-full blur-md scale-110"></div>
+                <img 
+                  src="/lovable-uploads/a63fe766-14df-42eb-aa18-cefb71993afa.png" 
+                  alt="InnovateHub Logo" 
+                  className="h-12 w-12 mr-2 relative z-10"
+                  style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.3))' }}
+                />
+              </div>
               <span className="text-xl font-display font-bold">
                 Innovate<span className="text-innovate-400">Hub</span>
               </span>
@@ -99,7 +102,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-innovate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 019-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                 </svg>
                 <span className="text-gray-400">innovatehub.ph</span>
               </li>

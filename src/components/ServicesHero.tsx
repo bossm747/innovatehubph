@@ -26,14 +26,17 @@ const ServicesHero = () => {
         </div>
       </div>
       
-      {/* Hero image */}
-      <div className="mt-16 relative max-w-6xl mx-auto overflow-hidden rounded-xl shadow-medium">
-        <img 
-          src="/lovable-uploads/d51f3d08-0518-4808-af9d-83ddda86ee94.png" 
-          alt="InnovateHub Services" 
-          className="w-full h-auto"
-        />
-        <div className="absolute inset-0 bg-innovate-900/10"></div>
+      {/* Hero image with enhanced styling */}
+      <div className="mt-16 relative max-w-6xl mx-auto">
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-innovate-300/10 to-innovate-500/10 rounded-xl blur-xl transform scale-105"></div>
+        <div className="overflow-hidden rounded-xl shadow-medium relative">
+          <img 
+            src="/lovable-uploads/d51f3d08-0518-4808-af9d-83ddda86ee94.png" 
+            alt="InnovateHub Services" 
+            className="w-full h-auto relative z-10"
+          />
+          <div className="absolute inset-0 bg-innovate-900/10 z-20"></div>
+        </div>
       </div>
     </section>
   );

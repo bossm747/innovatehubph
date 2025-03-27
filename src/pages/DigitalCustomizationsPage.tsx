@@ -4,13 +4,13 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ContactSection from '@/components/ContactSection';
 import CircuitBackground from '@/components/CircuitBackground';
-import { Cpu, ArrowRight, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Toaster } from 'sonner';
+import { Card } from '@/components/ui/card';
+import { ArrowRight, Code, Cpu, Database, GitBranch, GitMerge, GitPullRequest, Layers, Settings, Terminal } from 'lucide-react';
 import { toast } from 'sonner';
 
 const DigitalCustomizationsPage = () => {
-  // Scroll reveal effect
+  // Add scroll reveal effect
   useEffect(() => {
     const handleScroll = () => {
       const fadeElements = document.querySelectorAll('.fade-up');
@@ -35,24 +35,83 @@ const DigitalCustomizationsPage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const customSolutions = [
+    {
+      title: "Custom Software Development",
+      description: "Tailored software solutions designed to meet the unique needs of your business, from concept to deployment.",
+      icon: <Code className="h-10 w-10" />,
+      benefits: [
+        "Perfectly aligned with your business processes",
+        "Scalable as your business grows",
+        "Exclusive to your organization",
+        "Enhanced competitive advantage"
+      ]
+    },
+    {
+      title: "Business Model Development",
+      description: "Strategic development and implementation of innovative business models to transform your operations.",
+      icon: <Layers className="h-10 w-10" />,
+      benefits: [
+        "Revenue stream diversification",
+        "Market disruption strategies",
+        "Cost optimization frameworks",
+        "Long-term growth planning"
+      ]
+    },
+    {
+      title: "Strategic IT Consulting",
+      description: "Expert guidance on leveraging technology to solve business challenges and achieve strategic objectives.",
+      icon: <Settings className="h-10 w-10" />,
+      benefits: [
+        "Technology roadmapping",
+        "Digital transformation strategy",
+        "IT infrastructure assessment",
+        "Security and compliance planning"
+      ]
+    },
+    {
+      title: "Digital Transformation",
+      description: "Comprehensive services to help organizations evolve their business practices through digital technology.",
+      icon: <GitBranch className="h-10 w-10" />,
+      benefits: [
+        "Process automation",
+        "Legacy system modernization",
+        "Data-driven decision making",
+        "Enhanced customer experiences"
+      ]
+    },
+    {
+      title: "System Integration",
+      description: "Seamless connection of disparate systems and data sources to create a unified technology ecosystem.",
+      icon: <GitMerge className="h-10 w-10" />,
+      benefits: [
+        "Streamlined workflows",
+        "Eliminated data silos",
+        "Improved operational efficiency",
+        "Enhanced data visibility"
+      ]
+    },
+    {
+      title: "Database Solutions",
+      description: "Design, development and optimization of database systems to effectively manage your business data.",
+      icon: <Database className="h-10 w-10" />,
+      benefits: [
+        "Optimized data storage",
+        "Improved data retrieval speed",
+        "Data security enhancements",
+        "Scalable architecture"
+      ]
+    }
+  ];
+
   return (
     <div className="min-h-screen w-full overflow-x-hidden relative bg-gradient-to-b from-gray-50 to-white">
-      <Toaster position="top-right" />
-      
       {/* Background patterns */}
       <CircuitBackground 
         pattern="curvy-line" 
         className="fixed top-0 right-0" 
         size="lg" 
         opacity={0.1} 
-        color="primary"
-      />
-      
-      <CircuitBackground 
-        pattern="blue-curve" 
-        className="fixed -bottom-40 -left-40" 
-        size="xl" 
-        opacity={0.2} 
         color="primary"
       />
       
@@ -65,259 +124,175 @@ const DigitalCustomizationsPage = () => {
       
       {/* Main content */}
       <Navbar />
+      
       <main className="w-full pt-16">
         {/* Hero Section */}
-        <section className="relative py-28 px-6 md:px-12 lg:px-24 bg-gradient-to-r from-purple-500/10 to-indigo-700/10 overflow-hidden">
+        <section className="relative py-28 px-6 md:px-12 lg:px-24 overflow-hidden">
           <div className="container mx-auto">
-            <div className="max-w-4xl mx-auto text-center relative z-10">
-              <span className="inline-block px-4 py-1.5 text-sm font-medium bg-purple-100 text-purple-800 rounded-full mb-6 animate-fade-in shadow-sm">
-                Digital Solutions
-              </span>
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-indigo-700 animate-fade-in" style={{ animationDelay: '100ms' }}>
-                Digital Customizations
-              </h1>
-              <p className="text-xl md:text-2xl font-light text-gray-600 mb-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
-                Tailored Digital Solutions for Your Business
-              </p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="max-w-4xl mx-auto lg:mx-0 relative z-10">
+                <span className="inline-block px-4 py-1.5 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-6 animate-fade-in shadow-sm">
+                  Digital Customizations
+                </span>
+                <h1 className="text-5xl md:text-6xl font-bold mb-6 hero-text-gradient animate-fade-in" style={{ animationDelay: '100ms' }}>
+                  Tailored Digital Solutions
+                </h1>
+                <p className="text-xl md:text-2xl font-light text-gray-600 mb-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
+                  Custom software, business model development, and strategic IT consulting for your organization's unique needs.
+                </p>
+                
+                <div className="flex flex-wrap gap-4 animate-fade-in" style={{ animationDelay: '300ms' }}>
+                  <Button 
+                    size="lg" 
+                    className="bg-innovate-600 hover:bg-innovate-700 text-white btn-shine shadow-md hover:shadow-lg"
+                    onClick={() => {
+                      toast.success("Request sent", {
+                        description: "We'll get back to you shortly to discuss your digital customization needs."
+                      });
+                    }}
+                  >
+                    Request a Consultation
+                  </Button>
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    className="border-innovate-200 text-innovate-700 hover:bg-innovate-50"
+                    onClick={() => {
+                      document.getElementById('solutions')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    Explore Solutions
+                  </Button>
+                </div>
+              </div>
               
-              <div className="flex justify-center gap-4 animate-fade-in" style={{ animationDelay: '300ms' }}>
-                <Button 
-                  size="lg" 
-                  className="bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-                  onClick={() => {
-                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  Get Started
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="lg" 
-                  className="border-purple-200 text-purple-700 hover:bg-purple-50 shadow-sm"
-                  onClick={() => {
-                    toast.success("Demo request sent", {
-                      description: "We'll contact you shortly with more information."
-                    });
-                  }}
-                >
-                  Request a Demo
-                </Button>
+              <div className="relative mx-auto max-w-md lg:max-w-full">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-300/20 to-indigo-400/20 rounded-xl blur-2xl transform scale-110"></div>
+                <div className="relative z-10">
+                  <img 
+                    src="/lovable-uploads/450bb043-23a9-4c77-9e82-8f9a75db1746.png" 
+                    alt="Digital Customizations Illustration" 
+                    className="w-full h-auto transform hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
               </div>
             </div>
           </div>
-          
-          {/* Background decorative elements */}
-          <div className="absolute top-20 left-20 w-64 h-64 bg-purple-300/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-80 h-80 bg-indigo-400/20 rounded-full blur-3xl"></div>
-          
-          {/* Hero image */}
-          <div className="mt-20 relative max-w-6xl mx-auto overflow-visible">
-            <div className="absolute inset-0 -z-10 bg-gradient-to-r from-purple-300/20 to-indigo-500/20 rounded-xl blur-2xl transform scale-110"></div>
-            <div className="overflow-hidden rounded-xl shadow-2xl relative border border-white/20 transition-all duration-500 hover:shadow-purple-500/20">
-              <img 
-                src="/lovable-uploads/a2eb57ca-42be-4d9e-9770-cd7f0b98796c.png" 
-                alt="Digital Customizations" 
-                className="w-full h-auto relative z-10 transform transition-transform duration-700 hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-purple-900/30 to-transparent z-20"></div>
-            </div>
-          </div>
         </section>
         
-        {/* Features Section */}
-        <section className="py-20 px-6 md:px-12 bg-white">
+        {/* Main Solutions Section */}
+        <section id="solutions" className="py-20 px-6 md:px-12">
           <div className="container mx-auto">
             <div className="text-center mb-16 fade-up">
               <span className="inline-block px-3 py-1 text-sm font-medium bg-purple-100 text-purple-800 rounded-full mb-4">
-                Our Approach
+                Our Solutions
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Customized Digital Solutions</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Comprehensive Digital Customization Services</h2>
               <p className="text-gray-600 max-w-3xl mx-auto">
-                Our digital customization services are designed to help your business thrive in the 
-                digital landscape with tailored solutions that meet your specific needs.
+                We develop tailored digital solutions that align perfectly with your business needs, 
+                creating custom software that helps you operate more efficiently and effectively.
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {[
-                {
-                  icon: <Cpu className="h-10 w-10" />,
-                  title: "Custom Software",
-                  description: "Bespoke software solutions designed specifically for your business needs and processes."
-                },
-                {
-                  icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                  </svg>,
-                  title: "Business Model Development",
-                  description: "Strategic planning and implementation of digital business models for sustainable growth."
-                },
-                {
-                  icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-                  </svg>,
-                  title: "Strategic IT Consulting",
-                  description: "Expert advice on technology selection, implementation, and management."
-                },
-                {
-                  icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>,
-                  title: "Digital Transformation",
-                  description: "End-to-end transformation of your business operations using digital technologies."
-                },
-                {
-                  icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>,
-                  title: "System Integration",
-                  description: "Seamless integration of different software systems to ensure smooth operation."
-                },
-                {
-                  icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>,
-                  title: "Security Solutions",
-                  description: "Implementation of robust security measures to protect your digital assets."
-                }
-              ].map((feature, index) => (
-                <div 
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {customSolutions.map((solution, index) => (
+                <Card 
                   key={index} 
-                  className="bg-white p-8 rounded-xl shadow-soft border border-gray-100 hover:shadow-md transition-all duration-300 fade-up"
+                  className="p-8 hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-purple-200 fade-up"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 text-white bg-gradient-to-r from-purple-500 to-indigo-700 shadow-md">
-                    {feature.icon}
+                  <div className="text-purple-600 mb-4 w-16 h-16 rounded-xl flex items-center justify-center bg-purple-100">
+                    {solution.icon}
                   </div>
-                  <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
-                </div>
+                  <h3 className="text-xl font-semibold mb-3">{solution.title}</h3>
+                  <p className="text-gray-600 mb-6">{solution.description}</p>
+                  
+                  <div className="mb-6">
+                    <h4 className="text-sm font-semibold text-gray-700 mb-3">Key Benefits:</h4>
+                    <ul className="space-y-2">
+                      {solution.benefits.map((benefit, idx) => (
+                        <li key={idx} className="flex items-start">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-purple-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                          <span className="ml-2 text-gray-700">{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  <Button 
+                    variant="link" 
+                    className="text-purple-600 hover:text-purple-800 p-0 h-auto flex items-center"
+                    onClick={() => {
+                      toast.success(`Learn more about ${solution.title}`, {
+                        description: "We'll share detailed information about this service."
+                      });
+                    }}
+                  >
+                    Learn More
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Card>
               ))}
             </div>
           </div>
         </section>
         
-        {/* Case Studies Section */}
+        {/* Our Process Section */}
         <section className="py-20 px-6 md:px-12 bg-gray-50">
           <div className="container mx-auto">
             <div className="text-center mb-16 fade-up">
-              <span className="inline-block px-3 py-1 text-sm font-medium bg-purple-100 text-purple-800 rounded-full mb-4">
-                Success Stories
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Our Digital Transformation Case Studies</h2>
-              <p className="text-gray-600 max-w-3xl mx-auto">
-                See how our digital customization solutions have helped businesses across different industries.
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              {[
-                {
-                  title: "Financial Services App Modernization",
-                  description: "Helped a financial institution modernize their legacy systems, resulting in 30% faster transaction processing and improved customer satisfaction.",
-                  image: "/lovable-uploads/c482324a-e57b-4e5c-a15a-137cf7868b9a.png"
-                },
-                {
-                  title: "Healthcare Provider Digital Transformation",
-                  description: "Implemented a custom patient management system that reduced administrative workload by 45% and improved patient care coordination.",
-                  image: "/lovable-uploads/706dbe13-1f9f-4249-893e-f7d9022624f2.png"
-                }
-              ].map((caseStudy, index) => (
-                <div 
-                  key={index} 
-                  className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 fade-up"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <div className="relative h-60">
-                    <img 
-                      src={caseStudy.image} 
-                      alt={caseStudy.title} 
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <h3 className="absolute bottom-0 left-0 text-white text-xl font-semibold p-6">{caseStudy.title}</h3>
-                  </div>
-                  <div className="p-6">
-                    <p className="text-gray-600 mb-4">{caseStudy.description}</p>
-                    <Button 
-                      variant="link" 
-                      className="text-purple-600 hover:text-purple-800 p-0 h-auto flex items-center"
-                      onClick={() => {
-                        toast.info("Case study details", {
-                          description: "Full case study coming soon. Contact us for more information."
-                        });
-                      }}
-                    >
-                      Read Full Case Study
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-        
-        {/* Process Section */}
-        <section className="py-20 px-6 md:px-12 bg-white">
-          <div className="container mx-auto">
-            <div className="text-center mb-16 fade-up">
-              <span className="inline-block px-3 py-1 text-sm font-medium bg-purple-100 text-purple-800 rounded-full mb-4">
+              <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
                 Our Process
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">How We Work</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">How We Develop Your Custom Solution</h2>
               <p className="text-gray-600 max-w-3xl mx-auto">
-                Our structured approach ensures we deliver digital customization solutions that perfectly match your business needs.
+                Our systematic approach ensures we deliver high-quality custom digital solutions 
+                that perfectly match your business requirements.
               </p>
             </div>
             
-            <div className="relative max-w-4xl mx-auto">
-              {/* Line connecting steps */}
-              <div className="absolute left-[38px] top-0 bottom-0 w-1 bg-gradient-to-b from-purple-500 to-indigo-700 ml-px hidden md:block"></div>
-              
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {[
                 {
+                  step: "01",
                   title: "Discovery & Analysis",
-                  description: "We start by understanding your business, challenges, and objectives through in-depth consultation."
+                  description: "We start by understanding your business needs, challenges, and objectives through in-depth consultation.",
+                  icon: <GitPullRequest className="h-8 w-8" />
                 },
                 {
+                  step: "02",
                   title: "Solution Design",
-                  description: "Our experts design a customized digital solution tailored to your specific requirements."
+                  description: "Our team creates a detailed blueprint for your custom solution, including architecture and user experience.",
+                  icon: <Layers className="h-8 w-8" />
                 },
                 {
-                  title: "Development & Integration",
-                  description: "We develop the solution and integrate it seamlessly with your existing systems."
+                  step: "03",
+                  title: "Development",
+                  description: "We build your solution using modern technologies and following industry best practices.",
+                  icon: <Terminal className="h-8 w-8" />
                 },
                 {
-                  title: "Testing & Quality Assurance",
-                  description: "Rigorous testing ensures the solution is robust, secure, and performs optimally."
-                },
-                {
-                  title: "Deployment & Training",
-                  description: "We deploy the solution and provide comprehensive training to your team."
-                },
-                {
-                  title: "Ongoing Support & Optimization",
-                  description: "Our relationship continues with ongoing support and continuous optimization."
+                  step: "04",
+                  title: "Testing & Deployment",
+                  description: "Rigorous testing ensures your solution works flawlessly before we help you implement it in your environment.",
+                  icon: <Cpu className="h-8 w-8" />
                 }
-              ].map((step, index) => (
+              ].map((phase, index) => (
                 <div 
                   key={index} 
-                  className="flex items-start mb-10 fade-up"
+                  className="relative p-6 bg-white rounded-xl shadow-sm border border-gray-100 fade-up"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="flex-shrink-0 relative">
-                    <div className="w-20 h-20 rounded-full bg-gradient-to-r from-purple-500 to-indigo-700 flex items-center justify-center text-white font-bold text-xl z-10 relative">
-                      {index + 1}
-                    </div>
-                    <div className="absolute inset-0 rounded-full bg-purple-500 blur-md opacity-30 transform scale-110"></div>
+                  <div className="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-sm">
+                    {phase.step}
                   </div>
-                  <div className="ml-6 pt-2">
-                    <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                    <p className="text-gray-600">{step.description}</p>
+                  <div className="mt-4 mb-4 p-4 bg-purple-50 rounded-lg inline-block text-purple-600">
+                    {phase.icon}
                   </div>
+                  <h3 className="text-xl font-semibold mb-3">{phase.title}</h3>
+                  <p className="text-gray-600">{phase.description}</p>
                 </div>
               ))}
             </div>
@@ -325,34 +300,42 @@ const DigitalCustomizationsPage = () => {
         </section>
         
         {/* CTA Section */}
-        <section className="py-20 px-6 md:px-12 bg-gradient-to-r from-purple-500 to-indigo-700 text-white">
-          <div className="container mx-auto max-w-4xl text-center fade-up">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Business?</h2>
-            <p className="text-white/80 text-lg mb-10 max-w-3xl mx-auto">
-              Let's create customized digital solutions that drive growth, efficiency, and innovation for your business.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
-                className="bg-white text-purple-700 hover:bg-gray-100 shadow-lg hover:shadow-xl transition-all duration-300"
-                onClick={() => {
-                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-              >
-                Get Started Now
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="border-white/30 text-white hover:bg-white/10"
-                onClick={() => {
-                  toast.success("Demo request sent", {
-                    description: "We'll contact you shortly with more information."
-                  });
-                }}
-              >
-                Request a Custom Demo
-              </Button>
+        <section className="py-24 px-6 md:px-12 bg-gradient-to-r from-purple-900 to-indigo-800 text-white">
+          <div className="container mx-auto">
+            <div className="max-w-4xl mx-auto text-center fade-up">
+              <span className="inline-block px-4 py-1.5 text-sm font-medium bg-white/20 text-white rounded-full mb-6">
+                Get Started
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Business?</h2>
+              <p className="text-xl opacity-90 mb-10 max-w-2xl mx-auto">
+                Let's discuss how our digital customization services can help your business overcome challenges and achieve growth.
+              </p>
+              
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button 
+                  size="lg" 
+                  className="bg-white text-purple-900 hover:bg-gray-100 btn-shine"
+                  onClick={() => {
+                    toast.success("Contact form opened", {
+                      description: "Fill out the form below to get in touch with our team."
+                    });
+                  }}
+                >
+                  Schedule a Consultation
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="border-white text-white hover:bg-white/10"
+                  onClick={() => {
+                    toast.success("Portfolio request sent", {
+                      description: "We'll send you our digital customization portfolio shortly."
+                    });
+                  }}
+                >
+                  View Our Portfolio
+                </Button>
+              </div>
             </div>
           </div>
         </section>

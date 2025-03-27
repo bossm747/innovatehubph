@@ -4,13 +4,13 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ContactSection from '@/components/ContactSection';
 import CircuitBackground from '@/components/CircuitBackground';
-import { Bot, ArrowRight, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Toaster } from 'sonner';
+import { Card } from '@/components/ui/card';
+import { ArrowRight, Bot, Brain, ChartBar, Cog, LineChart, MessageSquare, Cpu, Database, Workflow } from 'lucide-react';
 import { toast } from 'sonner';
 
 const AiSolutionsPage = () => {
-  // Scroll reveal effect
+  // Add scroll reveal effect
   useEffect(() => {
     const handleScroll = () => {
       const fadeElements = document.querySelectorAll('.fade-up');
@@ -35,24 +35,83 @@ const AiSolutionsPage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const aiSolutions = [
+    {
+      title: "Intelligent Chatbots",
+      description: "Custom AI chatbots that engage customers, answer questions, and provide personalized assistance 24/7.",
+      icon: <MessageSquare className="h-10 w-10" />,
+      applications: [
+        "Customer service automation",
+        "Lead qualification",
+        "Internal employee support",
+        "Multi-channel deployment"
+      ]
+    },
+    {
+      title: "Predictive Analytics",
+      description: "Advanced data analysis that forecasts trends, customer behavior, and business outcomes to inform strategic decisions.",
+      icon: <LineChart className="h-10 w-10" />,
+      applications: [
+        "Sales forecasting",
+        "Inventory optimization",
+        "Customer churn prediction",
+        "Market trend analysis"
+      ]
+    },
+    {
+      title: "Process Automation",
+      description: "AI-powered solutions that streamline workflows, eliminate repetitive tasks, and improve operational efficiency.",
+      icon: <Workflow className="h-10 w-10" />,
+      applications: [
+        "Document processing",
+        "Approval workflows",
+        "Data entry automation",
+        "Quality control processes"
+      ]
+    },
+    {
+      title: "Machine Learning Models",
+      description: "Custom ML models that learn from your data to make predictions, identify patterns, and generate valuable insights.",
+      icon: <Brain className="h-10 w-10" />,
+      applications: [
+        "Image and voice recognition",
+        "Recommendation engines",
+        "Fraud detection systems",
+        "Natural language processing"
+      ]
+    },
+    {
+      title: "Data Processing",
+      description: "Comprehensive solutions for collecting, cleaning, and transforming large datasets to extract actionable insights.",
+      icon: <Database className="h-10 w-10" />,
+      applications: [
+        "Big data integration",
+        "Real-time data processing",
+        "Sentiment analysis",
+        "Data visualization"
+      ]
+    },
+    {
+      title: "AI Integration",
+      description: "Seamless incorporation of AI capabilities into your existing systems and applications to enhance functionality.",
+      icon: <Cog className="h-10 w-10" />,
+      applications: [
+        "Legacy system enhancement",
+        "API-based AI services",
+        "Third-party AI platform integration",
+        "Custom middleware development"
+      ]
+    }
+  ];
+
   return (
     <div className="min-h-screen w-full overflow-x-hidden relative bg-gradient-to-b from-gray-50 to-white">
-      <Toaster position="top-right" />
-      
       {/* Background patterns */}
       <CircuitBackground 
         pattern="curvy-line" 
         className="fixed top-0 right-0" 
         size="lg" 
         opacity={0.1} 
-        color="primary"
-      />
-      
-      <CircuitBackground 
-        pattern="blue-curve" 
-        className="fixed -bottom-40 -left-40" 
-        size="xl" 
-        opacity={0.2} 
         color="primary"
       />
       
@@ -65,282 +124,116 @@ const AiSolutionsPage = () => {
       
       {/* Main content */}
       <Navbar />
+      
       <main className="w-full pt-16">
         {/* Hero Section */}
-        <section className="relative py-28 px-6 md:px-12 lg:px-24 bg-gradient-to-r from-amber-500/10 to-orange-700/10 overflow-hidden">
+        <section className="relative py-28 px-6 md:px-12 lg:px-24 overflow-hidden">
           <div className="container mx-auto">
-            <div className="max-w-4xl mx-auto text-center relative z-10">
-              <span className="inline-block px-4 py-1.5 text-sm font-medium bg-amber-100 text-amber-800 rounded-full mb-6 animate-fade-in shadow-sm">
-                AI-Powered Solutions
-              </span>
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-orange-700 animate-fade-in" style={{ animationDelay: '100ms' }}>
-                AI Solutions
-              </h1>
-              <p className="text-xl md:text-2xl font-light text-gray-600 mb-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
-                Intelligent Automation for Business Growth
-              </p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="max-w-4xl mx-auto lg:mx-0 relative z-10">
+                <span className="inline-block px-4 py-1.5 text-sm font-medium bg-amber-100 text-amber-800 rounded-full mb-6 animate-fade-in shadow-sm">
+                  AI Solutions
+                </span>
+                <h1 className="text-5xl md:text-6xl font-bold mb-6 hero-text-gradient animate-fade-in" style={{ animationDelay: '100ms' }}>
+                  Intelligent Automation for Business Growth
+                </h1>
+                <p className="text-xl md:text-2xl font-light text-gray-600 mb-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
+                  Leverage the power of artificial intelligence to optimize operations, enhance customer experiences, and drive innovation.
+                </p>
+                
+                <div className="flex flex-wrap gap-4 animate-fade-in" style={{ animationDelay: '300ms' }}>
+                  <Button 
+                    size="lg" 
+                    className="bg-amber-600 hover:bg-amber-700 text-white btn-shine shadow-md hover:shadow-lg"
+                    onClick={() => {
+                      toast.success("Request sent", {
+                        description: "We'll get back to you shortly to discuss your AI solution needs."
+                      });
+                    }}
+                  >
+                    Explore AI Solutions
+                  </Button>
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    className="border-amber-200 text-amber-700 hover:bg-amber-50"
+                    onClick={() => {
+                      document.getElementById('ai-solutions')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    View Solutions
+                  </Button>
+                </div>
+              </div>
               
-              <div className="flex justify-center gap-4 animate-fade-in" style={{ animationDelay: '300ms' }}>
-                <Button 
-                  size="lg" 
-                  className="bg-amber-600 hover:bg-amber-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-                  onClick={() => {
-                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  Get Started
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="lg" 
-                  className="border-amber-200 text-amber-700 hover:bg-amber-50 shadow-sm"
-                  onClick={() => {
-                    toast.success("Demo request sent", {
-                      description: "We'll contact you shortly with more information."
-                    });
-                  }}
-                >
-                  Request a Demo
-                </Button>
+              <div className="relative mx-auto max-w-md lg:max-w-full">
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-300/20 to-orange-400/20 rounded-xl blur-2xl transform scale-110"></div>
+                <div className="relative z-10">
+                  <img 
+                    src="/lovable-uploads/67bb969b-4b34-4a3e-af05-aa8eb09b6cd9.png" 
+                    alt="AI Solutions Illustration" 
+                    className="w-full h-auto transform hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
               </div>
             </div>
           </div>
-          
-          {/* Background decorative elements */}
-          <div className="absolute top-20 left-20 w-64 h-64 bg-amber-300/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-80 h-80 bg-orange-400/20 rounded-full blur-3xl"></div>
-          
-          {/* Hero image */}
-          <div className="mt-20 relative max-w-6xl mx-auto overflow-visible">
-            <div className="absolute inset-0 -z-10 bg-gradient-to-r from-amber-300/20 to-orange-500/20 rounded-xl blur-2xl transform scale-110"></div>
-            <div className="overflow-hidden rounded-xl shadow-2xl relative border border-white/20 transition-all duration-500 hover:shadow-amber-500/20">
-              <img 
-                src="/lovable-uploads/2992c718-ef43-4ea4-8209-8ac48cc7cc87.png" 
-                alt="AI Solutions" 
-                className="w-full h-auto relative z-10 transform transition-transform duration-700 hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-amber-900/30 to-transparent z-20"></div>
-            </div>
-          </div>
         </section>
         
-        {/* Features Section */}
-        <section className="py-20 px-6 md:px-12 bg-white">
+        {/* AI Solutions Section */}
+        <section id="ai-solutions" className="py-20 px-6 md:px-12">
           <div className="container mx-auto">
             <div className="text-center mb-16 fade-up">
               <span className="inline-block px-3 py-1 text-sm font-medium bg-amber-100 text-amber-800 rounded-full mb-4">
-                AI Capabilities
+                Our AI Solutions
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Our AI-Powered Solutions</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Intelligent Solutions for Modern Businesses</h2>
               <p className="text-gray-600 max-w-3xl mx-auto">
-                We leverage the power of artificial intelligence to enhance business operations, improve decision-making, and create innovative customer experiences.
+                We develop custom AI solutions that solve real business problems, automate processes, 
+                and provide valuable insights from your data.
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {[
-                {
-                  icon: <Bot className="h-10 w-10" />,
-                  title: "Chatbots & Virtual Assistants",
-                  description: "Intelligent conversational agents that provide 24/7 customer support and streamline internal processes."
-                },
-                {
-                  icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>,
-                  title: "Predictive Analytics",
-                  description: "Data-driven insights that forecast trends, customer behavior, and business outcomes."
-                },
-                {
-                  icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                  </svg>,
-                  title: "Process Automation",
-                  description: "Smart automation solutions that eliminate repetitive tasks and optimize workflow efficiency."
-                },
-                {
-                  icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>,
-                  title: "Machine Learning Models",
-                  description: "Custom algorithms that learn from your data to solve specific business challenges."
-                },
-                {
-                  icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                  </svg>,
-                  title: "Natural Language Processing",
-                  description: "Technology that understands and generates human language for content analysis and creation."
-                },
-                {
-                  icon: <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>,
-                  title: "Computer Vision",
-                  description: "Visual recognition systems for image analysis, object detection, and quality control."
-                }
-              ].map((feature, index) => (
-                <div 
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {aiSolutions.map((solution, index) => (
+                <Card 
                   key={index} 
-                  className="bg-white p-8 rounded-xl shadow-soft border border-gray-100 hover:shadow-md transition-all duration-300 fade-up"
+                  className="p-8 hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-amber-200 fade-up"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 text-white bg-gradient-to-r from-amber-500 to-orange-700 shadow-md">
-                    {feature.icon}
+                  <div className="text-amber-600 mb-4 w-16 h-16 rounded-xl flex items-center justify-center bg-amber-100">
+                    {solution.icon}
                   </div>
-                  <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-        
-        {/* Use Cases Section */}
-        <section className="py-20 px-6 md:px-12 bg-gray-50">
-          <div className="container mx-auto">
-            <div className="text-center mb-16 fade-up">
-              <span className="inline-block px-3 py-1 text-sm font-medium bg-amber-100 text-amber-800 rounded-full mb-4">
-                Industry Applications
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">AI Solutions for Every Industry</h2>
-              <p className="text-gray-600 max-w-3xl mx-auto">
-                Discover how our AI solutions can transform various industries and business functions.
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {[
-                {
-                  industry: "Financial Services",
-                  description: "Fraud detection, risk assessment, algorithmic trading, and personalized financial advice.",
-                  image: "/lovable-uploads/c482324a-e57b-4e5c-a15a-137cf7868b9a.png"
-                },
-                {
-                  industry: "Healthcare",
-                  description: "Diagnostic assistance, patient monitoring, treatment recommendations, and medical research.",
-                  image: "/lovable-uploads/706dbe13-1f9f-4249-893e-f7d9022624f2.png"
-                },
-                {
-                  industry: "Retail",
-                  description: "Inventory forecasting, personalized recommendations, pricing optimization, and customer segmentation.",
-                  image: "/lovable-uploads/3113cd1e-8a6f-4c4b-b8a8-c7e24d9aa394.png"
-                },
-                {
-                  industry: "Manufacturing",
-                  description: "Predictive maintenance, quality control, supply chain optimization, and production planning.",
-                  image: "/lovable-uploads/c6d34d14-93e3-4090-8fe9-051cd0488981.png"
-                },
-                {
-                  industry: "Customer Service",
-                  description: "Intelligent chatbots, sentiment analysis, customer journey optimization, and support automation.",
-                  image: "/lovable-uploads/2992c718-ef43-4ea4-8209-8ac48cc7cc87.png"
-                },
-                {
-                  industry: "Marketing",
-                  description: "Campaign optimization, content generation, customer targeting, and performance prediction.",
-                  image: "/lovable-uploads/a2eb57ca-42be-4d9e-9770-cd7f0b98796c.png"
-                }
-              ].map((useCase, index) => (
-                <div 
-                  key={index} 
-                  className="rounded-xl overflow-hidden shadow-soft hover:shadow-md transition-all duration-300 bg-white fade-up"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <div className="h-48 overflow-hidden">
-                    <img 
-                      src={useCase.image} 
-                      alt={useCase.industry} 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold mb-3">{useCase.industry}</h3>
-                    <p className="text-gray-600 mb-4">{useCase.description}</p>
-                    <Button 
-                      variant="link" 
-                      className="text-amber-600 hover:text-amber-800 p-0 h-auto flex items-center"
-                      onClick={() => {
-                        toast.info(`${useCase.industry} AI Solutions`, {
-                          description: "Contact us for more information about our specialized AI solutions for this industry."
-                        });
-                      }}
-                    >
-                      Learn More
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-        
-        {/* How It Works Section */}
-        <section className="py-20 px-6 md:px-12 bg-white">
-          <div className="container mx-auto">
-            <div className="text-center mb-16 fade-up">
-              <span className="inline-block px-3 py-1 text-sm font-medium bg-amber-100 text-amber-800 rounded-full mb-4">
-                Our Approach
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">How We Implement AI Solutions</h2>
-              <p className="text-gray-600 max-w-3xl mx-auto">
-                Our structured methodology ensures successful AI integration that delivers real business value.
-              </p>
-            </div>
-            
-            <div className="relative max-w-5xl mx-auto">
-              <div className="absolute top-0 bottom-0 left-1/2 w-1 bg-amber-200 -translate-x-1/2 hidden md:block"></div>
-              
-              {[
-                {
-                  title: "Assessment & Discovery",
-                  description: "We analyze your business needs, data availability, and potential use cases to identify the most valuable AI applications."
-                },
-                {
-                  title: "Solution Design",
-                  description: "Our experts design a tailored AI solution that addresses your specific challenges and aligns with your business goals."
-                },
-                {
-                  title: "Data Preparation",
-                  description: "We collect, clean, and structure your data to ensure it's ready for AI model training and implementation."
-                },
-                {
-                  title: "Development & Training",
-                  description: "Our team develops and trains AI models using advanced algorithms and techniques to achieve optimal performance."
-                },
-                {
-                  title: "Integration & Deployment",
-                  description: "We seamlessly integrate the AI solution into your existing systems and workflows for operational efficiency."
-                },
-                {
-                  title: "Monitoring & Optimization",
-                  description: "Continuous monitoring and refinement ensure your AI solution evolves with your business and maintains peak performance."
-                }
-              ].map((step, index) => (
-                <div 
-                  key={index} 
-                  className={`flex items-center mb-12 fade-up ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <div className={`hidden md:block w-1/2 ${index % 2 === 0 ? 'pr-12 text-right' : 'pl-12'}`}>
-                    <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                    <p className="text-gray-600">{step.description}</p>
+                  <h3 className="text-xl font-semibold mb-3">{solution.title}</h3>
+                  <p className="text-gray-600 mb-6">{solution.description}</p>
+                  
+                  <div className="mb-6">
+                    <h4 className="text-sm font-semibold text-gray-700 mb-3">Key Applications:</h4>
+                    <ul className="space-y-2">
+                      {solution.applications.map((application, idx) => (
+                        <li key={idx} className="flex items-start">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                          <span className="ml-2 text-gray-700">{application}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                   
-                  <div className="relative flex-shrink-0 z-10">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-r from-amber-500 to-orange-700 flex items-center justify-center text-white font-bold text-xl">
-                      {index + 1}
-                    </div>
-                    <div className="absolute inset-0 rounded-full bg-amber-500 blur-md opacity-30 transform scale-110"></div>
-                  </div>
-                  
-                  <div className={`md:hidden w-full pl-6 ${index % 2 === 0 ? 'pr-0' : 'pl-6'}`}>
-                    <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                    <p className="text-gray-600">{step.description}</p>
-                  </div>
-                </div>
+                  <Button 
+                    variant="link" 
+                    className="text-amber-600 hover:text-amber-800 p-0 h-auto flex items-center"
+                    onClick={() => {
+                      toast.success(`Learn more about ${solution.title}`, {
+                        description: "We'll share detailed information about this AI solution."
+                      });
+                    }}
+                  >
+                    Learn More
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Card>
               ))}
             </div>
           </div>
@@ -349,109 +242,155 @@ const AiSolutionsPage = () => {
         {/* Benefits Section */}
         <section className="py-20 px-6 md:px-12 bg-gray-50">
           <div className="container mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="fade-up">
-                <span className="inline-block px-3 py-1 text-sm font-medium bg-amber-100 text-amber-800 rounded-full mb-4">
-                  Advantages
-                </span>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">Benefits of AI Integration</h2>
-                <p className="text-gray-600 mb-8">
-                  Implementing AI solutions can transform your business operations and create competitive advantages that drive growth.
-                </p>
-                
-                <div className="space-y-6">
-                  {[
-                    {
-                      title: "Increased Efficiency",
-                      description: "Automate routine tasks and streamline complex processes to save time and resources."
-                    },
-                    {
-                      title: "Enhanced Decision-Making",
-                      description: "Gain data-driven insights that support better strategic and operational decisions."
-                    },
-                    {
-                      title: "Improved Customer Experience",
-                      description: "Deliver personalized interactions and faster service to increase customer satisfaction."
-                    },
-                    {
-                      title: "Cost Reduction",
-                      description: "Optimize operations and reduce errors to lower operational costs significantly."
-                    },
-                    {
-                      title: "Innovation Acceleration",
-                      description: "Discover new opportunities and develop innovative products or services."
-                    }
-                  ].map((benefit, index) => (
-                    <div 
-                      key={index} 
-                      className="flex items-start"
-                      style={{ animationDelay: `${index * 100}ms` }}
-                    >
-                      <div className="flex-shrink-0 mr-4">
-                        <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600">
-                          <Check className="h-5 w-5" />
-                        </div>
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold mb-1">{benefit.title}</h3>
-                        <p className="text-gray-600">{benefit.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="relative fade-up">
-                <div className="absolute inset-0 -z-10 bg-gradient-to-r from-amber-300/20 to-orange-500/20 rounded-xl blur-2xl transform scale-110"></div>
-                <div className="overflow-hidden rounded-xl shadow-xl relative border border-white/20">
-                  <img 
-                    src="/lovable-uploads/81342b57-5480-4e45-8f13-6d31826abff6.png" 
-                    alt="AI Benefits" 
-                    className="w-full h-auto relative z-10"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-amber-900/30 to-transparent z-20"></div>
-                </div>
-                
-                <div className="absolute -bottom-10 -right-10 w-32 h-32 rounded-full bg-amber-500/10 backdrop-blur-xl border border-amber-200/30 flex items-center justify-center">
-                  <div className="text-center">
-                    <span className="block text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-orange-700">30%</span>
-                    <span className="text-sm text-amber-800">average ROI</span>
+            <div className="text-center mb-16 fade-up">
+              <span className="inline-block px-3 py-1 text-sm font-medium bg-amber-100 text-amber-800 rounded-full mb-4">
+                Benefits of AI
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Why Implement AI Solutions?</h2>
+              <p className="text-gray-600 max-w-3xl mx-auto">
+                Discover how artificial intelligence can transform your business operations and drive growth.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                {
+                  title: "Increased Efficiency",
+                  description: "Automate repetitive tasks and streamline workflows to save time and reduce operational costs.",
+                  icon: <Cpu className="h-8 w-8" />
+                },
+                {
+                  title: "Enhanced Decision Making",
+                  description: "Gain valuable insights from data analysis to make more informed strategic decisions.",
+                  icon: <ChartBar className="h-8 w-8" />
+                },
+                {
+                  title: "Improved Customer Experience",
+                  description: "Deliver personalized interactions and faster service through AI-powered solutions.",
+                  icon: <Bot className="h-8 w-8" />
+                },
+                {
+                  title: "Competitive Advantage",
+                  description: "Stay ahead in your industry by leveraging cutting-edge AI technology and innovation.",
+                  icon: <Brain className="h-8 w-8" />
+                }
+              ].map((benefit, index) => (
+                <Card 
+                  key={index} 
+                  className="relative overflow-hidden p-8 border-amber-100 fade-up"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="absolute top-0 left-0 w-2 h-full bg-amber-500"></div>
+                  <div className="mb-4 p-4 bg-amber-50 rounded-lg inline-block text-amber-600">
+                    {benefit.icon}
                   </div>
-                </div>
+                  <h3 className="text-xl font-semibold mb-3">{benefit.title}</h3>
+                  <p className="text-gray-600">{benefit.description}</p>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+        
+        {/* Implementation Process */}
+        <section className="py-20 px-6 md:px-12">
+          <div className="container mx-auto">
+            <div className="text-center mb-16 fade-up">
+              <span className="inline-block px-3 py-1 text-sm font-medium bg-amber-100 text-amber-800 rounded-full mb-4">
+                Our Approach
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">AI Implementation Process</h2>
+              <p className="text-gray-600 max-w-3xl mx-auto">
+                Our structured methodology ensures successful integration of AI solutions into your business operations.
+              </p>
+            </div>
+            
+            <div className="relative max-w-5xl mx-auto">
+              {/* Process steps */}
+              <div className="space-y-12 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-12 md:gap-y-16">
+                {[
+                  {
+                    step: "01",
+                    title: "Discovery & Assessment",
+                    description: "We identify your business challenges and opportunities where AI can add significant value.",
+                    image: "/lovable-uploads/b189db24-13c0-4965-9b0b-fda631b71561.png"
+                  },
+                  {
+                    step: "02",
+                    title: "Solution Design",
+                    description: "Our team designs a custom AI solution architecture tailored to your specific requirements.",
+                    image: "/lovable-uploads/e1c7d349-0eed-4a0e-8fc0-68bdd099b7a4.png"
+                  },
+                  {
+                    step: "03",
+                    title: "Development & Training",
+                    description: "We develop and train the AI models using your data to ensure accurate and relevant outputs.",
+                    image: "/lovable-uploads/4932b3ce-bb16-4eda-a885-5a67f01c4346.png"
+                  },
+                  {
+                    step: "04",
+                    title: "Integration & Deployment",
+                    description: "We seamlessly integrate the AI solution with your existing systems and deploy it into your environment.",
+                    image: "/lovable-uploads/e57441a1-afb4-4ef6-9528-d2b5677d9842.png"
+                  }
+                ].map((process, index) => (
+                  <div 
+                    key={index} 
+                    className="relative border border-amber-100 rounded-xl p-6 bg-white shadow-sm fade-up"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <div className="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-amber-600 text-white flex items-center justify-center font-bold text-sm">
+                      {process.step}
+                    </div>
+                    <div className="mb-6 h-40 flex items-center justify-center">
+                      <img src={process.image} alt={process.title} className="h-32 w-auto" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3">{process.title}</h3>
+                    <p className="text-gray-600">{process.description}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </section>
         
         {/* CTA Section */}
-        <section className="py-20 px-6 md:px-12 bg-gradient-to-r from-amber-500 to-orange-700 text-white">
-          <div className="container mx-auto max-w-4xl text-center fade-up">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Harness the Power of AI?</h2>
-            <p className="text-white/80 text-lg mb-10 max-w-3xl mx-auto">
-              Let's explore how our AI solutions can transform your business operations and drive growth.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
-                className="bg-white text-amber-700 hover:bg-gray-100 shadow-lg hover:shadow-xl transition-all duration-300"
-                onClick={() => {
-                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-              >
+        <section className="py-24 px-6 md:px-12 bg-gradient-to-r from-amber-900 to-orange-800 text-white">
+          <div className="container mx-auto">
+            <div className="max-w-4xl mx-auto text-center fade-up">
+              <span className="inline-block px-4 py-1.5 text-sm font-medium bg-white/20 text-white rounded-full mb-6">
                 Start Your AI Journey
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="border-white/30 text-white hover:bg-white/10"
-                onClick={() => {
-                  toast.success("Demo request sent", {
-                    description: "We'll contact you shortly with more information."
-                  });
-                }}
-              >
-                Request an AI Consultation
-              </Button>
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Business with AI?</h2>
+              <p className="text-xl opacity-90 mb-10 max-w-2xl mx-auto">
+                Let's discuss how our AI solutions can help you automate processes, gain insights, and stay ahead of the competition.
+              </p>
+              
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button 
+                  size="lg" 
+                  className="bg-white text-amber-900 hover:bg-gray-100 btn-shine"
+                  onClick={() => {
+                    toast.success("Contact form opened", {
+                      description: "Fill out the form below to get in touch with our AI specialists."
+                    });
+                  }}
+                >
+                  Schedule a Demo
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="border-white text-white hover:bg-white/10"
+                  onClick={() => {
+                    toast.success("Case studies request sent", {
+                      description: "We'll send you our AI solution case studies shortly."
+                    });
+                  }}
+                >
+                  View AI Case Studies
+                </Button>
+              </div>
             </div>
           </div>
         </section>

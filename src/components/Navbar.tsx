@@ -118,7 +118,10 @@ const Navbar = () => {
               </NavigationMenu>
             </nav>
             <Button 
-              className="bg-innovate-600 hover:bg-innovate-700 text-white rounded-md px-6 py-2 transition-all btn-shine" 
+              variant="green"
+              size="default"
+              width="fixed"
+              className="rounded-md transition-all btn-shine" 
               asChild
             >
               <Link to="/contact">Get Started</Link>
@@ -171,7 +174,8 @@ const Navbar = () => {
           </DropdownMenu>
           
           <Button 
-            className="bg-innovate-600 hover:bg-innovate-700 text-white w-full mt-2" 
+            variant="green"
+            width="full"
             onClick={() => setIsMobileMenuOpen(false)}
             asChild
           >

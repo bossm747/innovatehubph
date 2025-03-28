@@ -22,8 +22,8 @@ const buttonVariants = cva(
         // New standard button variants with consistent styling
         primary: "bg-innovate-600 text-white hover:bg-innovate-700 shadow-md hover:shadow-lg transition-all duration-300",
         success: "bg-green-600 text-white hover:bg-green-700 shadow-md hover:shadow-lg transition-all duration-300",
-        purple: "bg-purple-800 text-white hover:bg-purple-900 shadow-md hover:shadow-lg transition-all duration-300",
-        darkBlue: "bg-blue-900 text-white hover:bg-blue-950 shadow-md hover:shadow-lg transition-all duration-300",
+        green: "bg-green-600 text-white hover:bg-green-700 shadow-md hover:shadow-lg transition-all duration-300",
+        dark: "bg-gray-800 text-white hover:bg-gray-900 shadow-md hover:shadow-lg transition-all duration-300",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -42,7 +42,7 @@ const buttonVariants = cva(
     defaultVariants: {
       variant: "default",
       size: "default",
-      width: "default",
+      width: "fixed",  // Changed default width to fixed for consistency
     },
   }
 )

@@ -94,8 +94,10 @@ const Hero = () => {
             <div className="flex flex-wrap gap-4 animate-fade-in" style={{animationDelay: '500ms'}}>
               <Button 
                 size="lg" 
-                className="btn-primary btn-shine group"
+                variant="green"
+                width="fixed"
                 asChild
+                className="group"
               >
                 <Link to="/services" className="flex items-center justify-center">
                   Explore Our Services <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -103,9 +105,10 @@ const Hero = () => {
               </Button>
               <Button 
                 size="lg" 
-                variant="outline" 
-                className="btn-outline group"
+                variant="dark" 
+                width="fixed"
                 asChild
+                className="group"
               >
                 <Link to="/contact" className="flex items-center justify-center">
                   <Phone className="mr-2 h-4 w-4" />

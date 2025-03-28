@@ -100,7 +100,10 @@ const ContactSectionForm = () => {
         
         <Button 
           type="submit" 
-          className="w-full bg-innovate-600 hover:bg-innovate-700 text-white transition-colors btn-shine"
+          variant="green"
+          width="full"
+          size="lg"
+          className="btn-shine"
         >
           Send Message
         </Button>

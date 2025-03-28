@@ -42,7 +42,8 @@ const TeamPageHeader = () => {
           <div className="flex flex-wrap gap-4">
             <Button 
               size="lg" 
-              className="bg-blue-600 hover:bg-blue-700 text-white transition-colors w-40 h-12 font-medium"
+              variant="primary"
+              width="fixed"
               asChild
             >
               <Link to="#team-section">
@@ -53,7 +54,8 @@ const TeamPageHeader = () => {
             
             <Button 
               size="lg" 
-              className="bg-green-600 hover:bg-green-700 text-white transition-colors w-40 h-12 font-medium"
+              variant="green"
+              width="fixed"
               asChild
             >
               <Link to="/contact?subject=careers">
@@ -64,7 +66,8 @@ const TeamPageHeader = () => {
             
             <Button 
               size="lg" 
-              className="bg-purple-600 hover:bg-purple-700 text-white transition-colors w-40 h-12 font-medium"
+              variant="dark"
+              width="fixed"
               asChild
             >
               <Link to="/admin/dashboard">

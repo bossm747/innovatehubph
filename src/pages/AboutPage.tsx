@@ -7,6 +7,7 @@ import CircuitBackground from '@/components/CircuitBackground';
 import AboutHero from '@/components/AboutHero';
 import CompanyOverview from '@/components/CompanyOverview';
 import TeamSection from '@/components/TeamSection';
+import { Helmet } from 'react-helmet';
 
 const AboutPage = () => {
   // Add scroll reveal effect
@@ -36,6 +37,11 @@ const AboutPage = () => {
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden relative">
+      <Helmet>
+        <title>About Us | InnovateHub Inc.</title>
+        <meta name="description" content="Learn about InnovateHub - Passionate Innovators in the Philippine Tech Landscape" />
+      </Helmet>
+      
       {/* Background patterns */}
       <CircuitBackground 
         pattern="curvy-line" 

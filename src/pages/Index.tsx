@@ -15,6 +15,7 @@ import YoutubeVideo from '@/components/YoutubeVideo';
 import BlogHighlight from '@/components/BlogHighlight';
 import FacebookFeed from '@/components/FacebookFeed';
 import { Facebook, MessageCircle } from 'lucide-react';
+import { Helmet } from 'react-helmet';
 
 const Index = () => {
   // Constants for Facebook links
@@ -58,6 +59,11 @@ const Index = () => {
 
   return (
     <div className="overflow-x-hidden w-[100vw] max-w-[100vw] min-h-screen m-0 p-0 relative">
+      <Helmet>
+        <title>InnovateHub Inc. | Digital Innovation Solutions</title>
+        <meta name="description" content="Empowering the Future with Digital Innovation - Customized fintech, AI, and e-commerce solutions for a connected world." />
+      </Helmet>
+      
       <CircuitBackground 
         pattern="curvy-line" 
         className="fixed top-0 right-0" 
@@ -147,10 +153,6 @@ const Index = () => {
       
       <Navbar />
       <Hero />
-      <Features />
-      <AboutUs />
-      <PlataPay />
-      <YoutubeVideo />
       
       <section className="py-16 px-6 md:px-12 bg-gradient-to-r from-white to-gray-50 w-full max-w-[100vw]">
         <div className="container mx-auto">

@@ -61,19 +61,10 @@ const Navbar = () => {
     <header 
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
     >
-      {/* Top torn paper edge */}
-      <div className="absolute top-0 left-0 right-0 w-full h-[20px] z-10 overflow-hidden">
-        <img 
-          src="/lovable-uploads/8ef1d03e-5dce-43b2-a2c5-d5ec95c0751c.png" 
-          alt="Decorative paper edge top" 
-          className="w-full object-cover"
-        />
-      </div>
-      
       <div className={`relative ${
         isScrolled 
-          ? 'py-3 bg-white/95 backdrop-blur-lg shadow-sm mt-[18px]' 
-          : 'py-5 bg-white/80 backdrop-blur-sm mt-[18px]'
+          ? 'py-3 bg-white/95 backdrop-blur-lg shadow-sm' 
+          : 'py-5 bg-white/80 backdrop-blur-sm'
       }`}>
         <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
           <Link to="/" className="flex items-center group">
@@ -150,15 +141,6 @@ const Navbar = () => {
             )}
           </button>
         </div>
-      </div>
-
-      {/* Bottom torn paper edge - positioned to overlap the bottom of the header */}
-      <div className="absolute bottom-[-20px] left-0 right-0 w-full h-[25px] z-20 overflow-hidden">
-        <img 
-          src="/lovable-uploads/bee67e8b-b334-443e-b91a-9eb641ad0db4.png" 
-          alt="Decorative paper edge bottom" 
-          className="w-full object-cover transform rotate-180"
-        />
       </div>
 
       <div className={`md:hidden absolute w-full bg-white shadow-md transition-all duration-300 ease-in-out ${

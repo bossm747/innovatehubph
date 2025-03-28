@@ -21,6 +21,7 @@ import AiSolutionsPage from "./pages/AiSolutionsPage";
 import GlobalExpansionPage from "./pages/GlobalExpansionPage";
 import InquiryPage from "./pages/InquiryPage";
 import AIAppsManagementPage from "./pages/AIAppsManagementPage";
+import AdminDashboardPage from "./pages/AdminDashboardPage";
 import LoadingIndicator from "./components/LoadingIndicator";
 import StaffPortal from "./components/StaffPortal";
 import { StaffAuthProvider } from "./contexts/StaffAuthContext";
@@ -80,6 +81,7 @@ const App = () => (
               <Route path="/global-expansion" element={<GlobalExpansionPage />} />
               <Route path="/inquiry" element={<InquiryPage />} />
               <Route path="/admin/ai-tools" element={<AIAppsManagementPage />} />
+              <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

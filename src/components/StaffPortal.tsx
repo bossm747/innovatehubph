@@ -1,276 +1,325 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useStaffAuth } from '@/contexts/StaffAuthContext';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useAvailableSecrets } from '@/contexts/AvailableSecretsContext';
-import { LogOut, User, Settings, Clock, Briefcase } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import { Helmet } from 'react-helmet';
-
-interface StaffProfile {
-  id: string;
-  full_name: string | null;
-  position: string | null;
-  department: string | null;
-  avatar_url: string | null;
-}
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useStaffAuth } from '@/contexts/StaffAuthContext';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { LogOut, UserCog, Settings, Database, Layers, LayoutDashboard } from 'lucide-react';
+import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const StaffPortal = () => {
-  const { user, signOut } = useStaffAuth();
-  const { availableSecrets } = useAvailableSecrets();
+  const { user, session, signOut } = useStaffAuth();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
-  const [profile, setProfile] = useState<StaffProfile | null>(null);
-  const [formData, setFormData] = useState({
+  const queryClient = useQueryClient();
+  const [profileData, setProfileData] = useState({
     full_name: '',
     position: '',
-    department: ''
+    department: '',
+    avatar_url: ''
+  });
+
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ['staff-profile', user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('staff_profiles')
+        .select('*')
+        .eq('id', user?.id)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    }
   });
 
   useEffect(() => {
-    if (!user) {
-      navigate('/team');
-      return;
+    if (profile) {
+      setProfileData({
+        full_name: profile.full_name || '',
+        position: profile.position || '',
+        department: profile.department || '',
+        avatar_url: profile.avatar_url || ''
+      });
     }
+  }, [profile]);
 
-    const fetchProfile = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('staff_profiles')
-          .select('*')
-          .eq('id', user.id)
-          .single();
-
-        if (error) throw error;
-        
-        setProfile(data);
-        setFormData({
-          full_name: data.full_name || '',
-          position: data.position || '',
-          department: data.department || ''
-        });
-      } catch (error) {
-        console.error('Error fetching staff profile:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProfile();
-  }, [user, navigate]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleUpdateProfile = async () => {
-    if (!user) return;
-    
-    try {
+  const updateProfileMutation = useMutation({
+    mutationFn: async () => {
       const { error } = await supabase
         .from('staff_profiles')
         .update({
-          full_name: formData.full_name,
-          position: formData.position,
-          department: formData.department,
+          full_name: profileData.full_name,
+          position: profileData.position,
+          department: profileData.department,
           updated_at: new Date().toISOString()
         })
-        .eq('id', user.id);
-
+        .eq('id', user?.id);
+      
       if (error) throw error;
-
-      setProfile(prev => prev ? {
-        ...prev,
-        full_name: formData.full_name,
-        position: formData.position,
-        department: formData.department
-      } : null);
-    } catch (error) {
-      console.error('Error updating profile:', error);
+      return profileData;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['staff-profile', user?.id] });
+      toast.success('Profile updated successfully');
+    },
+    onError: (error) => {
+      toast.error(`Error updating profile: ${error.message}`);
     }
+  });
+
+  const handleUpdateProfile = (e: React.FormEvent) => {
+    e.preventDefault();
+    updateProfileMutation.mutate();
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
   };
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-[70vh]">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-innovate-600"></div>
-      </div>
+      <>
+        <Navbar />
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+        </div>
+        <Footer />
+      </>
     );
   }
 
+  if (!user || !session) {
+    navigate('/team');
+    return null;
+  }
+
+  const getInitials = (name: string) => {
+    if (!name) return 'IH';
+    return name
+      .split(' ')
+      .map(part => part[0])
+      .join('')
+      .toUpperCase()
+      .substring(0, 2);
+  };
+  
+  const getEmailName = (email: string) => {
+    return email.split('@')[0].replace(/\./g, ' ').replace(
+      /\w\S*/g,
+      (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    );
+  };
+
   return (
-    <div className="container mx-auto py-10 px-6">
+    <>
       <Helmet>
-        <title>Staff Portal | InnovateHub</title>
+        <title>Staff Portal - InnovateHub</title>
+        <meta name="description" content="InnovateHub staff portal for team members" />
       </Helmet>
       
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold">Staff Portal</h1>
-          <p className="text-gray-600">Welcome back, {profile?.full_name || user?.email?.split('@')[0]}</p>
-        </div>
-        <Button 
-          variant="outline" 
-          className="flex items-center gap-2" 
-          onClick={() => signOut().then(() => navigate('/team'))}
-        >
-          <LogOut className="h-4 w-4" />
-          Sign Out
-        </Button>
-      </div>
+      <Navbar />
       
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-1">
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                <div className="flex items-center gap-2">
-                  <User className="h-5 w-5 text-innovate-600" />
-                  Staff Profile
-                </div>
-              </CardTitle>
-              <CardDescription>View and update your information</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700">Email</label>
-                <Input value={user?.email || ''} disabled className="bg-gray-50" />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700">Full Name</label>
-                <Input 
-                  name="full_name" 
-                  value={formData.full_name} 
-                  onChange={handleInputChange}
-                  placeholder="Your full name"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700">Position</label>
-                <Input 
-                  name="position" 
-                  value={formData.position} 
-                  onChange={handleInputChange}
-                  placeholder="Your position at InnovateHub"
-                />
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700">Department</label>
-                <Input 
-                  name="department" 
-                  value={formData.department} 
-                  onChange={handleInputChange}
-                  placeholder="Your department"
-                />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button 
-                onClick={handleUpdateProfile} 
-                className="w-full bg-innovate-600 hover:bg-innovate-700"
-              >
-                Update Profile
-              </Button>
-            </CardFooter>
-          </Card>
-        </div>
-        
-        <div className="lg:col-span-2">
-          <Tabs defaultValue="tools">
-            <TabsList className="w-full">
-              <TabsTrigger value="tools" className="flex-1">
-                <Settings className="h-4 w-4 mr-2" />
-                Tools & Resources
-              </TabsTrigger>
-              <TabsTrigger value="ai" className="flex-1">
-                <Briefcase className="h-4 w-4 mr-2" />
-                AI Projects
-              </TabsTrigger>
-              <TabsTrigger value="recent" className="flex-1">
-                <Clock className="h-4 w-4 mr-2" />
-                Recent Activity
-              </TabsTrigger>
-            </TabsList>
-            
-            {/* Tools & Resources Tab */}
-            <TabsContent value="tools" className="space-y-4 mt-4">
+      <main className="container mx-auto px-4 py-12">
+        <div className="max-w-5xl mx-auto">
+          <h1 className="text-3xl font-bold mb-2">Staff Portal</h1>
+          <p className="text-muted-foreground mb-8">Welcome to the InnovateHub staff portal</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="md:col-span-1">
               <Card>
                 <CardHeader>
-                  <CardTitle>Available AI Tools</CardTitle>
-                  <CardDescription>AI integrations configured for your projects</CardDescription>
+                  <div className="flex flex-col items-center">
+                    <Avatar className="h-24 w-24 mb-4">
+                      <AvatarImage src={profileData.avatar_url} />
+                      <AvatarFallback className="text-lg bg-primary text-primary-foreground">
+                        {getInitials(profileData.full_name || getEmailName(user.email || ''))}
+                      </AvatarFallback>
+                    </Avatar>
+                    <CardTitle>{profileData.full_name || getEmailName(user.email || '')}</CardTitle>
+                    <CardDescription>{user.email}</CardDescription>
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {Object.entries(availableSecrets).map(([key, isAvailable]) => (
-                      <div key={key} className={`p-4 rounded-lg border ${isAvailable ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200'}`}>
-                        <div className="flex items-center justify-between">
-                          <div className="font-medium">{key.replace('_API_KEY', '')}</div>
-                          <div className={`px-2 py-1 rounded-full text-xs ${isAvailable ? 'bg-green-100 text-green-800' : 'bg-gray-200 text-gray-600'}`}>
-                            {isAvailable ? 'Available' : 'Not Available'}
+                  <div className="space-y-4">
+                    {profileData.position && (
+                      <div>
+                        <p className="text-sm text-muted-foreground">Position</p>
+                        <p className="font-medium">{profileData.position}</p>
+                      </div>
+                    )}
+                    
+                    {profileData.department && (
+                      <div>
+                        <p className="text-sm text-muted-foreground">Department</p>
+                        <p className="font-medium">{profileData.department}</p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+                <CardFooter className="flex flex-col gap-2">
+                  <Button 
+                    className="w-full justify-start" 
+                    variant="outline"
+                    onClick={() => navigate('/admin/dashboard')}
+                  >
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    Admin Dashboard
+                  </Button>
+                  <Button 
+                    className="w-full justify-start" 
+                    variant="outline"
+                    onClick={() => navigate('/admin/ai-tools')}
+                  >
+                    <Layers className="mr-2 h-4 w-4" />
+                    AI Tools
+                  </Button>
+                  <Button 
+                    className="w-full justify-start" 
+                    variant="outline"
+                    onClick={handleSignOut}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign Out
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
+            
+            <div className="md:col-span-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Profile Management</CardTitle>
+                  <CardDescription>Update your staff profile information</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Tabs defaultValue="profile">
+                    <TabsList className="mb-4">
+                      <TabsTrigger value="profile">Profile</TabsTrigger>
+                      <TabsTrigger value="settings">Settings</TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="profile">
+                      <form onSubmit={handleUpdateProfile}>
+                        <div className="space-y-4">
+                          <div>
+                            <label className="text-sm font-medium">Full Name</label>
+                            <Input 
+                              value={profileData.full_name} 
+                              onChange={(e) => setProfileData({...profileData, full_name: e.target.value})}
+                              className="mt-1"
+                            />
+                          </div>
+                          
+                          <div>
+                            <label className="text-sm font-medium">Position</label>
+                            <Input 
+                              value={profileData.position} 
+                              onChange={(e) => setProfileData({...profileData, position: e.target.value})}
+                              className="mt-1"
+                              placeholder="e.g. Software Developer"
+                            />
+                          </div>
+                          
+                          <div>
+                            <label className="text-sm font-medium">Department</label>
+                            <Input 
+                              value={profileData.department} 
+                              onChange={(e) => setProfileData({...profileData, department: e.target.value})}
+                              className="mt-1"
+                              placeholder="e.g. Engineering"
+                            />
+                          </div>
+                          
+                          <div>
+                            <label className="text-sm font-medium">Avatar URL</label>
+                            <Input 
+                              value={profileData.avatar_url} 
+                              onChange={(e) => setProfileData({...profileData, avatar_url: e.target.value})}
+                              className="mt-1"
+                              placeholder="https://example.com/avatar.jpg"
+                            />
+                          </div>
+                          
+                          <Button 
+                            type="submit" 
+                            className="w-full"
+                            disabled={updateProfileMutation.isPending}
+                          >
+                            {updateProfileMutation.isPending ? 'Updating...' : 'Update Profile'}
+                          </Button>
+                        </div>
+                      </form>
+                    </TabsContent>
+                    
+                    <TabsContent value="settings">
+                      <div className="space-y-4">
+                        <div className="p-4 bg-gray-50 rounded-lg">
+                          <h3 className="font-medium flex items-center">
+                            <Settings className="h-4 w-4 mr-2" />
+                            Email Notifications
+                          </h3>
+                          <p className="text-sm text-muted-foreground mt-1 mb-3">
+                            Manage your email notification preferences
+                          </p>
+                          
+                          <div className="space-y-2">
+                            <div className="flex items-center">
+                              <input type="checkbox" id="notify-inquiries" className="mr-2" defaultChecked />
+                              <label htmlFor="notify-inquiries" className="text-sm">New client inquiries</label>
+                            </div>
+                            <div className="flex items-center">
+                              <input type="checkbox" id="notify-projects" className="mr-2" defaultChecked />
+                              <label htmlFor="notify-projects" className="text-sm">Project updates</label>
+                            </div>
+                            <div className="flex items-center">
+                              <input type="checkbox" id="notify-system" className="mr-2" defaultChecked />
+                              <label htmlFor="notify-system" className="text-sm">System announcements</label>
+                            </div>
                           </div>
                         </div>
+                        
+                        <div className="p-4 bg-gray-50 rounded-lg">
+                          <h3 className="font-medium flex items-center">
+                            <UserCog className="h-4 w-4 mr-2" />
+                            Account Settings
+                          </h3>
+                          <p className="text-sm text-muted-foreground mt-1 mb-3">
+                            Manage your account security and preferences
+                          </p>
+                          
+                          <div className="space-y-2">
+                            <Button variant="outline" size="sm" className="w-full justify-start text-sm">
+                              Change Password
+                            </Button>
+                            <Button variant="outline" size="sm" className="w-full justify-start text-sm">
+                              Two-Factor Authentication
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        <Button className="w-full">Save Settings</Button>
                       </div>
-                    ))}
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button 
-                    variant="outline" 
-                    className="w-full" 
-                    onClick={() => navigate('/admin/ai-tools')}
-                  >
-                    Go to AI Tools Management
-                  </Button>
-                </CardFooter>
-              </Card>
-            </TabsContent>
-            
-            {/* AI Projects Tab */}
-            <TabsContent value="ai" className="space-y-4 mt-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>AI Projects</CardTitle>
-                  <CardDescription>View and manage your AI projects</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-center py-10">
-                    <p className="text-gray-500">Access the AI Tools Management panel to view your projects</p>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button 
-                    className="w-full bg-innovate-600 hover:bg-innovate-700" 
-                    onClick={() => navigate('/admin/ai-tools')}
-                  >
-                    Go to AI Projects
-                  </Button>
-                </CardFooter>
-              </Card>
-            </TabsContent>
-            
-            {/* Recent Activity Tab */}
-            <TabsContent value="recent" className="space-y-4 mt-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Recent Activity</CardTitle>
-                  <CardDescription>Your recent actions and updates</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-center py-10">
-                    <p className="text-gray-500">Activity tracking will be available soon</p>
-                  </div>
+                    </TabsContent>
+                  </Tabs>
                 </CardContent>
               </Card>
-            </TabsContent>
-          </Tabs>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </main>
+      
+      <Footer />
+    </>
   );
 };
 

@@ -67,7 +67,7 @@ const TeamPage = () => {
       
       {/* Main content */}
       <Navbar />
-      <div className="w-full pt-16">
+      <div className="w-full">
         <TeamPageHeader />
         <TeamValues />
         <TeamSection />

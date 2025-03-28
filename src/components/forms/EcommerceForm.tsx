@@ -18,6 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { submitInquiryForm, logFormSubmission, InquiryFormData } from '@/services/inquiryService';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -25,12 +26,12 @@ const formSchema = z.object({
   businessName: z.string().min(2, { message: "Business name is required" }),
   phone: z.string().min(10, { message: "Please enter a valid phone number" }),
   storeType: z.string({ required_error: "Please select a store type" }),
-  products: z.string().min(3, { message: "Please describe your products" }),
+  products: z.string().min(5, { message: "Please describe your products" }),
   features: z.array(z.string()).refine((value) => value.length > 0, {
     message: "Please select at least one feature",
   }),
+  budget: z.string().optional(),
   additionalInfo: z.string().optional(),
-  budget: z.string({ required_error: "Please select a budget range" }),
   subscribe: z.boolean().default(false),
 });
 
@@ -51,65 +52,108 @@ const EcommerceForm = ({ navigate }: EcommerceFormProps) => {
       storeType: "",
       products: "",
       features: [],
-      additionalInfo: "",
       budget: "",
+      additionalInfo: "",
       subscribe: false,
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log('E-commerce form data:', data);
+  const onSubmit = async (data: FormValues) => {
+    console.log('E-Commerce form data:', data);
     
-    toast.success("E-commerce Request Submitted", {
-      description: "We'll prepare a custom online store proposal for your business!",
-    });
+    // Show loading toast
+    const loadingToast = toast.loading("Submitting your e-commerce inquiry...");
     
-    // Reset form
-    form.reset();
-    
-    // Redirect after 2 seconds
-    setTimeout(() => {
-      navigate('/ecommerce');
-    }, 2000);
+    try {
+      // Add service type to the form data
+      const formDataWithService: InquiryFormData = {
+        service: 'ecommerce',
+        name: data.name,
+        email: data.email,
+        businessName: data.businessName,
+        phone: data.phone,
+        storeType: data.storeType,
+        products: data.products,
+        features: data.features,
+        budget: data.budget,
+        additionalInfo: data.additionalInfo,
+        subscribe: data.subscribe
+      };
+      
+      // Log the submission (excluding sensitive information)
+      logFormSubmission('ecommerce', data);
+      
+      // Submit the form
+      const result = await submitInquiryForm(formDataWithService);
+      
+      // Dismiss loading toast
+      toast.dismiss(loadingToast);
+      
+      if (result.success) {
+        // Show success message
+        toast.success("E-Commerce Inquiry Submitted", {
+          description: "Our team will contact you about your online store project!",
+        });
+        
+        // Reset form
+        form.reset();
+        
+        // Redirect after 2 seconds
+        setTimeout(() => {
+          navigate('/services');
+        }, 2000);
+      } else {
+        // Show error message
+        toast.error("Submission Failed", {
+          description: result.error || "Please try again later.",
+        });
+      }
+    } catch (error) {
+      // Dismiss loading toast
+      toast.dismiss(loadingToast);
+      
+      // Show error message
+      toast.error("Submission Error", {
+        description: error instanceof Error ? error.message : "Please try again later.",
+      });
+    }
   };
 
   const storeTypes = [
     { value: "retail", label: "Retail Products" },
     { value: "digital", label: "Digital Products" },
     { value: "services", label: "Services" },
-    { value: "subscription", label: "Subscription Business" },
     { value: "marketplace", label: "Marketplace" },
     { value: "dropshipping", label: "Dropshipping" },
-    { value: "other", label: "Other" },
+    { value: "subscription", label: "Subscription Business" },
   ];
 
-  const ecommerceFeatures = [
-    { id: "product-management", label: "Product Management" },
-    { id: "payment-gateways", label: "Payment Gateways" },
-    { id: "shipping-integration", label: "Shipping Integration" },
-    { id: "inventory-management", label: "Inventory Management" },
-    { id: "customer-accounts", label: "Customer Accounts" },
-    { id: "mobile-app", label: "Mobile App" },
-    { id: "marketing-tools", label: "Marketing Tools" },
+  const storeFeatures = [
+    { id: "payment-gateway", label: "Payment Gateway Integration" },
+    { id: "inventory", label: "Inventory Management" },
+    { id: "shipping", label: "Shipping Integration" },
+    { id: "cms", label: "Content Management System" },
     { id: "analytics", label: "Analytics Dashboard" },
-    { id: "seo", label: "SEO Optimization" },
+    { id: "mobile-app", label: "Mobile App" },
+    { id: "social-media", label: "Social Media Integration" },
+    { id: "marketing", label: "Marketing Automation" },
   ];
 
   const budgetRanges = [
     { value: "under-10k", label: "Under ₱10,000" },
-    { value: "10k-25k", label: "₱10,000 - ₱25,000" },
-    { value: "25k-50k", label: "₱25,000 - ₱50,000" },
+    { value: "10k-30k", label: "₱10,000 - ₱30,000" },
+    { value: "30k-50k", label: "₱30,000 - ₱50,000" },
     { value: "50k-100k", label: "₱50,000 - ₱100,000" },
-    { value: "above-100k", label: "Above ₱100,000" },
+    { value: "over-100k", label: "Over ₱100,000" },
   ];
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="bg-emerald-50 p-4 rounded-lg mb-6">
-          <h3 className="font-medium text-emerald-800 mb-2">E-Commerce Store Development</h3>
+        <div className="bg-green-50 p-4 rounded-lg mb-6">
+          <h3 className="font-medium text-green-800 mb-2">E-Commerce Development</h3>
           <p className="text-sm text-gray-600">
-            Let us help you build a powerful online store to showcase and sell your products or services.
+            Start selling online with a professional e-commerce store tailored to your business.
           </p>
         </div>
         
@@ -151,7 +195,7 @@ const EcommerceForm = ({ navigate }: EcommerceFormProps) => {
               <FormItem>
                 <FormLabel>Business Name *</FormLabel>
                 <FormControl>
-                  <Input placeholder="Your Business Name" {...field} />
+                  <Input placeholder="Your Business" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -204,7 +248,7 @@ const EcommerceForm = ({ navigate }: EcommerceFormProps) => {
             name="budget"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Budget Range *</FormLabel>
+                <FormLabel>Budget Range</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
@@ -230,10 +274,10 @@ const EcommerceForm = ({ navigate }: EcommerceFormProps) => {
           name="products"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Products/Services *</FormLabel>
+              <FormLabel>Product/Service Description *</FormLabel>
               <FormControl>
                 <Textarea 
-                  placeholder="Describe the products or services you want to sell online..."
+                  placeholder="Tell us about the products or services you want to sell online..."
                   className="min-h-20"
                   {...field}
                 />
@@ -249,12 +293,12 @@ const EcommerceForm = ({ navigate }: EcommerceFormProps) => {
           render={() => (
             <FormItem>
               <div className="mb-4">
-                <FormLabel className="text-base">Required Features *</FormLabel>
+                <FormLabel className="text-base">Features Required *</FormLabel>
                 <FormDescription>
-                  Select the features you want for your online store
+                  Select the features you need in your online store
                 </FormDescription>
               </div>
-              {ecommerceFeatures.map((feature) => (
+              {storeFeatures.map((feature) => (
                 <FormField
                   key={feature.id}
                   control={form.control}
@@ -300,7 +344,7 @@ const EcommerceForm = ({ navigate }: EcommerceFormProps) => {
               <FormLabel>Additional Information</FormLabel>
               <FormControl>
                 <Textarea 
-                  placeholder="Any other details about your e-commerce needs..."
+                  placeholder="Any other details or requirements for your e-commerce project..."
                   className="min-h-20"
                   {...field}
                 />
@@ -323,10 +367,10 @@ const EcommerceForm = ({ navigate }: EcommerceFormProps) => {
               </FormControl>
               <div className="space-y-1 leading-none">
                 <FormLabel>
-                  Subscribe to e-commerce tips
+                  Subscribe to e-commerce updates
                 </FormLabel>
                 <FormDescription>
-                  Receive exclusive e-commerce insights and best practices
+                  Receive news about e-commerce trends and solutions
                 </FormDescription>
               </div>
             </FormItem>
@@ -335,10 +379,10 @@ const EcommerceForm = ({ navigate }: EcommerceFormProps) => {
         
         <Button 
           type="submit" 
-          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+          className="w-full bg-green-600 hover:bg-green-700 text-white"
           size="lg"
         >
-          Submit Store Request
+          Submit E-Commerce Inquiry
         </Button>
       </form>
     </Form>

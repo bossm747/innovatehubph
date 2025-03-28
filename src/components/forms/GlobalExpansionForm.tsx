@@ -18,19 +18,20 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { submitInquiryForm, logFormSubmission, InquiryFormData } from '@/services/inquiryService';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
   email: z.string().email({ message: "Please enter a valid email address" }),
   company: z.string().min(2, { message: "Company name is required" }),
-  position: z.string().min(2, { message: "Position is required" }),
+  position: z.string().min(2, { message: "Position/role is required" }),
   phone: z.string().min(10, { message: "Please enter a valid phone number" }),
+  industry: z.string().optional(),
+  companySize: z.string().optional(),
   currentMarkets: z.string().min(2, { message: "Please enter your current markets" }),
   targetMarkets: z.string().min(2, { message: "Please enter your target markets" }),
-  industry: z.string({ required_error: "Please select your industry" }),
-  companySize: z.string({ required_error: "Please select your company size" }),
+  timeline: z.string().optional(),
   expansionGoals: z.string().min(10, { message: "Please describe your expansion goals" }),
-  timeline: z.string({ required_error: "Please select a timeline" }),
   subscribe: z.boolean().default(false),
 });
 
@@ -49,40 +50,87 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
       company: "",
       position: "",
       phone: "",
-      currentMarkets: "",
-      targetMarkets: "",
       industry: "",
       companySize: "",
-      expansionGoals: "",
+      currentMarkets: "",
+      targetMarkets: "",
       timeline: "",
+      expansionGoals: "",
       subscribe: false,
     },
   });
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = async (data: FormValues) => {
     console.log('Global Expansion form data:', data);
     
-    toast.success("Global Expansion Request Submitted", {
-      description: "Our international business team will reach out to discuss your expansion plans!",
-    });
+    // Show loading toast
+    const loadingToast = toast.loading("Submitting your global expansion inquiry...");
     
-    // Reset form
-    form.reset();
-    
-    // Redirect after 2 seconds
-    setTimeout(() => {
-      navigate('/global-expansion');
-    }, 2000);
+    try {
+      // Add service type to the form data
+      const formDataWithService: InquiryFormData = {
+        service: 'global',
+        name: data.name,
+        email: data.email,
+        company: data.company,
+        position: data.position,
+        phone: data.phone,
+        industry: data.industry,
+        companySize: data.companySize,
+        currentMarkets: data.currentMarkets,
+        targetMarkets: data.targetMarkets,
+        timeline: data.timeline,
+        expansionGoals: data.expansionGoals,
+        subscribe: data.subscribe
+      };
+      
+      // Log the submission (excluding sensitive information)
+      logFormSubmission('global', data);
+      
+      // Submit the form
+      const result = await submitInquiryForm(formDataWithService);
+      
+      // Dismiss loading toast
+      toast.dismiss(loadingToast);
+      
+      if (result.success) {
+        // Show success message
+        toast.success("Global Expansion Inquiry Submitted", {
+          description: "Our team will contact you about international business opportunities!",
+        });
+        
+        // Reset form
+        form.reset();
+        
+        // Redirect after 2 seconds
+        setTimeout(() => {
+          navigate('/services');
+        }, 2000);
+      } else {
+        // Show error message
+        toast.error("Submission Failed", {
+          description: result.error || "Please try again later.",
+        });
+      }
+    } catch (error) {
+      // Dismiss loading toast
+      toast.dismiss(loadingToast);
+      
+      // Show error message
+      toast.error("Submission Error", {
+        description: error instanceof Error ? error.message : "Please try again later.",
+      });
+    }
   };
 
   const industries = [
-    { value: "technology", label: "Technology" },
-    { value: "fintech", label: "Fintech" },
-    { value: "retail", label: "Retail & E-commerce" },
+    { value: "finance", label: "Finance & Banking" },
     { value: "healthcare", label: "Healthcare" },
-    { value: "education", label: "Education" },
+    { value: "retail", label: "Retail & E-commerce" },
     { value: "manufacturing", label: "Manufacturing" },
-    { value: "services", label: "Professional Services" },
+    { value: "technology", label: "Technology" },
+    { value: "education", label: "Education" },
+    { value: "logistics", label: "Logistics & Supply Chain" },
     { value: "other", label: "Other" },
   ];
 
@@ -94,19 +142,20 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
   ];
 
   const timelineOptions = [
-    { value: "immediate", label: "Immediate (0-3 months)" },
-    { value: "short", label: "Short-term (3-6 months)" },
-    { value: "medium", label: "Medium-term (6-12 months)" },
-    { value: "long", label: "Long-term (12+ months)" },
+    { value: "immediate", label: "Immediate (1-3 months)" },
+    { value: "short", label: "Short term (3-6 months)" },
+    { value: "medium", label: "Medium term (6-12 months)" },
+    { value: "long", label: "Long term (12+ months)" },
+    { value: "planning", label: "Still in planning phase" },
   ];
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="bg-blue-50 p-4 rounded-lg mb-6">
-          <h3 className="font-medium text-blue-800 mb-2">Global Expansion Services</h3>
+        <div className="bg-amber-50 p-4 rounded-lg mb-6">
+          <h3 className="font-medium text-amber-800 mb-2">Global Expansion Services</h3>
           <p className="text-sm text-gray-600">
-            Expand your business internationally with our expert guidance on market entry, regulatory compliance, and international partnerships.
+            Expand your business internationally with our guidance and support in Dubai and beyond.
           </p>
         </div>
         
@@ -160,9 +209,9 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
             name="position"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Position/Title *</FormLabel>
+                <FormLabel>Position/Role *</FormLabel>
                 <FormControl>
-                  <Input placeholder="CEO, Director, Manager, etc." {...field} />
+                  <Input placeholder="CEO / Director / Manager" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -190,7 +239,7 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
             name="industry"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Industry *</FormLabel>
+                <FormLabel>Industry</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
@@ -215,7 +264,7 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
             name="companySize"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Company Size *</FormLabel>
+                <FormLabel>Company Size</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
@@ -244,7 +293,7 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
               <FormItem>
                 <FormLabel>Current Markets *</FormLabel>
                 <FormControl>
-                  <Input placeholder="e.g., Philippines, Singapore" {...field} />
+                  <Input placeholder="Philippines, etc." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -258,7 +307,7 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
               <FormItem>
                 <FormLabel>Target Markets *</FormLabel>
                 <FormControl>
-                  <Input placeholder="e.g., Dubai, USA, Europe" {...field} />
+                  <Input placeholder="Dubai, UAE, etc." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -271,11 +320,11 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
           name="timeline"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Expansion Timeline *</FormLabel>
+              <FormLabel>Expansion Timeline</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select timeline" />
+                    <SelectValue placeholder="Select expansion timeline" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -296,10 +345,10 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
           name="expansionGoals"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Expansion Goals & Requirements *</FormLabel>
+              <FormLabel>Expansion Goals *</FormLabel>
               <FormControl>
                 <Textarea 
-                  placeholder="Describe your international expansion goals, specific requirements, and any challenges you're facing..."
+                  placeholder="Describe your international expansion goals, challenges, and what you hope to achieve..."
                   className="min-h-32"
                   {...field}
                 />
@@ -325,7 +374,7 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
                   Subscribe to global business updates
                 </FormLabel>
                 <FormDescription>
-                  Receive insights about international markets and expansion opportunities
+                  Receive news about international business opportunities
                 </FormDescription>
               </div>
             </FormItem>
@@ -334,10 +383,10 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
         
         <Button 
           type="submit" 
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+          className="w-full bg-amber-600 hover:bg-amber-700 text-white"
           size="lg"
         >
-          Submit Global Expansion Request
+          Submit Global Expansion Inquiry
         </Button>
       </form>
     </Form>

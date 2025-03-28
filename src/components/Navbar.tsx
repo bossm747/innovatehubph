@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -9,7 +8,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-import { StaffPortalButton } from './StaffPortalButton';
+import StaffPortalButton from './StaffPortalButton';
 
 interface ListItemProps {
   href: string;

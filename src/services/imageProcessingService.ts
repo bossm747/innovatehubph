@@ -253,3 +253,48 @@ export const loadImage = (file: File): Promise<HTMLImageElement> => {
     img.src = URL.createObjectURL(file);
   });
 };
+
+export const getPretrainedModelOptions = (modelType: string) => {
+  switch (modelType) {
+    case 'image-to-image':
+      return {
+        model: 'stabilityai/stable-diffusion-2-1',
+        input: {
+          prompt: '',
+          image: '',
+          strength: 0.7,
+          guidance_scale: 7.5,
+          negative_prompt: ''
+        }
+      };
+    case 'text-to-image':
+      return {
+        model: 'stabilityai/stable-diffusion-xl-base-1.0',
+        input: {
+          prompt: '',
+          width: 1024,
+          height: 1024,
+          guidance_scale: 7.5,
+          negative_prompt: ''
+        }
+      };
+    case 'upscale':
+      return {
+        model: 'nightmareai/real-esrgan',
+        input: {
+          image: '',
+          scale: 2,
+          face_enhance: false
+        }
+      };
+    default:
+      return {
+        model: 'stabilityai/stable-diffusion-xl-base-1.0',
+        input: {
+          prompt: '',
+          width: 1024,
+          height: 1024
+        }
+      };
+  }
+};

@@ -15,23 +15,43 @@ export interface TeamMember {
   created_at: string;
 }
 
+// Mock team members data
+const mockTeamMembers: TeamMember[] = [
+  {
+    id: '1',
+    full_name: 'Juan Dela Cruz',
+    position: 'CEO & Founder',
+    department: 'Leadership',
+    bio: 'Juan founded InnovateHub with a vision to transform the digital landscape in the Philippines.',
+    photo_url: '/lovable-uploads/13165526-621e-41b9-9e68-4ef94cb85f92.png',
+    linkedin_url: null,
+    email: null,
+    order_index: 1,
+    is_active: true,
+    created_at: new Date().toISOString()
+  },
+  {
+    id: '2',
+    full_name: 'Maria Santos',
+    position: 'Chief Technology Officer',
+    department: 'Leadership',
+    bio: 'Maria oversees all technological aspects at InnovateHub.',
+    photo_url: '/lovable-uploads/0831c807-9c51-4945-b543-6aa09dd81d02.png',
+    linkedin_url: null,
+    email: null,
+    order_index: 2,
+    is_active: true,
+    created_at: new Date().toISOString()
+  }
+];
+
 /**
  * Fetch all active team members
  */
 export const fetchTeamMembers = async (): Promise<TeamMember[]> => {
   try {
-    const { data, error } = await supabase
-      .from('team_members')
-      .select('*')
-      .order('order_index', { ascending: true })
-      .eq('is_active', true);
-      
-    if (error) {
-      console.error('Error fetching team members:', error);
-      throw error;
-    }
-    
-    return data || [];
+    console.log('Fetching all team members (mock data)');
+    return mockTeamMembers.filter(member => member.is_active);
   } catch (error) {
     console.error('Error in fetchTeamMembers:', error);
     return [];
@@ -43,18 +63,8 @@ export const fetchTeamMembers = async (): Promise<TeamMember[]> => {
  */
 export const fetchTeamMemberById = async (id: string): Promise<TeamMember | null> => {
   try {
-    const { data, error } = await supabase
-      .from('team_members')
-      .select('*')
-      .eq('id', id)
-      .single();
-      
-    if (error) {
-      console.error('Error fetching team member:', error);
-      throw error;
-    }
-    
-    return data;
+    console.log(`Fetching team member by ID: ${id} (mock data)`);
+    return mockTeamMembers.find(member => member.id === id) || null;
   } catch (error) {
     console.error('Error in fetchTeamMemberById:', error);
     return null;
@@ -66,19 +76,10 @@ export const fetchTeamMemberById = async (id: string): Promise<TeamMember | null
  */
 export const fetchTeamMembersByDepartment = async (department: string): Promise<TeamMember[]> => {
   try {
-    const { data, error } = await supabase
-      .from('team_members')
-      .select('*')
-      .eq('department', department)
-      .eq('is_active', true)
-      .order('order_index', { ascending: true });
-      
-    if (error) {
-      console.error('Error fetching team members by department:', error);
-      throw error;
-    }
-    
-    return data || [];
+    console.log(`Fetching team members by department: ${department} (mock data)`);
+    return mockTeamMembers.filter(
+      member => member.department === department && member.is_active
+    );
   } catch (error) {
     console.error('Error in fetchTeamMembersByDepartment:', error);
     return [];

@@ -1,6 +1,6 @@
-
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { Routes, Route } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -71,11 +71,15 @@ const AdminDashboardPage = () => {
             </TabsContent>
             
             <TabsContent value="users">
-              <UserManagement />
+              <Routes>
+                <Route path="users" element={<UserManagement />} />
+              </Routes>
             </TabsContent>
             
             <TabsContent value="database">
-              <DatabaseManagement />
+              <Routes>
+                <Route path="database" element={<DatabaseManagement />} />
+              </Routes>
             </TabsContent>
           </Tabs>
         </div>

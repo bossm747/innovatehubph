@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ArrowRight, CreditCard, Layers, BarChart3, Package, ShoppingBag, ShoppingCart, Store, Truck, Users } from 'lucide-react';
 import { toast } from 'sonner';
+import { Helmet } from 'react-helmet';
 
 const EcommercePage = () => {
   // Add scroll reveal effect
@@ -105,7 +106,12 @@ const EcommercePage = () => {
   ];
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden relative bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen w-full overflow-x-hidden relative">
+      <Helmet>
+        <title>E-Commerce Development | InnovateHub Inc.</title>
+        <meta name="description" content="Turn your products and services into a thriving online business with our end-to-end e-commerce solutions." />
+      </Helmet>
+      
       {/* Background patterns */}
       <CircuitBackground 
         pattern="curvy-line" 
@@ -126,18 +132,31 @@ const EcommercePage = () => {
       <Navbar />
       
       <main className="w-full pt-16">
-        {/* Hero Section */}
-        <section className="relative py-28 px-6 md:px-12 lg:px-24 overflow-hidden">
-          <div className="container mx-auto">
+        {/* Hero Section with Team page style gradient */}
+        <section className="relative py-24 overflow-hidden bg-gradient-to-b from-innovate-800 to-innovate-950 text-white">
+          {/* Background patterns */}
+          <div className="absolute inset-0 overflow-hidden opacity-10">
+            <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-innovate-500 filter blur-3xl"></div>
+            <div className="absolute top-1/2 -left-24 w-64 h-64 rounded-full bg-white filter blur-3xl"></div>
+            <div className="absolute -bottom-32 right-1/4 w-80 h-80 rounded-full bg-innovate-300 filter blur-3xl"></div>
+            
+            {/* Grid pattern */}
+            <div className="absolute inset-0" style={{ 
+              backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px)', 
+              backgroundSize: '20px 20px' 
+            }}></div>
+          </div>
+
+          <div className="container mx-auto px-6 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="max-w-4xl mx-auto lg:mx-0 relative z-10">
                 <span className="inline-block px-4 py-1.5 text-sm font-medium bg-emerald-100 text-emerald-800 rounded-full mb-6 animate-fade-in shadow-sm">
                   E-Commerce Development
                 </span>
-                <h1 className="text-5xl md:text-6xl font-bold mb-6 hero-text-gradient animate-fade-in" style={{ animationDelay: '100ms' }}>
+                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white animate-fade-in" style={{ animationDelay: '100ms' }}>
                   Complete Online Store Solutions
                 </h1>
-                <p className="text-xl md:text-2xl font-light text-gray-600 mb-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
+                <p className="text-xl md:text-2xl font-light text-innovate-100 mb-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
                   Turn your products and services into a thriving online business with our end-to-end e-commerce solutions.
                 </p>
                 
@@ -156,7 +175,7 @@ const EcommercePage = () => {
                   <Button 
                     size="lg" 
                     variant="outline"
-                    className="border-emerald-200 text-emerald-700 hover:bg-emerald-50"
+                    className="border-emerald-200 text-white hover:bg-white/10"
                     onClick={() => {
                       document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
                     }}

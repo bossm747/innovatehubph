@@ -18,6 +18,7 @@ interface FormData {
   budget?: string;
   timeline?: string;
   requirements?: string;
+  inquiryId?: string; // Added to track the saved inquiry
   [key: string]: any; // For any additional form-specific fields
 }
 
@@ -432,7 +433,8 @@ serve(async (req) => {
     // Return success response
     return new Response(JSON.stringify({ 
       success: true, 
-      message: 'Form submission processed successfully' 
+      message: 'Emails sent successfully', 
+      inquiryId: formData.inquiryId
     }), {
       status: 200,
       headers: {

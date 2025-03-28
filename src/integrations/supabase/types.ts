@@ -30,6 +30,185 @@ export type Database = {
         }
         Relationships: []
       }
+      email_logs: {
+        Row: {
+          email_type: string
+          error_message: string | null
+          id: string
+          inquiry_id: string | null
+          metadata: Json | null
+          recipient: string
+          sent_at: string
+          subject: string | null
+          successful: boolean | null
+        }
+        Insert: {
+          email_type: string
+          error_message?: string | null
+          id?: string
+          inquiry_id?: string | null
+          metadata?: Json | null
+          recipient: string
+          sent_at?: string
+          subject?: string | null
+          successful?: boolean | null
+        }
+        Update: {
+          email_type?: string
+          error_message?: string | null
+          id?: string
+          inquiry_id?: string | null
+          metadata?: Json | null
+          recipient?: string
+          sent_at?: string
+          subject?: string | null
+          successful?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_logs_inquiry_id_fkey"
+            columns: ["inquiry_id"]
+            isOneToOne: false
+            referencedRelation: "inquiries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inquiries: {
+        Row: {
+          additional_info: string | null
+          ai_type: string | null
+          budget: string | null
+          business_name: string | null
+          business_type: string | null
+          company: string | null
+          company_size: string | null
+          created_at: string
+          current_markets: string | null
+          data_available: string | null
+          email: string
+          expansion_goals: string | null
+          features: string[] | null
+          id: string
+          industry: string | null
+          location: string | null
+          message: string | null
+          meta: Json | null
+          name: string
+          phone: string | null
+          position: string | null
+          processed: boolean | null
+          products: string | null
+          project_type: string | null
+          requirements: string | null
+          service: string
+          services: string[] | null
+          status: string | null
+          store_type: string | null
+          subscribe: boolean | null
+          target_markets: string | null
+          timeline: string | null
+        }
+        Insert: {
+          additional_info?: string | null
+          ai_type?: string | null
+          budget?: string | null
+          business_name?: string | null
+          business_type?: string | null
+          company?: string | null
+          company_size?: string | null
+          created_at?: string
+          current_markets?: string | null
+          data_available?: string | null
+          email: string
+          expansion_goals?: string | null
+          features?: string[] | null
+          id?: string
+          industry?: string | null
+          location?: string | null
+          message?: string | null
+          meta?: Json | null
+          name: string
+          phone?: string | null
+          position?: string | null
+          processed?: boolean | null
+          products?: string | null
+          project_type?: string | null
+          requirements?: string | null
+          service: string
+          services?: string[] | null
+          status?: string | null
+          store_type?: string | null
+          subscribe?: boolean | null
+          target_markets?: string | null
+          timeline?: string | null
+        }
+        Update: {
+          additional_info?: string | null
+          ai_type?: string | null
+          budget?: string | null
+          business_name?: string | null
+          business_type?: string | null
+          company?: string | null
+          company_size?: string | null
+          created_at?: string
+          current_markets?: string | null
+          data_available?: string | null
+          email?: string
+          expansion_goals?: string | null
+          features?: string[] | null
+          id?: string
+          industry?: string | null
+          location?: string | null
+          message?: string | null
+          meta?: Json | null
+          name?: string
+          phone?: string | null
+          position?: string | null
+          processed?: boolean | null
+          products?: string | null
+          project_type?: string | null
+          requirements?: string | null
+          service?: string
+          services?: string[] | null
+          status?: string | null
+          store_type?: string | null
+          subscribe?: boolean | null
+          target_markets?: string | null
+          timeline?: string | null
+        }
+        Relationships: []
+      }
+      subscribers: {
+        Row: {
+          active: boolean | null
+          email: string
+          id: string
+          name: string | null
+          source: string | null
+          subscribed_at: string
+          unsubscribed_at: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          email: string
+          id?: string
+          name?: string | null
+          source?: string | null
+          subscribed_at?: string
+          unsubscribed_at?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          email?: string
+          id?: string
+          name?: string | null
+          source?: string | null
+          subscribed_at?: string
+          unsubscribed_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

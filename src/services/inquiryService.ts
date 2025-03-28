@@ -7,10 +7,17 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Interface for form data
-interface InquiryFormData {
+export interface InquiryFormData {
   service: string;
   name: string;
   email: string;
+  phone?: string;
+  company?: string;
+  message?: string;
+  businessType?: string;
+  location?: string;
+  services?: string[];
+  subscribe?: boolean;
   [key: string]: any;
 }
 

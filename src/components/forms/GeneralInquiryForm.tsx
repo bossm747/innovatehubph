@@ -17,7 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { submitInquiryForm, logFormSubmission } from '@/services/inquiryService';
+import { submitInquiryForm, logFormSubmission, InquiryFormData } from '@/services/inquiryService';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -55,9 +55,14 @@ const GeneralInquiryForm = ({ navigate }: GeneralInquiryFormProps) => {
     
     try {
       // Add service type to the form data
-      const formDataWithService = {
+      const formDataWithService: InquiryFormData = {
         service: 'general',
-        ...data
+        name: data.name,
+        email: data.email,
+        company: data.company,
+        phone: data.phone,
+        message: data.message,
+        subscribe: data.subscribe
       };
       
       // Log the submission (excluding sensitive information)

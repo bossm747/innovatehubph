@@ -1,73 +1,83 @@
 
 import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  Cpu,
-  Globe,
-  Code,
-  FileText,
-  Video,
-  Mic,
-  Volume2,
-  Search,
-  ArrowLeft,
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { 
+  FileText, Code, Volume2, Mic, Video, Globe, Search, 
+  Paintbrush, ImagePlus, Wand2, Eraser, GanttChart
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
-type AIToolsHeaderProps = {
+interface AIToolsHeaderProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
-};
+}
 
-const AIToolsHeader = ({ activeTab, setActiveTab }: AIToolsHeaderProps) => {
-  const navigate = useNavigate();
-
+const AIToolsHeader: React.FC<AIToolsHeaderProps> = ({ activeTab, setActiveTab }) => {
   const tools = [
-    { id: 'marketing', icon: <FileText className="h-4 w-4" />, label: 'Marketing Copy' },
-    { id: 'code', icon: <Code className="h-4 w-4" />, label: 'Code Assistant' },
-    { id: 'speech', icon: <Volume2 className="h-4 w-4" />, label: 'Text-to-Speech' },
-    { id: 'transcription', icon: <Mic className="h-4 w-4" />, label: 'Voice-to-Text' },
-    { id: 'video', icon: <Video className="h-4 w-4" />, label: 'Video Generation' },
-    { id: 'translate', icon: <Globe className="h-4 w-4" />, label: 'Translation' },
-    { id: 'research', icon: <Search className="h-4 w-4" />, label: 'Web Research' },
+    { id: 'marketing', label: 'Marketing', icon: FileText },
+    { id: 'code', label: 'Code', icon: Code },
+    { id: 'speech', label: 'Text to Speech', icon: Volume2 },
+    { id: 'transcription', label: 'Voice to Text', icon: Mic },
+    { id: 'video', label: 'Video', icon: Video },
+    { id: 'translate', label: 'Translate', icon: Globe },
+    { id: 'research', label: 'Research', icon: Search },
+    { id: 'image', label: 'Image', icon: Paintbrush },
   ];
 
   return (
-    <div className="bg-slate-50 border-b">
-      <div className="container py-4">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="rounded-full" 
-              onClick={() => navigate('/admin/dashboard')}
-            >
-              <ArrowLeft className="h-4 w-4 mr-1" />
-              Back to Dashboard
-            </Button>
-            <h1 className="text-xl font-bold flex items-center">
-              <Cpu className="mr-2 h-5 w-5 text-purple-500" />
-              AI Development Tools
-            </h1>
-          </div>
+    <div className="py-8 bg-gradient-to-r from-innovate-100 to-innovate-50">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl md:text-4xl font-display font-bold text-innovate-800 mb-2">
+            AI-Powered Tools
+          </h1>
+          <p className="text-lg text-innovate-600 max-w-2xl mx-auto">
+            Enhance your productivity with our suite of AI-powered tools designed for your business needs
+          </p>
         </div>
         
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-7 h-auto p-1">
-            {tools.map(tool => (
-              <TabsTrigger
-                key={tool.id}
-                value={tool.id}
-                className="py-2 data-[state=active]:bg-white flex flex-col gap-1 items-center px-1 h-auto"
-              >
-                {tool.icon}
-                <span className="text-xs font-medium">{tool.label}</span>
-              </TabsTrigger>
-            ))}
+        <Tabs defaultValue={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 bg-white/50 backdrop-blur-sm rounded-xl p-1 mb-2">
+            {tools.map((tool) => {
+              const Icon = tool.icon;
+              return (
+                <TabsTrigger 
+                  key={tool.id} 
+                  value={tool.id}
+                  className="flex items-center justify-center gap-1.5 px-3 py-2 data-[state=active]:bg-innovate-600 data-[state=active]:text-white"
+                >
+                  <Icon className="h-4 w-4" />
+                  <span className="hidden sm:inline">{tool.label}</span>
+                </TabsTrigger>
+              );
+            })}
           </TabsList>
         </Tabs>
+        
+        {activeTab === 'image' && (
+          <div className="flex justify-center gap-4 mt-6">
+            <button 
+              className={`flex items-center px-4 py-2 rounded-full text-sm font-medium ${activeTab === 'image' ? 'bg-innovate-600 text-white' : 'bg-white/60 text-innovate-700'}`}
+              onClick={() => window.location.href = '/ai-tools-image'}
+            >
+              <ImagePlus className="mr-2 h-4 w-4" />
+              Generate Images
+            </button>
+            <button 
+              className={`flex items-center px-4 py-2 rounded-full text-sm font-medium ${activeTab === 'image' ? 'bg-innovate-600 text-white' : 'bg-white/60 text-innovate-700'}`}
+              onClick={() => window.location.href = '/ai-tools-enhance'}
+            >
+              <Wand2 className="mr-2 h-4 w-4" />
+              Enhance Images
+            </button>
+            <button 
+              className={`flex items-center px-4 py-2 rounded-full text-sm font-medium ${activeTab === 'image' ? 'bg-innovate-600 text-white' : 'bg-white/60 text-innovate-700'}`}
+              onClick={() => window.location.href = '/ai-tools-remove-bg'}
+            >
+              <Eraser className="mr-2 h-4 w-4" />
+              Remove Background
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

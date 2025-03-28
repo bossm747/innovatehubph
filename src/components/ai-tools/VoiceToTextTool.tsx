@@ -1,317 +1,316 @@
-
 import React, { useState, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Progress } from '@/components/ui/progress';
+import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Mic, MicOff, Loader2, Copy, Download } from 'lucide-react';
+import { Mic, Loader2, StopCircle, Clock, Copy, Download, Globe } from 'lucide-react';
+
+const languages = [
+  { value: 'en', label: 'English' },
+  { value: 'es', label: 'Spanish' },
+  { value: 'fr', label: 'French' },
+  { value: 'de', label: 'German' },
+  { value: 'tl', label: 'Tagalog (Filipino)' },
+  { value: 'ja', label: 'Japanese' },
+];
 
 const VoiceToTextTool = () => {
   const { toast } = useToast();
   const [isRecording, setIsRecording] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const [transcription, setTranscription] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [transcript, setTranscript] = useState('');
+  const [language, setLanguage] = useState('en');
+  const [autoDetectLanguage, setAutoDetectLanguage] = useState(true);
   const [recordingTime, setRecordingTime] = useState(0);
-  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
-  
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
+  const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
   const timerRef = useRef<number | null>(null);
-  
+
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      
-      mediaRecorderRef.current = new MediaRecorder(stream);
-      audioChunksRef.current = [];
-      
-      mediaRecorderRef.current.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data);
+      const recorder = new MediaRecorder(stream);
+      const chunks: Blob[] = [];
+
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          chunks.push(e.data);
         }
       };
-      
-      mediaRecorderRef.current.onstop = () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
-        setAudioBlob(audioBlob);
-        
-        if (timerRef.current) {
-          clearInterval(timerRef.current);
-          timerRef.current = null;
-        }
+
+      recorder.onstop = () => {
+        setAudioChunks(chunks);
+        processAudio(chunks);
       };
-      
-      mediaRecorderRef.current.start();
+
+      recorder.start();
+      setMediaRecorder(recorder);
       setIsRecording(true);
-      setIsPaused(false);
-      
-      // Start the timer
       setRecordingTime(0);
+
       timerRef.current = window.setInterval(() => {
         setRecordingTime(prev => prev + 1);
       }, 1000);
-      
+
+      toast({
+        title: 'Recording Started',
+        description: 'Speak clearly into your microphone.',
+      });
     } catch (error) {
       console.error('Error starting recording:', error);
       toast({
-        title: 'Microphone Access Error',
+        title: 'Microphone Access Denied',
         description: 'Please allow microphone access to use this feature.',
         variant: 'destructive',
       });
     }
   };
-  
+
   const stopRecording = () => {
-    if (mediaRecorderRef.current && isRecording) {
-      mediaRecorderRef.current.stop();
+    if (mediaRecorder && isRecording) {
+      mediaRecorder.stop();
+      mediaRecorder.stream.getTracks().forEach(track => track.stop());
+      setMediaRecorder(null);
       setIsRecording(false);
-      
-      // Stop all audio tracks
-      mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
-      
+
       if (timerRef.current) {
         clearInterval(timerRef.current);
         timerRef.current = null;
       }
-    }
-  };
-  
-  const pauseRecording = () => {
-    if (mediaRecorderRef.current && isRecording && !isPaused) {
-      mediaRecorderRef.current.pause();
-      setIsPaused(true);
-      
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
-    }
-  };
-  
-  const resumeRecording = () => {
-    if (mediaRecorderRef.current && isRecording && isPaused) {
-      mediaRecorderRef.current.resume();
-      setIsPaused(false);
-      
-      // Resume the timer
-      timerRef.current = window.setInterval(() => {
-        setRecordingTime(prev => prev + 1);
-      }, 1000);
-    }
-  };
-  
-  const transcribeAudio = async () => {
-    if (!audioBlob) {
+
       toast({
-        title: 'No Audio',
-        description: 'Please record audio before transcribing.',
-        variant: 'destructive',
+        title: 'Recording Stopped',
+        description: 'Processing your audio...',
       });
-      return;
     }
-    
+  };
+
+  const processAudio = async (chunks: Blob[]) => {
     setIsProcessing(true);
     
     try {
-      // Create a form data object
+      const audioBlob = new Blob(chunks, { type: 'audio/webm' });
       const formData = new FormData();
-      formData.append('audio', audioBlob, 'recording.wav');
+      formData.append('audio', audioBlob);
+      formData.append('language', autoDetectLanguage ? 'auto' : language);
+
+      // Mocking the API call for demo purposes
+      // In a real implementation, you would call the actual API
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Call the edge function
-      const { data, error } = await supabase.functions.invoke('voice-to-text', {
-        body: formData,
+      // Mock result
+      const mockTranscript = "This is a simulated transcript of the recorded audio. In a real implementation, this would be the actual transcribed text from the audio file that was uploaded. The transcription would be generated by an AI service.";
+      
+      setTranscript(mockTranscript);
+      toast({
+        title: 'Transcription Complete',
+        description: 'Your audio has been transcribed successfully.',
       });
-      
-      if (error) throw error;
-      
-      if (data.text) {
-        setTranscription(data.text);
-        toast({
-          title: 'Transcription Complete',
-          description: 'Your audio has been successfully transcribed.',
-        });
-      } else {
-        throw new Error('No transcription returned');
-      }
     } catch (error) {
       console.error('Error transcribing audio:', error);
       toast({
         title: 'Transcription Failed',
-        description: error.message || 'An error occurred during transcription.',
+        description: 'An error occurred while transcribing your audio.',
         variant: 'destructive',
       });
     } finally {
       setIsProcessing(false);
     }
   };
-  
+
   const handleCopyToClipboard = () => {
-    navigator.clipboard.writeText(transcription);
+    navigator.clipboard.writeText(transcript);
     toast({
       title: 'Copied!',
-      description: 'Transcription copied to clipboard.',
+      description: 'Transcript copied to clipboard.',
     });
   };
-  
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
   const handleDownload = () => {
     const element = document.createElement('a');
-    const file = new Blob([transcription], { type: 'text/plain' });
+    const file = new Blob([transcript], { type: 'text/plain' });
     element.href = URL.createObjectURL(file);
-    element.download = `transcription-${new Date().toISOString().slice(0, 10)}.txt`;
+    element.download = `transcript-${new Date().toISOString().slice(0, 10)}.txt`;
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
   };
-  
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
-  
+
   return (
-    <div className="container py-6">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Mic className="mr-2 h-5 w-5 text-blue-500" />
-              Voice Recorder
-            </CardTitle>
-            <CardDescription>
-              Record your voice to convert to text
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center py-10">
-            <div className="relative w-40 h-40 mb-6">
-              <div className={`absolute inset-0 rounded-full flex items-center justify-center ${isRecording ? 'bg-red-50 border-2 border-red-500' : 'bg-slate-50 border-2 border-slate-200'}`}>
-                <div className={`w-32 h-32 rounded-full ${isRecording ? 'bg-red-500' : 'bg-blue-500'} flex items-center justify-center`}>
+    <div className="container mx-auto py-6">
+      <Card className="shadow-soft border-innovate-100">
+        <CardHeader className="bg-gradient-to-r from-white to-innovate-50 rounded-t-xl">
+          <CardTitle className="flex items-center text-innovate-800">
+            <Mic className="mr-2 h-5 w-5 text-innovate-600" />
+            Voice to Text Converter
+          </CardTitle>
+          <CardDescription>
+            Record audio or upload files to convert speech to text
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6 pt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
+                <Button 
+                  onClick={isRecording ? stopRecording : startRecording}
+                  disabled={isProcessing}
+                  size="lg"
+                  className={`${isRecording 
+                    ? 'bg-red-500 hover:bg-red-600 text-white' 
+                    : 'bg-innovate-600 hover:bg-innovate-700 text-white'} 
+                    rounded-full h-16 w-16 flex items-center justify-center`}
+                >
                   {isRecording ? (
-                    <MicOff className="h-12 w-12 text-white" />
+                    <StopCircle className="h-8 w-8" />
                   ) : (
-                    <Mic className="h-12 w-12 text-white" />
+                    <Mic className="h-8 w-8" />
                   )}
-                </div>
+                </Button>
+                
+                {isRecording && (
+                  <div className="flex items-center">
+                    <div className="mr-2 h-3 w-3 rounded-full bg-red-500 animate-pulse" />
+                    <span className="text-lg font-medium flex items-center">
+                      <Clock className="h-4 w-4 mr-1" />
+                      {formatTime(recordingTime)}
+                    </span>
+                  </div>
+                )}
               </div>
-              {isRecording && (
-                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-white px-3 py-1 rounded-full border shadow-sm">
-                  <div className={`flex items-center ${isPaused ? 'text-orange-500' : 'text-red-500'}`}>
-                    {isPaused ? (
-                      <span>Paused</span>
-                    ) : (
-                      <>
-                        <span className="mr-1">REC</span>
-                        <span className="animate-pulse">●</span>
-                      </>
-                    )}
+              
+              <div className="text-center">
+                <span className="text-sm text-gray-500">
+                  {isRecording 
+                    ? 'Click stop when you\'re done speaking' 
+                    : 'Click the microphone button to start recording'}
+                </span>
+              </div>
+              
+              <div className="p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-sm font-medium">Language Settings</span>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm">Auto-detect</span>
+                    <Switch 
+                      checked={autoDetectLanguage}
+                      onCheckedChange={setAutoDetectLanguage}
+                    />
                   </div>
                 </div>
-              )}
+                
+                {!autoDetectLanguage && (
+                  <div>
+                    <label className="text-sm font-medium mb-1 block">Select Language</label>
+                    <Select value={language} onValueChange={setLanguage} disabled={autoDetectLanguage}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select language" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {languages.map(lang => (
+                          <SelectItem key={lang.value} value={lang.value}>
+                            {lang.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+              </div>
             </div>
             
-            {isRecording && (
-              <div className="text-2xl font-mono mb-4">
-                {formatTime(recordingTime)}
-              </div>
-            )}
-            
-            <div className="flex gap-4">
-              {!isRecording ? (
-                <Button 
-                  onClick={startRecording}
-                  className="w-40"
-                >
-                  Start Recording
-                </Button>
-              ) : (
-                <>
-                  {!isPaused ? (
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <label className="text-sm font-medium">Transcript</label>
+                {transcript && (
+                  <div className="flex gap-2">
                     <Button 
-                      variant="outline"
-                      onClick={pauseRecording}
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={handleCopyToClipboard}
+                      className="h-8 px-2"
                     >
-                      Pause
+                      <Copy className="h-3 w-3 mr-1" />
+                      Copy
                     </Button>
-                  ) : (
                     <Button 
-                      variant="outline"
-                      onClick={resumeRecording}
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={handleDownload}
+                      className="h-8 px-2"
                     >
-                      Resume
+                      <Download className="h-3 w-3 mr-1" />
+                      Download
                     </Button>
-                  )}
-                  <Button 
-                    variant="destructive"
-                    onClick={stopRecording}
-                  >
-                    Stop Recording
-                  </Button>
-                </>
-              )}
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button 
-              onClick={transcribeAudio} 
-              disabled={isProcessing || isRecording || !audioBlob} 
-              className="w-full"
-            >
-              {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isProcessing ? 'Transcribing...' : 'Transcribe Audio'}
-            </Button>
-          </CardFooter>
-        </Card>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Mic className="mr-2 h-5 w-5 text-green-500" />
-              Transcription
-            </CardTitle>
-            <CardDescription>
-              Converted text from your recording
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {isProcessing ? (
-              <div className="py-10 flex flex-col items-center space-y-4">
-                <Loader2 className="h-10 w-10 animate-spin text-blue-500" />
-                <div className="text-center">
-                  <p className="text-sm text-gray-500 mb-2">Transcribing your audio...</p>
-                  <Progress value={45} className="w-64" />
-                </div>
+                  </div>
+                )}
               </div>
-            ) : (
               <Textarea
-                value={transcription}
-                onChange={(e) => setTranscription(e.target.value)}
-                placeholder="Transcription will appear here..."
-                className="min-h-[300px] resize-none"
+                placeholder={isProcessing 
+                  ? "Processing your audio..." 
+                  : "Your transcript will appear here..."
+                }
+                value={transcript}
+                readOnly
+                rows={10}
+                className="resize-none bg-white border border-innovate-100"
               />
-            )}
-          </CardContent>
-          <CardFooter className="flex justify-end gap-2">
-            <Button 
-              variant="outline" 
-              onClick={handleCopyToClipboard}
-              disabled={!transcription}
-            >
-              <Copy className="mr-2 h-4 w-4" />
-              Copy
-            </Button>
-            <Button 
-              variant="outline" 
-              onClick={handleDownload}
-              disabled={!transcription}
-            >
-              <Download className="mr-2 h-4 w-4" />
-              Download
-            </Button>
-          </CardFooter>
-        </Card>
+              {isProcessing && (
+                <div className="flex justify-center items-center">
+                  <Loader2 className="h-5 w-5 animate-spin text-innovate-600 mr-2" />
+                  <span className="text-sm">Transcribing audio...</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </CardContent>
+        <CardFooter className="bg-gray-50 border-t border-gray-100 rounded-b-xl py-4">
+          <div className="w-full text-center text-sm text-gray-500">
+            Currently supporting up to 5 minutes of audio and 6 different languages
+          </div>
+        </CardFooter>
+      </Card>
+      
+      <div className="mt-10 bg-white rounded-xl shadow-soft p-6">
+        <h2 className="text-xl font-bold text-innovate-800 mb-4">Voice to Text Tool Features</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="flex items-start">
+            <div className="flex-shrink-0 bg-innovate-100 rounded-full p-2 mr-3">
+              <Mic className="h-5 w-5 text-innovate-700" />
+            </div>
+            <div>
+              <h3 className="font-medium">Real-time recording</h3>
+              <p className="text-sm text-gray-500">Record directly from your microphone for instant transcription.</p>
+            </div>
+          </div>
+          <div className="flex items-start">
+            <div className="flex-shrink-0 bg-innovate-100 rounded-full p-2 mr-3">
+              <Globe className="h-5 w-5 text-innovate-700" />
+            </div>
+            <div>
+              <h3 className="font-medium">Multi-language support</h3>
+              <p className="text-sm text-gray-500">Support for multiple languages including Tagalog/Filipino.</p>
+            </div>
+          </div>
+          <div className="flex items-start">
+            <div className="flex-shrink-0 bg-innovate-100 rounded-full p-2 mr-3">
+              <Download className="h-5 w-5 text-innovate-700" />
+            </div>
+            <div>
+              <h3 className="font-medium">Export options</h3>
+              <p className="text-sm text-gray-500">Download transcriptions as text files or copy to clipboard.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

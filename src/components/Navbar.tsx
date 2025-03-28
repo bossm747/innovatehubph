@@ -64,7 +64,7 @@ const Navbar = () => {
       <div className={`relative ${
         isScrolled 
           ? 'py-3 bg-white/95 backdrop-blur-lg shadow-sm' 
-          : 'py-5 bg-transparent'
+          : 'py-5 bg-white/80 backdrop-blur-sm'
       }`}>
         <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
           <Link to="/" className="flex items-center group">
@@ -142,16 +142,14 @@ const Navbar = () => {
           </button>
         </div>
         
-        {/* Always show the torn paper edge at the bottom of the navbar, but only when scrolled */}
-        {isScrolled && (
-          <div className="absolute bottom-[-15px] left-0 right-0 w-full h-[20px] z-10 overflow-hidden">
-            <img 
-              src="/lovable-uploads/bee67e8b-b334-443e-b91a-9eb641ad0db4.png" 
-              alt="Decorative paper edge" 
-              className="w-full object-cover transform rotate-180"
-            />
-          </div>
-        )}
+        {/* Always show the torn paper edge at the bottom of the navbar */}
+        <div className="absolute bottom-[-15px] left-0 right-0 w-full h-[20px] z-10 overflow-hidden">
+          <img 
+            src="/lovable-uploads/bee67e8b-b334-443e-b91a-9eb641ad0db4.png" 
+            alt="Decorative paper edge" 
+            className="w-full object-cover transform rotate-180"
+          />
+        </div>
       </div>
 
       <div className={`md:hidden absolute w-full bg-white shadow-md transition-all duration-300 ease-in-out ${

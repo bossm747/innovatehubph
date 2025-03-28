@@ -24,6 +24,7 @@ const buttonVariants = cva(
         success: "bg-green-600 text-white hover:bg-green-700 shadow-md hover:shadow-lg transition-all duration-300",
         green: "bg-green-600 text-white hover:bg-green-700 shadow-md hover:shadow-lg transition-all duration-300",
         dark: "bg-gray-800 text-white hover:bg-gray-900 shadow-md hover:shadow-lg transition-all duration-300",
+        purple: "bg-purple-800 text-white hover:bg-purple-900 shadow-md hover:shadow-lg transition-all duration-300",
       },
       size: {
         default: "h-10 px-4 py-2",

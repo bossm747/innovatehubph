@@ -66,7 +66,7 @@ const TeamPageHeader = () => {
             
             <Button 
               size="lg" 
-              variant="dark"
+              variant="purple"
               width="fixed"
               asChild
             >

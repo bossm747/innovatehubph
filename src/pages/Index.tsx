@@ -210,7 +210,7 @@ const Index = () => {
           
           <div className="text-center fade-up">
             <Button 
-              variant="primary"
+              variant="purple"
               size="lg"
               width="fixed"
               className="btn-shine group"
@@ -264,7 +264,7 @@ const Index = () => {
             <div className="flex flex-wrap justify-center gap-4">
               <Button 
                 size="xl" 
-                variant="success"
+                variant="green"
                 width="fixed"
                 className="btn-shine"
                 asChild

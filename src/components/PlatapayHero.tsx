@@ -39,8 +39,9 @@ const PlatapayHero = () => {
             
             <div className="flex flex-wrap gap-4 mb-8">
               <Button 
-                className="bg-innovate-600 hover:bg-innovate-700 text-white btn-shine" 
+                className="bg-green-600 hover:bg-green-700 text-white btn-shine" 
                 size="lg"
+                width="fixed"
                 asChild
               >
                 <a href="https://platapay.ph/registration" target="_blank" rel="noopener noreferrer">
@@ -48,9 +49,10 @@ const PlatapayHero = () => {
                 </a>
               </Button>
               <Button 
-                variant="outline" 
+                variant="purple" 
                 size="lg" 
-                className="border-innovate-600 text-innovate-600 hover:bg-innovate-50"
+                width="fixed"
+                className="text-white"
                 asChild
               >
                 <a href="https://app.platapay.ph" target="_blank" rel="noopener noreferrer">

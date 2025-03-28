@@ -7,8 +7,8 @@ import { Link } from 'react-router-dom';
 const StaffPortalButton = ({ className = "" }) => {
   return (
     <Button 
-      variant="dark" 
-      className={`bg-white/90 hover:bg-white text-blue-700 border-blue-200 font-medium shadow-sm hover:shadow-md transition-all ${className}`}
+      variant="purple" 
+      className={`font-medium shadow-sm hover:shadow-md transition-all ${className}`}
       size="lg"
       width="fixed"
       asChild

@@ -105,7 +105,7 @@ const Hero = () => {
               </Button>
               <Button 
                 size="lg" 
-                variant="dark" 
+                variant="purple"
                 width="fixed"
                 asChild
                 className="group"

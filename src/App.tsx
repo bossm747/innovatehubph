@@ -27,7 +27,48 @@ import StaffPortal from "./components/StaffPortal";
 import { StaffAuthProvider } from "./contexts/StaffAuthContext";
 import { AvailableSecretsProvider } from "./contexts/AvailableSecretsContext";
 
-const queryClient = new QueryClient();
+// Create a new QueryClient instance inside the component
+const App = () => {
+  // Create QueryClient instance inside the component
+  const queryClient = new QueryClient();
+  
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <StaffAuthProvider>
+          <AvailableSecretsProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <ScrollToTop />
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/services" element={<ServicesPage />} />
+                <Route path="/platapay" element={<PlatapayPage />} />
+                <Route path="/team" element={<TeamPage />} />
+                <Route path="/team/portal" element={<StaffPortal />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/clients" element={<ClientsPage />} />
+                <Route path="/blog" element={<BlogPage />} />
+                <Route path="/facebook" element={<FacebookPage />} />
+                <Route path="/digital-customizations" element={<DigitalCustomizationsPage />} />
+                <Route path="/ecommerce" element={<EcommercePage />} />
+                <Route path="/ai-solutions" element={<AiSolutionsPage />} />
+                <Route path="/global-expansion" element={<GlobalExpansionPage />} />
+                <Route path="/inquiry" element={<InquiryPage />} />
+                <Route path="/admin/ai-tools" element={<AIAppsManagementPage />} />
+                <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </AvailableSecretsProvider>
+        </StaffAuthProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 // ScrollToTop component to handle scrolling to top on navigation
 const ScrollToTop = () => {
@@ -54,42 +95,5 @@ const ScrollToTop = () => {
   
   return <LoadingIndicator isLoading={isLoading} />;
 };
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <StaffAuthProvider>
-        <AvailableSecretsProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <ScrollToTop />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/services" element={<ServicesPage />} />
-              <Route path="/platapay" element={<PlatapayPage />} />
-              <Route path="/team" element={<TeamPage />} />
-              <Route path="/team/portal" element={<StaffPortal />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="/clients" element={<ClientsPage />} />
-              <Route path="/blog" element={<BlogPage />} />
-              <Route path="/facebook" element={<FacebookPage />} />
-              <Route path="/digital-customizations" element={<DigitalCustomizationsPage />} />
-              <Route path="/ecommerce" element={<EcommercePage />} />
-              <Route path="/ai-solutions" element={<AiSolutionsPage />} />
-              <Route path="/global-expansion" element={<GlobalExpansionPage />} />
-              <Route path="/inquiry" element={<InquiryPage />} />
-              <Route path="/admin/ai-tools" element={<AIAppsManagementPage />} />
-              <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </AvailableSecretsProvider>
-      </StaffAuthProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
 
 export default App;

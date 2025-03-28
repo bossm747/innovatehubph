@@ -8,7 +8,7 @@ const StaffPortalButton = ({ className = "" }) => {
   return (
     <Button 
       variant="outline" 
-      className={`bg-white hover:bg-gray-100/90 text-innovate-700 border-innovate-200 ${className}`}
+      className={`bg-white hover:bg-gray-100/90 text-innovate-700 border-innovate-200 w-40 h-12 font-medium ${className}`}
       size="lg"
       asChild
     >

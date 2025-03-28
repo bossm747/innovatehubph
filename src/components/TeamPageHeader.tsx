@@ -42,33 +42,33 @@ const TeamPageHeader = () => {
           <div className="flex flex-wrap gap-4">
             <Button 
               size="lg" 
-              className="bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+              className="bg-blue-600 hover:bg-blue-700 text-white transition-colors w-40 h-12 font-medium"
               asChild
             >
               <Link to="#team-section">
-                <Users className="mr-2 h-4 w-4" />
+                <Users className="h-4 w-4 mr-2" />
                 Meet the Team
               </Link>
             </Button>
             
             <Button 
               size="lg" 
-              className="bg-green-600 hover:bg-green-700 text-white transition-colors"
+              className="bg-green-600 hover:bg-green-700 text-white transition-colors w-40 h-12 font-medium"
               asChild
             >
               <Link to="/contact?subject=careers">
-                <UserPlus className="mr-2 h-4 w-4" />
+                <UserPlus className="h-4 w-4 mr-2" />
                 Join Our Team
               </Link>
             </Button>
             
             <Button 
               size="lg" 
-              className="bg-purple-600 hover:bg-purple-700 text-white transition-colors"
+              className="bg-purple-600 hover:bg-purple-700 text-white transition-colors w-40 h-12 font-medium"
               asChild
             >
               <Link to="/admin/dashboard">
-                <LockKeyhole className="mr-2 h-4 w-4" />
+                <LockKeyhole className="h-4 w-4 mr-2" />
                 Staff Portal
               </Link>
             </Button>

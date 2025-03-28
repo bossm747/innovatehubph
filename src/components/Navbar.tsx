@@ -63,7 +63,7 @@ const Navbar = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
           ? 'py-3 bg-white/80 backdrop-blur-lg shadow-sm' 
-          : 'py-8 bg-transparent'
+          : 'py-8 pt-10 bg-transparent'
       }`}
     >
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
@@ -84,7 +84,7 @@ const Navbar = () => {
             />
           </div>
           <span className={`text-2xl font-display font-bold text-innovate-800 tracking-tight ${
-            isScrolled ? 'ml-3' : 'ml-4 text-3xl'
+            isScrolled ? 'ml-3' : 'ml-4 text-3xl -mt-5'
           }`}>
             Innovate<span className="text-innovate-500">Hub</span>
           </span>
@@ -137,7 +137,7 @@ const Navbar = () => {
 
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-          className="md:hidden text-innovate-800"
+          className="md:hidden text-innovate-800 -mt-5"
           aria-label="Toggle mobile menu"
         >
           {isMobileMenuOpen ? (

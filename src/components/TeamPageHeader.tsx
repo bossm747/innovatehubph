@@ -1,7 +1,9 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Users, ArrowRight } from 'lucide-react';
+import { Users, ArrowRight, UserPlus, LockKeyhole } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import StaffPortalButton from '@/components/StaffPortalButton';
 
 const TeamPageHeader = () => {
   return (
@@ -38,11 +40,37 @@ const TeamPageHeader = () => {
           </p>
           
           <div className="flex flex-wrap gap-4">
-            <Button size="lg" className="bg-white text-innovate-900 hover:bg-innovate-100">
-              Meet the Team <ArrowRight className="ml-2 h-4 w-4" />
+            <Button 
+              size="lg" 
+              className="bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+              asChild
+            >
+              <Link to="#team-section">
+                <Users className="mr-2 h-4 w-4" />
+                Meet the Team
+              </Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-white/40 hover:bg-white/10">
-              Join Our Team
+            
+            <Button 
+              size="lg" 
+              className="bg-green-600 hover:bg-green-700 text-white transition-colors"
+              asChild
+            >
+              <Link to="/contact?subject=careers">
+                <UserPlus className="mr-2 h-4 w-4" />
+                Join Our Team
+              </Link>
+            </Button>
+            
+            <Button 
+              size="lg" 
+              className="bg-purple-600 hover:bg-purple-700 text-white transition-colors"
+              asChild
+            >
+              <Link to="/admin/dashboard">
+                <LockKeyhole className="mr-2 h-4 w-4" />
+                Staff Portal
+              </Link>
             </Button>
           </div>
         </div>

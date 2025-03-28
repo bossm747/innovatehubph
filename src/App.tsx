@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AIToolsPage from '@/pages/AIToolsPage';
-import ImageProcessingTool from '@/components/ImageProcessingTool';
+import AIImageProcessingPage from '@/pages/AIImageProcessingPage';
 import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import UserManagement from '@/components/admin/UserManagement';
 import DatabaseManagement from '@/components/admin/DatabaseManagement';
@@ -13,8 +13,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<AIToolsPage />} />
-        <Route path="/ai-tools" element={<AIToolsPage />} />
-        <Route path="/ai-tools-image" element={<ImageProcessingTool />} />
+        <Route path="/ai-tools-image" element={<AIImageProcessingPage />} />
         <Route path="/admin" element={<AdminDashboardPage />}>
           <Route path="users" element={<UserManagement />} />
           <Route path="database" element={<DatabaseManagement />} />

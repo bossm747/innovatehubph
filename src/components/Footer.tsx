@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin, ArrowRight, MessageCircle, Mail, Phone, MapPin } from 'lucide-react';
@@ -33,8 +34,13 @@ const Footer = () => {
   const contactInfo = [
     { 
       icon: <MapPin className="h-5 w-5 text-innovate-500" />, 
-      text: "RMCL Bldg., New Bypass Rd., Bayanan, San Pascual, Batangas",
+      text: "Main Office: RMCL Bldg., New Bypass Rd., Bayanan, San Pascual, Batangas",
       href: "https://maps.google.com/?q=RMCL+Bldg.,+New+Bypass+Rd.,+Bayanan,+San+Pascual,+Batangas"
+    },
+    { 
+      icon: <MapPin className="h-5 w-5 text-innovate-500" />, 
+      text: "Satellite Office: Unit 13 InnovateHub Commercial Building, National Highway, San Antonio, San Pascual Batangas",
+      href: "https://maps.google.com/?q=InnovateHub+Commercial+Building,+National+Highway,+San+Antonio,+San+Pascual+Batangas" 
     },
     { 
       icon: <Phone className="h-5 w-5 text-innovate-500" />, 

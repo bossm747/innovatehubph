@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
@@ -141,6 +142,7 @@ const Navbar = () => {
           </button>
         </div>
         
+        {/* Always show the torn paper edge at the bottom of the navbar, but only when scrolled */}
         {isScrolled && (
           <div className="absolute bottom-[-15px] left-0 right-0 w-full h-[20px] z-10 overflow-hidden">
             <img 

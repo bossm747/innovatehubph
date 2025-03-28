@@ -2,13 +2,19 @@
 import React from 'react';
 import { ArrowDown } from 'lucide-react';
 
-const ServicesHero = () => {
+interface ServicesHeroProps {
+  title: string;
+  subtitle: string;
+  imagePath: string;
+}
+
+const ServicesHero = ({ title, subtitle, imagePath }: ServicesHeroProps) => {
   return (
     <section className="relative py-28 px-6 md:px-12 lg:px-24 overflow-hidden">
       {/* Background image with overlay for opacity */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="/lovable-uploads/d51f3d08-0518-4808-af9d-83ddda86ee94.png" 
+          src={imagePath || "/lovable-uploads/d51f3d08-0518-4808-af9d-83ddda86ee94.png"} 
           alt="Services Background" 
           className="w-full h-full object-cover opacity-10"
         />
@@ -21,10 +27,10 @@ const ServicesHero = () => {
             Our Comprehensive Services
           </span>
           <h1 className="text-5xl md:text-6xl font-bold mb-6 hero-text-gradient animate-fade-in" style={{ animationDelay: '100ms' }}>
-            What We Do
+            {title || "What We Do"}
           </h1>
           <p className="text-xl md:text-2xl font-light text-gray-600 mb-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
-            Smart Solutions for the Digital Economy
+            {subtitle || "Smart Solutions for the Digital Economy"}
           </p>
           
           <div className="flex justify-center animate-fade-in" style={{ animationDelay: '300ms' }}>

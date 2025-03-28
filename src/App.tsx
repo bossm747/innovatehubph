@@ -17,6 +17,10 @@ import ClientsPage from '@/pages/ClientsPage';
 import PlatapayPage from '@/pages/PlatapayPage';
 import AIAppsManagementPage from '@/pages/AIAppsManagementPage';
 import AIImageProcessingPage from '@/pages/AIImageProcessingPage';
+import DigitalCustomizationsPage from '@/pages/DigitalCustomizationsPage';
+import EcommercePage from '@/pages/EcommercePage';
+import AiSolutionsPage from '@/pages/AiSolutionsPage';
+import GlobalExpansionPage from '@/pages/GlobalExpansionPage';
 
 function App() {
   return (

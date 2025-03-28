@@ -1,8 +1,6 @@
 
 import { useState } from "react";
 import { Helmet } from "react-helmet";
-import { useStaffAuth } from "@/contexts/StaffAuthContext";
-import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   SidebarProvider, 
@@ -27,40 +25,15 @@ import {
   LogOut 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import UserManagement from "@/components/admin/UserManagement";
 import DatabaseManagement from "@/components/admin/DatabaseManagement";
 import AdminAIManagement from "@/components/admin/AdminAIManagement";
 import AdminOverview from "@/components/admin/AdminOverview";
-import { useEffect } from "react";
 
 const AdminDashboardPage = () => {
-  const { user, session, signOut } = useStaffAuth();
-  const navigate = useNavigate();
-  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("overview");
-  
-  useEffect(() => {
-    if (!session) {
-      navigate("/team/portal");
-      toast({
-        title: "Access Denied",
-        description: "You need to be logged in as staff to access the admin dashboard.",
-        variant: "destructive"
-      });
-    }
-  }, [session, navigate, toast]);
-  
-  if (!user || !session) {
-    return null;
-  }
-  
-  const handleSignOut = async () => {
-    await signOut();
-    navigate("/");
-  };
   
   return (
     <>
@@ -78,7 +51,7 @@ const AdminDashboardPage = () => {
               <SidebarHeader className="border-b py-4">
                 <div className="flex flex-col items-center gap-2 px-4">
                   <h2 className="text-lg font-semibold">Admin Dashboard</h2>
-                  <p className="text-xs text-gray-500">{user?.email}</p>
+                  <p className="text-xs text-gray-500">Staff Portal</p>
                 </div>
               </SidebarHeader>
               
@@ -153,7 +126,6 @@ const AdminDashboardPage = () => {
                 <Button 
                   variant="ghost" 
                   className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-50"
-                  onClick={handleSignOut}
                 >
                   <LogOut className="h-4 w-4 mr-2" />
                   <span>Sign Out</span>

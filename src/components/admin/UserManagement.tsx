@@ -1,7 +1,5 @@
 
 import React, { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import { 
   Table, 
   TableBody, 
@@ -36,140 +34,104 @@ interface StaffProfile {
   email?: string;
 }
 
+const MOCK_STAFF_USERS: StaffProfile[] = [
+  {
+    id: "1",
+    full_name: "John Doe",
+    position: "Software Developer",
+    department: "Engineering",
+    created_at: "2023-01-15T08:30:00Z",
+    avatar_url: null,
+    email: "john.doe@innovatehub.ph"
+  },
+  {
+    id: "2",
+    full_name: "Jane Smith",
+    position: "Project Manager",
+    department: "Operations",
+    created_at: "2023-02-20T10:15:00Z",
+    avatar_url: null,
+    email: "jane.smith@innovatehub.ph"
+  },
+  {
+    id: "3",
+    full_name: "Michael Johnson",
+    position: "UI/UX Designer",
+    department: "Design",
+    created_at: "2023-03-10T09:45:00Z",
+    avatar_url: null,
+    email: "michael.johnson@innovatehub.ph"
+  }
+];
+
 const UserManagement = () => {
-  const queryClient = useQueryClient();
+  const [staffUsers, setStaffUsers] = useState<StaffProfile[]>(MOCK_STAFF_USERS);
   const [isAddUserOpen, setIsAddUserOpen] = useState(false);
   const [isEditUserOpen, setIsEditUserOpen] = useState(false);
   const [isDeleteUserOpen, setIsDeleteUserOpen] = useState(false);
   const [newUser, setNewUser] = useState({ email: '', password: '', full_name: '', position: '', department: '' });
   const [currentUser, setCurrentUser] = useState<StaffProfile | null>(null);
-
-  const { data: staffUsers, isLoading } = useQuery({
-    queryKey: ['staff-users'],
-    queryFn: async () => {
-      // First get all staff profiles
-      const { data: profiles, error } = await supabase
-        .from('staff_profiles')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      
-      // Then get user emails from auth.users (this requires admin access which edge function can provide)
-      // For simplicity, we'll mock the emails based on full_name in this example
-      return (profiles as StaffProfile[]).map(profile => ({
-        ...profile,
-        email: profile.full_name ? `${profile.full_name.toLowerCase().replace(/\s+/g, '.')}@innovatehub.ph` : 'unknown@innovatehub.ph'
-      }));
-    }
-  });
-
-  const addUserMutation = useMutation({
-    mutationFn: async () => {
-      // In a real implementation, this would be an edge function call to create users
-      // For now we'll use supabase auth directly but in production this would require an edge function
-      const { data, error } = await supabase.auth.signUp({
-        email: newUser.email,
-        password: newUser.password,
-        options: {
-          data: {
-            full_name: newUser.full_name
-          }
-        }
-      });
-      
-      if (error) throw error;
-      
-      // The trigger we created will automatically add the user to staff_profiles
-      // We'll need to update the additional fields
-      const { error: updateError } = await supabase
-        .from('staff_profiles')
-        .update({
-          position: newUser.position,
-          department: newUser.department
-        })
-        .eq('id', data.user?.id);
-      
-      if (updateError) throw updateError;
-      
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['staff-users'] });
-      toast.success('Staff user created successfully');
-      setIsAddUserOpen(false);
-      setNewUser({ email: '', password: '', full_name: '', position: '', department: '' });
-    },
-    onError: (error) => {
-      toast.error(`Error creating user: ${error.message}`);
-    }
-  });
-
-  const updateUserMutation = useMutation({
-    mutationFn: async () => {
-      if (!currentUser) return null;
-      
-      const { error } = await supabase
-        .from('staff_profiles')
-        .update({
-          full_name: currentUser.full_name,
-          position: currentUser.position,
-          department: currentUser.department
-        })
-        .eq('id', currentUser.id);
-      
-      if (error) throw error;
-      return currentUser;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['staff-users'] });
-      toast.success('Staff profile updated successfully');
-      setIsEditUserOpen(false);
-      setCurrentUser(null);
-    },
-    onError: (error) => {
-      toast.error(`Error updating profile: ${error.message}`);
-    }
-  });
-
-  const deleteUserMutation = useMutation({
-    mutationFn: async () => {
-      if (!currentUser) return null;
-      
-      // This would actually require an admin API call or edge function to delete a user
-      // In this example we'll just delete the profile, but in production
-      // you would delete the auth.users record which would cascade to profiles
-      const { error } = await supabase
-        .from('staff_profiles')
-        .delete()
-        .eq('id', currentUser.id);
-      
-      if (error) throw error;
-      return currentUser;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['staff-users'] });
-      toast.success('Staff user deleted successfully');
-      setIsDeleteUserOpen(false);
-      setCurrentUser(null);
-    },
-    onError: (error) => {
-      toast.error(`Error deleting user: ${error.message}`);
-    }
-  });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAddUser = (e: React.FormEvent) => {
     e.preventDefault();
-    addUserMutation.mutate();
+    setIsLoading(true);
+    
+    // Mock adding a new user
+    setTimeout(() => {
+      const newStaffUser: StaffProfile = {
+        id: `${staffUsers.length + 1}`,
+        full_name: newUser.full_name,
+        position: newUser.position,
+        department: newUser.department,
+        created_at: new Date().toISOString(),
+        avatar_url: null,
+        email: newUser.email
+      };
+      
+      setStaffUsers([newStaffUser, ...staffUsers]);
+      setIsAddUserOpen(false);
+      setNewUser({ email: '', password: '', full_name: '', position: '', department: '' });
+      setIsLoading(false);
+      toast.success('Staff user created successfully');
+    }, 1000);
   };
 
   const handleUpdateUser = (e: React.FormEvent) => {
     e.preventDefault();
-    updateUserMutation.mutate();
+    if (!currentUser) return;
+    
+    setIsLoading(true);
+    
+    // Mock updating a user
+    setTimeout(() => {
+      const updatedUsers = staffUsers.map(user => 
+        user.id === currentUser.id ? { ...user, ...currentUser } : user
+      );
+      
+      setStaffUsers(updatedUsers);
+      setIsEditUserOpen(false);
+      setCurrentUser(null);
+      setIsLoading(false);
+      toast.success('Staff profile updated successfully');
+    }, 1000);
   };
 
   const handleDeleteUser = () => {
-    deleteUserMutation.mutate();
+    if (!currentUser) return;
+    
+    setIsLoading(true);
+    
+    // Mock deleting a user
+    setTimeout(() => {
+      const updatedUsers = staffUsers.filter(user => user.id !== currentUser.id);
+      
+      setStaffUsers(updatedUsers);
+      setIsDeleteUserOpen(false);
+      setCurrentUser(null);
+      setIsLoading(false);
+      toast.success('Staff user deleted successfully');
+    }, 1000);
   };
 
   const openEditDialog = (user: StaffProfile) => {
@@ -249,8 +211,8 @@ const UserManagement = () => {
                 </div>
               </div>
               <DialogFooter>
-                <Button type="submit" disabled={addUserMutation.isPending}>
-                  {addUserMutation.isPending ? "Creating..." : "Create User"}
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? "Creating..." : "Create User"}
                 </Button>
               </DialogFooter>
             </form>
@@ -272,48 +234,32 @@ const UserManagement = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center py-10">
-                  <div className="flex justify-center">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div>
-                  </div>
+            {staffUsers.map((user) => (
+              <TableRow key={user.id}>
+                <TableCell className="font-medium">{user.full_name || "Unnamed"}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.position || "-"}</TableCell>
+                <TableCell>{user.department || "-"}</TableCell>
+                <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
+                <TableCell className="text-right space-x-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => openEditDialog(user)}
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="text-red-500 hover:text-red-600"
+                    onClick={() => openDeleteDialog(user)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </TableCell>
               </TableRow>
-            ) : staffUsers && staffUsers.length > 0 ? (
-              staffUsers.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell className="font-medium">{user.full_name || "Unnamed"}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.position || "-"}</TableCell>
-                  <TableCell>{user.department || "-"}</TableCell>
-                  <TableCell>{new Date(user.created_at).toLocaleDateString()}</TableCell>
-                  <TableCell className="text-right space-x-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => openEditDialog(user)}
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="text-red-500 hover:text-red-600"
-                      onClick={() => openDeleteDialog(user)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center py-8">
-                  No staff users found
-                </TableCell>
-              </TableRow>
-            )}
+            ))}
           </TableBody>
         </Table>
       </div>
@@ -356,8 +302,8 @@ const UserManagement = () => {
                 </div>
               </div>
               <DialogFooter>
-                <Button type="submit" disabled={updateUserMutation.isPending}>
-                  {updateUserMutation.isPending ? "Updating..." : "Update User"}
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? "Updating..." : "Update User"}
                 </Button>
               </DialogFooter>
             </form>
@@ -391,9 +337,9 @@ const UserManagement = () => {
             <Button 
               variant="destructive" 
               onClick={handleDeleteUser}
-              disabled={deleteUserMutation.isPending}
+              disabled={isLoading}
             >
-              {deleteUserMutation.isPending ? "Deleting..." : "Delete User"}
+              {isLoading ? "Deleting..." : "Delete User"}
             </Button>
           </DialogFooter>
         </DialogContent>

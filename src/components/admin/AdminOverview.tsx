@@ -1,81 +1,32 @@
 
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, Database, FileText, LayoutDashboard } from 'lucide-react';
 
 const AdminOverview = () => {
-  const { data: userCount, isLoading: loadingUsers } = useQuery({
-    queryKey: ['admin-user-count'],
-    queryFn: async () => {
-      const { count, error } = await supabase
-        .from('staff_profiles')
-        .select('*', { count: 'exact', head: true });
-      
-      if (error) throw error;
-      return count || 0;
-    }
-  });
-
-  const { data: inquiryCount, isLoading: loadingInquiries } = useQuery({
-    queryKey: ['admin-inquiry-count'],
-    queryFn: async () => {
-      const { count, error } = await supabase
-        .from('inquiries')
-        .select('*', { count: 'exact', head: true });
-      
-      if (error) throw error;
-      return count || 0;
-    }
-  });
-
-  const { data: projectCount, isLoading: loadingProjects } = useQuery({
-    queryKey: ['admin-project-count'],
-    queryFn: async () => {
-      const { count, error } = await supabase
-        .from('ai_projects')
-        .select('*', { count: 'exact', head: true });
-      
-      if (error) throw error;
-      return count || 0;
-    }
-  });
-
-  const { data: subscriberCount, isLoading: loadingSubscribers } = useQuery({
-    queryKey: ['admin-subscriber-count'],
-    queryFn: async () => {
-      const { count, error } = await supabase
-        .from('subscribers')
-        .select('*', { count: 'exact', head: true });
-      
-      if (error) throw error;
-      return count || 0;
-    }
-  });
-
+  // Mock data for overview stats
   const stats = [
     {
       title: "Staff Users",
-      value: loadingUsers ? "Loading..." : userCount,
+      value: 12,
       icon: <Users className="h-5 w-5 text-blue-600" />,
       description: "Total staff accounts"
     },
     {
       title: "Client Inquiries",
-      value: loadingInquiries ? "Loading..." : inquiryCount,
+      value: 48,
       icon: <FileText className="h-5 w-5 text-green-600" />,
       description: "Total client inquiries"
     },
     {
       title: "AI Projects",
-      value: loadingProjects ? "Loading..." : projectCount,
+      value: 7,
       icon: <LayoutDashboard className="h-5 w-5 text-purple-600" />,
       description: "Active AI projects"
     },
     {
       title: "Subscribers",
-      value: loadingSubscribers ? "Loading..." : subscriberCount,
+      value: 189,
       icon: <Database className="h-5 w-5 text-orange-600" />,
       description: "Newsletter subscribers"
     }
@@ -104,9 +55,37 @@ const AdminOverview = () => {
             <CardTitle>Recent Activities</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-500">
-              Recent system activities will be displayed here in a future update.
-            </p>
+            <div className="space-y-4">
+              <div className="flex items-start gap-4">
+                <div className="bg-blue-100 p-2 rounded-full">
+                  <Users className="h-4 w-4 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">New staff member added</p>
+                  <p className="text-xs text-gray-500">2 hours ago</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="bg-green-100 p-2 rounded-full">
+                  <FileText className="h-4 w-4 text-green-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Client inquiry processed</p>
+                  <p className="text-xs text-gray-500">5 hours ago</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="bg-purple-100 p-2 rounded-full">
+                  <LayoutDashboard className="h-4 w-4 text-purple-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium">New AI project created</p>
+                  <p className="text-xs text-gray-500">Yesterday</p>
+                </div>
+              </div>
+            </div>
           </CardContent>
         </Card>
         

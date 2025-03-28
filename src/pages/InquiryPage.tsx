@@ -7,7 +7,6 @@ import Footer from '@/components/Footer';
 import CircuitBackground from '@/components/CircuitBackground';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PlatapayForm from '@/components/forms/PlatapayForm';
 import DigitalCustomizationsForm from '@/components/forms/DigitalCustomizationsForm';
 import EcommerceForm from '@/components/forms/EcommerceForm';

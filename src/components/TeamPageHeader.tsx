@@ -7,7 +7,7 @@ import StaffPortalButton from '@/components/StaffPortalButton';
 
 const TeamPageHeader = () => {
   return (
-    <section className="relative py-24 overflow-hidden bg-gradient-to-b from-innovate-800 to-innovate-950 text-white mt-14">
+    <section className="relative py-24 overflow-hidden bg-gradient-to-b from-innovate-800 to-innovate-950 text-white">
       {/* Background patterns */}
       <div className="absolute inset-0 overflow-hidden opacity-10">
         <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-innovate-500 filter blur-3xl"></div>

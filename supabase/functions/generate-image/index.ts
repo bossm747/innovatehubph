@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const corsHeaders = {
@@ -33,6 +32,9 @@ serve(async (req) => {
         break;
       case 'huggingface':
         result = await generateWithHuggingFace(prompt, model || 'stabilityai/stable-diffusion-xl-base-1.0');
+        break;
+      case 'getimg':
+        result = await generateWithGetImg(prompt, model || 'realistic-vision-v5.1');
         break;
       default:
         return new Response(
@@ -93,7 +95,6 @@ async function generateWithReplicate(prompt: string, model: string): Promise<str
     throw new Error('REPLICATE_API_KEY is not set');
   }
   
-  // Map model IDs to versions
   const modelVersions: Record<string, string> = {
     'stability-ai/sdxl': '2facb4a474a0462c15041b78b1ad70952ea46b5ec6ad29583c0b29dbd4249591',
     'stability-ai/stable-diffusion': 'db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf',
@@ -103,7 +104,6 @@ async function generateWithReplicate(prompt: string, model: string): Promise<str
   
   const version = modelVersions[model] || modelVersions['stability-ai/sdxl'];
   
-  // Start the prediction
   const response = await fetch('https://api.replicate.com/v1/predictions', {
     method: 'POST',
     headers: {
@@ -125,7 +125,6 @@ async function generateWithReplicate(prompt: string, model: string): Promise<str
   
   const prediction = await response.json();
   
-  // Poll until the prediction is complete
   let result;
   while (!result) {
     const statusResponse = await fetch(`https://api.replicate.com/v1/predictions/${prediction.id}`, {
@@ -147,7 +146,6 @@ async function generateWithReplicate(prompt: string, model: string): Promise<str
       throw new Error(`Replicate generation failed: ${status.error}`);
     }
     
-    // Wait a bit before checking again
     await new Promise(resolve => setTimeout(resolve, 1000));
   }
   
@@ -177,10 +175,47 @@ async function generateWithHuggingFace(prompt: string, model: string): Promise<s
     throw new Error(`HuggingFace API error: ${errorText || response.statusText}`);
   }
   
-  // Get image as blob and convert to base64
   const imageBlob = await response.blob();
   const buffer = await imageBlob.arrayBuffer();
   const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
   
   return `data:image/png;base64,${base64}`;
+}
+
+async function generateWithGetImg(prompt: string, model: string): Promise<string> {
+  const apiKey = Deno.env.get('GETIMG_API_KEY');
+  
+  if (!apiKey) {
+    throw new Error('GETIMG_API_KEY is not set');
+  }
+  
+  const response = await fetch('https://api.getimg.ai/v1/stable-diffusion/text-to-image', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      prompt,
+      model_name: model,
+      width: 1024,
+      height: 1024,
+      num_images: 1,
+      guidance_scale: 7.5,
+      steps: 30
+    })
+  });
+  
+  if (!response.ok) {
+    const errorText = await response.text();
+    try {
+      const errorData = JSON.parse(errorText);
+      throw new Error(`GetImg API error: ${errorData.error || response.statusText}`);
+    } catch {
+      throw new Error(`GetImg API error: ${errorText || response.statusText}`);
+    }
+  }
+  
+  const data = await response.json();
+  return data.image_resource?.url || data.output?.image_url;
 }

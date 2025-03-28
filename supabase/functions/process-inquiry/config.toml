@@ -1,0 +1,8 @@
+
+project_id = ""
+
+[global.env]
+SMTP_HOST = "smtp.hostinger.com"
+SMTP_PORT = "465"
+SMTP_USERNAME = "inquiries@innovatehub.ph"
+# SMTP_PASSWORD needs to be set in Supabase dashboard

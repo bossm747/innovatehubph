@@ -17,6 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { submitInquiryForm, logFormSubmission } from '@/services/inquiryService';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -46,20 +47,56 @@ const GeneralInquiryForm = ({ navigate }: GeneralInquiryFormProps) => {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = async (data: FormValues) => {
     console.log('General inquiry form data:', data);
     
-    toast.success("Inquiry Submitted", {
-      description: "We'll get back to you soon!",
-    });
+    // Show loading toast
+    const loadingToast = toast.loading("Submitting your inquiry...");
     
-    // Reset form
-    form.reset();
-    
-    // Redirect after 2 seconds
-    setTimeout(() => {
-      navigate('/');
-    }, 2000);
+    try {
+      // Add service type to the form data
+      const formDataWithService = {
+        service: 'general',
+        ...data
+      };
+      
+      // Log the submission (excluding sensitive information)
+      logFormSubmission('general', data);
+      
+      // Submit the form
+      const result = await submitInquiryForm(formDataWithService);
+      
+      // Dismiss loading toast
+      toast.dismiss(loadingToast);
+      
+      if (result.success) {
+        // Show success message
+        toast.success("Inquiry Submitted", {
+          description: "We'll get back to you soon!",
+        });
+        
+        // Reset form
+        form.reset();
+        
+        // Redirect after 2 seconds
+        setTimeout(() => {
+          navigate('/');
+        }, 2000);
+      } else {
+        // Show error message
+        toast.error("Submission Failed", {
+          description: result.error || "Please try again later.",
+        });
+      }
+    } catch (error) {
+      // Dismiss loading toast
+      toast.dismiss(loadingToast);
+      
+      // Show error message
+      toast.error("Submission Error", {
+        description: error instanceof Error ? error.message : "Please try again later.",
+      });
+    }
   };
 
   return (

@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -18,18 +18,18 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { submitInquiryForm, logFormSubmission } from '@/services/inquiryService';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
   email: z.string().email({ message: "Please enter a valid email address" }),
   phone: z.string().min(10, { message: "Please enter a valid phone number" }),
-  businessName: z.string().min(2, { message: "Business name is required" }),
-  businessType: z.string().min(1, { message: "Please select a business type" }),
-  location: z.string().min(3, { message: "Location is required" }),
-  inquiry: z.string().min(10, { message: "Message must be at least 10 characters" }),
-  applyAs: z.enum(["agent", "merchant", "user", "partner"], {
-    required_error: "Please select how you want to apply",
+  businessType: z.string({ required_error: "Please select a business type" }),
+  location: z.string().min(2, { message: "Location is required" }),
+  services: z.array(z.string()).refine((value) => value.length > 0, {
+    message: "Please select at least one service",
   }),
+  message: z.string().optional(),
   subscribe: z.boolean().default(false),
 });
 
@@ -46,91 +46,92 @@ const PlatapayForm = ({ navigate }: PlatapayFormProps) => {
       name: "",
       email: "",
       phone: "",
-      businessName: "",
       businessType: "",
       location: "",
-      inquiry: "",
-      applyAs: "agent",
+      services: [],
+      message: "",
       subscribe: false,
     },
   });
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = async (data: FormValues) => {
     console.log('PlataPay form data:', data);
     
-    toast.success("PlataPay Application Submitted", {
-      description: "Thank you for your interest! We'll contact you shortly.",
-    });
+    // Show loading toast
+    const loadingToast = toast.loading("Submitting your PlataPay inquiry...");
     
-    // Reset form
-    form.reset();
-    
-    // Redirect after 2 seconds
-    setTimeout(() => {
-      navigate('/platapay');
-    }, 2000);
+    try {
+      // Add service type to the form data
+      const formDataWithService = {
+        service: 'platapay',
+        ...data
+      };
+      
+      // Log the submission (excluding sensitive information)
+      logFormSubmission('platapay', data);
+      
+      // Submit the form
+      const result = await submitInquiryForm(formDataWithService);
+      
+      // Dismiss loading toast
+      toast.dismiss(loadingToast);
+      
+      if (result.success) {
+        // Show success message
+        toast.success("PlataPay Inquiry Submitted", {
+          description: "Our team will contact you about becoming a PlataPay partner!",
+        });
+        
+        // Reset form
+        form.reset();
+        
+        // Redirect after 2 seconds
+        setTimeout(() => {
+          navigate('/platapay');
+        }, 2000);
+      } else {
+        // Show error message
+        toast.error("Submission Failed", {
+          description: result.error || "Please try again later.",
+        });
+      }
+    } catch (error) {
+      // Dismiss loading toast
+      toast.dismiss(loadingToast);
+      
+      // Show error message
+      toast.error("Submission Error", {
+        description: error instanceof Error ? error.message : "Please try again later.",
+      });
+    }
   };
+
+  const businessTypes = [
+    { value: "individual", label: "Individual Agent" },
+    { value: "small-business", label: "Small Business" },
+    { value: "retailer", label: "Retailer" },
+    { value: "franchise", label: "Franchise" },
+    { value: "enterprise", label: "Enterprise" },
+  ];
+
+  const platapayServices = [
+    { id: "e-loading", label: "E-Loading" },
+    { id: "bills-payment", label: "Bills Payment" },
+    { id: "remittance", label: "Remittance" },
+    { id: "digital-wallet", label: "Digital Wallet" },
+    { id: "qr-payments", label: "QR Payments" },
+    { id: "merchant-pos", label: "Merchant POS" },
+  ];
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <div className="bg-innovate-50 p-4 rounded-lg mb-6">
-          <h3 className="font-medium text-innovate-800 mb-2">Join the PlataPay Network</h3>
+        <div className="bg-blue-50 p-4 rounded-lg mb-6">
+          <h3 className="font-medium text-blue-800 mb-2">PlataPay Partnership</h3>
           <p className="text-sm text-gray-600">
-            Apply to become a PlataPay agent, merchant, or partner and start earning from digital financial services.
+            Join our network of agents and merchants to offer digital financial services in your area.
           </p>
         </div>
-        
-        <FormField
-          control={form.control}
-          name="applyAs"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel>I want to apply as *</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-wrap gap-4"
-                >
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="agent" />
-                    </FormControl>
-                    <FormLabel className="font-normal cursor-pointer">
-                      PlataPay Agent
-                    </FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="merchant" />
-                    </FormControl>
-                    <FormLabel className="font-normal cursor-pointer">
-                      Merchant
-                    </FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="user" />
-                    </FormControl>
-                    <FormLabel className="font-normal cursor-pointer">
-                      User
-                    </FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="partner" />
-                    </FormControl>
-                    <FormLabel className="font-normal cursor-pointer">
-                      Strategic Partner
-                    </FormLabel>
-                  </FormItem>
-                </RadioGroup>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
@@ -162,16 +163,41 @@ const PlatapayForm = ({ navigate }: PlatapayFormProps) => {
           />
         </div>
         
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Phone *</FormLabel>
+              <FormControl>
+                <Input placeholder="+63 9XX XXX XXXX" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
-            name="phone"
+            name="businessType"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone Number *</FormLabel>
-                <FormControl>
-                  <Input placeholder="+63 9XX XXX XXXX" {...field} />
-                </FormControl>
+                <FormLabel>Business Type *</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select business type" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {businessTypes.map((type) => (
+                      <SelectItem key={type.value} value={type.value}>
+                        {type.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -182,7 +208,7 @@ const PlatapayForm = ({ navigate }: PlatapayFormProps) => {
             name="location"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Location/Address *</FormLabel>
+                <FormLabel>Location/Area *</FormLabel>
                 <FormControl>
                   <Input placeholder="City, Province" {...field} />
                 </FormControl>
@@ -192,46 +218,65 @@ const PlatapayForm = ({ navigate }: PlatapayFormProps) => {
           />
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormField
-            control={form.control}
-            name="businessName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Business Name *</FormLabel>
-                <FormControl>
-                  <Input placeholder="Your Business Name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          
-          <FormField
-            control={form.control}
-            name="businessType"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Business Type *</FormLabel>
-                <FormControl>
-                  <Input placeholder="e.g., Sari-sari Store, Remittance" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="services"
+          render={() => (
+            <FormItem>
+              <div className="mb-4">
+                <FormLabel className="text-base">Services Interested In *</FormLabel>
+                <FormDescription>
+                  Select the PlataPay services you want to offer
+                </FormDescription>
+              </div>
+              {platapayServices.map((service) => (
+                <FormField
+                  key={service.id}
+                  control={form.control}
+                  name="services"
+                  render={({ field }) => {
+                    return (
+                      <FormItem
+                        key={service.id}
+                        className="flex flex-row items-start space-x-3 space-y-0"
+                      >
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value?.includes(service.id)}
+                            onCheckedChange={(checked) => {
+                              return checked
+                                ? field.onChange([...field.value, service.id])
+                                : field.onChange(
+                                    field.value?.filter(
+                                      (value) => value !== service.id
+                                    )
+                                  )
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className="font-normal">
+                          {service.label}
+                        </FormLabel>
+                      </FormItem>
+                    )
+                  }}
+                />
+              ))}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         
         <FormField
           control={form.control}
-          name="inquiry"
+          name="message"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Tell us more about your interest in PlataPay *</FormLabel>
+              <FormLabel>Additional Information</FormLabel>
               <FormControl>
                 <Textarea 
-                  placeholder="Please share details about your business and how you'd like to use PlataPay..."
-                  className="min-h-32"
+                  placeholder="Tell us more about your business or location..."
+                  className="min-h-20"
                   {...field}
                 />
               </FormControl>
@@ -256,7 +301,7 @@ const PlatapayForm = ({ navigate }: PlatapayFormProps) => {
                   Subscribe to PlataPay updates
                 </FormLabel>
                 <FormDescription>
-                  Get the latest news about features and promotions
+                  Receive news about features, rates, and promotions
                 </FormDescription>
               </div>
             </FormItem>
@@ -265,15 +310,11 @@ const PlatapayForm = ({ navigate }: PlatapayFormProps) => {
         
         <Button 
           type="submit" 
-          className="w-full bg-innovate-600 hover:bg-innovate-700 text-white"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
           size="lg"
         >
-          Submit Application
+          Submit PlataPay Inquiry
         </Button>
-        
-        <p className="text-xs text-gray-500 text-center mt-4">
-          By submitting this form, you agree to our Privacy Policy and Terms of Service.
-        </p>
       </form>
     </Form>
   );

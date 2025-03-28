@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -80,7 +79,6 @@ const ImageProcessingTool: React.FC = () => {
       
       setProgress(100);
       
-      // Add result to results array
       if (result) {
         setResults(prev => [
           {

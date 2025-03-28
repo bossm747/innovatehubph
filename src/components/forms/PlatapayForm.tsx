@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -57,11 +56,9 @@ const PlatapayForm = ({ navigate }: PlatapayFormProps) => {
   const onSubmit = async (data: FormValues) => {
     console.log('PlataPay form data:', data);
     
-    // Show loading toast
     const loadingToast = toast.loading("Submitting your PlataPay inquiry...");
     
     try {
-      // Add service type to the form data
       const formDataWithService: InquiryFormData = {
         service: 'platapay',
         name: data.name,
@@ -74,39 +71,30 @@ const PlatapayForm = ({ navigate }: PlatapayFormProps) => {
         subscribe: data.subscribe
       };
       
-      // Log the submission (excluding sensitive information)
       logFormSubmission('platapay', data);
       
-      // Submit the form
       const result = await submitInquiryForm(formDataWithService);
       
-      // Dismiss loading toast
       toast.dismiss(loadingToast);
       
       if (result.success) {
-        // Show success message
         toast.success("PlataPay Inquiry Submitted", {
           description: "Our team will contact you about becoming a PlataPay partner!",
         });
         
-        // Reset form
         form.reset();
         
-        // Redirect after 2 seconds
         setTimeout(() => {
           navigate('/platapay');
         }, 2000);
       } else {
-        // Show error message
         toast.error("Submission Failed", {
           description: result.error || "Please try again later.",
         });
       }
     } catch (error) {
-      // Dismiss loading toast
       toast.dismiss(loadingToast);
       
-      // Show error message
       toast.error("Submission Error", {
         description: error instanceof Error ? error.message : "Please try again later.",
       });

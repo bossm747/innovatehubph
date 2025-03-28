@@ -12,6 +12,15 @@ import AboutPage from '@/pages/AboutPage';
 import BlogPage from '@/pages/BlogPage';
 import ClientsPage from '@/pages/ClientsPage';
 import ServicesPage from '@/pages/ServicesPage';
+import AIAppsManagementPage from '@/pages/AIAppsManagementPage';
+import AiSolutionsPage from '@/pages/AiSolutionsPage';
+import DigitalCustomizationsPage from '@/pages/DigitalCustomizationsPage';
+import EcommercePage from '@/pages/EcommercePage';
+import FacebookPage from '@/pages/FacebookPage';
+import GlobalExpansionPage from '@/pages/GlobalExpansionPage';
+import InquiryPage from '@/pages/InquiryPage';
+import PlatapayPage from '@/pages/PlatapayPage';
+import TeamPage from '@/pages/TeamPage';
 
 function App() {
   return (
@@ -29,6 +38,15 @@ function App() {
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/clients" element={<ClientsPage />} />
         <Route path="/services" element={<ServicesPage />} />
+        <Route path="/ai-apps-management" element={<AIAppsManagementPage />} />
+        <Route path="/ai-solutions" element={<AiSolutionsPage />} />
+        <Route path="/digital-customizations" element={<DigitalCustomizationsPage />} />
+        <Route path="/ecommerce" element={<EcommercePage />} />
+        <Route path="/facebook" element={<FacebookPage />} />
+        <Route path="/global-expansion" element={<GlobalExpansionPage />} />
+        <Route path="/inquiry" element={<InquiryPage />} />
+        <Route path="/platapay" element={<PlatapayPage />} />
+        <Route path="/team" element={<TeamPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

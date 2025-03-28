@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
@@ -26,6 +27,11 @@ const Navbar = () => {
       <div className="container flex h-14 max-w-screen-2xl items-center">
         <div className="mr-4 flex">
           <a href="/" className="mr-6 flex items-center space-x-2">
+            <img 
+              src="/lovable-uploads/e0b50f3f-fb7b-4832-8041-8c82e7f630ad.png" 
+              alt="InnovateHub Logo" 
+              className="h-8 w-8 mr-2"
+            />
             <span className="hidden font-bold sm:inline-block">
               InnovateHub
             </span>

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
+import { Link } from "react-router-dom";
 
 const ContactSectionForm = () => {
   const [formData, setFormData] = useState({
@@ -104,8 +105,8 @@ const ContactSectionForm = () => {
           Send Message
         </Button>
         
-        <p className="text-xs text-gray-500 text-center">
-          By submitting this form, you agree to our Privacy Policy and consent to receive updates from our company.
+        <p className="text-xs text-gray-500 text-center mt-4">
+          Need a more detailed inquiry? <Link to="/inquiry" className="text-innovate-600 hover:underline">Visit our inquiry page</Link> for service-specific forms.
         </p>
       </form>
     </div>

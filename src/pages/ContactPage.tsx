@@ -1,10 +1,12 @@
 
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ContactForm from '@/components/ContactForm';
 import ContactInfo from '@/components/ContactInfo';
 import CircuitBackground from '@/components/CircuitBackground';
+import { Button } from '@/components/ui/button';
 
 const ContactPage = () => {
   // Add scroll reveal effect
@@ -70,9 +72,13 @@ const ContactPage = () => {
               <h1 className="text-4xl md:text-5xl font-bold mb-4 hero-text-gradient">
                 Ready to Collaborate? Let's Talk!
               </h1>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
                 Reach out and let's co-create your digital future. We're here to help transform your business with innovative technology solutions.
               </p>
+              
+              <Button asChild className="bg-innovate-600 hover:bg-innovate-700 text-white btn-shine">
+                <Link to="/inquiry">Service-Specific Inquiries</Link>
+              </Button>
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">

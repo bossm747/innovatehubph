@@ -22,19 +22,6 @@ interface ProcessingResult {
   prompt?: string;
   provider?: string;
   model?: string;
-  id?: string;
-}
-
-interface AIGeneratedFile {
-  id: string;
-  created_at: string;
-  filename: string;
-  project_id: string;
-  prompt: string;
-  provider: string;
-  model?: string;
-  storage_path: string;
-  type: string;
 }
 
 const ImageProcessingTool: React.FC = () => {
@@ -123,7 +110,7 @@ const ImageProcessingTool: React.FC = () => {
       if (error) throw error;
       
       if (data && data.length > 0) {
-        const images = await Promise.all(data.map(async (item: AIGeneratedFile) => {
+        const images = await Promise.all(data.map(async (item) => {
           // Get public URL for each image
           const { data: storageData } = await supabase.storage
             .from('ai-generated')
@@ -132,10 +119,10 @@ const ImageProcessingTool: React.FC = () => {
           return {
             imageUrl: storageData.publicUrl,
             timestamp: new Date(item.created_at),
-            operation: 'generate' as ImageProcessingOperation,
+            operation: 'generate',
             prompt: item.prompt,
             provider: item.provider,
-            model: item.model || undefined,
+            model: item.model,
             id: item.id
           };
         }));
@@ -226,7 +213,7 @@ const ImageProcessingTool: React.FC = () => {
       setProgress(100);
       
       if (result) {
-        const newResult: ProcessingResult = {
+        const newResult = {
           imageUrl: result,
           timestamp: new Date(),
           operation: activeTab,

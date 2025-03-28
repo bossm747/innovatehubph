@@ -73,12 +73,19 @@ const PlataPay = () => {
               </div>
             </div>
             
-            <div className="mt-8">
+            <div className="mt-8 flex flex-wrap gap-4">
               <Button asChild className="group">
                 <Link to="/platapay" className="flex items-center">
                   Explore PlataPay 
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
+              </Button>
+              
+              <Button asChild variant="outline" className="group">
+                <a href="https://platapay.ph" target="_blank" rel="noopener noreferrer" className="flex items-center">
+                  Official Website
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </a>
               </Button>
             </div>
           </div>

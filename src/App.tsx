@@ -19,6 +19,7 @@ import DigitalCustomizationsPage from "./pages/DigitalCustomizationsPage";
 import EcommercePage from "./pages/EcommercePage";
 import AiSolutionsPage from "./pages/AiSolutionsPage";
 import GlobalExpansionPage from "./pages/GlobalExpansionPage";
+import InquiryPage from "./pages/InquiryPage";
 import LoadingIndicator from "./components/LoadingIndicator";
 
 const queryClient = new QueryClient();
@@ -70,6 +71,7 @@ const App = () => (
           <Route path="/ecommerce" element={<EcommercePage />} />
           <Route path="/ai-solutions" element={<AiSolutionsPage />} />
           <Route path="/global-expansion" element={<GlobalExpansionPage />} />
+          <Route path="/inquiry" element={<InquiryPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

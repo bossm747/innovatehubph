@@ -1,6 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import CircuitBackground from "./CircuitBackground";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -75,15 +76,17 @@ const Hero = () => {
               <Button 
                 size="lg" 
                 className="bg-innovate-600 hover:bg-innovate-700 text-white rounded-md px-8 py-6 text-lg transition-all btn-shine"
+                asChild
               >
-                Let's Build Together
+                <Link to="/inquiry">Let's Build Together</Link>
               </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
                 className="bg-white/80 hover:bg-white border-innovate-200 text-innovate-800 rounded-md px-8 py-6 text-lg"
+                asChild
               >
-                Explore PlataPay
+                <Link to="/platapay">Explore PlataPay</Link>
               </Button>
             </div>
 

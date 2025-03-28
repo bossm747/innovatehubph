@@ -1,5 +1,8 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
+import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const PlatapayHero = () => {
   return (
@@ -8,7 +11,7 @@ const PlatapayHero = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="fade-up">
             <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-6">
-              Client Spotlight
+              Powered by InnovateHub
             </span>
             <div className="flex items-center mb-4">
               <div className="relative mr-4">
@@ -33,7 +36,7 @@ const PlatapayHero = () => {
               A secure and income-generating platform that revolutionizes financial services for communities across the Philippines and beyond.
             </p>
             
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 mb-8">
               <Button 
                 className="bg-innovate-600 hover:bg-innovate-700 text-white btn-shine" 
                 size="lg"
@@ -53,6 +56,25 @@ const PlatapayHero = () => {
                   Agent Portal
                 </a>
               </Button>
+            </div>
+            
+            <div className="p-4 bg-white/80 backdrop-blur-sm rounded-lg border border-gray-200 shadow-sm">
+              <div className="flex items-center mb-2">
+                <img 
+                  src="/lovable-uploads/41923896-2fb4-4137-b3b8-78bb35bbd3e5.png" 
+                  alt="InnovateHub Logo" 
+                  className="h-6 w-auto mr-2"
+                />
+                <span className="text-gray-700 font-medium">InnovateHub Inc.</span>
+              </div>
+              <p className="text-sm text-gray-600">
+                PlataPay is one of our flagship solutions. We also offer Digital Customizations, 
+                E-Commerce Development, AI Solutions, and Global Expansion services.
+              </p>
+              <Link to="/services" className="mt-2 text-sm text-innovate-600 hover:text-innovate-800 flex items-center">
+                View all services
+                <ArrowRight className="h-3 w-3 ml-1" />
+              </Link>
             </div>
           </div>
           

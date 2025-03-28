@@ -15,7 +15,7 @@ const PlataPay = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="order-2 lg:order-1 fade-up">
             <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-6">
-              Our Flagship Product
+              Featured Client Solution
             </span>
             <div className="flex items-center mb-4">
               <div className="relative mr-4">
@@ -87,6 +87,18 @@ const PlataPay = () => {
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </a>
               </Button>
+            </div>
+
+            <div className="mt-6 border-t border-gray-200 pt-6">
+              <p className="text-gray-600 italic">
+                PlataPay is one of the many innovative solutions developed by InnovateHub Inc., showcasing our expertise in fintech solutions.
+              </p>
+              <div className="mt-4">
+                <Link to="/services" className="text-innovate-600 hover:text-innovate-800 font-medium flex items-center">
+                  Explore our other services
+                  <ArrowRight className="ml-1 h-4 w-4" />
+                </Link>
+              </div>
             </div>
           </div>
           

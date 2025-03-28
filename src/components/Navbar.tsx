@@ -63,7 +63,7 @@ const Navbar = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
           ? 'py-3 bg-white/80 backdrop-blur-lg shadow-sm' 
-          : 'py-6 pt-8 bg-transparent'
+          : 'py-6 pt-12 bg-transparent'
       }`}
     >
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
@@ -78,7 +78,7 @@ const Navbar = () => {
               src="/lovable-uploads/e0b50f3f-fb7b-4832-8041-8c82e7f630ad.png" 
               alt="InnovateHub Logo" 
               className={`relative z-10 transition-transform duration-300 group-hover:scale-105 ${
-                isScrolled ? 'h-16 w-16' : 'h-24 w-24 -mt-8'
+                isScrolled ? 'h-16 w-16' : 'h-28 w-28 -mt-10'
               }`}
               style={{ filter: 'drop-shadow(0 0 8px rgba(59, 130, 246, 0.4))' }}
             />
@@ -86,9 +86,11 @@ const Navbar = () => {
           <span className={`text-2xl font-display font-bold tracking-tight ${
             isScrolled 
               ? 'ml-3 text-innovate-800' 
-              : 'ml-4 text-3xl -mt-3 text-innovate-950'
-          }`}>
-            Innovate<span className="text-innovate-500">Hub</span>
+              : 'ml-4 text-3xl -mt-5 text-white'
+          }`} style={!isScrolled ? {
+            textShadow: '0 0 2px #000, 0 0 2px #000, 0 0 2px #000, 0 0 2px #000'
+          } : {}}>
+            Innovate<span className="text-innovate-300">Hub</span>
           </span>
         </Link>
 
@@ -96,7 +98,14 @@ const Navbar = () => {
           <nav className="flex items-center space-x-8">
             {menuItems.map((item, index) => (
               item.label !== "Services" ? (
-                <Link key={index} to={item.href} className="nav-link text-innovate-950 font-medium hover:text-innovate-600 transition-colors">{item.label}</Link>
+                <Link 
+                  key={index} 
+                  to={item.href} 
+                  className="nav-link text-white font-medium hover:text-innovate-300 transition-colors"
+                  style={{ textShadow: '0 0 2px #000, 0 0 2px #000, 0 0 2px #000' }}
+                >
+                  {item.label}
+                </Link>
               ) : null
             ))}
             
@@ -105,7 +114,10 @@ const Navbar = () => {
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent px-0">
-                    <span className="nav-link text-innovate-950 font-medium hover:text-innovate-600 transition-colors flex items-center">
+                    <span 
+                      className="nav-link text-white font-medium hover:text-innovate-300 transition-colors flex items-center"
+                      style={{ textShadow: '0 0 2px #000, 0 0 2px #000, 0 0 2px #000' }}
+                    >
                       Services <ChevronDown className="ml-1 h-4 w-4" />
                     </span>
                   </NavigationMenuTrigger>
@@ -139,8 +151,9 @@ const Navbar = () => {
 
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-          className="md:hidden text-innovate-950 -mt-3"
+          className="md:hidden text-white -mt-5"
           aria-label="Toggle mobile menu"
+          style={{ filter: 'drop-shadow(0 0 1px rgba(0, 0, 0, 0.8))' }}
         >
           {isMobileMenuOpen ? (
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

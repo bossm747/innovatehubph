@@ -72,6 +72,15 @@ body {
   color: #0c91e0;
 }
 
+/* Text outline for better visibility against varying backgrounds */
+.text-outline {
+  text-shadow: 
+    -1px -1px 0 rgba(0,0,0,0.5),
+    1px -1px 0 rgba(0,0,0,0.5),
+    -1px 1px 0 rgba(0,0,0,0.5),
+    1px 1px 0 rgba(0,0,0,0.5);
+}
+
 /* Full width container overrides - removing any container classes that might restrict width */
 .container, 
 .container-fluid,

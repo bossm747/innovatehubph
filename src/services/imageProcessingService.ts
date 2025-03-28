@@ -4,12 +4,12 @@ export type ImageProcessingOperation = 'generate' | 'enhance' | 'background-remo
 interface BaseProcessImageParams {
   operation: ImageProcessingOperation;
   provider?: 'openai' | 'replicate' | 'huggingface' | 'getimg';
+  model?: string;
 }
 
 interface GenerateImageParams extends BaseProcessImageParams {
   operation: 'generate';
   prompt: string;
-  model?: string;
   size?: string;
 }
 

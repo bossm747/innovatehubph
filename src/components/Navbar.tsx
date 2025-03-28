@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
-import StaffPortalButton from './StaffPortalButton';
+import AdminPortalButton from './AdminPortalButton';
 
 interface ListItemProps {
   href: string;
@@ -112,11 +112,10 @@ const Navbar = () => {
         </div>
 
         <div className="ml-auto flex items-center space-x-4">
-          <StaffPortalButton />
+          <AdminPortalButton />
         </div>
       </div>
 
-      {/* Mobile Navigation Menu */}
       {isMobileMenuOpen && (
         <div className="fixed left-0 top-14 z-50 w-full bg-background/95 backdrop-blur md:hidden">
           <nav className="p-4">

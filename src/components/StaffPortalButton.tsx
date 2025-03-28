@@ -8,12 +8,12 @@ const StaffPortalButton = ({ className = "" }) => {
   return (
     <Button 
       variant="outline" 
-      className={`bg-white hover:bg-gray-100/90 text-blue-700 border-blue-200 w-40 h-12 font-medium ${className}`}
+      className={`bg-white/90 hover:bg-white text-blue-700 border-blue-200 font-medium shadow-sm hover:shadow-md transition-all ${className}`}
       size="lg"
       asChild
     >
-      <Link to="/admin/dashboard">
-        <LockKeyhole className="h-4 w-4 mr-2" />
+      <Link to="/admin/dashboard" className="flex items-center gap-2">
+        <LockKeyhole className="h-4 w-4" />
         Staff Portal
       </Link>
     </Button>

@@ -2,8 +2,9 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from '@/lib/utils';
+import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface ServiceCardProps {
   title: string;
@@ -42,11 +43,12 @@ const ServiceCard = ({ title, description, icon, isActive, onClick, className }:
           <Button 
             variant="link" 
             className="text-innovate-600 hover:text-innovate-800 p-0 h-auto flex items-center"
+            asChild
           >
-            Learn More
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-            </svg>
+            <Link to={`/${isActive ? title.toLowerCase().replace(/\s+/g, '-') : ''}`} className="flex items-center">
+              Learn More
+              <ArrowRight className="h-4 w-4 ml-2" />
+            </Link>
           </Button>
         )}
       </div>
@@ -67,7 +69,7 @@ const Services = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z" />
         </svg>
       ),
-      image: "public/lovable-uploads/45881ff2-13a3-4bc4-a639-da000d90c94a.png",
+      image: "/lovable-uploads/9b23899d-8537-4e7c-996b-5fdc791cbde2.png",
       detailTitle: "PlataPay – Digital Finance for All",
       detailDesc: "A secure and income-generating platform for communities, enabling digital wallet services, bills payment, remittance, e-loading, and QR payments."
     },
@@ -81,7 +83,7 @@ const Services = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
       ),
-      image: "public/lovable-uploads/a2eb57ca-42be-4d9e-9770-cd7f0b98796c.png",
+      image: "/lovable-uploads/184545ab-3005-4f2b-8b3d-ef576aff4877.png",
       detailTitle: "Tailored Digital Solutions",
       detailDesc: "We develop custom software, business models, and provide strategic IT consulting to help your business thrive in the digital landscape."
     },
@@ -94,7 +96,7 @@ const Services = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
         </svg>
       ),
-      image: "public/lovable-uploads/3113cd1e-8a6f-4c4b-b8a8-c7e24d9aa394.png",
+      image: "/lovable-uploads/1ba10581-63f4-48e7-b872-fc97ae9f9f79.png",
       detailTitle: "Complete E-Commerce Solutions",
       detailDesc: "From online store development to payment integration and order management, we build comprehensive e-commerce solutions to help your business sell online."
     },
@@ -107,7 +109,7 @@ const Services = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
         </svg>
       ),
-      image: "public/lovable-uploads/2992c718-ef43-4ea4-8209-8ac48cc7cc87.png",
+      image: "/lovable-uploads/67bb969b-4b34-4a3e-af05-aa8eb09b6cd9.png",
       detailTitle: "AI-Powered Business Solutions",
       detailDesc: "Leverage the power of artificial intelligence with our chatbots, predictive analytics, and process automation solutions to enhance your business operations."
     },
@@ -120,7 +122,7 @@ const Services = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-      image: "public/lovable-uploads/a2eb57ca-42be-4d9e-9770-cd7f0b98796c.png",
+      image: "/lovable-uploads/ed1ffe66-3b7c-4957-aa5f-53948529fdee.png",
       detailTitle: "International Business Expansion",
       detailDesc: "Facilitate your company's global growth with our Dubai trade license services and international fintech solutions, helping you expand your business beyond borders."
     }
@@ -131,7 +133,7 @@ const Services = () => {
   return (
     <section id="services" className="py-20 px-6 md:px-12 lg:px-24 bg-gray-50">
       <div className="container mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 fade-up">
           <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
             Our Services
           </span>
@@ -156,14 +158,14 @@ const Services = () => {
           </div>
           
           <div className="lg:col-span-7">
-            <div className="bg-white rounded-xl shadow-soft overflow-hidden opacity-0 animate-fade-in" style={{ animationDelay: '300ms' }}>
-              <div className="relative h-60 md:h-80 overflow-hidden">
+            <div className="bg-white rounded-xl shadow-soft overflow-hidden fade-up">
+              <div className="relative h-60 md:h-72 overflow-hidden">
                 <img 
                   src={activeServiceData?.image} 
                   alt={activeServiceData?.title} 
                   className="w-full h-full object-cover object-center"
                 />
-                <div className="absolute inset-0 bg-innovate-900/20"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-innovate-600/40 to-innovate-900/60"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center p-6">
                     <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 drop-shadow-md">
@@ -206,11 +208,22 @@ const Services = () => {
                 </ul>
                 
                 <div className="flex flex-wrap gap-4">
-                  <Button className="bg-innovate-600 hover:bg-innovate-700 text-white btn-shine">
-                    Request a Demo
+                  <Button 
+                    className="bg-innovate-600 hover:bg-innovate-700 text-white btn-shine"
+                    asChild
+                  >
+                    <Link to={`${activeServiceData?.id === 'ai-solutions' ? '/ai-solutions' : '/services'}`}>
+                      Learn More
+                    </Link>
                   </Button>
-                  <Button variant="outline" className="border-innovate-200 text-innovate-700 hover:bg-innovate-50">
-                    Learn More
+                  <Button 
+                    variant="outline" 
+                    className="border-innovate-200 text-innovate-700 hover:bg-innovate-50"
+                    asChild
+                  >
+                    <Link to="/contact">
+                      Request a Demo
+                    </Link>
                   </Button>
                 </div>
               </div>

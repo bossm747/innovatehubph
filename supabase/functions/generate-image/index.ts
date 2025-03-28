@@ -1,6 +1,5 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.31.0";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -14,7 +13,7 @@ serve(async (req) => {
   }
 
   try {
-    const { prompt, provider, size = "1024x1024" } = await req.json();
+    const { prompt, provider = 'openai', model, size = "1024x1024" } = await req.json();
     
     if (!prompt) {
       return new Response(
@@ -23,24 +22,17 @@ serve(async (req) => {
       );
     }
 
-    if (!provider) {
-      return new Response(
-        JSON.stringify({ error: 'Provider is required' }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
-      );
-    }
-
     let result;
     
     switch (provider.toLowerCase()) {
       case 'openai':
-        result = await generateWithOpenAI(prompt, size);
+        result = await generateWithOpenAI(prompt, model || 'dall-e-3', size);
         break;
       case 'replicate':
-        result = await generateWithReplicate(prompt);
+        result = await generateWithReplicate(prompt, model || 'stability-ai/sdxl');
         break;
       case 'huggingface':
-        result = await generateWithHuggingFace(prompt);
+        result = await generateWithHuggingFace(prompt, model || 'stabilityai/stable-diffusion-xl-base-1.0');
         break;
       default:
         return new Response(
@@ -64,7 +56,7 @@ serve(async (req) => {
   }
 });
 
-async function generateWithOpenAI(prompt: string, size: string): Promise<string> {
+async function generateWithOpenAI(prompt: string, model: string, size: string): Promise<string> {
   const apiKey = Deno.env.get('OPENAI_API_KEY');
   
   if (!apiKey) {
@@ -78,7 +70,7 @@ async function generateWithOpenAI(prompt: string, size: string): Promise<string>
       'Authorization': `Bearer ${apiKey}`
     },
     body: JSON.stringify({
-      model: "dall-e-3",
+      model,
       prompt,
       n: 1,
       size
@@ -94,12 +86,22 @@ async function generateWithOpenAI(prompt: string, size: string): Promise<string>
   return data.data[0].url;
 }
 
-async function generateWithReplicate(prompt: string): Promise<string> {
+async function generateWithReplicate(prompt: string, model: string): Promise<string> {
   const apiKey = Deno.env.get('REPLICATE_API_KEY');
   
   if (!apiKey) {
     throw new Error('REPLICATE_API_KEY is not set');
   }
+  
+  // Map model IDs to versions
+  const modelVersions: Record<string, string> = {
+    'stability-ai/sdxl': '2facb4a474a0462c15041b78b1ad70952ea46b5ec6ad29583c0b29dbd4249591',
+    'stability-ai/stable-diffusion': 'db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf',
+    'tstramer/midjourney-diffusion': '436b051ebd8f68d23e83d22de5e198e0995357afef113768c20f0b6fcef23c8b',
+    'black-forest-labs/flux-schnell': '09fc93d3142c48ad44ba83b0b7a6bc0c4b968bdfaa27c2c43e0dca7f4e3f56c9',
+  };
+  
+  const version = modelVersions[model] || modelVersions['stability-ai/sdxl'];
   
   // Start the prediction
   const response = await fetch('https://api.replicate.com/v1/predictions', {
@@ -109,7 +111,7 @@ async function generateWithReplicate(prompt: string): Promise<string> {
       'Authorization': `Token ${apiKey}`
     },
     body: JSON.stringify({
-      version: "2facb4a474a0462c15041b78b1ad70952ea46b5ec6ad29583c0b29dbd4249591",
+      version,
       input: {
         prompt
       }
@@ -152,14 +154,14 @@ async function generateWithReplicate(prompt: string): Promise<string> {
   throw new Error('Unexpected error in Replicate generation');
 }
 
-async function generateWithHuggingFace(prompt: string): Promise<string> {
+async function generateWithHuggingFace(prompt: string, model: string): Promise<string> {
   const apiKey = Deno.env.get('HUGGINGFACE_API_KEY');
   
   if (!apiKey) {
     throw new Error('HUGGINGFACE_API_KEY is not set');
   }
   
-  const response = await fetch('https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0', {
+  const response = await fetch(`https://api-inference.huggingface.co/models/${model}`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${apiKey}`,

@@ -11,6 +11,7 @@ export interface ProcessImageOptions {
   operation: ImageProcessingOperation;
   prompt?: string;
   provider?: 'openai' | 'replicate' | 'huggingface';
+  model?: string;
   image?: File;
   size?: string;
   projectId?: string;
@@ -21,7 +22,15 @@ export interface ProcessImageOptions {
  */
 export const processImage = async (options: ProcessImageOptions): Promise<string> => {
   try {
-    const { operation, prompt, provider = 'openai', image, size = '1024x1024', projectId } = options;
+    const { 
+      operation, 
+      prompt, 
+      provider = 'openai', 
+      model, 
+      image, 
+      size = '1024x1024', 
+      projectId 
+    } = options;
     
     let result: string = '';
     
@@ -29,7 +38,7 @@ export const processImage = async (options: ProcessImageOptions): Promise<string
     if (operation === 'generate') {
       // Call image generation function
       const { data, error } = await supabase.functions.invoke('generate-image', {
-        body: { prompt, provider, size }
+        body: { prompt, provider, model, size }
       });
       
       if (error) throw error;
@@ -43,6 +52,7 @@ export const processImage = async (options: ProcessImageOptions): Promise<string
           type: 'image',
           prompt,
           provider,
+          model,
           projectId
         });
       }
@@ -90,10 +100,11 @@ export const storeGeneratedFile = async (params: {
   type: 'image' | 'text';
   prompt?: string;
   provider?: string;
+  model?: string;
   projectId?: string;
 }): Promise<{ id: string, url: string } | null> => {
   try {
-    const { content, filename, type, prompt, provider, projectId } = params;
+    const { content, filename, type, prompt, provider, model, projectId } = params;
     
     // Convert base64 to blob for storage
     const base64Data = content.split(',')[1];
@@ -122,6 +133,7 @@ export const storeGeneratedFile = async (params: {
         storage_path: storagePath,
         prompt,
         provider,
+        model,
         project_id: projectId
       }])
       .select('id')
@@ -250,6 +262,34 @@ export const loadImage = (file: File): Promise<HTMLImageElement> => {
     img.onerror = reject;
     img.src = URL.createObjectURL(file);
   });
+};
+
+/**
+ * Add model presets for different AI providers
+ */
+export const getProviderModels = (provider: string) => {
+  switch (provider) {
+    case 'openai':
+      return [
+        { id: 'dall-e-3', name: 'DALL-E 3' }
+      ];
+    case 'replicate':
+      return [
+        { id: 'stability-ai/sdxl', name: 'Stability AI SDXL' },
+        { id: 'stability-ai/stable-diffusion', name: 'Stable Diffusion 2.1' },
+        { id: 'tstramer/midjourney-diffusion', name: 'Midjourney Style' },
+        { id: 'black-forest-labs/flux-schnell', name: 'FLUX Schnell (Fast)' }
+      ];
+    case 'huggingface':
+      return [
+        { id: 'stabilityai/stable-diffusion-xl-base-1.0', name: 'Stable Diffusion XL' },
+        { id: 'runwayml/stable-diffusion-v1-5', name: 'Stable Diffusion 1.5' },
+        { id: 'prompthero/openjourney', name: 'OpenJourney' },
+        { id: 'black-forest-labs/FLUX.1-schnell', name: 'FLUX.1 Schnell' }
+      ];
+    default:
+      return [];
+  }
 };
 
 export const getPretrainedModelOptions = (modelType: string) => {

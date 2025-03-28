@@ -1,14 +1,15 @@
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { PlusCircle, Edit, Trash2, ArrowUpDown } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Loader2, Plus, FileText, Image, Edit, Trash2, Database } from "lucide-react";
 
 interface Project {
   id: string;
@@ -16,277 +17,418 @@ interface Project {
   description: string;
   status: string;
   created_at: string;
+  updated_at: string;
+}
+
+interface FileCount {
+  project_id: string;
+  count: number;
 }
 
 const AIProjectsList = () => {
+  const { toast } = useToast();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [newProject, setNewProject] = useState({ name: "", description: "", status: "planning" });
+  const [newProjectName, setNewProjectName] = useState("");
+  const [newProjectDescription, setNewProjectDescription] = useState("");
+  const [newProjectStatus, setNewProjectStatus] = useState("planning");
   const [editingProject, setEditingProject] = useState<Project | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [sortField, setSortField] = useState<keyof Project>("created_at");
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+  const [showNewDialog, setShowNewDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [fileCounts, setFileCounts] = useState<FileCount[]>([]);
 
-  const fetchProjects = async () => {
-    setLoading(true);
+  // Load data on component mount
+  useEffect(() => {
+    loadProjects();
+    loadFileCounts();
+  }, []);
+
+  const loadProjects = async () => {
     try {
+      setLoading(true);
       const { data, error } = await supabase
-        .from("ai_projects")
-        .select("*")
-        .order(sortField, { ascending: sortDirection === "asc" });
+        .from('ai_projects')
+        .select('*')
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
+      
       setProjects(data || []);
     } catch (error) {
-      console.error("Error fetching projects:", error);
-      toast.error("Failed to load projects");
+      console.error('Error loading projects:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load projects",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchProjects();
-  }, [sortField, sortDirection]);
-
-  const handleSort = (field: keyof Project) => {
-    if (field === sortField) {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setSortField(field);
-      setSortDirection("asc");
-    }
-  };
-
-  const handleSaveProject = async () => {
+  const loadFileCounts = async () => {
     try {
-      let result;
+      const { data, error } = await supabase
+        .from('ai_generated_files')
+        .select('project_id, count')
+        .not('project_id', 'is', null)
+        .group('project_id');
+
+      if (error) throw error;
       
-      if (editingProject) {
-        // Update existing project
-        result = await supabase
-          .from("ai_projects")
-          .update({
-            name: editingProject.name,
-            description: editingProject.description,
-            status: editingProject.status,
-          })
-          .eq("id", editingProject.id);
-        
-        if (result.error) throw result.error;
-        toast.success("Project updated successfully");
-      } else {
-        // Create new project
-        result = await supabase
-          .from("ai_projects")
-          .insert([newProject]);
-        
-        if (result.error) throw result.error;
-        toast.success("Project created successfully");
-      }
-      
-      setIsDialogOpen(false);
-      fetchProjects();
-      setNewProject({ name: "", description: "", status: "planning" });
-      setEditingProject(null);
+      setFileCounts(data || []);
     } catch (error) {
-      console.error("Error saving project:", error);
-      toast.error("Failed to save project");
+      console.error('Error loading file counts:', error);
     }
   };
 
-  const handleDeleteProject = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this project?")) return;
+  const handleCreateProject = async () => {
+    try {
+      if (!newProjectName.trim()) {
+        toast({
+          title: "Error",
+          description: "Project name is required",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const newProjects = [{
+        name: newProjectName.trim(),
+        description: newProjectDescription.trim(),
+        status: newProjectStatus
+      }];
+
+      const { data, error } = await supabase
+        .from('ai_projects')
+        .insert(newProjects)
+        .select();
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Project created successfully",
+      });
+
+      setShowNewDialog(false);
+      setNewProjectName("");
+      setNewProjectDescription("");
+      setNewProjectStatus("planning");
+      
+      // Refresh projects
+      loadProjects();
+    } catch (error) {
+      console.error('Error creating project:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create project",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleUpdateProject = async () => {
+    try {
+      if (!editingProject || !editingProject.name.trim()) {
+        toast({
+          title: "Error",
+          description: "Project name is required",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const { error } = await supabase
+        .from('ai_projects')
+        .update({
+          name: editingProject.name.trim(),
+          description: editingProject.description.trim(),
+          status: editingProject.status,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', editingProject.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Project updated successfully",
+      });
+
+      setShowEditDialog(false);
+      setEditingProject(null);
+      
+      // Refresh projects
+      loadProjects();
+    } catch (error) {
+      console.error('Error updating project:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update project",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDeleteProject = async (projectId: string) => {
+    if (!confirm("Are you sure you want to delete this project? This will not delete associated files, but will remove the association.")) {
+      return;
+    }
     
     try {
       const { error } = await supabase
-        .from("ai_projects")
+        .from('ai_projects')
         .delete()
-        .eq("id", id);
-      
+        .eq('id', projectId);
+
       if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Project deleted successfully",
+      });
       
-      toast.success("Project deleted successfully");
-      fetchProjects();
+      // Refresh projects
+      setProjects(projects.filter(p => p.id !== projectId));
     } catch (error) {
-      console.error("Error deleting project:", error);
-      toast.error("Failed to delete project");
+      console.error('Error deleting project:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete project",
+        variant: "destructive",
+      });
     }
   };
 
-  const openEditDialog = (project: Project) => {
-    setEditingProject(project);
-    setIsDialogOpen(true);
+  const getFileCount = (projectId: string) => {
+    const found = fileCounts.find(fc => fc.project_id === projectId);
+    return found ? found.count : 0;
   };
 
-  const openCreateDialog = () => {
-    setEditingProject(null);
-    setNewProject({ name: "", description: "", status: "planning" });
-    setIsDialogOpen(true);
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'planning':
+        return <Badge variant="outline" className="text-blue-500 border-blue-200 bg-blue-50">Planning</Badge>;
+      case 'in-progress':
+        return <Badge variant="outline" className="text-amber-500 border-amber-200 bg-amber-50">In Progress</Badge>;
+      case 'completed':
+        return <Badge variant="outline" className="text-green-500 border-green-200 bg-green-50">Completed</Badge>;
+      case 'archived':
+        return <Badge variant="outline" className="text-gray-500 border-gray-200 bg-gray-50">Archived</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
+    }
   };
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle>AI Projects</CardTitle>
-          <CardDescription>
-            Manage your AI-powered projects and implementation status
-          </CardDescription>
-        </div>
-        <Button onClick={openCreateDialog} className="flex items-center gap-1">
-          <PlusCircle className="h-4 w-4" /> Add Project
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">AI Projects</h2>
+        <Button onClick={() => setShowNewDialog(true)}>
+          <Plus className="h-4 w-4 mr-2" />
+          New Project
         </Button>
-      </CardHeader>
-      <CardContent>
-        {loading ? (
-          <div className="space-y-2">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="flex flex-col gap-2">
-                <Skeleton className="h-10 w-full" />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="cursor-pointer" onClick={() => handleSort("name")}>
-                  Name <ArrowUpDown className="ml-1 h-3 w-3 inline" />
-                </TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead className="cursor-pointer" onClick={() => handleSort("status")}>
-                  Status <ArrowUpDown className="ml-1 h-3 w-3 inline" />
-                </TableHead>
-                <TableHead className="cursor-pointer" onClick={() => handleSort("created_at")}>
-                  Created <ArrowUpDown className="ml-1 h-3 w-3 inline" />
-                </TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {projects.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                    No projects found. Create your first project to get started.
-                  </TableCell>
-                </TableRow>
-              ) : (
-                projects.map((project) => (
-                  <TableRow key={project.id}>
-                    <TableCell className="font-medium">{project.name}</TableCell>
-                    <TableCell>{project.description}</TableCell>
-                    <TableCell>
-                      <span className={`px-2 py-1 rounded-full text-xs ${
-                        project.status === "completed" ? "bg-green-100 text-green-800" :
-                        project.status === "in_progress" ? "bg-blue-100 text-blue-800" :
-                        "bg-gray-100 text-gray-800"
-                      }`}>
-                        {project.status === "in_progress" ? "In Progress" : 
-                         project.status === "completed" ? "Completed" : "Planning"}
-                      </span>
-                    </TableCell>
-                    <TableCell>{new Date(project.created_at).toLocaleDateString()}</TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => openEditDialog(project)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDeleteProject(project.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        )}
-      </CardContent>
+      </div>
       
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      {loading ? (
+        <div className="flex justify-center items-center h-40">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          <span className="ml-2 text-muted-foreground">Loading projects...</span>
+        </div>
+      ) : projects.length === 0 ? (
+        <Card className="border-dashed">
+          <CardContent className="text-center py-10">
+            <div className="mb-3">
+              <Database className="h-10 w-10 text-muted-foreground mx-auto" />
+            </div>
+            <h3 className="text-lg font-medium mb-2">No projects yet</h3>
+            <p className="text-muted-foreground mb-4">Create your first AI project to organize your generated content</p>
+            <Button onClick={() => setShowNewDialog(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              Create Project
+            </Button>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {projects.map(project => (
+            <Card key={project.id} className="overflow-hidden flex flex-col">
+              <CardHeader className="pb-2">
+                <div className="flex justify-between items-start">
+                  <CardTitle className="text-xl">{project.name}</CardTitle>
+                  {getStatusBadge(project.status)}
+                </div>
+                <CardDescription>
+                  {new Date(project.created_at).toLocaleDateString()}
+                </CardDescription>
+              </CardHeader>
+              
+              <CardContent className="py-2 flex-grow">
+                {project.description ? (
+                  <p className="text-sm text-muted-foreground line-clamp-3">
+                    {project.description}
+                  </p>
+                ) : (
+                  <p className="text-sm text-muted-foreground italic">
+                    No description provided
+                  </p>
+                )}
+                
+                <div className="mt-4 flex items-center">
+                  <Badge variant="secondary" className="mr-2">
+                    <FileText className="h-3 w-3 mr-1" />
+                    Files: {getFileCount(project.id)}
+                  </Badge>
+                </div>
+              </CardContent>
+              
+              <CardFooter className="pt-0 flex justify-between">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => {
+                    setEditingProject(project);
+                    setShowEditDialog(true);
+                  }}
+                >
+                  <Edit className="h-4 w-4 mr-1" />
+                  Edit
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                  onClick={() => handleDeleteProject(project.id)}
+                >
+                  <Trash2 className="h-4 w-4 mr-1" />
+                  Delete
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      )}
+      
+      {/* New Project Dialog */}
+      <Dialog open={showNewDialog} onOpenChange={setShowNewDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editingProject ? "Edit Project" : "Create New Project"}</DialogTitle>
+            <DialogTitle>Create New Project</DialogTitle>
             <DialogDescription>
-              {editingProject 
-                ? "Update the details for this AI project" 
-                : "Add a new AI project to your management dashboard"}
+              Create a new AI project to organize your generated content
             </DialogDescription>
           </DialogHeader>
           
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <label htmlFor="name">Project Name</label>
+          <div className="space-y-4 py-2">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Project Name *</label>
               <Input 
-                id="name" 
-                value={editingProject ? editingProject.name : newProject.name}
-                onChange={(e) => {
-                  if (editingProject) {
-                    setEditingProject({...editingProject, name: e.target.value});
-                  } else {
-                    setNewProject({...newProject, name: e.target.value});
-                  }
-                }}
                 placeholder="Enter project name" 
+                value={newProjectName}
+                onChange={(e) => setNewProjectName(e.target.value)}
               />
             </div>
             
-            <div className="grid gap-2">
-              <label htmlFor="description">Description</label>
-              <Input 
-                id="description" 
-                value={editingProject ? editingProject.description : newProject.description}
-                onChange={(e) => {
-                  if (editingProject) {
-                    setEditingProject({...editingProject, description: e.target.value});
-                  } else {
-                    setNewProject({...newProject, description: e.target.value});
-                  }
-                }}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Description</label>
+              <Textarea 
                 placeholder="Enter project description" 
+                value={newProjectDescription}
+                onChange={(e) => setNewProjectDescription(e.target.value)}
+                rows={3}
               />
             </div>
             
-            <div className="grid gap-2">
-              <label htmlFor="status">Status</label>
-              <select 
-                id="status"
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                value={editingProject ? editingProject.status : newProject.status}
-                onChange={(e) => {
-                  if (editingProject) {
-                    setEditingProject({...editingProject, status: e.target.value});
-                  } else {
-                    setNewProject({...newProject, status: e.target.value});
-                  }
-                }}
-              >
-                <option value="planning">Planning</option>
-                <option value="in_progress">In Progress</option>
-                <option value="completed">Completed</option>
-              </select>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Status</label>
+              <Select value={newProjectStatus} onValueChange={setNewProjectStatus}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="planning">Planning</SelectItem>
+                  <SelectItem value="in-progress">In Progress</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="archived">Archived</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
           
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+            <Button variant="outline" onClick={() => setShowNewDialog(false)}>
               Cancel
             </Button>
-            <Button onClick={handleSaveProject}>
-              {editingProject ? "Update Project" : "Create Project"}
+            <Button onClick={handleCreateProject}>
+              Create Project
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </Card>
+      
+      {/* Edit Project Dialog */}
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Project</DialogTitle>
+            <DialogDescription>
+              Update your project details
+            </DialogDescription>
+          </DialogHeader>
+          
+          {editingProject && (
+            <div className="space-y-4 py-2">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Project Name *</label>
+                <Input 
+                  placeholder="Enter project name" 
+                  value={editingProject.name}
+                  onChange={(e) => setEditingProject({...editingProject, name: e.target.value})}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Description</label>
+                <Textarea 
+                  placeholder="Enter project description" 
+                  value={editingProject.description}
+                  onChange={(e) => setEditingProject({...editingProject, description: e.target.value})}
+                  rows={3}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Status</label>
+                <Select 
+                  value={editingProject.status} 
+                  onValueChange={(value) => setEditingProject({...editingProject, status: value})}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="planning">Planning</SelectItem>
+                    <SelectItem value="in-progress">In Progress</SelectItem>
+                    <SelectItem value="completed">Completed</SelectItem>
+                    <SelectItem value="archived">Archived</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          )}
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowEditDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleUpdateProject}>
+              Update Project
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 };
 

@@ -9,6 +9,74 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      ai_generated_files: {
+        Row: {
+          created_at: string | null
+          filename: string
+          id: string
+          project_id: string | null
+          prompt: string | null
+          provider: string | null
+          storage_path: string
+          type: string
+        }
+        Insert: {
+          created_at?: string | null
+          filename: string
+          id?: string
+          project_id?: string | null
+          prompt?: string | null
+          provider?: string | null
+          storage_path: string
+          type: string
+        }
+        Update: {
+          created_at?: string | null
+          filename?: string
+          id?: string
+          project_id?: string | null
+          prompt?: string | null
+          provider?: string | null
+          storage_path?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_generated_files_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "ai_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_projects: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       documents: {
         Row: {
           content: string | null

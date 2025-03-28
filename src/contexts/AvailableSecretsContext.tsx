@@ -1,65 +1,65 @@
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
-
-interface AvailableSecret {
-  name: string;
-  available: boolean;
-  service: string;
-}
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface AvailableSecretsContextType {
-  secrets: AvailableSecret[];
-  isLoading: boolean;
+  availableSecrets: Record<string, boolean>;
+  loading: boolean;
   error: string | null;
   refreshSecrets: () => Promise<void>;
 }
 
 const AvailableSecretsContext = createContext<AvailableSecretsContextType>({
-  secrets: [],
-  isLoading: false,
+  availableSecrets: {},
+  loading: true,
   error: null,
-  refreshSecrets: async () => {},
+  refreshSecrets: async () => {}
 });
 
 export const useAvailableSecrets = () => useContext(AvailableSecretsContext);
 
 export const AvailableSecretsProvider = ({ children }: { children: ReactNode }) => {
-  const [secrets, setSecrets] = useState<AvailableSecret[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [availableSecrets, setAvailableSecrets] = useState<Record<string, boolean>>({});
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchSecrets = async () => {
-    setIsLoading(true);
+  const fetchAvailableSecrets = async () => {
     try {
-      // Call the edge function to check available secrets
-      const { data, error } = await supabase.functions.invoke('check-available-secrets');
-      
-      if (error) throw error;
-      
-      setSecrets(data.secrets || []);
+      setLoading(true);
       setError(null);
+
+      const { data, error: fetchError } = await supabase.functions.invoke('check-available-secrets');
+      
+      if (fetchError) {
+        console.error('Error fetching available secrets:', fetchError);
+        setError(fetchError.message || 'Failed to load available secrets');
+        return;
+      }
+      
+      if (data && data.availableSecrets) {
+        setAvailableSecrets(data.availableSecrets);
+      } else {
+        setError('Invalid response from secrets check');
+      }
     } catch (err) {
-      console.error("Error fetching available secrets:", err);
-      setError("Failed to fetch available secrets");
-      toast.error("Failed to load API secrets");
+      console.error('Error in fetchAvailableSecrets:', err);
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchSecrets();
+    fetchAvailableSecrets();
   }, []);
 
   return (
-    <AvailableSecretsContext.Provider
-      value={{
-        secrets,
-        isLoading,
-        error,
-        refreshSecrets: fetchSecrets,
+    <AvailableSecretsContext.Provider 
+      value={{ 
+        availableSecrets, 
+        loading, 
+        error, 
+        refreshSecrets: fetchAvailableSecrets 
       }}
     >
       {children}

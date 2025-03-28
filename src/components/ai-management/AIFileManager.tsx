@@ -1,421 +1,436 @@
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Label } from "@/components/ui/label";
-import { Download, Trash2, ExternalLink, Upload, FileText, Image, Search } from "lucide-react";
-import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
+import { Loader2, FileText, Image, Download, Trash2, Eye, Search, X } from "lucide-react";
 
 interface FileEntry {
   id: string;
   filename: string;
   type: string;
   storage_path: string;
-  created_at: string;
   prompt?: string;
-  public_url?: string;
   provider?: string;
   project_id?: string;
+  created_at: string;
+}
+
+interface Project {
+  id: string;
+  name: string;
 }
 
 const AIFileManager = () => {
+  const { toast } = useToast();
   const [files, setFiles] = useState<FileEntry[]>([]);
   const [filteredFiles, setFilteredFiles] = useState<FileEntry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState("all");
-  const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false);
-  const [uploadFile, setUploadFile] = useState<File | null>(null);
-  const [uploadType, setUploadType] = useState("image");
-  const [fileDetails, setFileDetails] = useState<FileEntry | null>(null);
-  const [isFileDetailsOpen, setIsFileDetailsOpen] = useState(false);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [selectedFileType, setSelectedFileType] = useState<string>("all");
+  const [selectedProject, setSelectedProject] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [previewFile, setPreviewFile] = useState<FileEntry | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>("");
+  const [previewOpen, setPreviewOpen] = useState(false);
   
-  const fetchFiles = async () => {
-    setLoading(true);
+  // Load data on component mount
+  useEffect(() => {
+    loadFiles();
+    loadProjects();
+  }, []);
+  
+  // Filter files when filter criteria change
+  useEffect(() => {
+    filterFiles();
+  }, [files, selectedFileType, selectedProject, searchQuery]);
+  
+  const loadFiles = async () => {
     try {
+      setLoading(true);
       const { data, error } = await supabase
-        .from("ai_generated_files")
-        .select("*")
-        .order("created_at", { ascending: false });
+        .from('ai_generated_files')
+        .select('*')
+        .order('created_at', { ascending: false });
       
       if (error) throw error;
       
       setFiles(data || []);
-      setFilteredFiles(data || []);
     } catch (error) {
-      console.error("Error fetching files:", error);
-      toast.error("Failed to load files");
+      console.error('Error loading files:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load files",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchFiles();
-  }, []);
-
-  useEffect(() => {
-    // Filter files based on search query and active tab
-    let filtered = files;
+  
+  const loadProjects = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('ai_projects')
+        .select('id, name');
+      
+      if (error) throw error;
+      
+      setProjects(data || []);
+    } catch (error) {
+      console.error('Error loading projects:', error);
+    }
+  };
+  
+  const filterFiles = () => {
+    let result = [...files];
     
+    // Apply file type filter
+    if (selectedFileType !== "all") {
+      result = result.filter(file => file.type === selectedFileType);
+    }
+    
+    // Apply project filter
+    if (selectedProject !== "all") {
+      result = result.filter(file => file.project_id === selectedProject);
+    }
+    
+    // Apply search query filter
     if (searchQuery) {
-      filtered = filtered.filter(file => 
-        file.filename.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (file.prompt && file.prompt.toLowerCase().includes(searchQuery.toLowerCase()))
+      const query = searchQuery.toLowerCase();
+      result = result.filter(file => 
+        file.filename.toLowerCase().includes(query) || 
+        (file.prompt && file.prompt.toLowerCase().includes(query))
       );
     }
     
-    if (activeTab !== "all") {
-      filtered = filtered.filter(file => file.type === activeTab);
-    }
-    
-    setFilteredFiles(filtered);
-  }, [searchQuery, activeTab, files]);
-
-  const handleDelete = async (id: string, path: string) => {
-    if (!confirm("Are you sure you want to delete this file?")) return;
-    
+    setFilteredFiles(result);
+  };
+  
+  const getProjectName = (projectId: string) => {
+    const project = projects.find(p => p.id === projectId);
+    return project ? project.name : 'Unknown Project';
+  };
+  
+  const handleDelete = async (file: FileEntry) => {
     try {
-      // Delete file from storage
+      // Delete from storage first
       const { error: storageError } = await supabase.storage
-        .from("ai-generated")
-        .remove([path]);
-      
+        .from('ai-generated')
+        .remove([file.storage_path]);
+        
       if (storageError) throw storageError;
       
-      // Delete record from database
+      // Then delete metadata from database
       const { error: dbError } = await supabase
-        .from("ai_generated_files")
+        .from('ai_generated_files')
         .delete()
-        .eq("id", id);
-      
+        .eq('id', file.id);
+        
       if (dbError) throw dbError;
       
-      toast.success("File deleted successfully");
-      fetchFiles();
+      toast({
+        title: "Success",
+        description: "File deleted successfully",
+      });
+      
+      // Refresh files list
+      setFiles(files.filter(f => f.id !== file.id));
     } catch (error) {
-      console.error("Error deleting file:", error);
-      toast.error("Failed to delete file");
+      console.error('Error deleting file:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete file",
+        variant: "destructive",
+      });
     }
   };
-
-  const handleDownload = async (path: string, filename: string) => {
+  
+  const handlePreview = async (file: FileEntry) => {
     try {
+      setPreviewFile(file);
+      setPreviewOpen(true);
+      
       const { data, error } = await supabase.storage
-        .from("ai-generated")
-        .download(path);
-        
+        .from('ai-generated')
+        .createSignedUrl(file.storage_path, 60); // 60 seconds expiry
+      
       if (error) throw error;
       
-      const url = URL.createObjectURL(data);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      setPreviewUrl(data.signedUrl);
     } catch (error) {
-      console.error("Error downloading file:", error);
-      toast.error("Failed to download file");
+      console.error('Error generating preview URL:', error);
+      toast({
+        title: "Error",
+        description: "Failed to generate preview",
+        variant: "destructive",
+      });
     }
   };
-
-  const handleUpload = async () => {
-    if (!uploadFile) {
-      toast.error("Please select a file to upload");
-      return;
-    }
-    
+  
+  const handleDownload = async (file: FileEntry) => {
     try {
-      const filePath = `${uploadType}/${uploadFile.name}`;
+      const { data, error } = await supabase.storage
+        .from('ai-generated')
+        .createSignedUrl(file.storage_path, 60);
       
-      // Upload to storage
-      const { data: storageData, error: storageError } = await supabase.storage
-        .from("ai-generated")
-        .upload(filePath, uploadFile, {
-          upsert: true,
-          contentType: uploadFile.type
-        });
-        
-      if (storageError) throw storageError;
+      if (error) throw error;
       
-      // Add record to database
-      const { error: dbError } = await supabase
-        .from("ai_generated_files")
-        .insert([{
-          filename: uploadFile.name,
-          type: uploadType,
-          storage_path: storageData.path
-        }]);
-        
-      if (dbError) throw dbError;
-      
-      toast.success("File uploaded successfully");
-      setIsUploadDialogOpen(false);
-      setUploadFile(null);
-      fetchFiles();
+      // Create a temporary link and click it to trigger download
+      const link = document.createElement('a');
+      link.href = data.signedUrl;
+      link.download = file.filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
-      console.error("Error uploading file:", error);
-      toast.error("Failed to upload file");
+      console.error('Error downloading file:', error);
+      toast({
+        title: "Error",
+        description: "Failed to download file",
+        variant: "destructive",
+      });
     }
   };
-
-  const handleViewDetails = async (file: FileEntry) => {
-    setFileDetails(file);
-    setIsFileDetailsOpen(true);
-    
-    // Get the public URL if it doesn't exist
-    if (!file.public_url) {
-      try {
-        const { data, error } = await supabase.storage
-          .from("ai-generated")
-          .getPublicUrl(file.storage_path);
-          
-        if (error) throw error;
-        
-        setFileDetails({
-          ...file,
-          public_url: data.publicUrl
-        });
-      } catch (error) {
-        console.error("Error getting public URL:", error);
-      }
-    }
+  
+  const clearFilters = () => {
+    setSelectedFileType("all");
+    setSelectedProject("all");
+    setSearchQuery("");
   };
-
+  
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
           <CardTitle>AI Generated Files</CardTitle>
           <CardDescription>
-            Manage your AI-generated content and uploads
+            Manage files generated by the AI tools
           </CardDescription>
-        </div>
-        <Button onClick={() => setIsUploadDialogOpen(true)} className="flex items-center gap-1">
-          <Upload className="h-4 w-4" /> Upload File
-        </Button>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search files by name or prompt..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-8"
-              />
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
+            <div className="flex-grow">
+              <div className="relative">
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search by filename or prompt..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-8"
+                />
+                {searchQuery && (
+                  <button 
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-2 top-2.5"
+                  >
+                    <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
+                  </button>
+                )}
+              </div>
             </div>
             
-            <Tabs 
-              defaultValue="all" 
-              value={activeTab} 
-              onValueChange={setActiveTab}
-              className="w-auto"
-            >
-              <TabsList>
-                <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger value="image">Images</TabsTrigger>
-                <TabsTrigger value="text">Text</TabsTrigger>
-              </TabsList>
-            </Tabs>
+            <div className="grid grid-cols-2 gap-4 md:flex">
+              <Select value={selectedFileType} onValueChange={setSelectedFileType}>
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue placeholder="File Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="image">Images</SelectItem>
+                  <SelectItem value="text">Text</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <Select value={selectedProject} onValueChange={setSelectedProject}>
+                <SelectTrigger className="w-[160px]">
+                  <SelectValue placeholder="Project" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Projects</SelectItem>
+                  <SelectItem value="">No Project</SelectItem>
+                  {projects.map(project => (
+                    <SelectItem key={project.id} value={project.id}>
+                      {project.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              
+              <Button 
+                variant="outline" 
+                onClick={clearFilters}
+                size="icon"
+                className="w-10"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
           
           {loading ? (
-            <div className="space-y-2">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="flex flex-col gap-2">
-                  <Skeleton className="h-10 w-full" />
-                </div>
-              ))}
+            <div className="flex justify-center items-center h-40">
+              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+              <span className="ml-2 text-muted-foreground">Loading files...</span>
+            </div>
+          ) : filteredFiles.length === 0 ? (
+            <div className="text-center py-16 text-muted-foreground">
+              <div className="mb-4">
+                {files.length === 0 ? 
+                  "No files have been generated yet." : 
+                  "No files match your filter criteria."}
+              </div>
+              {files.length > 0 && (
+                <Button variant="outline" onClick={clearFilters}>
+                  Clear Filters
+                </Button>
+              )}
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Filename</TableHead>
-                  <TableHead>Provider</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredFiles.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                      {searchQuery 
-                        ? "No files match your search query" 
-                        : "No files found. Generate or upload files to get started."}
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  filteredFiles.map((file) => (
-                    <TableRow key={file.id}>
-                      <TableCell>
-                        {file.type === "image" ? (
-                          <div className="inline-flex items-center gap-1">
-                            <Image className="h-4 w-4" /> Image
-                          </div>
-                        ) : (
-                          <div className="inline-flex items-center gap-1">
-                            <FileText className="h-4 w-4" /> Text
-                          </div>
-                        )}
-                      </TableCell>
-                      <TableCell 
-                        className="font-medium cursor-pointer hover:underline"
-                        onClick={() => handleViewDetails(file)}
-                      >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredFiles.map(file => (
+                <Card key={file.id} className="overflow-hidden flex flex-col">
+                  <div className="p-4 bg-muted/50 flex items-center justify-between">
+                    <div className="flex items-center">
+                      {file.type === 'image' ? (
+                        <Image className="h-5 w-5 mr-2 text-blue-500" />
+                      ) : (
+                        <FileText className="h-5 w-5 mr-2 text-emerald-500" />
+                      )}
+                      <span className="font-medium truncate" title={file.filename}>
                         {file.filename}
-                      </TableCell>
-                      <TableCell>{file.provider || "-"}</TableCell>
-                      <TableCell>{new Date(file.created_at).toLocaleDateString()}</TableCell>
-                      <TableCell className="text-right">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDownload(file.storage_path, file.filename)}
-                        >
-                          <Download className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDelete(file.id, file.storage_path)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
+                      </span>
+                    </div>
+                    <Badge variant="outline">
+                      {file.type}
+                    </Badge>
+                  </div>
+                  
+                  <CardContent className="p-4 flex-grow">
+                    {file.prompt && (
+                      <div className="mb-2">
+                        <div className="text-xs text-muted-foreground mb-1">Prompt:</div>
+                        <div className="text-sm line-clamp-3" title={file.prompt}>
+                          {file.prompt}
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="text-xs text-muted-foreground mt-3 space-y-1">
+                      {file.provider && (
+                        <div><span className="font-semibold">Provider:</span> {file.provider}</div>
+                      )}
+                      {file.project_id && (
+                        <div><span className="font-semibold">Project:</span> {getProjectName(file.project_id)}</div>
+                      )}
+                      <div><span className="font-semibold">Created:</span> {new Date(file.created_at).toLocaleString()}</div>
+                    </div>
+                  </CardContent>
+                  
+                  <div className="p-3 border-t flex justify-between">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      onClick={() => handlePreview(file)}
+                      className="px-2"
+                    >
+                      <Eye className="h-4 w-4 mr-1" />
+                      Preview
+                    </Button>
+                    
+                    <div className="flex gap-1">
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        onClick={() => handleDownload(file)}
+                      >
+                        <Download className="h-4 w-4" />
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        size="icon"
+                        onClick={() => handleDelete(file)}
+                        className="text-destructive"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
           )}
-        </div>
-      </CardContent>
+        </CardContent>
+      </Card>
       
-      {/* Upload Dialog */}
-      <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
-        <DialogContent>
+      {/* File Preview Dialog */}
+      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+        <DialogContent className="max-w-3xl">
           <DialogHeader>
-            <DialogTitle>Upload File</DialogTitle>
+            <DialogTitle>{previewFile?.filename}</DialogTitle>
             <DialogDescription>
-              Upload a file to your AI-generated content storage
+              {previewFile?.type === 'image' ? 'Image Preview' : 'Text Content'}
             </DialogDescription>
           </DialogHeader>
           
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label>File Type</Label>
-              <Tabs value={uploadType} onValueChange={setUploadType}>
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="image">Image</TabsTrigger>
-                  <TabsTrigger value="text">Text</TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
-            
-            <div className="grid gap-2">
-              <Label>Select File</Label>
-              <Input 
-                type="file" 
-                accept={uploadType === "image" ? "image/*" : "text/*,.txt,.md"}
-                onChange={(e) => {
-                  if (e.target.files && e.target.files[0]) {
-                    setUploadFile(e.target.files[0]);
-                  }
-                }}
-              />
-            </div>
+          <div className="my-4">
+            {previewFile?.type === 'image' ? (
+              <div className="flex justify-center bg-muted rounded-md p-4">
+                {previewUrl ? (
+                  <img 
+                    src={previewUrl} 
+                    alt={previewFile.filename} 
+                    className="max-h-[500px] object-contain rounded" 
+                  />
+                ) : (
+                  <Loader2 className="h-8 w-8 animate-spin" />
+                )}
+              </div>
+            ) : (
+              <div className="bg-muted p-4 rounded-md max-h-[500px] overflow-y-auto whitespace-pre-wrap">
+                {previewUrl ? (
+                  <iframe 
+                    src={previewUrl} 
+                    title={previewFile?.filename}
+                    className="w-full h-[400px] border-0"
+                  />
+                ) : (
+                  <Loader2 className="h-8 w-8 animate-spin" />
+                )}
+              </div>
+            )}
           </div>
           
+          {previewFile?.prompt && (
+            <div className="mb-4">
+              <h4 className="text-sm font-medium mb-1">Prompt:</h4>
+              <p className="text-sm text-muted-foreground">{previewFile.prompt}</p>
+            </div>
+          )}
+          
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsUploadDialogOpen(false)}>
-              Cancel
+            <Button 
+              variant="outline" 
+              onClick={() => setPreviewOpen(false)}
+            >
+              Close
             </Button>
-            <Button onClick={handleUpload} disabled={!uploadFile}>
-              Upload
+            <Button
+              onClick={() => previewFile && handleDownload(previewFile)}
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Download
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      
-      {/* File Details Dialog */}
-      <Dialog open={isFileDetailsOpen} onOpenChange={setIsFileDetailsOpen}>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>File Details</DialogTitle>
-          </DialogHeader>
-          
-          {fileDetails && (
-            <div className="grid gap-6">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Filename</h3>
-                  <p>{fileDetails.filename}</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Type</h3>
-                  <p className="capitalize">{fileDetails.type}</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Created</h3>
-                  <p>{new Date(fileDetails.created_at).toLocaleString()}</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Provider</h3>
-                  <p>{fileDetails.provider || "Unknown"}</p>
-                </div>
-              </div>
-              
-              {fileDetails.prompt && (
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">Prompt</h3>
-                  <p className="bg-muted/30 p-2 rounded">{fileDetails.prompt}</p>
-                </div>
-              )}
-              
-              {fileDetails.type === "image" && fileDetails.public_url && (
-                <div className="border rounded-md overflow-hidden aspect-auto max-h-96 flex items-center justify-center">
-                  <img 
-                    src={fileDetails.public_url} 
-                    alt={fileDetails.filename}
-                    className="max-w-full max-h-full object-contain"
-                  />
-                </div>
-              )}
-              
-              <div className="flex gap-2 justify-end">
-                {fileDetails.public_url && (
-                  <Button 
-                    variant="outline" 
-                    onClick={() => window.open(fileDetails.public_url, "_blank")}
-                  >
-                    <ExternalLink className="h-4 w-4 mr-2" /> Open in New Tab
-                  </Button>
-                )}
-                <Button
-                  onClick={() => handleDownload(fileDetails.storage_path, fileDetails.filename)}
-                >
-                  <Download className="h-4 w-4 mr-2" /> Download
-                </Button>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
-    </Card>
+    </div>
   );
 };
 

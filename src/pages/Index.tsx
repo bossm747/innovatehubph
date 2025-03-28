@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -58,7 +57,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen h-full w-full overflow-x-hidden relative p-0 m-0 max-w-full">
+    <div className="overflow-x-hidden w-[100vw] max-w-[100vw] min-h-screen m-0 p-0 relative">
       <CircuitBackground 
         pattern="curvy-line" 
         className="fixed top-0 right-0" 
@@ -153,7 +152,7 @@ const Index = () => {
       <PlataPay />
       <YoutubeVideo />
       
-      <section className="py-16 px-6 md:px-12 bg-gradient-to-r from-white to-gray-50">
+      <section className="py-16 px-6 md:px-12 bg-gradient-to-r from-white to-gray-50 w-full max-w-[100vw]">
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="md:w-1/2 fade-up">

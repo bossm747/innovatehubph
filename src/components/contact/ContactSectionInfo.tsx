@@ -32,7 +32,18 @@ const ContactSectionInfo = () => {
               <MapPin className="h-6 w-6 text-innovate-700" />
             </div>
             <div className="ml-4">
-              <h3 className="text-xl font-semibold mb-1">Address</h3>
+              <h3 className="text-xl font-semibold mb-1">Main Office</h3>
+              <p className="text-gray-600">RMCL Bldg., New Bypass Rd., Bayanan,</p>
+              <p className="text-gray-600">San Pascual, Batangas</p>
+            </div>
+          </div>
+          
+          <div className="flex items-start">
+            <div className="w-12 h-12 bg-innovate-100 rounded-full flex items-center justify-center flex-shrink-0">
+              <MapPin className="h-6 w-6 text-innovate-700" />
+            </div>
+            <div className="ml-4">
+              <h3 className="text-xl font-semibold mb-1">Satellite Office</h3>
               <p className="text-gray-600">Unit 13 InnovateHub Commercial Building,</p>
               <p className="text-gray-600">National Highway, San Antonio, San Pascual Batangas.</p>
             </div>

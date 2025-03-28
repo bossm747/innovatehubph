@@ -12,7 +12,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LogOut, UserCog, Settings, Database, Layers, LayoutDashboard } from 'lucide-react';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const AdminPortal = () => {
@@ -26,18 +25,23 @@ const AdminPortal = () => {
     avatar_url: ''
   });
 
+  // Mock profile data for development
+  const mockProfileData = {
+    id: user?.id || '',
+    full_name: user?.email?.split('@')[0]?.replace(/\./g, ' ') || '',
+    position: 'Administrator',
+    department: 'Management',
+    avatar_url: '',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  };
+
   const { data: profile, isLoading } = useQuery({
     queryKey: ['admin-profile', user?.id],
     enabled: !!user?.id,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('admin_profiles')
-        .select('*')
-        .eq('id', user?.id)
-        .single();
-      
-      if (error) throw error;
-      return data;
+      // For development, return mock data
+      return mockProfileData;
     }
   });
 
@@ -54,22 +58,12 @@ const AdminPortal = () => {
 
   const updateProfileMutation = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase
-        .from('admin_profiles')
-        .update({
-          full_name: profileData.full_name,
-          position: profileData.position,
-          department: profileData.department,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', user?.id);
-      
-      if (error) throw error;
+      // Mocking the update for now
+      toast.success('Profile updated successfully');
       return profileData;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-profile', user?.id] });
-      toast.success('Profile updated successfully');
     },
     onError: (error) => {
       toast.error(`Error updating profile: ${error.message}`);
@@ -99,7 +93,7 @@ const AdminPortal = () => {
   }
 
   if (!user || !session) {
-    navigate('/admin');
+    navigate('/admin/login');
     return null;
   }
 

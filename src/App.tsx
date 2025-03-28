@@ -5,6 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, useNavigationType } from "react-router-dom";
 import { useEffect, useState } from "react";
+
+// Pages
 import Index from "./pages/Index";
 import AboutPage from "./pages/AboutPage";
 import ServicesPage from "./pages/ServicesPage";
@@ -22,6 +24,7 @@ import GlobalExpansionPage from "./pages/GlobalExpansionPage";
 import InquiryPage from "./pages/InquiryPage";
 import AIAppsManagementPage from "./pages/AIAppsManagementPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
+import AIToolsPage from "./pages/AIToolsPage";
 import LoadingIndicator from "./components/LoadingIndicator";
 import StaffPortal from "./components/StaffPortal";
 import { StaffAuthProvider } from "./contexts/StaffAuthContext";
@@ -47,7 +50,6 @@ const App = () => {
                 <Route path="/services" element={<ServicesPage />} />
                 <Route path="/platapay" element={<PlatapayPage />} />
                 <Route path="/team" element={<TeamPage />} />
-                <Route path="/team/portal" element={<StaffPortal />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/clients" element={<ClientsPage />} />
                 <Route path="/blog" element={<BlogPage />} />
@@ -57,8 +59,16 @@ const App = () => {
                 <Route path="/ai-solutions" element={<AiSolutionsPage />} />
                 <Route path="/global-expansion" element={<GlobalExpansionPage />} />
                 <Route path="/inquiry" element={<InquiryPage />} />
-                <Route path="/admin/ai-tools" element={<AIAppsManagementPage />} />
+                <Route path="/inquire" element={<InquiryPage />} />
+                <Route path="/services/ai-solutions" element={<AiSolutionsPage />} />
+                <Route path="/services/digital-customizations" element={<DigitalCustomizationsPage />} />
+                <Route path="/services/ecommerce" element={<EcommercePage />} />
+                <Route path="/services/global-expansion" element={<GlobalExpansionPage />} />
+                <Route path="/admin/ai-tools" element={<AIToolsPage />} />
+                <Route path="/admin/ai-management" element={<AIAppsManagementPage />} />
                 <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+                <Route path="/staff-portal" element={<StaffPortal />} />
+                <Route path="/team/portal" element={<StaffPortal />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

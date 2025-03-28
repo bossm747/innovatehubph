@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -44,7 +45,7 @@ const teamMembers = [
     id: 4,
     name: 'Miguel Cruz',
     role: 'Chief Financial Officer',
-    bio: 'Miguel's financial expertise ensures our growth is sustainable while maximizing value for our clients.',
+    bio: "Miguel's financial expertise ensures our growth is sustainable while maximizing value for our clients.",
     image: '/team/miguel-cruz.jpg',
     social: {
       linkedin: 'https://linkedin.com/in/miguel-cruz',
@@ -68,7 +69,7 @@ const teamMembers = [
     id: 6,
     name: 'Gabriel Mendoza',
     role: 'Lead Developer',
-    bio: 'Gabriel's technical brilliance and problem-solving skills drive the development of our core platforms.',
+    bio: "Gabriel's technical brilliance and problem-solving skills drive the development of our core platforms.",
     image: '/team/gabriel-mendoza.jpg',
     social: {
       linkedin: 'https://linkedin.com/in/gabriel-mendoza',

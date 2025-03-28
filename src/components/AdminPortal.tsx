@@ -63,24 +63,24 @@ const AdminPortal = () => {
       
       <Navbar />
       
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-4 py-6 md:py-12">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-3xl font-bold mb-2">Admin Portal</h1>
-          <p className="text-muted-foreground mb-8">Welcome to the InnovateHub admin portal</p>
+          <h1 className="text-2xl md:text-3xl font-bold mb-2">Admin Portal</h1>
+          <p className="text-muted-foreground mb-6 md:mb-8">Welcome to the InnovateHub admin portal</p>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div className="md:col-span-1">
               <Card>
                 <CardHeader>
                   <div className="flex flex-col items-center">
-                    <Avatar className="h-24 w-24 mb-4">
+                    <Avatar className="h-20 w-20 md:h-24 md:w-24 mb-4">
                       <AvatarImage src={profileData.avatar_url} />
                       <AvatarFallback className="text-lg bg-primary text-primary-foreground">
                         {getInitials(profileData.full_name || getEmailName(mockUser.email))}
                       </AvatarFallback>
                     </Avatar>
-                    <CardTitle>{profileData.full_name || getEmailName(mockUser.email)}</CardTitle>
-                    <CardDescription>{mockUser.email}</CardDescription>
+                    <CardTitle className="text-center">{profileData.full_name || getEmailName(mockUser.email)}</CardTitle>
+                    <CardDescription className="text-center break-all">{mockUser.email}</CardDescription>
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -136,8 +136,8 @@ const AdminPortal = () => {
                   <CardDescription>Update your admin profile information</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Tabs defaultValue="profile">
-                    <TabsList className="mb-4">
+                  <Tabs defaultValue="profile" className="w-full">
+                    <TabsList className="mb-4 w-full grid grid-cols-2">
                       <TabsTrigger value="profile">Profile</TabsTrigger>
                       <TabsTrigger value="settings">Settings</TabsTrigger>
                     </TabsList>

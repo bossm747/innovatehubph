@@ -15,7 +15,7 @@ const StaffPortalButton = ({ className = "" }) => {
     >
       <Link to="/admin/dashboard" className="flex items-center gap-2">
         <LockKeyhole className="h-4 w-4" />
-        Staff Portal
+        Admin Portal
       </Link>
     </Button>
   );

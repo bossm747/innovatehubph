@@ -1,143 +1,86 @@
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, Database, FileText, LayoutDashboard } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { ArrowUpRight, Users, Server, Code, Brain, GitBranch, Mail, CreditCard } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const AdminOverview = () => {
-  // Mock data for overview stats
-  const stats = [
+  const navigate = useNavigate();
+  
+  const adminTools = [
     {
-      title: "Staff Users",
-      value: 12,
-      icon: <Users className="h-5 w-5 text-blue-600" />,
-      description: "Total staff accounts"
+      title: 'User Management',
+      icon: <Users className="h-8 w-8 text-purple-500" />,
+      description: 'Manage user accounts, permissions, and roles',
+      action: () => navigate('/admin/users'),
+      color: 'border-purple-100',
     },
     {
-      title: "Client Inquiries",
-      value: 48,
-      icon: <FileText className="h-5 w-5 text-green-600" />,
-      description: "Total client inquiries"
+      title: 'Database Management',
+      icon: <Server className="h-8 w-8 text-blue-500" />,
+      description: 'Access and manage database records and settings',
+      action: () => navigate('/admin/database'),
+      color: 'border-blue-100',
     },
     {
-      title: "AI Projects",
-      value: 7,
-      icon: <LayoutDashboard className="h-5 w-5 text-purple-600" />,
-      description: "Active AI projects"
+      title: 'AI Management',
+      icon: <Brain className="h-8 w-8 text-green-500" />,
+      description: 'Manage AI resources, projects, and generated content',
+      action: () => navigate('/admin/ai-management'),
+      color: 'border-green-100',
     },
     {
-      title: "Subscribers",
-      value: 189,
-      icon: <Database className="h-5 w-5 text-orange-600" />,
-      description: "Newsletter subscribers"
-    }
+      title: 'AI Tools',
+      icon: <Code className="h-8 w-8 text-pink-500" />,
+      description: 'Access powerful AI tools to boost productivity',
+      action: () => navigate('/admin/ai-tools'),
+      color: 'border-pink-100',
+    },
+    {
+      title: 'Email Campaigns',
+      icon: <Mail className="h-8 w-8 text-orange-500" />,
+      description: 'Create and manage marketing email campaigns',
+      action: () => navigate('/admin/email'),
+      color: 'border-orange-100',
+    },
+    {
+      title: 'Payment Processing',
+      icon: <CreditCard className="h-8 w-8 text-indigo-500" />,
+      description: 'Monitor and manage payment transactions',
+      action: () => navigate('/admin/payments'),
+      color: 'border-indigo-100',
+    },
   ];
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat, index) => (
-          <Card key={index} className="overflow-hidden relative">
-            {/* Torn paper edge on top of each card */}
-            <div className="absolute top-0 left-0 right-0 w-full h-[10px] z-10 overflow-hidden">
-              <img 
-                src="/lovable-uploads/bee67e8b-b334-443e-b91a-9eb641ad0db4.png" 
-                alt=""
-                className="w-full object-cover opacity-30 scale-75"
-              />
-            </div>
-            <CardHeader className="flex flex-row items-center justify-between pb-2 pt-4">
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-              {stat.icon}
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground">{stat.description}</p>
-            </CardContent>
-          </Card>
-        ))}
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Admin Dashboard</h2>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="overflow-hidden relative">
-          {/* Torn paper edge on top of activity card */}
-          <div className="absolute top-0 left-0 right-0 w-full h-[10px] z-10 overflow-hidden">
-            <img 
-              src="/lovable-uploads/bee67e8b-b334-443e-b91a-9eb641ad0db4.png" 
-              alt=""
-              className="w-full object-cover opacity-30 scale-75"
-            />
-          </div>
-          <CardHeader className="pt-4">
-            <CardTitle>Recent Activities</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-start gap-4">
-                <div className="bg-blue-100 p-2 rounded-full">
-                  <Users className="h-4 w-4 text-blue-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium">New staff member added</p>
-                  <p className="text-xs text-gray-500">2 hours ago</p>
-                </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {adminTools.map((tool, index) => (
+          <Card key={index} className={`overflow-hidden transition-all hover:shadow-md border-l-4 ${tool.color}`}>
+            <CardHeader className="pb-2">
+              <div className="flex justify-between items-start">
+                {tool.icon}
               </div>
-              
-              <div className="flex items-start gap-4">
-                <div className="bg-green-100 p-2 rounded-full">
-                  <FileText className="h-4 w-4 text-green-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium">Client inquiry processed</p>
-                  <p className="text-xs text-gray-500">5 hours ago</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start gap-4">
-                <div className="bg-purple-100 p-2 rounded-full">
-                  <LayoutDashboard className="h-4 w-4 text-purple-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium">New AI project created</p>
-                  <p className="text-xs text-gray-500">Yesterday</p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="overflow-hidden relative">
-          {/* Torn paper edge on top of system status card */}
-          <div className="absolute top-0 left-0 right-0 w-full h-[10px] z-10 overflow-hidden">
-            <img 
-              src="/lovable-uploads/bee67e8b-b334-443e-b91a-9eb641ad0db4.png" 
-              alt=""
-              className="w-full object-cover opacity-30 scale-75"
-            />
-          </div>
-          <CardHeader className="pt-4">
-            <CardTitle>System Status</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Database</span>
-                <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800">Online</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Authentication</span>
-                <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800">Online</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Storage</span>
-                <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800">Online</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Edge Functions</span>
-                <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800">Online</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+              <CardTitle className="mt-3">{tool.title}</CardTitle>
+              <CardDescription>{tool.description}</CardDescription>
+            </CardHeader>
+            <CardFooter className="pt-2">
+              <Button 
+                variant="ghost" 
+                onClick={tool.action}
+                className="w-full justify-between group"
+              >
+                <span>Access Tool</span>
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
       </div>
     </div>
   );

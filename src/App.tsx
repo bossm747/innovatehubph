@@ -30,6 +30,32 @@ import StaffPortal from "./components/StaffPortal";
 import { StaffAuthProvider } from "./contexts/StaffAuthContext";
 import { AvailableSecretsProvider } from "./contexts/AvailableSecretsContext";
 
+// ScrollToTop component to handle scrolling to top on navigation
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  const navigationType = useNavigationType();
+  const [isLoading, setIsLoading] = useState(false);
+  
+  useEffect(() => {
+    // Scroll to top when pathname changes
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  
+  useEffect(() => {
+    // Only trigger loading for PUSH navigation (clicking links)
+    if (navigationType === 'PUSH') {
+      setIsLoading(true);
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 800); // Adjust timing as needed
+      
+      return () => clearTimeout(timer);
+    }
+  }, [pathname, navigationType]);
+  
+  return <LoadingIndicator isLoading={isLoading} />;
+};
+
 // Create a new QueryClient instance inside the component
 const App = () => {
   // Create QueryClient instance inside the component
@@ -37,12 +63,12 @@ const App = () => {
   
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <StaffAuthProvider>
-          <AvailableSecretsProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
+      <BrowserRouter>
+        <TooltipProvider>
+          <StaffAuthProvider>
+            <AvailableSecretsProvider>
+              <Toaster />
+              <Sonner />
               <ScrollToTop />
               <Routes>
                 <Route path="/" element={<Index />} />
@@ -72,38 +98,12 @@ const App = () => {
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
-            </BrowserRouter>
-          </AvailableSecretsProvider>
-        </StaffAuthProvider>
-      </TooltipProvider>
+            </AvailableSecretsProvider>
+          </StaffAuthProvider>
+        </TooltipProvider>
+      </BrowserRouter>
     </QueryClientProvider>
   );
-};
-
-// ScrollToTop component to handle scrolling to top on navigation
-const ScrollToTop = () => {
-  const { pathname } = useLocation();
-  const navigationType = useNavigationType();
-  const [isLoading, setIsLoading] = useState(false);
-  
-  useEffect(() => {
-    // Scroll to top when pathname changes
-    window.scrollTo(0, 0);
-  }, [pathname]);
-  
-  useEffect(() => {
-    // Only trigger loading for PUSH navigation (clicking links)
-    if (navigationType === 'PUSH') {
-      setIsLoading(true);
-      const timer = setTimeout(() => {
-        setIsLoading(false);
-      }, 800); // Adjust timing as needed
-      
-      return () => clearTimeout(timer);
-    }
-  }, [pathname, navigationType]);
-  
-  return <LoadingIndicator isLoading={isLoading} />;
 };
 
 export default App;

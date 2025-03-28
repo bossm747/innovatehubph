@@ -60,7 +60,7 @@ const Footer = () => {
       <div className="absolute top-0 right-0 w-64 h-64 bg-gray-800 rounded-full opacity-10 blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-gray-800 rounded-full opacity-10 blur-3xl transform -translate-x-1/2 translate-y-1/4"></div>
       
-      <div className="container mx-auto px-6 md:px-12 relative z-10">
+      <div className="container-fluid mx-0 px-6 md:px-12 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Company Info */}
           <div>

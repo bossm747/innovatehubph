@@ -13,7 +13,7 @@ import CircuitBackground from '@/components/CircuitBackground';
 import ClientsShowcase from '@/components/ClientsShowcase';
 import ServiceTiles from '@/components/ServiceTiles';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Award, Shield, Zap, Globe } from 'lucide-react';
+import { ArrowRight, Award, Shield, Zap, Globe, Phone, CheckCircle, LockKeyhole } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
@@ -128,10 +128,10 @@ const Index = () => {
             ].map((feature, index) => (
               <div 
                 key={index} 
-                className="bg-white p-8 rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 border border-gray-100 fade-up"
+                className="bg-white p-8 rounded-xl shadow-soft hover:shadow-medium transition-all duration-300 border border-gray-100 fade-up card-3d"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="w-16 h-16 rounded-full bg-innovate-50 flex items-center justify-center mb-6">
+                <div className="w-16 h-16 rounded-full bg-innovate-50 flex items-center justify-center mb-6 float-animation">
                   {feature.icon}
                 </div>
                 <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
@@ -142,99 +142,8 @@ const Index = () => {
         </div>
       </section>
       
-      {/* PlataPay Feature Section - Our Flagship Product */}
-      <section className="py-24 px-6 md:px-12 bg-gradient-to-r from-gray-50 to-gray-100 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-full h-full overflow-hidden opacity-5">
-          <img 
-            src="/lovable-uploads/4d5b3eaa-0065-48e8-9976-3931a1836f81.png" 
-            alt="PlataPay Background" 
-            className="w-full h-full object-cover"
-          />
-        </div>
-        
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="order-2 lg:order-1 fade-up">
-              <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
-                Our Flagship Product
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                PlataPay – Empowering Micropreneurs
-              </h2>
-              <p className="text-gray-600 mb-6">
-                A secure and income-generating platform for communities, enabling digital wallet services, bills payment, remittance, e-loading, and QR payments.
-              </p>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                <div className="flex items-start">
-                  <div className="w-10 h-10 rounded-full bg-innovate-100 flex items-center justify-center mr-3 flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-innovate-600" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1">Digital Wallet</h3>
-                    <p className="text-sm text-gray-600">Secure storage and transfer of funds</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-10 h-10 rounded-full bg-innovate-100 flex items-center justify-center mr-3 flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-innovate-600" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1">Bills Payment</h3>
-                    <p className="text-sm text-gray-600">Convenient payment for utilities and services</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-10 h-10 rounded-full bg-innovate-100 flex items-center justify-center mr-3 flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-innovate-600" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1">Remittance</h3>
-                    <p className="text-sm text-gray-600">Fast and affordable money transfers</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-10 h-10 rounded-full bg-innovate-100 flex items-center justify-center mr-3 flex-shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-innovate-600" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1">QR Payments</h3>
-                    <p className="text-sm text-gray-600">Seamless transactions through QR codes</p>
-                  </div>
-                </div>
-              </div>
-              
-              <Button 
-                className="bg-innovate-600 hover:bg-innovate-700 text-white btn-shine shadow-md hover:shadow-lg"
-                asChild
-              >
-                <Link to="/platapay" className="flex items-center">
-                  Learn More about PlataPay <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-            
-            <div className="order-1 lg:order-2 fade-up">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-innovate-500/20 to-innovate-600/20 rounded-xl blur-2xl transform scale-110"></div>
-                <img 
-                  src="/lovable-uploads/9b23899d-8537-4e7c-996b-5fdc791cbde2.png" 
-                  alt="PlataPay App" 
-                  className="w-full h-auto relative z-10 rounded-xl shadow-xl transform hover:scale-105 transition-all duration-500"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* PlataPay Feature Section */}
+      <PlataPay />
       
       {/* Service Tiles Section */}
       <ServiceTiles />
@@ -280,7 +189,7 @@ const Index = () => {
             {[1, 2, 3, 4].map((index) => (
               <div 
                 key={index} 
-                className="bg-white rounded-xl overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 fade-up"
+                className="bg-white rounded-xl overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 fade-up card-3d"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="h-64 overflow-hidden">
@@ -301,11 +210,14 @@ const Index = () => {
           
           <div className="text-center fade-up">
             <Button 
-              className="bg-innovate-600 hover:bg-innovate-700 text-white btn-shine shadow-md hover:shadow-lg"
+              variant="primary"
+              size="lg"
+              width="fixed"
+              className="btn-shine group"
               asChild
             >
-              <Link to="/team" className="flex items-center">
-                View Full Team <ArrowRight className="ml-2 h-4 w-4" />
+              <Link to="/team" className="flex items-center justify-center">
+                View Full Team <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
           </div>
@@ -319,6 +231,15 @@ const Index = () => {
           <div className="absolute top-1/2 -left-24 w-64 h-64 rounded-full bg-white filter blur-3xl"></div>
           <div className="absolute -bottom-32 right-1/4 w-80 h-80 rounded-full bg-blue-300 filter blur-3xl"></div>
           
+          {/* Security illustration */}
+          <div className="absolute top-1/4 right-1/4 w-40 h-40">
+            <img 
+              src="/lovable-uploads/9943e545-fc96-401b-98c2-3cb582ebab57.png" 
+              alt="" 
+              className="w-full h-full object-contain opacity-30"
+            />
+          </div>
+          
           {/* Grid pattern */}
           <div className="absolute inset-0" style={{ 
             backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px)', 
@@ -328,6 +249,11 @@ const Index = () => {
         
         <div className="container mx-auto relative z-10">
           <div className="max-w-3xl mx-auto text-center fade-up">
+            <div className="mb-8 flex justify-center">
+              <div className="w-16 h-16 rounded-full bg-blue-800 flex items-center justify-center pulse-glow">
+                <LockKeyhole className="h-8 w-8 text-white" />
+              </div>
+            </div>
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Ready to Transform Your Business with Digital Innovation?
             </h2>
@@ -337,21 +263,26 @@ const Index = () => {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button 
-                size="lg" 
-                className="bg-white text-blue-900 hover:bg-blue-50 btn-shine"
+                size="xl" 
+                variant="success"
+                width="fixed"
+                className="btn-shine"
                 asChild
               >
-                <Link to="/contact">
+                <Link to="/contact" className="flex items-center justify-center">
+                  <Phone className="mr-2 h-5 w-5" />
                   Get In Touch
                 </Link>
               </Button>
               <Button 
-                size="lg" 
+                size="xl" 
                 variant="outline" 
+                width="fixed"
                 className="border-white/30 text-white hover:bg-white/10"
                 asChild
               >
-                <Link to="/services">
+                <Link to="/services" className="flex items-center justify-center">
+                  <CheckCircle className="mr-2 h-5 w-5" />
                   Explore Services
                 </Link>
               </Button>

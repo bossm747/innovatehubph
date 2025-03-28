@@ -98,3 +98,176 @@ section {
   max-width: 100%;
   overflow-x: hidden;
 }
+
+/* Enhanced button styles */
+.btn-primary {
+  @apply bg-innovate-600 hover:bg-innovate-700 text-white transition-all duration-300 shadow-md hover:shadow-lg;
+  min-width: 160px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-secondary {
+  @apply bg-blue-900 hover:bg-blue-950 text-white transition-all duration-300 shadow-md hover:shadow-lg;
+  min-width: 160px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-success {
+  @apply bg-green-600 hover:bg-green-700 text-white transition-all duration-300 shadow-md hover:shadow-lg;
+  min-width: 160px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-outline {
+  @apply border-2 border-white/30 text-white hover:bg-white/10 transition-all duration-300;
+  min-width: 160px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-purple {
+  @apply bg-purple-800 hover:bg-purple-900 text-white transition-all duration-300 shadow-md hover:shadow-lg;
+  min-width: 160px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Enhanced animation effects */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(59, 130, 246, 0.7);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 3s infinite;
+}
+
+/* Enhanced shine effect */
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(30deg);
+  transition: transform 0.8s ease-out;
+}
+
+.btn-shine:hover::after {
+  transform: rotate(30deg) translateX(100%);
+}
+
+/* Decorative background elements */
+.circuit-bg {
+  background-image: url('/lovable-uploads/9943e545-fc96-401b-98c2-3cb582ebab57.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.05;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* Typing cursor animation */
+@keyframes typing-cursor {
+  0%, 100% {
+    border-right-color: transparent;
+  }
+  50% {
+    border-right-color: currentColor;
+  }
+}
+
+.typing-text {
+  border-right: 2px solid;
+  animation: typing-cursor 1s step-end infinite;
+  padding-right: 2px;
+  white-space: nowrap;
+}
+
+/* Mobile screen device animation */
+.mobile-device {
+  position: relative;
+  transition: transform 0.5s ease-in-out;
+}
+
+.mobile-device:hover {
+  transform: translateY(-10px) rotateY(10deg);
+}
+
+/* 3D Card effect */
+.card-3d {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform: perspective(1000px) rotateX(0) rotateY(0);
+}
+
+.card-3d:hover {
+  transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
+  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15);
+}
+
+/* Glowing dot animation for security icon */
+.security-dot {
+  position: relative;
+}
+
+.security-dot::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background-color: #10B981;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #10B981;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+  
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}

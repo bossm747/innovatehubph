@@ -7,12 +7,12 @@ import StaffPortalButton from '@/components/StaffPortalButton';
 
 const TeamPageHeader = () => {
   return (
-    <section className="relative py-24 overflow-hidden bg-gradient-to-b from-innovate-800 to-innovate-950 text-white">
+    <section className="relative py-24 overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
       {/* Background patterns */}
       <div className="absolute inset-0 overflow-hidden opacity-10">
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-innovate-500 filter blur-3xl"></div>
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-blue-500 filter blur-3xl"></div>
         <div className="absolute top-1/2 -left-24 w-64 h-64 rounded-full bg-white filter blur-3xl"></div>
-        <div className="absolute -bottom-32 right-1/4 w-80 h-80 rounded-full bg-innovate-300 filter blur-3xl"></div>
+        <div className="absolute -bottom-32 right-1/4 w-80 h-80 rounded-full bg-blue-300 filter blur-3xl"></div>
         
         {/* Grid pattern */}
         <div className="absolute inset-0" style={{ 
@@ -27,15 +27,15 @@ const TeamPageHeader = () => {
             <div className="p-2 rounded-full bg-white/10">
               <Users className="h-5 w-5" />
             </div>
-            <div className="text-lg font-medium text-innovate-200">Our People</div>
+            <div className="text-lg font-medium text-blue-200">Our People</div>
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             The Team Behind<br />
-            <span className="text-innovate-300">InnovateHub's Success</span>
+            <span className="text-blue-300">InnovateHub's Success</span>
           </h1>
           
-          <p className="text-lg md:text-xl text-innovate-100 mb-8 max-w-2xl">
+          <p className="text-lg md:text-xl text-blue-100 mb-8 max-w-2xl">
             From tech innovators to finance experts, our diverse team brings together the talents needed to revolutionize digital finance in the Philippines and beyond.
           </p>
           

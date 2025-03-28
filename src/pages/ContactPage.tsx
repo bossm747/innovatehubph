@@ -69,12 +69,12 @@ const ContactPage = () => {
       {/* Main content */}
       <Navbar />
       <div className="w-full pt-16">
-        <section className="py-16 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#1A1F2C] to-[#9F9EA1] text-white">
+        <section className="py-16 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-blue-800 to-blue-900 text-white">
           {/* Background patterns */}
           <div className="absolute inset-0 overflow-hidden opacity-10">
-            <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-innovate-500 filter blur-3xl"></div>
+            <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-blue-500 filter blur-3xl"></div>
             <div className="absolute top-1/2 -left-24 w-64 h-64 rounded-full bg-white filter blur-3xl"></div>
-            <div className="absolute -bottom-32 right-1/4 w-80 h-80 rounded-full bg-innovate-300 filter blur-3xl"></div>
+            <div className="absolute -bottom-32 right-1/4 w-80 h-80 rounded-full bg-blue-300 filter blur-3xl"></div>
             
             {/* Grid pattern */}
             <div className="absolute inset-0" style={{ 
@@ -95,7 +95,7 @@ const ContactPage = () => {
                 Reach out and let's co-create your digital future. We're here to help transform your business with innovative technology solutions.
               </p>
               
-              <Button asChild className="bg-innovate-600 hover:bg-innovate-700 text-white btn-shine">
+              <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white btn-shine">
                 <Link to="/inquiry">Service-Specific Inquiries</Link>
               </Button>
             </div>

@@ -6,12 +6,12 @@ import { ArrowRight } from 'lucide-react';
 
 const AboutHero = () => {
   return (
-    <section className="py-24 relative overflow-hidden bg-gradient-to-b from-[#1A1F2C] to-[#9F9EA1] text-white">
+    <section className="py-24 relative overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
       {/* Background patterns */}
       <div className="absolute inset-0 overflow-hidden opacity-10">
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-innovate-500 filter blur-3xl"></div>
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-blue-500 filter blur-3xl"></div>
         <div className="absolute top-1/2 -left-24 w-64 h-64 rounded-full bg-white filter blur-3xl"></div>
-        <div className="absolute -bottom-32 right-1/4 w-80 h-80 rounded-full bg-innovate-300 filter blur-3xl"></div>
+        <div className="absolute -bottom-32 right-1/4 w-80 h-80 rounded-full bg-blue-300 filter blur-3xl"></div>
         
         {/* Grid pattern */}
         <div className="absolute inset-0" style={{ 
@@ -33,7 +33,7 @@ const AboutHero = () => {
               InnovateHub Inc. is a forward-thinking technology company dedicated to creating groundbreaking digital solutions. From our roots in Batangas to our expanding presence in Dubai, we're committed to delivering exceptional value through innovation, expertise, and dedication.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button className="bg-innovate-600 hover:bg-innovate-700 text-white btn-shine" asChild>
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white btn-shine" asChild>
                 <Link to="/team" className="flex items-center">
                   Meet Our Team <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
@@ -45,7 +45,7 @@ const AboutHero = () => {
           </div>
           
           <div className="relative hidden lg:block fade-up">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg blur-xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-500/20 rounded-lg blur-xl"></div>
             <img 
               src="/lovable-uploads/5c085ba8-48d9-4a1a-9bb0-97e24b646f38.png" 
               alt="InnovateHub Team" 

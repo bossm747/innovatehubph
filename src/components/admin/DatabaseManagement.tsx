@@ -66,11 +66,27 @@ const DatabaseManagement = () => {
       } else {
         setTableData([]);
         // Get columns from metadata if no data
-        const { data: metadata } = await supabase.rpc('get_table_columns', { table_name: selectedTable });
-        if (metadata) {
-          setColumns(metadata.filter((col: string) => 
-            !col.includes('password') && !col.includes('secret')
-          ));
+        // Note: This is a custom function that might not exist in your Supabase instance
+        // Remove this part or implement a different approach to get column names
+        try {
+          const { data: tableInfo } = await supabase
+            .from(selectedTable)
+            .select('*')
+            .limit(0);
+            
+          // If we can get the structure even with no rows
+          if (tableInfo !== null) {
+            // For empty array, we'll use an empty object to get the structure
+            const columnInfo = tableInfo.length > 0 ? tableInfo[0] : {};
+            setColumns(Object.keys(columnInfo).filter(col => 
+              !col.includes('password') && !col.includes('secret')
+            ));
+          } else {
+            setColumns([]);
+          }
+        } catch (metadataError) {
+          console.error('Error fetching table structure:', metadataError);
+          setColumns([]);
         }
       }
     } catch (error) {

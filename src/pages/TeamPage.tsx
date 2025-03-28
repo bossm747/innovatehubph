@@ -6,7 +6,6 @@ import TeamSection from '@/components/TeamSection';
 import TeamValues from '@/components/TeamValues';
 import CircuitBackground from '@/components/CircuitBackground';
 import TeamPageHeader from '@/components/TeamPageHeader';
-import StaffPortalButton from '@/components/StaffPortalButton';
 import { Helmet } from 'react-helmet';
 
 const TeamPage = () => {
@@ -69,9 +68,6 @@ const TeamPage = () => {
       {/* Main content */}
       <Navbar />
       <div className="w-full pt-16">
-        <div className="absolute top-24 right-6 z-10">
-          <StaffPortalButton />
-        </div>
         <TeamPageHeader />
         <TeamValues />
         <TeamSection />

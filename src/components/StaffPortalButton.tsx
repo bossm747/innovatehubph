@@ -10,29 +10,23 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import StaffLoginForm from './StaffLoginForm';
+import { Link } from 'react-router-dom';
 
 const StaffPortalButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button 
-          variant="outline" 
-          className="border-gray-200 hover:bg-gray-100/50 text-gray-700"
-          size="sm"
-        >
-          <LockKeyhole className="h-4 w-4 mr-2" />
-          Staff Portal
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>InnovateHub Staff Portal</DialogTitle>
-        </DialogHeader>
-        <StaffLoginForm onSuccess={() => setIsOpen(false)} />
-      </DialogContent>
-    </Dialog>
+    <Button 
+      variant="outline" 
+      className="bg-white hover:bg-gray-100/90 text-innovate-700 border-innovate-200"
+      size="lg"
+      asChild
+    >
+      <Link to="/admin/dashboard">
+        <LockKeyhole className="h-4 w-4 mr-2" />
+        Staff Portal
+      </Link>
+    </Button>
   );
 };
 

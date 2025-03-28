@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import CircuitBackground from "./CircuitBackground";
 import { Link } from "react-router-dom";
+import StaffPortalButton from "./StaffPortalButton";
 
 const Hero = () => {
   return (
@@ -88,6 +89,7 @@ const Hero = () => {
               >
                 <Link to="/platapay">Explore PlataPay</Link>
               </Button>
+              <StaffPortalButton />
             </div>
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 pt-4">

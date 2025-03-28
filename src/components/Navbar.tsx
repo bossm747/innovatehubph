@@ -1,6 +1,6 @@
+
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { usePathname } from 'use-pathname';
+import { Link, useLocation } from 'react-router-dom';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -18,7 +18,7 @@ interface ListItemProps {
 }
 
 const Navbar = () => {
-  const pathname = usePathname();
+  const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {

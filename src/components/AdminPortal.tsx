@@ -27,17 +27,6 @@ const AdminPortal = () => {
     avatar_url: ''
   });
 
-  // Mock profile data for development
-  const mockProfileData = {
-    id: mockUser.id,
-    full_name: mockUser.email?.split('@')[0]?.replace(/\./g, ' ') || '',
-    position: 'Administrator',
-    department: 'Management',
-    avatar_url: '',
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
-  };
-
   const handleUpdateProfile = (e: React.FormEvent) => {
     e.preventDefault();
     // Mock update

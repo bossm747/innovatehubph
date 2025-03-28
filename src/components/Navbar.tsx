@@ -150,15 +150,15 @@ const Navbar = () => {
             )}
           </button>
         </div>
-        
-        {/* Bottom torn paper edge */}
-        <div className="absolute bottom-[-15px] left-0 right-0 w-full h-[20px] z-10 overflow-hidden">
-          <img 
-            src="/lovable-uploads/bee67e8b-b334-443e-b91a-9eb641ad0db4.png" 
-            alt="Decorative paper edge bottom" 
-            className="w-full object-cover transform rotate-180"
-          />
-        </div>
+      </div>
+
+      {/* Bottom torn paper edge - positioned to overlap the bottom of the header */}
+      <div className="absolute bottom-[-20px] left-0 right-0 w-full h-[25px] z-20 overflow-hidden">
+        <img 
+          src="/lovable-uploads/bee67e8b-b334-443e-b91a-9eb641ad0db4.png" 
+          alt="Decorative paper edge bottom" 
+          className="w-full object-cover transform rotate-180"
+        />
       </div>
 
       <div className={`md:hidden absolute w-full bg-white shadow-md transition-all duration-300 ease-in-out ${

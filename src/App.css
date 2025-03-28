@@ -1,3 +1,4 @@
+
 #root {
   max-width: 100%;
   width: 100%;
@@ -22,6 +23,8 @@ body {
   min-height: 100vh;
   position: relative;
   max-width: 100vw;
+  /* Add padding for the navbar with torn paper edges */
+  padding-top: 100px;
 }
 
 .logo {

@@ -15,14 +15,15 @@ const PlatapayHero = () => {
             </span>
             <div className="flex items-center mb-4">
               <div className="relative mr-4">
-                {/* Dark circular background */}
-                <div className="absolute inset-0 bg-black/80 rounded-full blur-sm transition-all duration-300"></div>
+                {/* Dark circular background with improved rendering */}
+                <div className="absolute inset-0 bg-black/80 rounded-full blur-sm"></div>
                 {/* Logo with dark background */}
                 <img 
                   src="/lovable-uploads/9b23899d-8537-4e7c-996b-5fdc791cbde2.png" 
                   alt="PlataPay Logo" 
-                  className="h-16 w-16 relative z-10 transition-transform duration-300"
+                  className="h-16 w-16 relative z-10"
                   style={{ filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.3))' }}
+                  loading="eager" // Ensure this loads quickly
                 />
               </div>
               <h1 className="text-4xl md:text-5xl font-bold hero-text-gradient">
@@ -58,12 +59,13 @@ const PlatapayHero = () => {
               </Button>
             </div>
             
-            <div className="p-4 bg-white/80 backdrop-blur-sm rounded-lg border border-gray-200 shadow-sm">
+            <div className="p-4 bg-white/90 backdrop-blur-sm rounded-lg border border-gray-200 shadow-sm">
               <div className="flex items-center mb-2">
                 <img 
                   src="/lovable-uploads/41923896-2fb4-4137-b3b8-78bb35bbd3e5.png" 
                   alt="InnovateHub Logo" 
                   className="h-6 w-auto mr-2"
+                  loading="eager"
                 />
                 <span className="text-gray-700 font-medium">InnovateHub Inc.</span>
               </div>
@@ -86,6 +88,7 @@ const PlatapayHero = () => {
                 src="/lovable-uploads/d06dbf6f-eafc-4d26-97e4-b5ee5dac0416.png" 
                 alt="PlataPay Digital Wallet" 
                 className="w-full h-auto rounded-2xl"
+                loading="eager"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             </div>
@@ -93,6 +96,7 @@ const PlatapayHero = () => {
         </div>
       </div>
       
+      {/* Decorative elements - optimized */}
       <div className="absolute top-20 left-10 w-16 h-16 bg-blue-500/10 rounded-full blur-xl"></div>
       <div className="absolute bottom-20 right-10 w-24 h-24 bg-innovate-500/10 rounded-full blur-xl"></div>
     </section>

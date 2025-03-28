@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Features from '@/components/Features';
@@ -22,25 +22,39 @@ const Index = () => {
   const FACEBOOK_PAGE_URL = "https://www.facebook.com/share/16BCXuyguU/?mibextid=wwXIfr";
   const FACEBOOK_MESSENGER_URL = "https://www.facebook.com/platapayinc";
   
+  // Use a ref to prevent unnecessary re-calculations
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  
   useEffect(() => {
-    const handleScroll = () => {
-      const fadeElements = document.querySelectorAll('.fade-up');
-      
-      fadeElements.forEach(element => {
-        const elementPosition = element.getBoundingClientRect().top;
-        const screenHeight = window.innerHeight;
-        
-        if (elementPosition < screenHeight * 0.9) {
-          element.classList.add('fade-in');
+    // Use Intersection Observer API for better performance
+    observerRef.current = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in');
+          // Once the animation is applied, unobserve the element
+          observerRef.current?.unobserve(entry.target);
         }
       });
+    }, {
+      root: null, // Use the viewport
+      rootMargin: '0px',
+      threshold: 0.1 // Trigger when 10% of the element is visible
+    });
+    
+    // Get all elements with the fade-up class
+    const fadeElements = document.querySelectorAll('.fade-up');
+    
+    // Observe each element
+    fadeElements.forEach(element => {
+      observerRef.current?.observe(element);
+    });
+    
+    // Clean up
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
     };
-    
-    handleScroll();
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (

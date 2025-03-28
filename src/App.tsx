@@ -6,7 +6,7 @@ import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import UserManagement from '@/components/admin/UserManagement';
 import DatabaseManagement from '@/components/admin/DatabaseManagement';
 import AdminAIManagement from '@/components/admin/AdminAIManagement';
-import NotFoundPage from '@/pages/NotFoundPage';
+import NotFound from '@/pages/NotFound';
 import ContactPage from '@/pages/ContactPage';
 import AboutPage from '@/pages/AboutPage';
 import BlogPage from '@/pages/BlogPage';
@@ -47,7 +47,7 @@ function App() {
         <Route path="/inquiry" element={<InquiryPage />} />
         <Route path="/platapay" element={<PlatapayPage />} />
         <Route path="/team" element={<TeamPage />} />
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

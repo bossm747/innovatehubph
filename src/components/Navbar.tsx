@@ -24,40 +24,21 @@ const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 max-w-screen-2xl items-center">
-        <div className="mr-4 flex">
+      <div className="container flex h-14 max-w-screen-2xl items-center justify-between">
+        <div className="flex items-center">
           <a href="/" className="mr-6 flex items-center space-x-2">
             <img 
               src="/lovable-uploads/e0b50f3f-fb7b-4832-8041-8c82e7f630ad.png" 
               alt="InnovateHub Logo" 
               className="h-8 w-8 mr-2"
             />
-            <span className="hidden font-bold sm:inline-block">
+            <span className="font-bold text-innovate-800">
               InnovateHub
             </span>
           </a>
 
-          <nav className="flex items-center space-x-6 text-sm font-medium">
-            <div className="md:hidden">
-              <button onClick={toggleMobileMenu} className="focus:outline-none">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              </button>
-            </div>
-            
-            <div className="hidden md:flex">
+          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+            <div className="flex">
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
@@ -117,8 +98,28 @@ const Navbar = () => {
           </nav>
         </div>
 
-        <div className="ml-auto flex items-center space-x-4">
-          <AdminPortalButton />
+        <div className="flex items-center space-x-4">
+          <div className="hidden md:flex">
+            <AdminPortalButton />
+          </div>
+          <div className="md:hidden">
+            <button onClick={toggleMobileMenu} className="focus:outline-none" aria-label="Toggle Menu">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 

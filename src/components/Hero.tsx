@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
-import { ArrowRight, Phone, Shield, Zap } from 'lucide-react';
+import { ArrowRight, Phone, Shield, Zap, LockKeyhole } from 'lucide-react';
 
 const Hero = () => {
   const textRef = useRef<HTMLSpanElement>(null);
@@ -97,7 +97,7 @@ const Hero = () => {
                 variant="green"
                 width="fixed"
                 asChild
-                className="group"
+                className="group min-w-[200px]"
               >
                 <Link to="/services" className="flex items-center justify-center">
                   Explore Our Services <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -108,11 +108,23 @@ const Hero = () => {
                 variant="purple"
                 width="fixed"
                 asChild
-                className="group"
+                className="group min-w-[200px]"
               >
                 <Link to="/contact" className="flex items-center justify-center">
                   <Phone className="mr-2 h-4 w-4" />
                   Contact Us
+                </Link>
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline" 
+                width="fixed"
+                asChild
+                className="border-white/30 text-white hover:bg-white/10 min-w-[200px]"
+              >
+                <Link to="/admin/portal" className="flex items-center justify-center">
+                  <LockKeyhole className="mr-2 h-4 w-4" />
+                  Admin Portal
                 </Link>
               </Button>
             </div>

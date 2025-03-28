@@ -108,7 +108,7 @@ const Hero = () => {
                 variant="purple"
                 width="fixed"
                 asChild
-                className="group min-w-[200px]"
+                className="group min-w-[200px] text-white"
               >
                 <Link to="/contact" className="flex items-center justify-center">
                   <Phone className="mr-2 h-4 w-4" />
@@ -117,10 +117,10 @@ const Hero = () => {
               </Button>
               <Button 
                 size="lg" 
-                variant="outline" 
+                variant="destructive" 
                 width="fixed"
                 asChild
-                className="border-white/30 text-white hover:bg-white/10 min-w-[200px]"
+                className="min-w-[200px] text-white"
               >
                 <Link to="/admin/portal" className="flex items-center justify-center">
                   <LockKeyhole className="mr-2 h-4 w-4" />

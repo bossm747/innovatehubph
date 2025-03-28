@@ -1,190 +1,225 @@
-
-import { useState, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { usePathname } from 'use-pathname';
 import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-import { ChevronDown } from 'lucide-react';
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu"
+import { StaffPortalButton } from './StaffPortalButton';
+
+interface ListItemProps {
+  href: string;
+  title: string;
+  children?: React.ReactNode;
+}
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const menuItems = [
-    { label: "Home", href: "/" },
-    { label: "About", href: "/about" },
-    { label: "PlataPay", href: "/platapay" },
-    { label: "Team", href: "/team" },
-    { label: "Clients", href: "/clients" },
-    { label: "Blog", href: "/blog" },
-    { label: "Contact", href: "/contact" },
-  ];
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
-  const serviceItems = [
-    { label: "All Services", href: "/services" },
-    { label: "PlataPay", href: "/platapay" },
-    { label: "Digital Customizations", href: "/digital-customizations" },
-    { label: "E-Commerce Development", href: "/ecommerce" },
-    { label: "AI Solutions", href: "/ai-solutions" },
-    { label: "Global Expansion", href: "/global-expansion" },
-  ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
 
   return (
-    <header 
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-    >
-      <div className={`relative ${
-        isScrolled 
-          ? 'py-3 bg-white/95 backdrop-blur-lg shadow-sm' 
-          : 'py-5 bg-white/80 backdrop-blur-sm'
-      }`}>
-        <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
-          <Link to="/" className="flex items-center group">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-innovate-100/40 to-innovate-500/20 rounded-full blur-md group-hover:blur-lg transition-all duration-300 scale-110 group-hover:scale-125"></div>
-              <div className="absolute inset-0 bg-white/30 rounded-full filter blur-sm group-hover:blur-md transition-all duration-300"></div>
-              <img 
-                src="/lovable-uploads/e0b50f3f-fb7b-4832-8041-8c82e7f630ad.png" 
-                alt="InnovateHub Logo" 
-                className="h-14 w-14 mr-3 relative z-10 transition-transform duration-300 group-hover:scale-105"
-                style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.3))' }}
-              />
-            </div>
-            <span className="text-2xl font-display font-bold text-innovate-800 tracking-tight">Innovate<span className="text-innovate-500">Hub</span></span>
-          </Link>
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-14 max-w-screen-2xl items-center">
+        <div className="mr-4 flex">
+          <a href="/" className="mr-6 flex items-center space-x-2">
+            <span className="hidden font-bold sm:inline-block">
+              InnovateHub
+            </span>
+          </a>
 
-          <div className="hidden md:flex items-center space-x-8">
-            <nav className="flex items-center space-x-8">
-              {menuItems.map((item, index) => (
-                item.label !== "Services" ? (
-                  <Link key={index} to={item.href} className="nav-link">{item.label}</Link>
-                ) : null
-              ))}
-              
+          <nav className="flex items-center space-x-6 text-sm font-medium">
+            <div className="md:hidden">
+              <button onClick={toggleMobileMenu} className="focus:outline-none">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
+            </div>
+            
+            <div className="hidden md:flex">
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger className="bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent px-0">
-                      <span className="nav-link flex items-center">
-                        Services <ChevronDown className="ml-1 h-4 w-4" />
-                      </span>
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent className="bg-white p-2 rounded-md shadow-lg border border-gray-100 min-w-[220px]">
-                      <ul className="grid gap-1 p-2">
-                        {serviceItems.map((service, idx) => (
-                          <li key={idx}>
-                            <NavigationMenuLink asChild>
-                              <Link 
-                                to={service.href} 
-                                className="block p-2 rounded-md hover:bg-gray-100 transition-colors text-sm"
-                              >
-                                {service.label}
-                              </Link>
-                            </NavigationMenuLink>
-                          </li>
-                        ))}
+                    <NavigationMenuTrigger>Services</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <ListItem href="/services/digital-customizations" title="Digital Customizations">
+                          Crafting bespoke digital solutions for unique business needs.
+                        </ListItem>
+                        <ListItem href="/services/ecommerce" title="E-commerce Solutions">
+                          Building and scaling online retail experiences.
+                        </ListItem>
+                        <ListItem href="/services/ai-solutions" title="AI Solutions">
+                          Leveraging artificial intelligence to drive innovation.
+                        </ListItem>
+                        <ListItem href="/services/global-expansion" title="Global Expansion">
+                          Strategies for businesses venturing into new markets.
+                        </ListItem>
                       </ul>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <ListItem href="/blog" title="Blog">
+                          News and articles from our team
+                        </ListItem>
+                        <ListItem href="/clients" title="Clients">
+                          Our valued clients and partnerships
+                        </ListItem>
+                        <ListItem href="/ai-tools" title="AI Tools">
+                          Productivity tools powered by AI
+                        </ListItem>
+                        <ListItem href="/ai-image-processing" title="AI Image Processing">
+                          Generate & process images with AI
+                        </ListItem>
+                        <ListItem href="/ai-apps-management" title="AI Apps Management">
+                          Manage AI resources and projects
+                        </ListItem>
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <Link to="/about" className={navigationMenuTriggerStyle()}>
+                      About
+                    </Link>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <Link to="/contact" className={navigationMenuTriggerStyle()}>
+                      Contact
+                    </Link>
+                  </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
-            </nav>
-            <Button 
-              variant="green"
-              size="default"
-              width="fixed"
-              className="rounded-md transition-all btn-shine" 
-              asChild
-            >
-              <Link to="/contact">Get Started</Link>
-            </Button>
-          </div>
+            </div>
+          </nav>
+        </div>
 
-          <button 
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-            className="md:hidden text-innovate-800"
-            aria-label="Toggle mobile menu"
-          >
-            {isMobileMenuOpen ? (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
-          </button>
+        <div className="ml-auto flex items-center space-x-4">
+          <StaffPortalButton />
         </div>
       </div>
 
-      <div className={`md:hidden absolute w-full bg-white shadow-md transition-all duration-300 ease-in-out ${
-        isMobileMenuOpen ? 'max-h-screen py-4 opacity-100' : 'max-h-0 py-0 opacity-0 overflow-hidden'
-      }`}>
-        <nav className="flex flex-col space-y-4 px-6">
-          {menuItems.map((item, index) => (
-            <Link key={index} to={item.href} className="py-2 nav-link" onClick={() => setIsMobileMenuOpen(false)}>{item.label}</Link>
-          ))}
-          
-          <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center py-2 nav-link">
-              Services <ChevronDown className="ml-1 h-4 w-4" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 bg-white">
-              {serviceItems.map((service, idx) => (
-                <DropdownMenuItem key={idx} asChild>
-                  <Link 
-                    to={service.href} 
-                    className="w-full" 
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {service.label}
-                  </Link>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          
-          <Button 
-            variant="green"
-            width="full"
-            onClick={() => setIsMobileMenuOpen(false)}
-            asChild
-          >
-            <Link to="/contact" className="w-full text-center">Get Started</Link>
-          </Button>
-        </nav>
-      </div>
+      {/* Mobile Navigation Menu */}
+      {isMobileMenuOpen && (
+        <div className="fixed left-0 top-14 z-50 w-full bg-background/95 backdrop-blur md:hidden">
+          <nav className="p-4">
+            <ul className="space-y-4">
+              <li>
+                <Link to="/" className="block py-2" onClick={closeMobileMenu}>
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="block py-2" onClick={closeMobileMenu}>
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link to="/services" className="block py-2" onClick={closeMobileMenu}>
+                  Services
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="block py-2" onClick={closeMobileMenu}>
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link to="/blog" className="block py-2" onClick={closeMobileMenu}>
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link to="/clients" className="block py-2" onClick={closeMobileMenu}>
+                  Clients
+                </Link>
+              </li>
+              <li>
+                <Link to="/ai-tools" className="block py-2" onClick={closeMobileMenu}>
+                  AI Tools
+                </Link>
+              </li>
+              <li>
+                <Link to="/ai-image-processing" className="block py-2" onClick={closeMobileMenu}>
+                  AI Image Processing
+                </Link>
+              </li>
+              <li>
+                <Link to="/ai-apps-management" className="block py-2" onClick={closeMobileMenu}>
+                  AI Apps Management
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      )}
     </header>
   );
 };
+
+const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
+  ({ href, title, children, ...props }, ref) => {
+    return (
+      <li>
+        <Link
+          to={href}
+          ref={ref}
+          className="group flex cursor-pointer select-none items-center rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+          {...props}
+        >
+          <div className="mr-2 h-4 w-4 text-muted-foreground">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-4 h-4"
+            >
+              <path
+                fillRule="evenodd"
+                d="M3.75 3a.75.75 0 00-.75.75v15.75a.75.75 0 00.75.75h16.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75H3.75zM3 2.25a1.5 1.5 0 011.5-1.5h16.5a1.5 1.5 0 011.5 1.5v15.75a1.5 1.5 0 01-1.5 1.5H3.75a1.5 1.5 0 01-1.5-1.5V2.25z"
+                clipRule="evenodd"
+              />
+              <path
+                fillRule="evenodd"
+                d="M7.572 7.572a.75.75 0 011.06 0l2.25 2.25a.75.75 0 010 1.06l-2.25 2.25a.75.75 0 01-1.06-1.06L9.811 10.5l-2.24-2.24a.75.75 0 010-1.06zM16.428 7.572a.75.75 0 00-1.06 0l-2.25 2.25a.75.75 0 000 1.06l2.25 2.25a.75.75 0 001.06-1.06L14.189 10.5l2.24-2.24a.75.75 0 000-1.06z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+          <span>{title}</span>
+        </Link>
+        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+          {children}
+        </p>
+      </li>
+    )
+  }
+)
+ListItem.displayName = "ListItem"
 
 export default Navbar;

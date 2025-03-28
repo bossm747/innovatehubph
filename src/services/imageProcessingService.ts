@@ -175,9 +175,7 @@ export const removeImageBackground = async (imageFile: File): Promise<string> =>
     env.allowLocalModels = false;
     env.useBrowserCache = false;
     
-    const segmenter = await pipeline('image-segmentation', 'Xenova/segformer-b0-finetuned-ade-512-512', {
-      quantized: true
-    });
+    const segmenter = await pipeline('image-segmentation', 'Xenova/segformer-b0-finetuned-ade-512-512');
     
     // Convert image to canvas
     const canvas = document.createElement('canvas');

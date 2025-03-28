@@ -1,10 +1,8 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-// Adding types to match the expected database schema
 interface TeamMember {
   id?: string;
   full_name: string;
@@ -166,8 +164,6 @@ const SeedDatabaseButton = () => {
   const seedDatabase = async () => {
     setIsLoading(true);
     try {
-      // For now, we'll just display success messages without actually trying to seed the DB
-      // This is because the Supabase types indicate these tables don't exist
       console.log('Would have seeded team members:', sampleTeamMembers);
       console.log('Would have seeded testimonials:', sampleTestimonials);
       console.log('Would have seeded PlataPay agents:', samplePlatapayAgents);

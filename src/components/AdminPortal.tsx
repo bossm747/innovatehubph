@@ -1,10 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useStaffAuth } from '@/contexts/StaffAuthContext';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,96 +11,31 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LogOut, UserCog, Settings, Database, Layers, LayoutDashboard } from 'lucide-react';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-const StaffPortal = () => {
-  const { user, session, signOut } = useStaffAuth();
+// Mock user data since we've removed authentication
+const mockUser = {
+  id: '1',
+  email: 'admin@innovatehub.ph',
+};
+
+const AdminPortal = () => {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const [profileData, setProfileData] = useState({
-    full_name: '',
-    position: '',
-    department: '',
+    full_name: 'Admin User',
+    position: 'Administrator',
+    department: 'Management',
     avatar_url: ''
-  });
-
-  const { data: profile, isLoading } = useQuery({
-    queryKey: ['staff-profile', user?.id],
-    enabled: !!user?.id,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('staff_profiles')
-        .select('*')
-        .eq('id', user?.id)
-        .single();
-      
-      if (error) throw error;
-      return data;
-    }
-  });
-
-  useEffect(() => {
-    if (profile) {
-      setProfileData({
-        full_name: profile.full_name || '',
-        position: profile.position || '',
-        department: profile.department || '',
-        avatar_url: profile.avatar_url || ''
-      });
-    }
-  }, [profile]);
-
-  const updateProfileMutation = useMutation({
-    mutationFn: async () => {
-      const { error } = await supabase
-        .from('staff_profiles')
-        .update({
-          full_name: profileData.full_name,
-          position: profileData.position,
-          department: profileData.department,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', user?.id);
-      
-      if (error) throw error;
-      return profileData;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['staff-profile', user?.id] });
-      toast.success('Profile updated successfully');
-    },
-    onError: (error) => {
-      toast.error(`Error updating profile: ${error.message}`);
-    }
   });
 
   const handleUpdateProfile = (e: React.FormEvent) => {
     e.preventDefault();
-    updateProfileMutation.mutate();
+    // Mock update
+    toast.success('Profile updated successfully');
   };
 
-  const handleSignOut = async () => {
-    await signOut();
+  const handleSignOut = () => {
     navigate('/');
   };
-
-  if (isLoading) {
-    return (
-      <>
-        <Navbar />
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
-  if (!user || !session) {
-    navigate('/team');
-    return null;
-  }
 
   const getInitials = (name: string) => {
     if (!name) return 'IH';
@@ -123,30 +57,30 @@ const StaffPortal = () => {
   return (
     <>
       <Helmet>
-        <title>Staff Portal - InnovateHub</title>
-        <meta name="description" content="InnovateHub staff portal for team members" />
+        <title>Admin Portal - InnovateHub</title>
+        <meta name="description" content="InnovateHub admin portal for team members" />
       </Helmet>
       
       <Navbar />
       
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-4 py-6 md:py-12">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-3xl font-bold mb-2">Staff Portal</h1>
-          <p className="text-muted-foreground mb-8">Welcome to the InnovateHub staff portal</p>
+          <h1 className="text-2xl md:text-3xl font-bold mb-2">Admin Portal</h1>
+          <p className="text-muted-foreground mb-6 md:mb-8">Welcome to the InnovateHub admin portal</p>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <div className="md:col-span-1">
               <Card>
                 <CardHeader>
                   <div className="flex flex-col items-center">
-                    <Avatar className="h-24 w-24 mb-4">
+                    <Avatar className="h-20 w-20 md:h-24 md:w-24 mb-4">
                       <AvatarImage src={profileData.avatar_url} />
                       <AvatarFallback className="text-lg bg-primary text-primary-foreground">
-                        {getInitials(profileData.full_name || getEmailName(user.email || ''))}
+                        {getInitials(profileData.full_name || getEmailName(mockUser.email))}
                       </AvatarFallback>
                     </Avatar>
-                    <CardTitle>{profileData.full_name || getEmailName(user.email || '')}</CardTitle>
-                    <CardDescription>{user.email}</CardDescription>
+                    <CardTitle className="text-center">{profileData.full_name || getEmailName(mockUser.email)}</CardTitle>
+                    <CardDescription className="text-center break-all">{mockUser.email}</CardDescription>
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -199,11 +133,11 @@ const StaffPortal = () => {
               <Card>
                 <CardHeader>
                   <CardTitle>Profile Management</CardTitle>
-                  <CardDescription>Update your staff profile information</CardDescription>
+                  <CardDescription>Update your admin profile information</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Tabs defaultValue="profile">
-                    <TabsList className="mb-4">
+                  <Tabs defaultValue="profile" className="w-full">
+                    <TabsList className="mb-4 w-full grid grid-cols-2">
                       <TabsTrigger value="profile">Profile</TabsTrigger>
                       <TabsTrigger value="settings">Settings</TabsTrigger>
                     </TabsList>
@@ -253,9 +187,8 @@ const StaffPortal = () => {
                           <Button 
                             type="submit" 
                             className="w-full"
-                            disabled={updateProfileMutation.isPending}
                           >
-                            {updateProfileMutation.isPending ? 'Updating...' : 'Update Profile'}
+                            Update Profile
                           </Button>
                         </div>
                       </form>
@@ -323,4 +256,4 @@ const StaffPortal = () => {
   );
 };
 
-export default StaffPortal;
+export default AdminPortal;

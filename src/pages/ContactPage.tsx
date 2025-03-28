@@ -63,16 +63,16 @@ const ContactPage = () => {
       {/* Main content */}
       <Navbar />
       <div className="w-full pt-16">
-        <section className="py-16 px-6 md:px-12 lg:px-24">
+        <section className="py-16 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#1A1F2C] to-[#9F9EA1] text-white">
           <div className="container mx-auto">
             <div className="text-center mb-16 fade-up">
-              <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
+              <span className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-gray-200 rounded-full mb-4">
                 Get In Touch
               </span>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 hero-text-gradient">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
                 Ready to Collaborate? Let's Talk!
               </h1>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
+              <p className="text-lg text-gray-200 max-w-2xl mx-auto mb-6">
                 Reach out and let's co-create your digital future. We're here to help transform your business with innovative technology solutions.
               </p>
               
@@ -80,13 +80,18 @@ const ContactPage = () => {
                 <Link to="/inquiry">Service-Specific Inquiries</Link>
               </Button>
             </div>
-            
+          </div>
+        </section>
+        
+        <section className="py-16 px-6 md:px-12 lg:px-24 bg-white">
+          <div className="container mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               <ContactInfo />
               <ContactForm />
             </div>
           </div>
         </section>
+        
         <Footer />
       </div>
     </div>

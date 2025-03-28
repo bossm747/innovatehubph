@@ -54,14 +54,14 @@ const ClientsPage = () => {
       {/* Main content */}
       <Navbar />
       <div className="w-full pt-16">
-        <section className="py-20 px-6 md:px-12 lg:px-24 bg-white">
+        <section className="py-20 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-[#1A1F2C] to-[#9F9EA1] text-white">
           <div className="container mx-auto">
             <div className="text-center mb-16 fade-up">
-              <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
+              <span className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-gray-200 rounded-full mb-4">
                 Our Portfolio
               </span>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Valued Clients</h1>
-              <p className="text-gray-600 max-w-3xl mx-auto">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">Our Valued Clients</h1>
+              <p className="text-gray-200 max-w-3xl mx-auto">
                 We're proud to partner with businesses across various industries. 
                 From small local stores to established enterprises, we help our clients achieve 
                 digital transformation and growth.

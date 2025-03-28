@@ -1,123 +1,97 @@
 
 import React from 'react';
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Link } from 'react-router-dom';
+import { Users, History, Award } from 'lucide-react';
 
 const AboutHero = () => {
   return (
-    <section className="relative py-24 px-6 md:px-12 lg:px-24 bg-gradient-to-r from-innovate-900/10 to-innovate-600/10">
-      <div className="container mx-auto">
-        <div className="max-w-3xl mx-auto text-center">
-          <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-6">
-            About InnovateHub
-          </span>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 hero-text-gradient">
+    <section className="relative py-24 overflow-hidden bg-gradient-to-b from-[#1A1F2C] to-[#9F9EA1] text-white">
+      {/* Background patterns */}
+      <div className="absolute inset-0 overflow-hidden opacity-10">
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-innovate-500 filter blur-3xl"></div>
+        <div className="absolute top-1/2 -left-24 w-64 h-64 rounded-full bg-white filter blur-3xl"></div>
+        <div className="absolute -bottom-32 right-1/4 w-80 h-80 rounded-full bg-innovate-300 filter blur-3xl"></div>
+        
+        {/* Grid pattern */}
+        <div className="absolute inset-0" style={{ 
+          backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px)', 
+          backgroundSize: '20px 20px' 
+        }}></div>
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-3xl">
+          <div className="flex items-center space-x-2 mb-4">
+            <div className="p-2 rounded-full bg-white/10">
+              <History className="h-5 w-5" />
+            </div>
+            <div className="text-lg font-medium text-gray-200">About Us</div>
+          </div>
+          
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             Who We Are
           </h1>
-          <p className="text-xl md:text-2xl font-light text-gray-600 mb-10">
+          
+          <h2 className="text-xl md:text-2xl text-innovate-200 mb-6">
             Passionate Innovators in the Philippine Tech Landscape
+          </h2>
+          
+          <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl">
+            From our humble beginnings in Batangas to our expansion into Dubai, 
+            we've been relentlessly pursuing innovation in fintech, e-commerce, and digital solutions.
           </p>
           
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* AI-enhanced cards */}
-            <div className="relative fade-up">
-              <Card className="glass-card shadow-medium border-0 overflow-hidden animate-float">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-innovate-100">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-innovate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold">Innovation Journey</h3>
-                      <p className="text-sm text-gray-500">From Vision to Reality</p>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Digital Products</span>
-                      <span className="text-sm font-medium">12+ Solutions</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-1.5">
-                      <div className="bg-gradient-to-r from-innovate-400 to-innovate-600 h-1.5 rounded-full" style={{ width: '80%' }}></div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Client Success Rate</span>
-                      <span className="text-sm font-medium">92%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-1.5">
-                      <div className="bg-gradient-to-r from-innovate-400 to-innovate-600 h-1.5 rounded-full" style={{ width: '92%' }}></div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Expansion Progress</span>
-                      <span className="text-sm font-medium">Batangas to Dubai</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-1.5">
-                      <div className="bg-gradient-to-r from-innovate-400 to-innovate-600 h-1.5 rounded-full" style={{ width: '75%' }}></div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              {/* Decorative elements */}
-              <div className="absolute -bottom-3 -right-3 w-20 h-20 bg-blue-100 rounded-lg -z-10"></div>
+          <div className="flex flex-wrap gap-4">
+            <Button 
+              size="lg" 
+              className="bg-innovate-600 hover:bg-innovate-700 text-white transition-colors btn-shine"
+              asChild
+            >
+              <Link to="#company-overview">
+                Our Growth Story
+              </Link>
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="border-white text-white hover:bg-white/10"
+              asChild
+            >
+              <Link to="#team-section" className="flex items-center">
+                <Users className="mr-2 h-5 w-5" />
+                Meet Our Team
+              </Link>
+            </Button>
+          </div>
+          
+          {/* Achievement badges */}
+          <div className="flex flex-wrap mt-12 gap-6">
+            <div className="flex items-center space-x-2">
+              <div className="p-2 rounded-full bg-white/10">
+                <Award className="h-5 w-5 text-innovate-300" />
+              </div>
+              <span className="text-sm text-gray-200">Est. 2020 in Batangas</span>
             </div>
             
-            <div className="relative fade-up" style={{ animationDelay: '0.2s' }}>
-              <Card className="glass-card shadow-medium border-0 overflow-hidden animate-float" style={{ animationDelay: '0.3s' }}>
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-innovate-100">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-innovate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold">Our Growth</h3>
-                      <p className="text-sm text-gray-500">Building Together</p>
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-3 bg-white/50 rounded-lg">
-                      <p className="text-3xl font-bold text-innovate-700">3+</p>
-                      <p className="text-sm text-gray-600">Years Experience</p>
-                    </div>
-                    
-                    <div className="text-center p-3 bg-white/50 rounded-lg">
-                      <p className="text-3xl font-bold text-innovate-700">50+</p>
-                      <p className="text-sm text-gray-600">Happy Clients</p>
-                    </div>
-                    
-                    <div className="text-center p-3 bg-white/50 rounded-lg">
-                      <p className="text-3xl font-bold text-innovate-700">15+</p>
-                      <p className="text-sm text-gray-600">Team Members</p>
-                    </div>
-                    
-                    <div className="text-center p-3 bg-white/50 rounded-lg">
-                      <p className="text-3xl font-bold text-innovate-700">2</p>
-                      <p className="text-sm text-gray-600">Global Offices</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              {/* Decorative elements */}
-              <div className="absolute -top-3 -left-3 w-16 h-16 bg-innovate-100 rounded-lg -z-10"></div>
+            <div className="flex items-center space-x-2">
+              <div className="p-2 rounded-full bg-white/10">
+                <Users className="h-5 w-5 text-innovate-300" />
+              </div>
+              <span className="text-sm text-gray-200">35+ Expert Team Members</span>
+            </div>
+            
+            <div className="flex items-center space-x-2">
+              <div className="p-2 rounded-full bg-white/10">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-innovate-300" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.56-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.56.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <span className="text-sm text-gray-200">Global Operations</span>
             </div>
           </div>
         </div>
-      </div>
-      
-      {/* Hero image */}
-      <div className="mt-16 relative max-w-6xl mx-auto overflow-hidden rounded-xl shadow-medium">
-        <img 
-          src="/lovable-uploads/682f90d9-02d8-49f0-b70f-855d715c4166.png" 
-          alt="InnovateHub Team" 
-          className="w-full h-auto"
-        />
-        <div className="absolute inset-0 bg-innovate-900/10"></div>
       </div>
     </section>
   );

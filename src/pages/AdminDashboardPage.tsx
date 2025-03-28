@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import { Helmet } from "react-helmet";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   SidebarProvider, 
   Sidebar, 
@@ -44,7 +43,16 @@ const AdminDashboardPage = () => {
       
       <Navbar />
       
-      <main className="min-h-screen bg-gray-50">
+      <main className="min-h-screen bg-gray-50 pt-16">
+        {/* Paper torn edge at top of content */}
+        <div className="relative w-full h-[20px] z-10 overflow-hidden">
+          <img 
+            src="/lovable-uploads/bee67e8b-b334-443e-b91a-9eb641ad0db4.png" 
+            alt="Decorative paper edge" 
+            className="w-full object-cover"
+          />
+        </div>
+
         <SidebarProvider>
           <div className="flex w-full min-h-[calc(100vh-4rem)]">
             <Sidebar>

@@ -36,8 +36,16 @@ const AdminOverview = () => {
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat, index) => (
-          <Card key={index}>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <Card key={index} className="overflow-hidden relative">
+            {/* Torn paper edge on top of each card */}
+            <div className="absolute top-0 left-0 right-0 w-full h-[10px] z-10 overflow-hidden">
+              <img 
+                src="/lovable-uploads/bee67e8b-b334-443e-b91a-9eb641ad0db4.png" 
+                alt=""
+                className="w-full object-cover opacity-30 scale-75"
+              />
+            </div>
+            <CardHeader className="flex flex-row items-center justify-between pb-2 pt-4">
               <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
               {stat.icon}
             </CardHeader>
@@ -50,8 +58,16 @@ const AdminOverview = () => {
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
+        <Card className="overflow-hidden relative">
+          {/* Torn paper edge on top of activity card */}
+          <div className="absolute top-0 left-0 right-0 w-full h-[10px] z-10 overflow-hidden">
+            <img 
+              src="/lovable-uploads/bee67e8b-b334-443e-b91a-9eb641ad0db4.png" 
+              alt=""
+              className="w-full object-cover opacity-30 scale-75"
+            />
+          </div>
+          <CardHeader className="pt-4">
             <CardTitle>Recent Activities</CardTitle>
           </CardHeader>
           <CardContent>
@@ -89,8 +105,16 @@ const AdminOverview = () => {
           </CardContent>
         </Card>
         
-        <Card>
-          <CardHeader>
+        <Card className="overflow-hidden relative">
+          {/* Torn paper edge on top of system status card */}
+          <div className="absolute top-0 left-0 right-0 w-full h-[10px] z-10 overflow-hidden">
+            <img 
+              src="/lovable-uploads/bee67e8b-b334-443e-b91a-9eb641ad0db4.png" 
+              alt=""
+              className="w-full object-cover opacity-30 scale-75"
+            />
+          </div>
+          <CardHeader className="pt-4">
             <CardTitle>System Status</CardTitle>
           </CardHeader>
           <CardContent>

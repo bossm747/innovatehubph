@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Session, User } from '@supabase/supabase-js';
 import { toast } from 'sonner';
 
-interface AdminAuthContextType {
+interface StaffAuthContextType {
   isLoading: boolean;
   session: Session | null;
   user: User | null;
@@ -14,7 +14,7 @@ interface AdminAuthContextType {
   error: string | null;
 }
 
-const AdminAuthContext = createContext<AdminAuthContextType>({
+const StaffAuthContext = createContext<StaffAuthContextType>({
   isLoading: true,
   session: null,
   user: null,
@@ -24,9 +24,9 @@ const AdminAuthContext = createContext<AdminAuthContextType>({
   error: null
 });
 
-export const useAdminAuth = () => useContext(AdminAuthContext);
+export const useStaffAuth = () => useContext(StaffAuthContext);
 
-export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
+export const StaffAuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
@@ -55,7 +55,7 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
     setError(null);
     try {
       if (!email.endsWith('@innovatehub.ph')) {
-        throw new Error('Only InnovateHub admin email addresses are allowed');
+        throw new Error('Only InnovateHub staff email addresses are allowed');
       }
 
       const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -71,14 +71,14 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
     setError(null);
     try {
       if (!email.endsWith('@innovatehub.ph')) {
-        throw new Error('Only InnovateHub admin email addresses are allowed');
+        throw new Error('Only InnovateHub staff email addresses are allowed');
       }
 
       const { error } = await supabase.auth.signUp({ 
         email, 
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/admin/portal`
+          emailRedirectTo: `${window.location.origin}/team/portal`
         }
       });
       
@@ -100,7 +100,7 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AdminAuthContext.Provider
+    <StaffAuthContext.Provider
       value={{
         isLoading,
         session,
@@ -112,6 +112,6 @@ export const AdminAuthProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
-    </AdminAuthContext.Provider>
+    </StaffAuthContext.Provider>
   );
 };

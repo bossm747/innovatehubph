@@ -9,21 +9,21 @@ import UserManagement from '@/components/admin/UserManagement';
 import DatabaseManagement from '@/components/admin/DatabaseManagement';
 import SeedDatabaseButton from '@/components/admin/SeedDatabaseButton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAdminAuth } from '@/contexts/AdminAuthContext';
+import { useStaffAuth } from '@/contexts/StaffAuthContext';
 import { Navigate } from 'react-router-dom';
 
 const AdminDashboardPage = () => {
-  const { user, session } = useAdminAuth();
+  const { user, session } = useStaffAuth();
 
   if (!user || !session) {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/staff-portal" replace />;
   }
 
   return (
     <>
       <Helmet>
         <title>Admin Dashboard | InnovateHub</title>
-        <meta name="description" content="InnovateHub administrative dashboard for admin members" />
+        <meta name="description" content="InnovateHub administrative dashboard for staff members" />
       </Helmet>
       
       <Navbar />

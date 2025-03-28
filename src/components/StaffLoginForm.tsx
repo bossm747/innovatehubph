@@ -15,9 +15,9 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form';
-import { useAdminAuth } from '@/contexts/AdminAuthContext';
+import { useStaffAuth } from '@/contexts/StaffAuthContext';
 
-interface AdminLoginFormProps {
+interface StaffLoginFormProps {
   onSuccess?: () => void;
 }
 
@@ -26,13 +26,13 @@ const formSchema = z.object({
     .string()
     .email('Invalid email address')
     .refine((email) => email.endsWith('@innovatehub.ph'), {
-      message: 'Only InnovateHub admin email addresses are allowed',
+      message: 'Only InnovateHub staff email addresses are allowed',
     }),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
-const AdminLoginForm = ({ onSuccess }: AdminLoginFormProps) => {
-  const { signIn, signUp } = useAdminAuth();
+const StaffLoginForm = ({ onSuccess }: StaffLoginFormProps) => {
+  const { signIn, signUp } = useStaffAuth();
   const [activeTab, setActiveTab] = useState<string>('signin');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ const AdminLoginForm = ({ onSuccess }: AdminLoginFormProps) => {
         onSuccess();
       }
       
-      navigate('/admin/portal');
+      navigate('/team/portal');
     } catch (error) {
       console.error('Authentication error:', error);
     } finally {
@@ -158,4 +158,4 @@ const AdminLoginForm = ({ onSuccess }: AdminLoginFormProps) => {
   );
 };
 
-export default AdminLoginForm;
+export default StaffLoginForm;

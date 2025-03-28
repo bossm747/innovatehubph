@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useAdminAuth } from '@/contexts/AdminAuthContext';
+import { useStaffAuth } from '@/contexts/StaffAuthContext';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,10 +12,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LogOut, UserCog, Settings, Database, Layers, LayoutDashboard } from 'lucide-react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-const AdminPortal = () => {
-  const { user, session, signOut } = useAdminAuth();
+const StaffPortal = () => {
+  const { user, session, signOut } = useStaffAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [profileData, setProfileData] = useState({
@@ -25,23 +26,18 @@ const AdminPortal = () => {
     avatar_url: ''
   });
 
-  // Mock profile data for development
-  const mockProfileData = {
-    id: user?.id || '',
-    full_name: user?.email?.split('@')[0]?.replace(/\./g, ' ') || '',
-    position: 'Administrator',
-    department: 'Management',
-    avatar_url: '',
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
-  };
-
   const { data: profile, isLoading } = useQuery({
-    queryKey: ['admin-profile', user?.id],
+    queryKey: ['staff-profile', user?.id],
     enabled: !!user?.id,
     queryFn: async () => {
-      // For development, return mock data
-      return mockProfileData;
+      const { data, error } = await supabase
+        .from('staff_profiles')
+        .select('*')
+        .eq('id', user?.id)
+        .single();
+      
+      if (error) throw error;
+      return data;
     }
   });
 
@@ -58,12 +54,22 @@ const AdminPortal = () => {
 
   const updateProfileMutation = useMutation({
     mutationFn: async () => {
-      // Mocking the update for now
-      toast.success('Profile updated successfully');
+      const { error } = await supabase
+        .from('staff_profiles')
+        .update({
+          full_name: profileData.full_name,
+          position: profileData.position,
+          department: profileData.department,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', user?.id);
+      
+      if (error) throw error;
       return profileData;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-profile', user?.id] });
+      queryClient.invalidateQueries({ queryKey: ['staff-profile', user?.id] });
+      toast.success('Profile updated successfully');
     },
     onError: (error) => {
       toast.error(`Error updating profile: ${error.message}`);
@@ -93,7 +99,7 @@ const AdminPortal = () => {
   }
 
   if (!user || !session) {
-    navigate('/admin/login');
+    navigate('/team');
     return null;
   }
 
@@ -117,16 +123,16 @@ const AdminPortal = () => {
   return (
     <>
       <Helmet>
-        <title>Admin Portal - InnovateHub</title>
-        <meta name="description" content="InnovateHub admin portal for team members" />
+        <title>Staff Portal - InnovateHub</title>
+        <meta name="description" content="InnovateHub staff portal for team members" />
       </Helmet>
       
       <Navbar />
       
       <main className="container mx-auto px-4 py-12">
         <div className="max-w-5xl mx-auto">
-          <h1 className="text-3xl font-bold mb-2">Admin Portal</h1>
-          <p className="text-muted-foreground mb-8">Welcome to the InnovateHub admin portal</p>
+          <h1 className="text-3xl font-bold mb-2">Staff Portal</h1>
+          <p className="text-muted-foreground mb-8">Welcome to the InnovateHub staff portal</p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="md:col-span-1">
@@ -193,7 +199,7 @@ const AdminPortal = () => {
               <Card>
                 <CardHeader>
                   <CardTitle>Profile Management</CardTitle>
-                  <CardDescription>Update your admin profile information</CardDescription>
+                  <CardDescription>Update your staff profile information</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Tabs defaultValue="profile">
@@ -317,4 +323,4 @@ const AdminPortal = () => {
   );
 };
 
-export default AdminPortal;
+export default StaffPortal;

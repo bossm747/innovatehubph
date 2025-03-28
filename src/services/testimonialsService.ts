@@ -14,41 +14,21 @@ export interface Testimonial {
   created_at: string;
 }
 
-// Mock testimonials data
-const mockTestimonials: Testimonial[] = [
-  {
-    id: '1',
-    client_name: 'Roberto Tan',
-    client_position: 'Small Business Owner',
-    client_company: 'Roberto\'s Sari-Sari Store',
-    client_avatar: null,
-    content: 'PlataPay has transformed how I manage my store. I can now accept digital payments easily.',
-    rating: 5,
-    service_id: null,
-    is_featured: true,
-    created_at: new Date().toISOString()
-  },
-  {
-    id: '2',
-    client_name: 'Teresa Gomez',
-    client_position: 'Entrepreneur',
-    client_company: 'Teresa\'s Bakery',
-    client_avatar: null,
-    content: 'The e-commerce solution built by InnovateHub has allowed me to sell my baked goods online.',
-    rating: 5,
-    service_id: '2',
-    is_featured: true,
-    created_at: new Date().toISOString()
-  }
-];
-
 /**
  * Fetch all testimonials
  */
 export const fetchTestimonials = async (): Promise<Testimonial[]> => {
   try {
-    console.log('Fetching all testimonials (mock data)');
-    return mockTestimonials;
+    const { data, error } = await supabase
+      .from('testimonials')
+      .select('*');
+      
+    if (error) {
+      console.error('Error fetching testimonials:', error);
+      throw error;
+    }
+    
+    return data || [];
   } catch (error) {
     console.error('Error in fetchTestimonials:', error);
     return [];
@@ -60,8 +40,17 @@ export const fetchTestimonials = async (): Promise<Testimonial[]> => {
  */
 export const fetchFeaturedTestimonials = async (): Promise<Testimonial[]> => {
   try {
-    console.log('Fetching featured testimonials (mock data)');
-    return mockTestimonials.filter(testimonial => testimonial.is_featured);
+    const { data, error } = await supabase
+      .from('testimonials')
+      .select('*')
+      .eq('is_featured', true);
+      
+    if (error) {
+      console.error('Error fetching featured testimonials:', error);
+      throw error;
+    }
+    
+    return data || [];
   } catch (error) {
     console.error('Error in fetchFeaturedTestimonials:', error);
     return [];
@@ -73,8 +62,17 @@ export const fetchFeaturedTestimonials = async (): Promise<Testimonial[]> => {
  */
 export const fetchTestimonialsByService = async (serviceId: string): Promise<Testimonial[]> => {
   try {
-    console.log(`Fetching testimonials by service ID: ${serviceId} (mock data)`);
-    return mockTestimonials.filter(testimonial => testimonial.service_id === serviceId);
+    const { data, error } = await supabase
+      .from('testimonials')
+      .select('*')
+      .eq('service_id', serviceId);
+      
+    if (error) {
+      console.error('Error fetching testimonials by service:', error);
+      throw error;
+    }
+    
+    return data || [];
   } catch (error) {
     console.error('Error in fetchTestimonialsByService:', error);
     return [];

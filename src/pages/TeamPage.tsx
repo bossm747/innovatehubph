@@ -19,10 +19,7 @@ const TeamPage = () => {
       <Navbar />
       
       <main>
-        <TeamPageHeader 
-          title="Our Team" 
-          description="Meet the dedicated professionals behind InnovateHub's success"
-        />
+        <TeamPageHeader />
         <TeamSectionWithData />
         <TeamValues />
         <ContactSection />

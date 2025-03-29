@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
-import { ArrowRight, Phone, LockKeyhole } from 'lucide-react';
+import { ArrowRight, Phone } from 'lucide-react';
 
 const HeroButtons = () => {
   return (
@@ -28,18 +28,6 @@ const HeroButtons = () => {
         <Link to="/contact" className="flex items-center justify-center">
           <Phone className="mr-2 h-4 w-4" />
           Contact Us
-        </Link>
-      </Button>
-      <Button 
-        size="lg" 
-        variant="destructive" 
-        width="fixed"
-        asChild
-        className="min-w-[200px] text-white"
-      >
-        <Link to="/admin/portal" className="flex items-center justify-center">
-          <LockKeyhole className="mr-2 h-4 w-4" />
-          Admin Portal
         </Link>
       </Button>
     </div>

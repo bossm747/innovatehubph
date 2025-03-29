@@ -2,11 +2,11 @@
 import { useState } from 'react';
 import ServiceCard from './services/ServiceCard';
 import ServiceDetail from './services/ServiceDetail';
-import { getServicesData } from '@/data/servicesData';
+import { servicesData } from '@/data/servicesData';
 
 const Services = () => {
   const [activeService, setActiveService] = useState("platapay");
-  const services = getServicesData();
+  const services = servicesData;
   const activeServiceData = services.find(service => service.id === activeService);
 
   return (
@@ -41,9 +41,9 @@ const Services = () => {
               <ServiceDetail 
                 id={activeServiceData.id}
                 title={activeServiceData.title}
-                detailTitle={activeServiceData.detailTitle}
-                detailDesc={activeServiceData.detailDesc}
-                image={activeServiceData.image}
+                detailTitle={activeServiceData.title}
+                detailDesc={activeServiceData.description}
+                image={activeServiceData.icon}
               />
             )}
           </div>

@@ -9,7 +9,7 @@ import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { LogOut, UserCog, Settings, Database, Layers, LayoutDashboard } from 'lucide-react';
+import { LogOut, UserCog, Settings, Database, Layers, LayoutDashboard, FileText } from 'lucide-react';
 import { toast } from 'sonner';
 
 // Mock user data since we've removed authentication
@@ -108,6 +108,14 @@ const AdminPortal = () => {
                   >
                     <LayoutDashboard className="mr-2 h-4 w-4" />
                     Admin Dashboard
+                  </Button>
+                  <Button 
+                    className="w-full justify-start" 
+                    variant="outline"
+                    onClick={() => navigate('/admin/content')}
+                  >
+                    <FileText className="mr-2 h-4 w-4" />
+                    Content Management
                   </Button>
                   <Button 
                     className="w-full justify-start" 

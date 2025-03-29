@@ -5,6 +5,7 @@ import AIToolsPage from '@/pages/AIToolsPage';
 import ImageProcessingTool from '@/components/ImageProcessingTool';
 import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import AdminPortal from '@/components/AdminPortal';
+import AdminContentPage from '@/pages/AdminContentPage';
 import { QueryProvider } from '@/providers/QueryProvider';
 import NotFound from '@/pages/NotFound';
 import IndexPage from '@/pages/Index';
@@ -51,6 +52,7 @@ function App() {
           {/* Admin Routes */}
           <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
           <Route path="/admin/portal" element={<AdminPortal />} />
+          <Route path="/admin/content" element={<AdminContentPage />} /> {/* New content management route */}
           
           {/* 404 Route */}
           <Route path="*" element={<NotFound />} />

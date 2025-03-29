@@ -26,7 +26,7 @@ export const createNavigationItem = async (navigationItem: any) => {
 export const updateNavigationItem = async (id: string, updates: any) => {
   const { data, error } = await supabase
     .from('navigation_items')
-    .update({ ...updates, updated_at: new Date() })
+    .update({ ...updates, updated_at: new Date().toISOString() })
     .eq('id', id)
     .select()
     .single();
@@ -81,7 +81,7 @@ export const createPage = async (page: any) => {
 export const updatePage = async (id: string, updates: any) => {
   const { data, error } = await supabase
     .from('pages')
-    .update({ ...updates, updated_at: new Date() })
+    .update({ ...updates, updated_at: new Date().toISOString() })
     .eq('id', id)
     .select()
     .single();
@@ -126,7 +126,7 @@ export const createPageSection = async (section: any) => {
 export const updatePageSection = async (id: string, updates: any) => {
   const { data, error } = await supabase
     .from('page_sections')
-    .update({ ...updates, updated_at: new Date() })
+    .update({ ...updates, updated_at: new Date().toISOString() })
     .eq('id', id)
     .select()
     .single();
@@ -158,12 +158,13 @@ export const fetchSiteSettings = async (settingId: string) => {
 };
 
 export const updateSiteSettings = async (id: string, settings: any) => {
+  // Fixed: Convert Date object to ISO string
   const { data, error } = await supabase
     .from('site_settings')
     .upsert({ 
       id, 
       settings, 
-      updated_at: new Date() 
+      updated_at: new Date().toISOString() 
     })
     .select()
     .single();

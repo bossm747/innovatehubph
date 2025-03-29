@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
@@ -301,20 +300,30 @@ export const SidebarMenuButton = React.forwardRef<
 >(({ className, variant, active, asChild = false, ...props }, ref) => {
   const { collapsed } = useSidebar();
   
-  const Comp = asChild ? React.cloneElement(props.children as React.ReactElement, {
-    className: cn(
-      menuButtonVariants({ variant, active, className }),
-      collapsed ? "justify-center" : "",
-      props.children.props.className
-    ),
-    ...props,
-    children: React.Children.map(props.children.props.children, child => {
-      if (collapsed && typeof child === 'object' && child !== null && 'type' !== 'undefined' && child.type !== 'svg') {
-        return null;
-      }
-      return child;
-    })
-  }) : (
+  if (asChild && React.isValidElement(props.children)) {
+    const child = props.children;
+    return React.cloneElement(child, {
+      className: cn(
+        menuButtonVariants({ variant, active, className }),
+        collapsed ? "justify-center" : "",
+        child.props.className
+      ),
+      ...props,
+      children: collapsed ? 
+        React.Children.map(child.props.children, childItem => {
+          if (React.isValidElement(childItem) && 
+              (typeof childItem.type === 'string' && childItem.type === 'svg' || 
+               childItem.props?.className?.includes?.('w-') || 
+               childItem.props?.className?.includes?.('h-'))) {
+            return childItem;
+          }
+          return null;
+        }) : 
+        child.props.children
+    });
+  }
+
+  return (
     <button
       ref={ref}
       className={cn(
@@ -324,8 +333,6 @@ export const SidebarMenuButton = React.forwardRef<
       {...props}
     />
   );
-
-  return Comp;
 });
 
 SidebarMenuButton.displayName = "SidebarMenuButton";

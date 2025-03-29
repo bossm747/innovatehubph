@@ -59,13 +59,21 @@ const SiteSettingsManager = () => {
   // Update forms when data is loaded
   React.useEffect(() => {
     if (headerSettings?.settings) {
-      setHeaderForm(headerSettings.settings);
+      // Fix: Use a function to update state based on previous state when working with objects
+      setHeaderForm((prev) => ({
+        ...prev,
+        ...(headerSettings.settings as Record<string, any>)
+      }));
     }
   }, [headerSettings]);
 
   React.useEffect(() => {
     if (footerSettings?.settings) {
-      setFooterForm(footerSettings.settings);
+      // Fix: Use a function to update state based on previous state when working with objects
+      setFooterForm((prev) => ({
+        ...prev,
+        ...(footerSettings.settings as Record<string, any>)
+      }));
     }
   }, [footerSettings]);
 

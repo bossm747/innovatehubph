@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 
@@ -59,7 +60,7 @@ const PlatapayTestimonials = () => {
             <div className="relative mr-3">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-100/40 to-blue-300/20 rounded-full blur-md transition-all duration-300 scale-110"></div>
               <img 
-                src="/lovable-uploads/a8af37d4-1b48-41f9-bd00-008fbfdb60a8.png" 
+                src="/lovable-uploads/e093393f-ce20-401d-be26-6d54dda3ace1.png" 
                 alt="PlataPay Logo" 
                 className="h-12 w-12 relative z-10"
                 style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.3))' }}

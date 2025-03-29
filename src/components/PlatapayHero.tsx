@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
@@ -15,7 +16,7 @@ const PlatapayHero = () => {
             <div className="flex items-center mb-4">
               <div className="relative mr-4">
                 <img 
-                  src="/lovable-uploads/9b23899d-8537-4e7c-996b-5fdc791cbde2.png" 
+                  src="/lovable-uploads/e093393f-ce20-401d-be26-6d54dda3ace1.png" 
                   alt="PlataPay Logo" 
                   className="h-16 w-16 relative z-10"
                   loading="eager" 
@@ -59,7 +60,7 @@ const PlatapayHero = () => {
             <div className="p-4 bg-white/90 backdrop-blur-sm rounded-lg border border-gray-200 shadow-sm">
               <div className="flex items-center mb-2">
                 <img 
-                  src="/lovable-uploads/41923896-2fb4-4137-b3b8-78bb35bbd3e5.png" 
+                  src="/lovable-uploads/1d8bd1cd-ee5d-4a31-8a60-ca66f86c0c68.png" 
                   alt="InnovateHub Logo" 
                   className="h-6 w-auto mr-2"
                   loading="eager"

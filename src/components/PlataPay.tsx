@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ArrowRight, Shield, CheckCircle, Smartphone } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -6,11 +7,9 @@ import { Link } from 'react-router-dom';
 const PlataPay = () => {
   return (
     <section id="platapay" className="py-24 px-6 md:px-12 lg:px-24 bg-innovate-50/50 relative overflow-hidden">
-      {/* Background elements */}
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-br from-blue-100/30 to-innovate-100/30 blur-3xl rounded-full -z-10"></div>
       <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-blue-100/20 to-transparent blur-3xl rounded-full -z-10"></div>
       
-      {/* Circuit decorative element */}
       <div className="absolute opacity-5 top-0 right-0 w-full h-full">
         <img 
           src="/lovable-uploads/9943e545-fc96-401b-98c2-3cb582ebab57.png" 
@@ -28,7 +27,7 @@ const PlataPay = () => {
             <div className="flex items-center mb-4">
               <div className="relative mr-4">
                 <img 
-                  src="/lovable-uploads/9b23899d-8537-4e7c-996b-5fdc791cbde2.png" 
+                  src="/lovable-uploads/e093393f-ce20-401d-be26-6d54dda3ace1.png" 
                   alt="PlataPay Logo" 
                   className="h-16 w-16 relative z-10"
                 />

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ArrowRight, Shield, CheckCircle, Smartphone } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -25,13 +24,11 @@ const PlataPay = () => {
               Featured Client Solution
             </span>
             <div className="flex items-center mb-4">
-              <div className="relative mr-4">
-                <img 
-                  src="/lovable-uploads/e093393f-ce20-401d-be26-6d54dda3ace1.png" 
-                  alt="PlataPay Logo" 
-                  className="h-16 w-16 relative z-10"
-                />
-              </div>
+              <img 
+                src="/lovable-uploads/e093393f-ce20-401d-be26-6d54dda3ace1.png" 
+                alt="PlataPay Logo" 
+                className="h-16 w-16 mr-4"
+              />
               <h2 className="text-3xl md:text-4xl font-bold hero-text-gradient">
                 PlataPay
               </h2>

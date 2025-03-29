@@ -1,305 +1,290 @@
 
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "@/lib/utils"
-import { ChevronRight, Menu } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { useSidebar } from "./context"
-import { SidebarContext, SidebarProvider } from "./context"
+import * as React from "react";
+import { cn } from "@/lib/utils";
+import { useSidebar } from "./context";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-// Re-export the context and provider
-export { useSidebar, SidebarProvider };
-
-// Main Sidebar component
-interface SidebarProps {
-  className?: string;
-  children?: React.ReactNode;
+interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   defaultWidth?: number;
+  defaultCollapsed?: boolean;
+  collapsedWidth?: number;
   collapsible?: boolean;
-}
-
-export const Sidebar: React.FC<SidebarProps> = ({
-  className,
-  children,
-  defaultWidth = 240,
-  collapsible = false,
-}) => {
-  const { collapsed, width } = useSidebar();
-
-  return (
-    <aside
-      className={cn(
-        "flex flex-col border-r bg-background h-screen overflow-y-auto transition-all duration-300 ease-in-out",
-        className
-      )}
-      style={{ width: `${width}px`, minWidth: `${width}px` }}
-    >
-      {children}
-    </aside>
-  );
-};
-
-// Sidebar Header component
-interface SidebarHeaderProps {
-  className?: string;
   children?: React.ReactNode;
 }
 
-export const SidebarHeader: React.FC<SidebarHeaderProps> = ({
-  className,
-  children,
-}) => {
-  const { collapsed } = useSidebar();
-
-  return (
-    <div
-      className={cn(
-        "flex flex-shrink-0 items-center overflow-hidden transition-all",
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
-};
-
-// Sidebar Content component
-interface SidebarContentProps {
-  className?: string;
-  children?: React.ReactNode;
-}
-
-export const SidebarContent: React.FC<SidebarContentProps> = ({
-  className,
-  children,
-}) => {
-  return (
-    <div
-      className={cn(
-        "flex-1 overflow-y-auto py-2",
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
-};
-
-// Sidebar Footer component
-interface SidebarFooterProps {
-  className?: string;
-  children?: React.ReactNode;
-}
-
-export const SidebarFooter: React.FC<SidebarFooterProps> = ({
-  className,
-  children,
-}) => {
-  return (
-    <div
-      className={cn(
-        "flex-shrink-0 overflow-hidden transition-all",
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
-};
-
-// Sidebar Trigger component
-interface SidebarTriggerProps {
-  className?: string;
-}
-
-export const SidebarTrigger: React.FC<SidebarTriggerProps> = ({
-  className,
-}) => {
-  const { collapsed, setCollapsed } = useSidebar();
-
-  return (
-    <Button
-      variant="ghost"
-      size="icon"
-      onClick={() => setCollapsed(!collapsed)}
-      className={cn("", className)}
-      aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-    >
-      <Menu className="h-5 w-5" />
-    </Button>
-  );
-};
-
-// Sidebar Group components
-interface SidebarGroupProps {
-  className?: string;
-  children?: React.ReactNode;
-}
-
-export const SidebarGroup: React.FC<SidebarGroupProps> = ({
-  className,
-  children,
-}) => {
-  return (
-    <div className={cn("py-2", className)}>
-      {children}
-    </div>
-  );
-};
-
-// Sidebar Group Label
-interface SidebarGroupLabelProps {
-  className?: string;
-  children?: React.ReactNode;
-}
-
-export const SidebarGroupLabel: React.FC<SidebarGroupLabelProps> = ({
-  className,
-  children,
-}) => {
-  const { collapsed } = useSidebar();
-
-  if (collapsed) {
-    return null;
-  }
-
-  return (
-    <div className={cn("px-4 py-1 text-xs font-medium text-muted-foreground", className)}>
-      {children}
-    </div>
-  );
-};
-
-// Sidebar Group Content
-interface SidebarGroupContentProps {
-  className?: string;
-  children?: React.ReactNode;
-}
-
-export const SidebarGroupContent: React.FC<SidebarGroupContentProps> = ({
-  className,
-  children,
-}) => {
-  return (
-    <div className={cn("", className)}>
-      {children}
-    </div>
-  );
-};
-
-// Sidebar Menu
-interface SidebarMenuProps {
-  className?: string;
-  children?: React.ReactNode;
-}
-
-export const SidebarMenu: React.FC<SidebarMenuProps> = ({
-  className,
-  children,
-}) => {
-  return (
-    <nav className={cn("px-2 space-y-1", className)}>
-      {children}
-    </nav>
-  );
-};
-
-// Sidebar Menu Item
-interface SidebarMenuItemProps {
-  className?: string;
-  children?: React.ReactNode;
-}
-
-export const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
-  className,
-  children,
-}) => {
-  return (
-    <div className={cn("", className)}>
-      {children}
-    </div>
-  );
-};
-
-// Sidebar Menu Button
-const menuButtonVariants = cva(
-  "flex items-center w-full py-2 px-3 text-sm rounded-md transition-colors",
-  {
-    variants: {
-      variant: {
-        default: "hover:bg-accent hover:text-accent-foreground",
-      },
-      active: {
-        true: "bg-accent text-accent-foreground",
-        false: "",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-      active: false,
-    },
+const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
+  ({ 
+    className, 
+    defaultWidth = 240, 
+    defaultCollapsed = false,
+    collapsedWidth = 64,
+    collapsible = false,
+    children,
+    ...props 
+  }, ref) => {
+    return (
+      <SidebarProvider 
+        defaultCollapsed={defaultCollapsed} 
+        defaultWidth={defaultWidth}
+        collapsedWidth={collapsedWidth}
+      >
+        <div
+          ref={ref}
+          className={cn(
+            "shrink-0 bg-background border-r transition-width duration-300 ease-in-out",
+            className
+          )}
+          style={{ width: `${useSidebar().width}px` }}
+          {...props}
+        >
+          {children}
+        </div>
+      </SidebarProvider>
+    );
   }
 );
+Sidebar.displayName = "Sidebar";
 
-interface SidebarMenuButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof menuButtonVariants> {
-  asChild?: boolean;
+interface SidebarHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
 }
 
-export const SidebarMenuButton = React.forwardRef<
-  HTMLButtonElement,
-  SidebarMenuButtonProps
->(({ className, variant, active, asChild = false, ...props }, ref) => {
-  const { collapsed } = useSidebar();
-  
-  if (asChild && React.isValidElement(props.children)) {
-    const child = props.children;
+const SidebarHeader = React.forwardRef<HTMLDivElement, SidebarHeaderProps>(
+  ({ className, children, ...props }, ref) => {
+    const { collapsed } = useSidebar();
     
-    if (!React.isValidElement(child)) {
-      return child;
+    return (
+      <div
+        ref={ref}
+        className={cn("px-2 py-3", className)}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+SidebarHeader.displayName = "SidebarHeader";
+
+interface SidebarContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
+}
+
+const SidebarContent = React.forwardRef<HTMLDivElement, SidebarContentProps>(
+  ({ className, children, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn("flex flex-col flex-1 overflow-y-auto", className)}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+SidebarContent.displayName = "SidebarContent";
+
+interface SidebarFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
+}
+
+const SidebarFooter = React.forwardRef<HTMLDivElement, SidebarFooterProps>(
+  ({ className, children, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn("px-2 py-3 mt-auto", className)}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+SidebarFooter.displayName = "SidebarFooter";
+
+interface SidebarTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children?: React.ReactNode;
+}
+
+const SidebarTrigger = React.forwardRef<HTMLButtonElement, SidebarTriggerProps>(
+  ({ className, children, ...props }, ref) => {
+    const { collapsed, setCollapsed } = useSidebar();
+    
+    return (
+      <button
+        ref={ref}
+        onClick={() => setCollapsed(!collapsed)}
+        className={cn(
+          "flex items-center justify-center w-8 h-8 rounded-md hover:bg-accent hover:text-accent-foreground",
+          className
+        )}
+        {...props}
+      >
+        {children || (collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />)}
+      </button>
+    );
+  }
+);
+SidebarTrigger.displayName = "SidebarTrigger";
+
+interface SidebarGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
+}
+
+const SidebarGroup = React.forwardRef<HTMLDivElement, SidebarGroupProps>(
+  ({ className, children, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn("py-2", className)}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+SidebarGroup.displayName = "SidebarGroup";
+
+interface SidebarGroupLabelProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
+}
+
+const SidebarGroupLabel = React.forwardRef<HTMLDivElement, SidebarGroupLabelProps>(
+  ({ className, children, ...props }, ref) => {
+    const { collapsed } = useSidebar();
+    
+    if (collapsed) {
+      return null;
     }
     
-    const childProps = {
-      className: cn(
-        menuButtonVariants({ variant, active }),
-        collapsed ? "justify-center" : "",
-        child.props.className || ""
-      ),
-      ...props,
-    };
-    
-    const filteredChildren = collapsed
-      ? React.Children.toArray(child.props.children).filter(childItem => {
-          if (!React.isValidElement(childItem)) return false;
-          
-          const isIcon = 
-            (typeof childItem.type === 'string' && childItem.type === 'svg') ||
-            (childItem.props && 
-              typeof childItem.props.className === 'string' &&
-              (childItem.props.className.includes('w-') || 
-               childItem.props.className.includes('h-')));
-          
-          return isIcon;
-        })
-      : child.props.children;
-    
-    return React.cloneElement(child, {
-      ...childProps,
-      children: filteredChildren
-    });
+    return (
+      <div
+        ref={ref}
+        className={cn("px-3 py-1 text-xs font-medium text-muted-foreground", className)}
+        {...props}
+      >
+        {children}
+      </div>
+    );
   }
+);
+SidebarGroupLabel.displayName = "SidebarGroupLabel";
 
-  return (
-    <button
-      ref={ref}
-      className={cn(
-        menuButtonVariants({ variant, active, className }),
-        collapsed ? "justify-center" : ""
-      )}
-      {...props}
-    />
-  );
-});
+interface SidebarGroupContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
+}
 
+const SidebarGroupContent = React.forwardRef<HTMLDivElement, SidebarGroupContentProps>(
+  ({ className, children, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn("px-1", className)}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+SidebarGroupContent.displayName = "SidebarGroupContent";
+
+interface SidebarMenuProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
+}
+
+const SidebarMenu = React.forwardRef<HTMLDivElement, SidebarMenuProps>(
+  ({ className, children, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn("space-y-1", className)}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+SidebarMenu.displayName = "SidebarMenu";
+
+interface SidebarMenuItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
+}
+
+const SidebarMenuItem = React.forwardRef<HTMLDivElement, SidebarMenuItemProps>(
+  ({ className, children, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn("", className)}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+SidebarMenuItem.displayName = "SidebarMenuItem";
+
+interface SidebarMenuButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  active?: boolean;
+  asChild?: boolean;
+  children?: React.ReactNode;
+}
+
+const SidebarMenuButton = React.forwardRef<HTMLButtonElement, SidebarMenuButtonProps>(
+  ({ className, active, asChild = false, children, ...props }, ref) => {
+    const { collapsed } = useSidebar();
+    const Comp = asChild ? React.cloneElement(children as React.ReactElement, { ref, ...props }) : "button";
+    
+    if (asChild) {
+      return React.cloneElement(
+        children as React.ReactElement,
+        {
+          ref,
+          className: cn(
+            "w-full flex items-center rounded-md px-3 py-2 text-sm font-medium",
+            active ? "bg-accent text-accent-foreground" : "hover:bg-accent hover:text-accent-foreground",
+            collapsed && "justify-center px-0",
+            className
+          ),
+          ...props
+        }
+      );
+    }
+    
+    return (
+      <button
+        ref={ref}
+        className={cn(
+          "w-full flex items-center rounded-md px-3 py-2 text-sm font-medium",
+          active ? "bg-accent text-accent-foreground" : "hover:bg-accent hover:text-accent-foreground",
+          collapsed && "justify-center px-0",
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </button>
+    );
+  }
+);
 SidebarMenuButton.displayName = "SidebarMenuButton";
+
+export {
+  Sidebar,
+  SidebarHeader,
+  SidebarContent,
+  SidebarFooter,
+  SidebarTrigger,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+};

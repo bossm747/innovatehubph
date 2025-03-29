@@ -1,55 +1,52 @@
 
-import * as React from "react"
+import * as React from "react";
 
-// Context for Sidebar state
-export type SidebarContextType = {
+interface SidebarContextProps {
   collapsed: boolean;
-  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  setCollapsed: (collapsed: boolean) => void;
   width: number;
-  setWidth: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const SidebarContext = React.createContext<SidebarContextType | undefined>(undefined);
+const SidebarContext = React.createContext<SidebarContextProps | undefined>(undefined);
 
-export const useSidebar = () => {
-  const context = React.useContext(SidebarContext);
-  if (!context) {
-    throw new Error("useSidebar must be used within a SidebarProvider");
-  }
-  return context;
-};
-
-// Provider component
 interface SidebarProviderProps {
   children: React.ReactNode;
-  defaultCollapsed?: boolean;
   defaultWidth?: number;
+  defaultCollapsed?: boolean;
   collapsedWidth?: number;
 }
 
-export const SidebarProvider: React.FC<SidebarProviderProps> = ({
+export function SidebarProvider({
   children,
-  defaultCollapsed = false,
   defaultWidth = 240,
+  defaultCollapsed = false,
   collapsedWidth = 64,
-}) => {
+}: SidebarProviderProps) {
   const [collapsed, setCollapsed] = React.useState(defaultCollapsed);
-  const [width, setWidth] = React.useState(defaultCollapsed ? collapsedWidth : defaultWidth);
-
-  React.useEffect(() => {
-    setWidth(collapsed ? collapsedWidth : defaultWidth);
-  }, [collapsed, collapsedWidth, defaultWidth]);
-
-  const value = React.useMemo(() => ({
-    collapsed,
-    setCollapsed,
-    width,
-    setWidth,
-  }), [collapsed, width]);
+  const width = React.useMemo(
+    () => (collapsed ? collapsedWidth : defaultWidth),
+    [collapsed, collapsedWidth, defaultWidth]
+  );
 
   return (
-    <SidebarContext.Provider value={value}>
+    <SidebarContext.Provider
+      value={{
+        collapsed,
+        setCollapsed,
+        width,
+      }}
+    >
       {children}
     </SidebarContext.Provider>
   );
-};
+}
+
+export function useSidebar() {
+  const context = React.useContext(SidebarContext);
+  
+  if (context === undefined) {
+    throw new Error("useSidebar must be used within a SidebarProvider");
+  }
+  
+  return context;
+}

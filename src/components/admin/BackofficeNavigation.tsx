@@ -14,6 +14,7 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarGroupContent,
+  useSidebar
 } from '@/components/ui/sidebar';
 import { 
   LayoutDashboard, 
@@ -35,9 +36,9 @@ const BackofficeNavigation: React.FC<BackofficeNavigationProps> = ({ children })
   const location = useLocation();
   
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultWidth={280} defaultCollapsed={false} collapsedWidth={64}>
       <div className="min-h-screen flex w-full">
-        <Sidebar defaultWidth={280} collapsible={true}>
+        <Sidebar>
           <SidebarHeader className="h-14 flex items-center px-4 border-b">
             <div className="flex items-center">
               <img 

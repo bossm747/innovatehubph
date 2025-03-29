@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
@@ -310,11 +311,12 @@ export const SidebarMenuButton = React.forwardRef<
       ),
       ...props,
       children: collapsed ? 
-        React.Children.map(child.props.children, childItem => {
+        React.Children.map(child.props.children, (childItem) => {
           if (React.isValidElement(childItem) && 
               (typeof childItem.type === 'string' && childItem.type === 'svg' || 
-               childItem.props?.className?.includes?.('w-') || 
-               childItem.props?.className?.includes?.('h-'))) {
+               childItem.props && 
+               (childItem.props.className?.includes?.('w-') || 
+                childItem.props.className?.includes?.('h-')))) {
             return childItem;
           }
           return null;

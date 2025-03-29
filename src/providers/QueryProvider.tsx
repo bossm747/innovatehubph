@@ -15,8 +15,11 @@ const queryClient = new QueryClient({
 
 // Create a provider component that maintains the queryClient instance
 export function QueryProvider({ children }: { children: React.ReactNode }) {
+  // Important: We need to create a stable reference to the queryClient
+  const [client] = React.useState(() => queryClient);
+  
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={client}>
       {children}
     </QueryClientProvider>
   );

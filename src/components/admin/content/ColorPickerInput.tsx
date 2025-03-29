@@ -46,11 +46,9 @@ const ColorPickerInput: React.FC<ColorPickerInputProps> = ({
         
         {value && (
           <div 
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 w-6 h-6 rounded border"
+            className={`absolute right-2 top-1/2 transform -translate-y-1/2 w-6 h-6 rounded border ${value.startsWith('bg-') ? value : ''}`}
             style={{ 
-              background: value.startsWith('bg-') ? undefined : value,
-              // Apply Tailwind classes if it's a Tailwind class
-              className: value.startsWith('bg-') ? value : undefined
+              background: value.startsWith('bg-') ? undefined : value
             }}
           />
         )}

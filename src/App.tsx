@@ -23,6 +23,12 @@ import EcommercePage from '@/pages/EcommercePage';
 import AiSolutionsPage from '@/pages/AiSolutionsPage';
 import GlobalExpansionPage from '@/pages/GlobalExpansionPage';
 
+// Admin Pages
+import AdminContentManagementPage from '@/pages/admin/AdminContentManagementPage';
+import AdminPageSectionsPage from '@/pages/admin/AdminPageSectionsPage';
+import AdminNavigationPage from '@/pages/admin/AdminNavigationPage';
+import AdminDesignPage from '@/pages/admin/AdminDesignPage';
+
 function App() {
   return (
     <QueryProvider>
@@ -52,7 +58,12 @@ function App() {
           {/* Admin Routes */}
           <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
           <Route path="/admin/portal" element={<AdminPortal />} />
-          <Route path="/admin/content" element={<AdminContentPage />} /> {/* New content management route */}
+          
+          {/* New Admin Routes */}
+          <Route path="/admin/content" element={<AdminContentManagementPage />} />
+          <Route path="/admin/content/:pageId" element={<AdminPageSectionsPage />} />
+          <Route path="/admin/navigation" element={<AdminNavigationPage />} />
+          <Route path="/admin/design" element={<AdminDesignPage />} />
           
           {/* 404 Route */}
           <Route path="*" element={<NotFound />} />

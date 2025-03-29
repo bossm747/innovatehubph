@@ -247,6 +247,136 @@ export type Database = {
         }
         Relationships: []
       }
+      navigation_items: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_dropdown: boolean | null
+          label: string
+          parent_id: string | null
+          position: number
+          updated_at: string | null
+          url: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_dropdown?: boolean | null
+          label: string
+          parent_id?: string | null
+          position?: number
+          updated_at?: string | null
+          url: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_dropdown?: boolean | null
+          label?: string
+          parent_id?: string | null
+          position?: number
+          updated_at?: string | null
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "navigation_items_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "navigation_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      page_sections: {
+        Row: {
+          content: Json
+          created_at: string | null
+          id: string
+          page_id: string | null
+          position: number
+          section_name: string
+          section_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          content?: Json
+          created_at?: string | null
+          id?: string
+          page_id?: string | null
+          position?: number
+          section_name: string
+          section_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: Json
+          created_at?: string | null
+          id?: string
+          page_id?: string | null
+          position?: number
+          section_name?: string
+          section_type?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "page_sections_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "pages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pages: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_published: boolean | null
+          meta_description: string | null
+          slug: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_published?: boolean | null
+          meta_description?: string | null
+          slug: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_published?: boolean | null
+          meta_description?: string | null
+          slug?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          id: string
+          settings: Json
+          updated_at: string | null
+        }
+        Insert: {
+          id: string
+          settings?: Json
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          settings?: Json
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       staff_profiles: {
         Row: {
           avatar_url: string | null

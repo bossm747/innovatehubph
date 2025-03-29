@@ -57,6 +57,10 @@ interface Page {
   slug: string;
 }
 
+interface PageSectionsManagerProps {
+  pageId: string;
+}
+
 const sectionTypes = [
   { value: 'hero', label: 'Hero' },
   { value: 'content', label: 'Content' },
@@ -70,8 +74,7 @@ const sectionTypes = [
   { value: 'faq', label: 'FAQ' }
 ];
 
-const PageSectionsManager = () => {
-  const { pageId } = useParams<{ pageId: string }>();
+const PageSectionsManager: React.FC<PageSectionsManagerProps> = ({ pageId }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [formOpen, setFormOpen] = useState(false);

@@ -2,8 +2,6 @@
 // Export all sidebar components from this index file
 export { 
   Sidebar, 
-  SidebarProvider, 
-  useSidebar,
   SidebarHeader,
   SidebarContent,
   SidebarFooter,
@@ -15,3 +13,5 @@ export {
   SidebarMenuItem,
   SidebarMenuButton
 } from './components';
+
+export { SidebarProvider, useSidebar } from './context';

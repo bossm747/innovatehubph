@@ -1,7 +1,6 @@
-
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { useSidebar } from "./context";
+import { useSidebar, SidebarProvider } from "./context";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -23,23 +22,17 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
     ...props 
   }, ref) => {
     return (
-      <SidebarProvider 
-        defaultCollapsed={defaultCollapsed} 
-        defaultWidth={defaultWidth}
-        collapsedWidth={collapsedWidth}
+      <div
+        ref={ref}
+        className={cn(
+          "shrink-0 bg-background border-r transition-width duration-300 ease-in-out",
+          className
+        )}
+        style={{ width: `${useSidebar().width}px` }}
+        {...props}
       >
-        <div
-          ref={ref}
-          className={cn(
-            "shrink-0 bg-background border-r transition-width duration-300 ease-in-out",
-            className
-          )}
-          style={{ width: `${useSidebar().width}px` }}
-          {...props}
-        >
-          {children}
-        </div>
-      </SidebarProvider>
+        {children}
+      </div>
     );
   }
 );

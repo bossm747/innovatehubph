@@ -27,12 +27,27 @@ const TeamPreviewSection = () => {
               className="bg-white rounded-xl overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 fade-up card-3d"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className="h-64 overflow-hidden">
-                <img 
-                  src={`/lovable-uploads/5c085ba8-48d9-4a1a-9bb0-97e24b646f38.png`} 
-                  alt={`Team Member ${index}`} 
-                  className="w-full h-full object-cover transition-transform hover:scale-110 duration-500"
-                />
+              <div className="h-64 overflow-hidden bg-gradient-to-br from-innovate-600/80 to-blue-500/80 relative">
+                {/* 3D Avatar Placeholder */}
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gradient-to-br from-innovate-600/80 to-blue-500/80"></div>
+                  <div className="absolute inset-0 opacity-20">
+                    <svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <pattern id={`grid-${index}`} width="10" height="10" patternUnits="userSpaceOnUse">
+                          <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5" />
+                        </pattern>
+                      </defs>
+                      <rect width="100%" height="100%" fill={`url(#grid-${index})`} />
+                    </svg>
+                  </div>
+                  <div className="w-32 h-32 bg-white/10 rounded-full border-4 border-white/20 flex items-center justify-center relative z-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-16 h-16">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                  </div>
+                </div>
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-1">Team Member {index}</h3>

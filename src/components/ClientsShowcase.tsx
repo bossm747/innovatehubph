@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Carousel,
@@ -12,8 +11,6 @@ import { Button } from "@/components/ui/button";
 interface Client {
   id: number;
   name: string;
-  logo: string;
-  date: string;
   type: "agent" | "business" | "remittance" | "food" | "retail";
 }
 
@@ -21,106 +18,76 @@ const CLIENTS: Client[] = [
   {
     id: 1,
     name: "PlataPay",
-    logo: "/lovable-uploads/372a033d-79bc-44b0-9d4a-16363062c372.png",
-    date: "February 22, 2025",
     type: "agent"
   },
   {
     id: 2,
     name: "Barako Brews",
-    logo: "/lovable-uploads/91e21d7a-53f9-41d7-bd62-4a1f5dbe1d12.png",
-    date: "February 25, 2025",
     type: "food"
   },
   {
     id: 3,
     name: "Maclyn Bills Payment and Remittance",
-    logo: "/lovable-uploads/675397ff-7034-4855-b5a5-7d4ab1581ac7.png",
-    date: "February 26, 2025",
     type: "remittance"
   },
   {
     id: 4,
     name: "PIO Business Center",
-    logo: "https://images.unsplash.com/photo-1572044162444-ad60f128bdea?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    date: "February 26, 2025",
     type: "business"
   },
   {
     id: 5,
     name: "TMSeven Business Center",
-    logo: "/lovable-uploads/90b61cf8-2920-4e29-8ee2-ea226497675d.png",
-    date: "February 27, 2025",
     type: "business"
   },
   {
     id: 6,
     name: "MMHA Business Center",
-    logo: "https://images.unsplash.com/photo-1572044162444-ad60f128bdea?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    date: "February 27, 2025",
     type: "business"
   },
   {
     id: 7,
     name: "TEDBatangas",
-    logo: "https://images.unsplash.com/photo-1572044162444-ad60f128bdea?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    date: "March 1, 2025",
     type: "business"
   },
   {
     id: 8,
     name: "Miss G",
-    logo: "https://images.unsplash.com/photo-1572044162444-ad60f128bdea?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    date: "March 4, 2025",
     type: "retail"
   },
   {
     id: 9,
     name: "RMCL-Maricel",
-    logo: "/lovable-uploads/541e8712-4cd4-482c-988d-b564f5a753fc.png",
-    date: "March 15, 2025",
     type: "business"
   },
   {
     id: 10,
     name: "Majoy Bills Payment",
-    logo: "https://images.unsplash.com/photo-1572044162444-ad60f128bdea?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    date: "March 15, 2025",
     type: "remittance"
   },
   {
     id: 11,
     name: "BTS - MaryAnn Mercado",
-    logo: "/lovable-uploads/584c9683-bd5b-4a18-8a2a-b26aba392efc.png",
-    date: "March 15, 2025",
     type: "business"
   },
   {
     id: 12,
     name: "DIY Food Mart",
-    logo: "https://images.unsplash.com/photo-1572044162444-ad60f128bdea?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    date: "March 18, 2025",
     type: "food"
   },
   {
     id: 13,
     name: "Precy's Store",
-    logo: "https://images.unsplash.com/photo-1572044162444-ad60f128bdea?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    date: "March 20, 2025",
     type: "retail"
   },
   {
     id: 14,
     name: "Flayla Snack House",
-    logo: "/lovable-uploads/ee6c833b-4026-4d08-b018-cc41dc4b3c48.png",
-    date: "March 25, 2025",
     type: "food"
   },
   {
     id: 15,
     name: "Landos Eatery & Lomi House",
-    logo: "/lovable-uploads/675397ff-7034-4855-b5a5-7d4ab1581ac7.png",
-    date: "March 30, 2025",
     type: "food"
   }
 ];
@@ -129,16 +96,19 @@ const ClientCard = ({ client }: { client: Client }) => {
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl h-64 flex flex-col">
       <div className="p-5 flex flex-col items-center justify-between h-full">
-        <div className="w-24 h-24 bg-white rounded-full overflow-hidden flex items-center justify-center mb-4 border-2 border-gray-100 flex-shrink-0">
-          <img 
-            src={client.logo} 
-            alt={client.name}
-            className="w-full h-full object-contain p-2"
-          />
+        <div className="w-24 h-24 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full overflow-hidden flex items-center justify-center mb-4 border-2 border-gray-100 flex-shrink-0">
+          {/* 3D Avatar Placeholder */}
+          <div className="w-full h-full flex items-center justify-center relative">
+            <div className="absolute w-full h-full bg-gradient-to-br from-blue-400/80 to-indigo-600/80 animate-pulse"></div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 relative z-10">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
         </div>
         <div className="flex flex-col items-center flex-grow justify-center">
           <h3 className="text-lg font-semibold text-center mb-2">{client.name}</h3>
-          <p className="text-sm text-gray-500 mb-2">{client.date}</p>
+          <p className="text-sm text-gray-500 mb-2">Client Partner</p>
           <span className={`px-3 py-1 text-xs rounded-full ${getTypeColor(client.type)}`}>
             {formatType(client.type)}
           </span>

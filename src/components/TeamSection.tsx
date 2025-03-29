@@ -10,7 +10,6 @@ const teamMembers = [
     name: 'Maria Santos',
     role: 'Chief Executive Officer',
     bio: 'With over 15 years in fintech leadership, Maria drives our vision forward with passion and strategic insight.',
-    image: '/team/maria-santos.jpg',
     social: {
       linkedin: 'https://linkedin.com/in/maria-santos',
       twitter: 'https://twitter.com/mariasantos',
@@ -22,7 +21,6 @@ const teamMembers = [
     name: 'Juan Reyes',
     role: 'Chief Technology Officer',
     bio: 'Juan brings extensive experience in blockchain and payment systems, leading our technical innovation.',
-    image: '/team/juan-reyes.jpg',
     social: {
       linkedin: 'https://linkedin.com/in/juan-reyes',
       twitter: 'https://twitter.com/juanreyes',
@@ -34,7 +32,6 @@ const teamMembers = [
     name: 'Sofia Lim',
     role: 'Head of Product',
     bio: 'Sofia excels at translating complex technical concepts into user-friendly products that solve real problems.',
-    image: '/team/sofia-lim.jpg',
     social: {
       linkedin: 'https://linkedin.com/in/sofia-lim',
       twitter: 'https://twitter.com/sofialim',
@@ -46,7 +43,6 @@ const teamMembers = [
     name: 'Miguel Cruz',
     role: 'Chief Financial Officer',
     bio: "Miguel's financial expertise ensures our growth is sustainable while maximizing value for our clients.",
-    image: '/team/miguel-cruz.jpg',
     social: {
       linkedin: 'https://linkedin.com/in/miguel-cruz',
       twitter: 'https://twitter.com/miguelcruz',
@@ -58,7 +54,6 @@ const teamMembers = [
     name: 'Isabella Tan',
     role: 'Head of Marketing',
     bio: 'Isabella crafts our brand story and ensures our solutions reach the businesses that need them most.',
-    image: '/team/isabella-tan.jpg',
     social: {
       linkedin: 'https://linkedin.com/in/isabella-tan',
       twitter: 'https://twitter.com/isabellatan',
@@ -70,7 +65,6 @@ const teamMembers = [
     name: 'Gabriel Mendoza',
     role: 'Lead Developer',
     bio: "Gabriel's technical brilliance and problem-solving skills drive the development of our core platforms.",
-    image: '/team/gabriel-mendoza.jpg',
     social: {
       linkedin: 'https://linkedin.com/in/gabriel-mendoza',
       twitter: 'https://twitter.com/gabrielmendoza',
@@ -82,7 +76,6 @@ const teamMembers = [
     name: 'Olivia Reyes',
     role: 'UX/UI Designer',
     bio: 'Olivia ensures our products are not just functional but delightful to use through thoughtful design.',
-    image: '/team/olivia-reyes.jpg',
     social: {
       linkedin: 'https://linkedin.com/in/olivia-reyes',
       twitter: 'https://twitter.com/oliviareyes',
@@ -94,7 +87,6 @@ const teamMembers = [
     name: 'Rafael Lim',
     role: 'Business Development',
     bio: 'Rafael builds strategic partnerships that expand our reach and create new opportunities for growth.',
-    image: '/team/rafael-lim.jpg',
     social: {
       linkedin: 'https://linkedin.com/in/rafael-lim',
       twitter: 'https://twitter.com/rafaellim',
@@ -118,9 +110,14 @@ const TeamSection = () => {
           {teamMembers.map((member, index) => (
             <Card key={member.id} className="fade-up card-hover" style={{ animationDelay: `${index * 0.1}s` }}>
               <CardHeader className="text-center pb-2">
-                <Avatar className="w-24 h-24 mx-auto mb-4 border-2 border-innovate-100">
-                  <AvatarImage src={member.image} alt={member.name} />
-                  <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                <Avatar className="w-24 h-24 mx-auto mb-4 border-2 border-innovate-100 bg-gradient-to-br from-innovate-500 to-blue-600">
+                  {/* 3D Avatar Placeholder */}
+                  <AvatarFallback className="bg-gradient-to-br from-innovate-500 to-blue-600 text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                  </AvatarFallback>
                 </Avatar>
                 <CardTitle className="text-xl font-semibold">{member.name}</CardTitle>
                 <CardDescription className="text-innovate-600 font-medium">

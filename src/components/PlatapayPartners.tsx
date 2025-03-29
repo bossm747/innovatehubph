@@ -11,7 +11,6 @@ import {
 interface Partner {
   id: number;
   name: string;
-  logo: string;
   category: "payment" | "telco" | "banking" | "technology";
 }
 
@@ -19,85 +18,71 @@ const PARTNERS: Partner[] = [
   {
     id: 1,
     name: "CTI CommuniGate Technologies Inc.",
-    logo: "/lovable-uploads/94f1fe68-294e-4ec1-97a5-c46e890ea250.png",
     category: "technology"
   },
   {
     id: 2,
     name: "eCPAY",
-    logo: "/lovable-uploads/11f56e14-e9a9-430c-b0e1-464fdb0fddc4.png",
     category: "payment"
   },
   {
     id: 3,
     name: "QR Ph",
-    logo: "/lovable-uploads/68eff130-096d-4fd2-80a8-66b17487294d.png",
     category: "payment"
   },
   {
     id: 4,
     name: "GCash",
-    logo: "/lovable-uploads/4f756ea6-6648-419a-89f0-06dee6ad1ed6.png",
     category: "payment"
   },
   {
     id: 5,
     name: "Globe",
-    logo: "/lovable-uploads/bc0779f5-10a8-4d36-b470-9478ddb3ea3f.png",
     category: "telco"
   },
   {
     id: 6,
     name: "Smart",
-    logo: "/lovable-uploads/ee574fbf-d6c3-4db3-94b5-ceb02ee20f32.png",
     category: "telco"
   },
   {
     id: 7,
     name: "Maya",
-    logo: "/lovable-uploads/168a523b-1812-45fb-8088-ba72e0c90411.png",
     category: "payment"
   },
   {
     id: 8,
     name: "VISA",
-    logo: "/lovable-uploads/2b076737-e1c1-4f95-90c1-ed7befc22280.png",
     category: "payment"
   },
   {
     id: 9,
     name: "Mastercard",
-    logo: "/lovable-uploads/0831c807-9c51-4945-b543-6aa09dd81d02.png", 
     category: "payment"
   },
   {
     id: 10,
     name: "Philippine Banks",
-    logo: "/lovable-uploads/9e2b9a18-40d9-4840-9b3a-d9830bc373cc.png",
     category: "banking"
   },
   {
     id: 11,
     name: "Top Banks in the Philippines",
-    logo: "/lovable-uploads/17557afe-d610-49a7-b3d0-d8eb939fcfa0.png",
     category: "banking"
   },
   {
     id: 12,
     name: "Digital E-Wallets",
-    logo: "/lovable-uploads/86be738a-2bfc-4d3d-b8e8-e9ae97d74072.png",
     category: "payment"
   },
   {
     id: 13,
     name: "Philippine Service Providers",
-    logo: "/lovable-uploads/e5cded83-8d62-4437-ad5d-69b26fd5828e.png",
     category: "technology"
   },
   {
     id: 14,
     name: "Philippine Service Providers 2",
-    logo: "/lovable-uploads/c2b9e5a5-ae89-4e3d-880a-ac0770e8e3c6.png",
     category: "technology"
   }
 ];
@@ -130,12 +115,14 @@ const PlatapayPartners = () => {
                 <CarouselItem key={partner.id} className="pl-2 md:pl-4 md:basis-1/3 lg:basis-1/5">
                   <div className="p-1">
                     <div className="flex flex-col items-center">
-                      <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 bg-white rounded-xl shadow-sm overflow-hidden flex items-center justify-center p-3 border border-gray-100">
-                        <img 
-                          src={partner.logo} 
-                          alt={partner.name}
-                          className="max-w-full max-h-full object-contain"
-                        />
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 bg-white rounded-xl shadow-sm overflow-hidden flex items-center justify-center p-3 border border-gray-100 relative">
+                        {/* 3D Avatar Placeholder */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-200 to-indigo-200"></div>
+                        <div className={`w-full h-full flex items-center justify-center relative ${getCategoryColor(partner.category)}`}>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12">
+                            {getCategoryIcon(partner.category)}
+                          </svg>
+                        </div>
                       </div>
                       <p className="mt-2 text-xs text-center text-gray-500 font-medium truncate max-w-full">
                         {partner.name}
@@ -154,6 +141,71 @@ const PlatapayPartners = () => {
       </div>
     </section>
   );
+};
+
+// Helper functions for category styling
+const getCategoryColor = (category: Partner['category']): string => {
+  switch (category) {
+    case 'payment':
+      return 'text-blue-600';
+    case 'telco':
+      return 'text-indigo-600';
+    case 'banking':
+      return 'text-green-600';
+    case 'technology':
+      return 'text-purple-600';
+    default:
+      return 'text-gray-600';
+  }
+};
+
+const getCategoryIcon = (category: Partner['category']) => {
+  switch (category) {
+    case 'payment':
+      return (
+        <>
+          <rect x="2" y="5" width="20" height="14" rx="2" />
+          <line x1="2" y1="10" x2="22" y2="10" />
+        </>
+      );
+    case 'telco':
+      return (
+        <>
+          <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
+          <path d="M15 7a2 2 0 0 1 2 2" />
+          <path d="M15 3a6 6 0 0 1 6 6" />
+        </>
+      );
+    case 'banking':
+      return (
+        <>
+          <path d="M3 21l18 0" />
+          <path d="M3 10l18 0" />
+          <path d="M5 6l7 -3l7 3" />
+          <path d="M4 10l0 11" />
+          <path d="M20 10l0 11" />
+          <path d="M8 14l0 3" />
+          <path d="M12 14l0 3" />
+          <path d="M16 14l0 3" />
+        </>
+      );
+    case 'technology':
+      return (
+        <>
+          <rect x="3" y="4" width="18" height="12" rx="1" />
+          <line x1="7" y1="20" x2="17" y2="20" />
+          <line x1="12" y1="16" x2="12" y2="20" />
+        </>
+      );
+    default:
+      return (
+        <>
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </>
+      );
+  }
 };
 
 export default PlatapayPartners;

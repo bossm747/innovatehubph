@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ArrowRight, Shield, CheckCircle, Smartphone } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -28,14 +27,10 @@ const PlataPay = () => {
             </span>
             <div className="flex items-center mb-4">
               <div className="relative mr-4">
-                {/* Dark circular background */}
-                <div className="absolute inset-0 bg-black/80 rounded-full blur-sm transition-all duration-300"></div>
-                {/* Logo with dark background */}
                 <img 
                   src="/lovable-uploads/9b23899d-8537-4e7c-996b-5fdc791cbde2.png" 
                   alt="PlataPay Logo" 
-                  className="h-16 w-16 relative z-10 transition-transform duration-300"
-                  style={{ filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.3))' }}
+                  className="h-16 w-16 relative z-10"
                 />
               </div>
               <h2 className="text-3xl md:text-4xl font-bold hero-text-gradient">
@@ -132,7 +127,6 @@ const PlataPay = () => {
                 className="w-full h-auto rounded-xl"
               />
               
-              {/* Smartphone with animated glow */}
               <div className="absolute -bottom-6 -right-6 p-3 bg-white rounded-lg shadow-lg transform rotate-3 mobile-device">
                 <div className="relative pulse-glow">
                   <Smartphone className="h-16 w-16 text-innovate-600" />

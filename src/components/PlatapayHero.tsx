@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
@@ -15,15 +14,11 @@ const PlatapayHero = () => {
             </span>
             <div className="flex items-center mb-4">
               <div className="relative mr-4">
-                {/* Dark circular background with improved rendering */}
-                <div className="absolute inset-0 bg-black/80 rounded-full blur-sm"></div>
-                {/* Logo with dark background */}
                 <img 
                   src="/lovable-uploads/9b23899d-8537-4e7c-996b-5fdc791cbde2.png" 
                   alt="PlataPay Logo" 
                   className="h-16 w-16 relative z-10"
-                  style={{ filter: 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.3))' }}
-                  loading="eager" // Ensure this loads quickly
+                  loading="eager" 
                 />
               </div>
               <h1 className="text-4xl md:text-5xl font-bold hero-text-gradient">
@@ -98,7 +93,6 @@ const PlatapayHero = () => {
         </div>
       </div>
       
-      {/* Decorative elements - optimized */}
       <div className="absolute top-20 left-10 w-16 h-16 bg-blue-500/10 rounded-full blur-xl"></div>
       <div className="absolute bottom-20 right-10 w-24 h-24 bg-innovate-500/10 rounded-full blur-xl"></div>
     </section>

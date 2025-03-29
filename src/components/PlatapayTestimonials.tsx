@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 
@@ -41,7 +40,6 @@ const PlatapayTestimonials = () => {
     }
   ];
 
-  // Auto-rotate testimonials
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((current) => (current + 1) % testimonials.length);
@@ -59,9 +57,7 @@ const PlatapayTestimonials = () => {
           </span>
           <div className="flex items-center justify-center mb-4">
             <div className="relative mr-3">
-              {/* Logo glow effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-blue-100/40 to-blue-300/20 rounded-full blur-md transition-all duration-300 scale-110"></div>
-              <div className="absolute inset-0 bg-white/30 rounded-full filter blur-sm transition-all duration-300"></div>
               <img 
                 src="/lovable-uploads/a8af37d4-1b48-41f9-bd00-008fbfdb60a8.png" 
                 alt="PlataPay Logo" 
@@ -78,7 +74,6 @@ const PlatapayTestimonials = () => {
         </div>
         
         <div className="relative max-w-4xl mx-auto fade-up">
-          {/* Quote icon */}
           <div className="absolute -top-10 -left-10 text-innovate-200">
             <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M32 16H16V32C16 40.8366 23.1634 48 32 48V40C27.5817 40 24 36.4183 24 32H32V16Z" fill="currentColor"/>
@@ -86,7 +81,6 @@ const PlatapayTestimonials = () => {
             </svg>
           </div>
           
-          {/* Testimonials carousel */}
           <div className="relative overflow-hidden rounded-xl">
             <div 
               className="flex transition-transform duration-500 ease-in-out"
@@ -125,7 +119,6 @@ const PlatapayTestimonials = () => {
             </div>
           </div>
           
-          {/* Carousel controls */}
           <div className="flex justify-center mt-8 space-x-2">
             {testimonials.map((_, index) => (
               <button

@@ -22,23 +22,7 @@ const DesktopNavigation = () => {
               <NavItem to="/">Home</NavItem>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>About</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                  <ListItem href="/about-us" title="About Us">
-                    Our company history, mission, and vision
-                  </ListItem>
-                  <ListItem href="/team" title="Our Team">
-                    Meet the passionate professionals behind InnovateHub
-                  </ListItem>
-                  <ListItem href="/clients" title="Our Clients">
-                    Companies we've helped transform digitally
-                  </ListItem>
-                  <ListItem href="/partners" title="Partners">
-                    Our strategic partners and collaborators
-                  </ListItem>
-                </ul>
-              </NavigationMenuContent>
+              <NavItem to="/about">About</NavItem>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuTrigger>Services</NavigationMenuTrigger>
@@ -46,9 +30,6 @@ const DesktopNavigation = () => {
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                   <ListItem href="/services" title="All Services">
                     Overview of our complete service offerings
-                  </ListItem>
-                  <ListItem href="/platapay" title="PlataPay">
-                    Our flagship digital wallet and financial solution
                   </ListItem>
                   <ListItem href="/fintech-solutions" title="Fintech Solutions">
                     Digital wallet and financial solutions
@@ -75,8 +56,14 @@ const DesktopNavigation = () => {
               <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                  <ListItem href="/team" title="Our Team">
+                    Meet the dedicated professionals behind InnovateHub
+                  </ListItem>
                   <ListItem href="/blog" title="Blog">
                     News and articles from our team
+                  </ListItem>
+                  <ListItem href="/clients" title="Clients">
+                    Our valued clients and partnerships
                   </ListItem>
                   <ListItem href="/ai-tools" title="AI Tools">
                     Productivity tools powered by AI
@@ -91,7 +78,7 @@ const DesktopNavigation = () => {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavItem to="/contact-us">Contact</NavItem>
+              <NavItem to="/contact">Contact</NavItem>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>

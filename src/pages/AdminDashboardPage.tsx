@@ -12,7 +12,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { toast, Toaster } from 'sonner';
 import { DashboardStats } from '@/components/admin/DashboardStats';
-import { RefreshCw } from 'lucide-react';
+import CampaignManager from '@/components/admin/marketing/CampaignManager';
+import { RefreshCw, Mail, BarChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const AdminDashboardPage = () => {
@@ -125,10 +126,14 @@ const AdminDashboardPage = () => {
           </div>
           
           <Tabs defaultValue="overview" className="space-y-4">
-            <TabsList>
+            <TabsList className="flex flex-wrap">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="users">Users</TabsTrigger>
               <TabsTrigger value="database">Database</TabsTrigger>
+              <TabsTrigger value="email-marketing">
+                <Mail className="h-4 w-4 mr-2" />
+                Email Marketing
+              </TabsTrigger>
             </TabsList>
             
             <TabsContent value="overview">
@@ -141,6 +146,10 @@ const AdminDashboardPage = () => {
             
             <TabsContent value="database">
               <DatabaseManagement />
+            </TabsContent>
+            
+            <TabsContent value="email-marketing">
+              <CampaignManager />
             </TabsContent>
           </Tabs>
         </div>

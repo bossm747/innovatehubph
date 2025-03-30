@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
@@ -109,7 +108,7 @@ const FintechSolutions = () => {
                 <img 
                   src="/lovable-uploads/e01c80cc-5e3d-48bf-b1f9-6bd6a5868087.png" 
                   alt="Fintech Digital Payment Solution"
-                  className="w-full h-auto rounded-xl"
+                  className="w-full h-auto max-w-[320px] sm:max-w-[400px] md:max-w-[450px] rounded-xl mx-auto"
                   loading="eager"
                   style={{ 
                     filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.2))',

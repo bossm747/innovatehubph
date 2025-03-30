@@ -6,6 +6,8 @@ import Footer from '@/components/Footer';
 import ServicesHero from '@/components/ServicesHero';
 import DigitalCustomizationsForm from '@/components/forms/DigitalCustomizationsForm';
 import { useNavigate } from 'react-router-dom';
+import DigitalCustomizationsHeroImage from '@/components/digital/DigitalCustomizationsHeroImage';
+import DigitalCustomizationsHeroBackground from '@/components/digital/DigitalCustomizationsHeroBackground';
 
 const DigitalCustomizationsPage = () => {
   const navigate = useNavigate();
@@ -23,7 +25,8 @@ const DigitalCustomizationsPage = () => {
         <ServicesHero 
           title="Digital Customizations" 
           subtitle="Crafting bespoke digital solutions for unique business needs"
-          imagePath="/lovable-uploads/5ed80487-00a8-45bc-900e-9dc36009fc5e.png"
+          imageComponent={<DigitalCustomizationsHeroImage />}
+          backgroundComponent={<DigitalCustomizationsHeroBackground />}
         />
         
         <div className="container mx-auto px-4 py-16">

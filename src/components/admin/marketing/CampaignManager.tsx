@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -35,7 +36,7 @@ const CampaignManager = () => {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from('email_campaigns')
+        .from('marketing_campaigns')
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -56,7 +57,7 @@ const CampaignManager = () => {
   const createCampaign = async () => {
     try {
       const { data, error } = await supabase
-        .from('email_campaigns')
+        .from('marketing_campaigns')
         .insert({
           name: campaignName,
           subject: campaignSubject,
@@ -67,7 +68,7 @@ const CampaignManager = () => {
         .single();
 
       if (error) throw error;
-      setCampaigns(prev => [data, ...prev]);
+      setCampaigns(prev => [data as EmailCampaign, ...prev]);
       setOpenCreateDialog(false);
       setCampaignName('');
       setCampaignSubject('');
@@ -92,7 +93,7 @@ const CampaignManager = () => {
 
     try {
       const { data, error } = await supabase
-        .from('email_campaigns')
+        .from('marketing_campaigns')
         .update({
           name: campaignName,
           subject: campaignSubject,
@@ -105,7 +106,7 @@ const CampaignManager = () => {
 
       if (error) throw error;
       setCampaigns(prev =>
-        prev.map(campaign => (campaign.id === selectedCampaign.id ? data : campaign))
+        prev.map(campaign => (campaign.id === selectedCampaign.id ? data as EmailCampaign : campaign))
       );
       setOpenEditDialog(false);
       setSelectedCampaign(null);
@@ -130,7 +131,7 @@ const CampaignManager = () => {
   const deleteCampaign = async (campaignId: string) => {
     try {
       const { error } = await supabase
-        .from('email_campaigns')
+        .from('marketing_campaigns')
         .delete()
         .eq('id', campaignId);
 

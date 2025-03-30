@@ -53,3 +53,43 @@ export interface EmailCampaign {
   created_at: string;
   updated_at?: string;
 }
+
+// Let's add more types for our marketing system
+
+export interface MarketingRecipient {
+  id: string;
+  name: string;
+  email: string;
+  company?: string;
+  tags?: string[];
+  subscribed: boolean;
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface MarketingSegment {
+  id: string;
+  name: string;
+  description?: string;
+  criteria: {
+    tags?: string[];
+    activity?: 'active' | 'inactive' | 'all';
+    dateJoined?: 'last7days' | 'last30days' | 'last90days' | 'allTime';
+    custom?: Record<string, any>;
+  };
+  recipientCount?: number;
+}
+
+export interface PromoCode {
+  id: string;
+  code: string;
+  discount: number;
+  discountType: 'percentage' | 'fixed';
+  validFrom: string;
+  validTo: string;
+  maxUses?: number;
+  timesUsed: number;
+  active: boolean;
+  description?: string;
+  applicableTo?: string[];
+}

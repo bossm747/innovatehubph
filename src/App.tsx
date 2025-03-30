@@ -45,11 +45,11 @@ function App() {
             <Route path="/clients" element={<ClientsPage />} />
             <Route path="/platapay" element={<PlatapayPage />} />
             
-            {/* Services Routes */}
-            <Route path="/services/digital-customizations" element={<DigitalCustomizationsPage />} />
-            <Route path="/services/ecommerce" element={<EcommercePage />} />
-            <Route path="/services/ai-solutions" element={<AiSolutionsPage />} />
-            <Route path="/services/global-expansion" element={<GlobalExpansionPage />} />
+            {/* Services Routes - Updated to match footer links */}
+            <Route path="/digital-customizations" element={<DigitalCustomizationsPage />} />
+            <Route path="/ecommerce" element={<EcommercePage />} />
+            <Route path="/ai-solutions" element={<AiSolutionsPage />} />
+            <Route path="/global-expansion" element={<GlobalExpansionPage />} />
 
             {/* AI Tools Routes */}
             <Route path="/ai-tools" element={<AIToolsPage />} />

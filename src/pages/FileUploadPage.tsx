@@ -9,7 +9,6 @@ import Footer from '@/components/Footer';
 import CircuitBackground from '@/components/CircuitBackground';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Toaster } from 'sonner';
 import { Upload, FileType, CheckCircle, AlertCircle, Trash2, FileIcon } from 'lucide-react';
 import FileUploader from '@/components/fileupload/FileUploader';
@@ -18,27 +17,13 @@ import FileList from '@/components/fileupload/FileList';
 const FileUploadPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState<any[]>([]);
-  const [session, setSession] = useState<any>(null);
+  
+  // Development mode notice
+  const isDevelopment = true;
 
   useEffect(() => {
-    // Check authentication status
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      if (session) {
-        fetchFiles();
-      }
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setSession(session);
-      if (session) {
-        fetchFiles();
-      } else {
-        setFiles([]);
-      }
-    });
-
-    return () => subscription.unsubscribe();
+    // Fetch files on component mount
+    fetchFiles();
   }, []);
 
   const fetchFiles = async () => {
@@ -88,43 +73,30 @@ const FileUploadPage = () => {
             </p>
           </div>
 
-          {!session ? (
-            <Card className="p-8 mb-8 text-center">
-              <div className="mb-6">
-                <AlertCircle className="h-16 w-16 text-amber-500 mx-auto mb-4" />
-                <h2 className="text-xl font-semibold mb-2">Authentication Required</h2>
-                <p className="text-gray-600">
-                  Please sign in to upload and manage files.
+          {isDevelopment && (
+            <Card className="p-4 mb-8 bg-amber-50 border-amber-200">
+              <div className="flex items-start space-x-3">
+                <AlertCircle className="h-5 w-5 text-amber-500 mt-0.5 flex-shrink-0" />
+                <p className="text-amber-700 text-sm">
+                  <span className="font-medium">Development Mode:</span> Authentication is currently bypassed for development purposes. In production, this page would require authentication.
                 </p>
               </div>
-              <Button 
-                variant="primary" 
-                onClick={() => {
-                  // Redirect to login page or open auth dialog
-                  toast.info("Please implement authentication to use this feature");
-                }}
-                className="mx-auto"
-              >
-                Sign In
-              </Button>
             </Card>
-          ) : (
-            <>
-              <Card className="p-8 mb-8 shadow-md">
-                <h2 className="text-xl font-semibold mb-6">Upload Files</h2>
-                <FileUploader onUploadComplete={fetchFiles} />
-              </Card>
-
-              <Card className="p-8 shadow-md">
-                <h2 className="text-xl font-semibold mb-6">Your Files</h2>
-                <FileList 
-                  files={files} 
-                  isLoading={isLoading} 
-                  onFileDeleted={fetchFiles} 
-                />
-              </Card>
-            </>
           )}
+
+          <Card className="p-8 mb-8 shadow-md">
+            <h2 className="text-xl font-semibold mb-6">Upload Files</h2>
+            <FileUploader onUploadComplete={fetchFiles} />
+          </Card>
+
+          <Card className="p-8 shadow-md">
+            <h2 className="text-xl font-semibold mb-6">Your Files</h2>
+            <FileList 
+              files={files} 
+              isLoading={isLoading} 
+              onFileDeleted={fetchFiles} 
+            />
+          </Card>
         </div>
       </main>
       <Footer />

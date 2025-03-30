@@ -26,8 +26,8 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
       
       const file = event.target.files[0];
       const fileExt = file.name.split('.').pop();
-      const filePath = `${Math.random()}.${fileExt}`;
-
+      const fileName = `${Math.random().toString(36).substring(2, 15)}_${new Date().getTime()}.${fileExt}`;
+      
       // Simulate upload progress (Supabase doesn't provide progress events)
       const progressInterval = setInterval(() => {
         setUploadProgress(prev => {
@@ -41,7 +41,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
 
       const { error } = await supabase.storage
         .from('project_files')
-        .upload(filePath, file);
+        .upload(fileName, file);
 
       clearInterval(progressInterval);
       
@@ -105,7 +105,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
           <ul className="list-disc list-inside mt-1 space-y-1">
             <li>Maximum file size: 50MB</li>
             <li>Supported file types: images, documents, videos, and more</li>
-            <li>Files are securely stored and accessible only to you</li>
+            <li>Files are securely stored in Supabase storage</li>
           </ul>
         </div>
       </div>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import FooterNavLinks from '@/components/footer/FooterNavLinks';
@@ -20,7 +19,7 @@ const Footer = ({ className = "" }: FooterProps) => {
           <div className="col-span-1 md:col-span-1 lg:col-span-1">
             <div className="flex flex-col md:flex-row items-center md:items-start mb-6">
               <img 
-                src="/lovable-uploads/e057441a1-afb4-4ef6-9528-d2b5677d9842.png" 
+                src="/logo.svg" 
                 alt="InnovateHub Logo"
                 className="h-16 md:h-20 w-auto mb-4 md:mb-0 md:mr-3"
               />

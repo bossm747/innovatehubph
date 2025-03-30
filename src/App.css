@@ -190,6 +190,8 @@ section {
   animation: typing-cursor 1s step-end infinite;
   padding-right: 2px;
   white-space: nowrap;
+  display: inline-block;
+  box-sizing: border-box;
 }
 
 .mobile-device {

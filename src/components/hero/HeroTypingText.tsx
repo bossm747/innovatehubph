@@ -15,6 +15,9 @@ const HeroTypingText = ({ texts, className = "" }: HeroTypingTextProps) => {
     let isDeleting = false;
     let typingSpeed = 100;
 
+    // Find the longest text to determine container width
+    const maxLength = Math.max(...texts.map(text => text.length));
+    
     const type = () => {
       const fullText = texts[currentIndex];
       
@@ -49,7 +52,11 @@ const HeroTypingText = ({ texts, className = "" }: HeroTypingTextProps) => {
     };
   }, [texts]);
 
-  return <span ref={textRef} className={`typing-text ${className}`}>{texts[0]}</span>;
+  return (
+    <span className={`inline-block typing-text ${className}`} style={{ minWidth: "170px" }} ref={textRef}>
+      {texts[0]}
+    </span>
+  );
 };
 
 export default HeroTypingText;

@@ -17,7 +17,7 @@ export const subscribeToNewsletter = async (subscription: NewsletterSubscription
   try {
     // Check if email already exists
     const { data: existingSubscriptions } = await supabase
-      .from('newsletter_subscriptions')
+      .from('subscribers')
       .select('email')
       .eq('email', subscription.email)
       .single();
@@ -29,10 +29,11 @@ export const subscribeToNewsletter = async (subscription: NewsletterSubscription
     
     // Add new subscription with current timestamp
     const { error } = await supabase
-      .from('newsletter_subscriptions')
+      .from('subscribers')
       .insert([{
         ...subscription,
         subscribed_at: new Date().toISOString(),
+        status: 'active'
       }]);
     
     if (error) {
@@ -56,7 +57,7 @@ export const subscribeToNewsletter = async (subscription: NewsletterSubscription
 export const unsubscribeFromNewsletter = async (email: string): Promise<boolean> => {
   try {
     const { error } = await supabase
-      .from('newsletter_subscriptions')
+      .from('subscribers')
       .delete()
       .eq('email', email);
     

@@ -18,11 +18,14 @@ export interface ContactSubmission {
  */
 export const submitContactForm = async (submission: ContactSubmission): Promise<boolean> => {
   try {
+    // Use the inquiries table which exists in the Supabase schema instead of contact_submissions
     const { error } = await supabase
-      .from('contact_submissions')
+      .from('inquiries')
       .insert([{
         ...submission,
+        type: 'contact',
         created_at: new Date().toISOString(),
+        status: 'new'
       }]);
     
     if (error) {
@@ -30,9 +33,6 @@ export const submitContactForm = async (submission: ContactSubmission): Promise<
       toast.error('Failed to submit your message. Please try again later.');
       return false;
     }
-    
-    // Send email notification (this would typically be handled by a backend function)
-    // For now, we'll just simulate a successful submission
     
     toast.success('Thank you for your message! We will get back to you soon.');
     return true;
@@ -49,8 +49,9 @@ export const submitContactForm = async (submission: ContactSubmission): Promise<
 export const getContactSubmissions = async (): Promise<ContactSubmission[]> => {
   try {
     const { data, error } = await supabase
-      .from('contact_submissions')
+      .from('inquiries')
       .select('*')
+      .eq('type', 'contact')
       .order('created_at', { ascending: false });
     
     if (error) {
@@ -58,7 +59,7 @@ export const getContactSubmissions = async (): Promise<ContactSubmission[]> => {
       return [];
     }
     
-    return data || [];
+    return data as ContactSubmission[] || [];
   } catch (error) {
     console.error('Contact service error:', error);
     return [];

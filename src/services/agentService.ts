@@ -25,10 +25,11 @@ export interface AgentRegistration {
  */
 export const registerAgent = async (registration: AgentRegistration): Promise<boolean> => {
   try {
-    // Check if email or phone already exists
+    // Check if email or phone already exists - using inquiries table with type=agent
     const { data: existingAgent } = await supabase
-      .from('agent_registrations')
+      .from('inquiries')
       .select('email, phone')
+      .eq('type', 'agent')
       .or(`email.eq.${registration.email},phone.eq.${registration.phone}`)
       .single();
     
@@ -42,11 +43,27 @@ export const registerAgent = async (registration: AgentRegistration): Promise<bo
     }
     
     const { error } = await supabase
-      .from('agent_registrations')
+      .from('inquiries')
       .insert([{
         ...registration,
+        type: 'agent',
         created_at: new Date().toISOString(),
         status: 'pending',
+        message: JSON.stringify({
+          business_info: {
+            business_name: registration.business_name,
+            business_type: registration.business_type,
+            has_existing_business: registration.has_existing_business
+          },
+          location: {
+            address: registration.address,
+            city: registration.city,
+            province: registration.province,
+            postal_code: registration.postal_code
+          },
+          referral: registration.referral_code,
+          id_type: registration.id_type
+        })
       }]);
     
     if (error) {
@@ -70,8 +87,9 @@ export const registerAgent = async (registration: AgentRegistration): Promise<bo
 export const getAgentRegistrations = async (): Promise<AgentRegistration[]> => {
   try {
     const { data, error } = await supabase
-      .from('agent_registrations')
+      .from('inquiries')
       .select('*')
+      .eq('type', 'agent')
       .order('created_at', { ascending: false });
     
     if (error) {
@@ -79,7 +97,27 @@ export const getAgentRegistrations = async (): Promise<AgentRegistration[]> => {
       return [];
     }
     
-    return data || [];
+    // Parse the message field to extract business info
+    return (data || []).map(item => {
+      const messageObj = item.message ? JSON.parse(item.message) : {};
+      return {
+        first_name: item.first_name || '',
+        last_name: item.last_name || '',
+        email: item.email || '',
+        phone: item.phone || '',
+        address: messageObj.location?.address || '',
+        city: messageObj.location?.city || '',
+        province: messageObj.location?.province || '',
+        postal_code: messageObj.location?.postal_code || '',
+        business_name: messageObj.business_info?.business_name || '',
+        business_type: messageObj.business_info?.business_type || '',
+        id_type: messageObj.id_type || '',
+        referral_code: messageObj.referral || '',
+        has_existing_business: messageObj.business_info?.has_existing_business || false,
+        created_at: item.created_at,
+        status: item.status
+      } as AgentRegistration;
+    });
   } catch (error) {
     console.error('Agent service error:', error);
     return [];
@@ -95,9 +133,10 @@ export const updateAgentStatus = async (
 ): Promise<boolean> => {
   try {
     const { error } = await supabase
-      .from('agent_registrations')
+      .from('inquiries')
       .update({ status })
-      .eq('id', id);
+      .eq('id', id)
+      .eq('type', 'agent');
     
     if (error) {
       console.error('Error updating agent status:', error);

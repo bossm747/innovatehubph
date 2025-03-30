@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Upload, FileUp, AlertCircle } from 'lucide-react';
+import { Upload, FileUp, AlertCircle, FileAudio, FileVideo } from 'lucide-react';
 
 interface FileUploaderProps {
   onUploadComplete: () => void;
@@ -85,7 +85,17 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
       }
 
       setUploadProgress(100);
-      toast.success('File uploaded successfully!');
+      
+      // Show a specific message for audio/video files
+      const fileType = getFileType(fileName);
+      if (fileType === 'audio') {
+        toast.success('Audio file uploaded successfully! You can now play it from the file list.');
+      } else if (fileType === 'video') {
+        toast.success('Video file uploaded successfully! You can now play it from the file list.');
+      } else {
+        toast.success('File uploaded successfully!');
+      }
+      
       onUploadComplete();
       
       // Reset the file input
@@ -113,12 +123,29 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
     }
   };
 
+  // Detect file type based on extension
+  const getFileType = (fileName: string): string => {
+    const extension = fileName.split('.').pop()?.toLowerCase();
+    
+    if (['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'].includes(extension || '')) {
+      return 'image';
+    } else if (['mp4', 'webm', 'mov', 'avi', 'mkv'].includes(extension || '')) {
+      return 'video';
+    } else if (['mp3', 'wav', 'ogg', 'flac', 'm4a'].includes(extension || '')) {
+      return 'audio';
+    } else if (extension === 'pdf') {
+      return 'pdf';
+    } else {
+      return 'other';
+    }
+  };
+
   return (
     <div className="w-full">
       <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 transition cursor-pointer" onClick={() => fileInputRef.current?.click()}>
         <FileUp className="h-12 w-12 text-innovate-500 mb-4" />
         <p className="text-lg font-medium mb-1">Drag and drop or click to upload</p>
-        <p className="text-gray-500 text-sm mb-4">Support for images, documents, videos, and other file types</p>
+        <p className="text-gray-500 text-sm mb-4">Support for images, documents, videos, and audio files</p>
         <Button variant="primary" onClick={(e) => {
           e.stopPropagation();
           fileInputRef.current?.click();
@@ -150,8 +177,18 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
           <p className="font-medium">File upload information:</p>
           <ul className="list-disc list-inside mt-1 space-y-1">
             <li>Maximum file size: {MAX_FILE_SIZE_DISPLAY}</li>
-            <li>Supported file types: images, documents, videos, and more</li>
-            <li>Files are securely stored in Supabase storage</li>
+            <li>
+              Supported media files: 
+              <div className="flex flex-wrap gap-2 mt-1 ml-3">
+                <span className="flex items-center text-xs py-1 px-2 bg-blue-100 rounded">
+                  <FileAudio className="h-3 w-3 mr-1" /> MP3, WAV, OGG, FLAC
+                </span>
+                <span className="flex items-center text-xs py-1 px-2 bg-purple-100 rounded">
+                  <FileVideo className="h-3 w-3 mr-1" /> MP4, WEBM, MOV, AVI
+                </span>
+              </div>
+            </li>
+            <li>Images, documents, and other file types are also supported</li>
           </ul>
         </div>
       </div>

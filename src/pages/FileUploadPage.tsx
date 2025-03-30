@@ -10,7 +10,7 @@ import CircuitBackground from '@/components/CircuitBackground';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Toaster } from 'sonner';
-import { Upload, FileType, CheckCircle, AlertCircle, Trash2, FileIcon } from 'lucide-react';
+import { Upload, FileType, CheckCircle, AlertCircle, Trash2, FileIcon, FileAudio, FileVideo, Music } from 'lucide-react';
 import FileUploader from '@/components/fileupload/FileUploader';
 import FileList from '@/components/fileupload/FileList';
 
@@ -101,8 +101,8 @@ const FileUploadPage = () => {
   return (
     <div className="min-h-screen w-full overflow-x-hidden relative bg-gradient-to-b from-gray-50 to-white">
       <Helmet>
-        <title>File Upload | InnovateHub Inc.</title>
-        <meta name="description" content="Upload and manage your project files." />
+        <title>Media & File Upload | InnovateHub Inc.</title>
+        <meta name="description" content="Upload, manage, and play your media and project files." />
       </Helmet>
       
       <Toaster position="top-right" />
@@ -117,9 +117,9 @@ const FileUploadPage = () => {
       <main className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           <div className="mb-10 text-center">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">Project File Management</h1>
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">Media & File Management</h1>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Upload and manage files for your projects. We support various file types including images, documents, and videos.
+              Upload, manage, and play your media files and documents. We support audio, video, images and various document formats.
             </p>
           </div>
 
@@ -140,7 +140,17 @@ const FileUploadPage = () => {
           </Card>
 
           <Card className="p-8 shadow-md">
-            <h2 className="text-xl font-semibold mb-6">Your Files</h2>
+            <div className="flex items-center gap-3 mb-6">
+              <h2 className="text-xl font-semibold">Your Media & Files</h2>
+              <div className="flex space-x-2">
+                <span className="flex items-center text-xs py-1 px-2 bg-blue-100 rounded">
+                  <FileAudio className="h-3 w-3 mr-1" /> Audio
+                </span>
+                <span className="flex items-center text-xs py-1 px-2 bg-purple-100 rounded">
+                  <FileVideo className="h-3 w-3 mr-1" /> Video
+                </span>
+              </div>
+            </div>
             <FileList 
               files={files} 
               isLoading={isLoading} 

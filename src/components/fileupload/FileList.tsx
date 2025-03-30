@@ -12,7 +12,20 @@ import {
   TableRow 
 } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { FileIcon, File as FileGeneral, FileText, FileImage, FileVideo, FileArchive, File, Trash2, Download, Eye } from 'lucide-react';
+import { 
+  FileIcon, 
+  FileText, 
+  FileImage, 
+  FileVideo, 
+  FileArchive, 
+  File, 
+  Trash2, 
+  Download, 
+  Eye, 
+  FileAudio, 
+  Play, 
+  Music 
+} from 'lucide-react';
 import { formatDistance } from 'date-fns';
 
 interface FileListProps {
@@ -26,6 +39,8 @@ const FileList: React.FC<FileListProps> = ({ files, isLoading, onFileDeleted }) 
   const [fileToDelete, setFileToDelete] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
+  const [previewType, setPreviewType] = useState<'image' | 'video' | 'audio' | 'pdf' | 'other'>('other');
+  const [previewTitle, setPreviewTitle] = useState('');
 
   const confirmDelete = (fileName: string) => {
     setFileToDelete(fileName);
@@ -87,6 +102,9 @@ const FileList: React.FC<FileListProps> = ({ files, isLoading, onFileDeleted }) 
         .from('project_files')
         .getPublicUrl(fileName);
 
+      const fileType = getFileType(fileName);
+      setPreviewType(fileType);
+      setPreviewTitle(fileName);
       setPreviewUrl(data.publicUrl);
       setPreviewDialogOpen(true);
     } catch (error: any) {
@@ -94,41 +112,49 @@ const FileList: React.FC<FileListProps> = ({ files, isLoading, onFileDeleted }) 
     }
   };
 
-  const getFileIcon = (fileName: string) => {
+  const getFileType = (fileName: string): 'image' | 'video' | 'audio' | 'pdf' | 'other' => {
     const extension = fileName.split('.').pop()?.toLowerCase();
     
-    switch (extension) {
-      case 'pdf':
-        return <FileText className="h-5 w-5 text-red-500" />;
-      case 'doc':
-      case 'docx':
-      case 'txt':
-        return <FileText className="h-5 w-5 text-blue-500" />;
-      case 'jpg':
-      case 'jpeg':
-      case 'png':
-      case 'gif':
-      case 'svg':
-        return <FileImage className="h-5 w-5 text-green-500" />;
-      case 'mp4':
-      case 'mov':
-      case 'avi':
-      case 'mkv':
-      case 'webm':
-        return <FileVideo className="h-5 w-5 text-purple-500" />;
-      case 'zip':
-      case 'rar':
-      case '7z':
-        return <FileArchive className="h-5 w-5 text-amber-500" />;
-      default:
-        return <FileIcon className="h-5 w-5 text-gray-500" />;
+    if (['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'].includes(extension || '')) {
+      return 'image';
+    } else if (['mp4', 'webm', 'mov', 'avi', 'mkv'].includes(extension || '')) {
+      return 'video';
+    } else if (['mp3', 'wav', 'ogg', 'flac', 'm4a'].includes(extension || '')) {
+      return 'audio';
+    } else if (extension === 'pdf') {
+      return 'pdf';
+    } else {
+      return 'other';
     }
   };
 
-  const canPreview = (fileName: string) => {
-    const extension = fileName.split('.').pop()?.toLowerCase();
-    const previewableExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'mp4', 'webm', 'pdf'];
-    return previewableExtensions.includes(extension || '');
+  const getFileIcon = (fileName: string) => {
+    const fileType = getFileType(fileName);
+    
+    switch (fileType) {
+      case 'pdf':
+        return <FileText className="h-5 w-5 text-red-500" />;
+      case 'image':
+        return <FileImage className="h-5 w-5 text-green-500" />;
+      case 'video':
+        return <FileVideo className="h-5 w-5 text-purple-500" />;
+      case 'audio':
+        return <FileAudio className="h-5 w-5 text-blue-500" />;
+      default:
+        const extension = fileName.split('.').pop()?.toLowerCase();
+        if (['doc', 'docx', 'txt'].includes(extension || '')) {
+          return <FileText className="h-5 w-5 text-blue-500" />;
+        } else if (['zip', 'rar', '7z'].includes(extension || '')) {
+          return <FileArchive className="h-5 w-5 text-amber-500" />;
+        } else {
+          return <FileIcon className="h-5 w-5 text-gray-500" />;
+        }
+    }
+  };
+
+  const canPreview = (fileName: string): boolean => {
+    const fileType = getFileType(fileName);
+    return ['image', 'video', 'audio', 'pdf'].includes(fileType);
   };
 
   return (
@@ -177,7 +203,12 @@ const FileList: React.FC<FileListProps> = ({ files, isLoading, onFileDeleted }) 
                           onClick={() => handlePreview(file.name)}
                           title="Preview"
                         >
-                          <Eye className="h-4 w-4" />
+                          {getFileType(file.name) === 'audio' ? 
+                            <Music className="h-4 w-4" /> : 
+                            getFileType(file.name) === 'video' ? 
+                              <Play className="h-4 w-4" /> : 
+                              <Eye className="h-4 w-4" />
+                          }
                         </Button>
                       )}
                       <Button 
@@ -230,17 +261,28 @@ const FileList: React.FC<FileListProps> = ({ files, isLoading, onFileDeleted }) 
       <Dialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen}>
         <DialogContent className="max-w-4xl">
           <DialogHeader>
-            <DialogTitle>File Preview</DialogTitle>
+            <DialogTitle>File Preview: {previewTitle}</DialogTitle>
           </DialogHeader>
           <div className="mt-4 max-h-[70vh] overflow-auto">
             {previewUrl && (
-              isImageFile(previewUrl) ? (
-                <img src={previewUrl} alt="Preview" className="max-w-full h-auto" />
-              ) : isVideoFile(previewUrl) ? (
-                <video src={previewUrl} controls className="max-w-full h-auto">
-                  Your browser does not support the video tag.
-                </video>
-              ) : isPdfFile(previewUrl) ? (
+              previewType === 'image' ? (
+                <img src={previewUrl} alt="Preview" className="max-w-full h-auto mx-auto" />
+              ) : previewType === 'video' ? (
+                <div className="aspect-video">
+                  <video src={previewUrl} controls className="w-full h-auto rounded-md" controlsList="nodownload">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              ) : previewType === 'audio' ? (
+                <div className="bg-gray-100 p-6 rounded-lg flex flex-col items-center">
+                  <Music className="h-16 w-16 text-innovate-600 mb-4" />
+                  <p className="text-gray-700 mb-4 text-center font-medium">{previewTitle}</p>
+                  <audio controls className="w-full max-w-md" controlsList="nodownload">
+                    <source src={previewUrl} />
+                    Your browser does not support the audio element.
+                  </audio>
+                </div>
+              ) : previewType === 'pdf' ? (
                 <iframe 
                   src={`${previewUrl}#view=FitH`} 
                   className="w-full h-[60vh]" 
@@ -269,18 +311,6 @@ function formatFileSize(bytes: number): string {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-}
-
-function isImageFile(url: string): boolean {
-  return /\.(jpg|jpeg|png|gif|svg)$/i.test(url);
-}
-
-function isVideoFile(url: string): boolean {
-  return /\.(mp4|webm|ogg|mov|avi)$/i.test(url);
-}
-
-function isPdfFile(url: string): boolean {
-  return /\.pdf$/i.test(url);
 }
 
 export default FileList;

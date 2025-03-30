@@ -9,13 +9,15 @@ interface FeaturedVideoProps {
   videoPath?: string;
   fallbackImagePath?: string;
   overlay?: boolean;
+  muted?: boolean;
 }
 
 const FeaturedVideo: React.FC<FeaturedVideoProps> = ({ 
   className = '',
   videoPath = '', 
   fallbackImagePath = '/lovable-uploads/51105682-3d95-4413-be73-38763b9478f8.png',
-  overlay = true 
+  overlay = true,
+  muted = false
 }) => {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -101,6 +103,11 @@ const FeaturedVideo: React.FC<FeaturedVideoProps> = ({
             alt="Video fallback" 
             className={`object-cover w-full h-full ${className}`}
           />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <p className="text-red-500 bg-white bg-opacity-75 p-2 rounded">
+              {error}
+            </p>
+          </div>
         </div>
       )}
       
@@ -111,17 +118,20 @@ const FeaturedVideo: React.FC<FeaturedVideoProps> = ({
             url={videoUrl}
             playing={true}
             loop={true}
-            muted={true}
+            muted={muted}
+            controls={false}
             width="100%"
             height="100%"
             playsinline
+            volume={1}
             config={{
               file: {
                 attributes: {
                   controlsList: 'nodownload',
-                  disablePictureInPicture: true,
-                  preload: 'auto',
-                }
+                  crossOrigin: 'anonymous',
+                  preload: 'auto'
+                },
+                forceVideo: true
               }
             }}
             className={`object-cover ${className}`}

@@ -44,12 +44,17 @@ export const registerAgent = async (registration: AgentRegistration): Promise<bo
     
     const { error } = await supabase
       .from('inquiries')
-      .insert([{
-        ...registration,
+      .insert({
+        name: `${registration.first_name} ${registration.last_name}`,
+        email: registration.email,
+        phone: registration.phone,
+        service: 'platapay-agent',
         type: 'agent',
         created_at: new Date().toISOString(),
         status: 'pending',
         message: JSON.stringify({
+          first_name: registration.first_name,
+          last_name: registration.last_name,
           business_info: {
             business_name: registration.business_name,
             business_type: registration.business_type,
@@ -64,7 +69,7 @@ export const registerAgent = async (registration: AgentRegistration): Promise<bo
           referral: registration.referral_code,
           id_type: registration.id_type
         })
-      }]);
+      });
     
     if (error) {
       console.error('Agent registration error:', error);
@@ -101,8 +106,8 @@ export const getAgentRegistrations = async (): Promise<AgentRegistration[]> => {
     return (data || []).map(item => {
       const messageObj = item.message ? JSON.parse(item.message) : {};
       return {
-        first_name: item.first_name || '',
-        last_name: item.last_name || '',
+        first_name: messageObj.first_name || '',
+        last_name: messageObj.last_name || '',
         email: item.email || '',
         phone: item.phone || '',
         address: messageObj.location?.address || '',

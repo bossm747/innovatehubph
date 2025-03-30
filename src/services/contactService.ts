@@ -21,12 +21,17 @@ export const submitContactForm = async (submission: ContactSubmission): Promise<
     // Use the inquiries table which exists in the Supabase schema instead of contact_submissions
     const { error } = await supabase
       .from('inquiries')
-      .insert([{
-        ...submission,
+      .insert({
+        name: submission.name,
+        email: submission.email,
+        company: submission.company,
+        phone: submission.phone,
+        message: submission.message,
+        service: 'general', // Required field in inquiries table
         type: 'contact',
         created_at: new Date().toISOString(),
         status: 'new'
-      }]);
+      });
     
     if (error) {
       console.error('Contact form submission error:', error);

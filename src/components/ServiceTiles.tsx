@@ -1,10 +1,9 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, ExternalLink } from 'lucide-react';
-import ServiceTileHeader from './services/ServiceTileHeader';
-import ServiceTileCTA from './services/ServiceTileCTA';
 
 interface ServiceTileProps {
   icon: React.ReactNode;
@@ -14,10 +13,11 @@ interface ServiceTileProps {
   isExternal?: boolean;
 }
 
-interface ServiceTileCTAProps {
-  servicePath: string;
-  serviceName: string;
-}
+const ServiceTileHeader = ({ serviceName }: { serviceName: string }) => {
+  return (
+    <div className="mr-2">{serviceName}</div>
+  );
+};
 
 const ServiceTiles = () => {
   const services: ServiceTileProps[] = [

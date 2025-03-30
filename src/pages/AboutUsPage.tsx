@@ -23,11 +23,7 @@ const AboutUsPage = () => {
       <Navbar />
       
       <main>
-        <AboutHero 
-          title="Who We Are" 
-          subtitle="Passionate Innovators in the Philippine Tech Landscape"
-          description="We're more than a tech company - we're enablers of digital transformation, helping businesses adapt to an evolving digital economy."
-        />
+        <AboutHero />
         
         <CompanyOverview />
         

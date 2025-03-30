@@ -4,45 +4,10 @@ import { Helmet } from 'react-helmet';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ContactSection from '@/components/ContactSection';
-import ContactInfo from '@/components/ContactInfo';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const ContactUsPage = () => {
-  const contactInfoItems = [
-    {
-      icon: <MapPin className="h-8 w-8 text-blue-600" />,
-      title: "Our Location",
-      details: [
-        "RMCL Bldg., New Bypass Rd.,",
-        "Bayanan, San Pascual, Batangas"
-      ]
-    },
-    {
-      icon: <Phone className="h-8 w-8 text-blue-600" />,
-      title: "Contact Numbers",
-      details: [
-        "+63 917 685 1216"
-      ]
-    },
-    {
-      icon: <Mail className="h-8 w-8 text-blue-600" />,
-      title: "Email Us",
-      details: [
-        "businessdevelopment@innovatehub.ph",
-        "info@innovatehub.ph"
-      ]
-    },
-    {
-      icon: <Clock className="h-8 w-8 text-blue-600" />,
-      title: "Business Hours",
-      details: [
-        "Monday - Friday: 9:00 AM - 6:00 PM",
-        "Saturday: 9:00 AM - 12:00 PM"
-      ]
-    }
-  ];
-
   return (
     <>
       <Helmet>
@@ -76,14 +41,40 @@ const ContactUsPage = () => {
                   <CardContent className="p-6">
                     <h2 className="text-xl font-semibold mb-6">Contact Information</h2>
                     <div className="space-y-6">
-                      {contactInfoItems.map((item, index) => (
-                        <ContactInfo 
-                          key={index}
-                          icon={item.icon}
-                          title={item.title}
-                          details={item.details}
-                        />
-                      ))}
+                      <div className="flex items-start">
+                        <MapPin className="h-8 w-8 text-blue-600 mr-4 flex-shrink-0" />
+                        <div>
+                          <h3 className="font-medium">Our Location</h3>
+                          <p className="text-gray-600 mt-1">RMCL Bldg., New Bypass Rd.,</p>
+                          <p className="text-gray-600">Bayanan, San Pascual, Batangas</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start">
+                        <Phone className="h-8 w-8 text-blue-600 mr-4 flex-shrink-0" />
+                        <div>
+                          <h3 className="font-medium">Contact Numbers</h3>
+                          <p className="text-gray-600 mt-1">+63 917 685 1216</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start">
+                        <Mail className="h-8 w-8 text-blue-600 mr-4 flex-shrink-0" />
+                        <div>
+                          <h3 className="font-medium">Email Us</h3>
+                          <p className="text-gray-600 mt-1">businessdevelopment@innovatehub.ph</p>
+                          <p className="text-gray-600">info@innovatehub.ph</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start">
+                        <Clock className="h-8 w-8 text-blue-600 mr-4 flex-shrink-0" />
+                        <div>
+                          <h3 className="font-medium">Business Hours</h3>
+                          <p className="text-gray-600 mt-1">Monday - Friday: 9:00 AM - 6:00 PM</p>
+                          <p className="text-gray-600">Saturday: 9:00 AM - 12:00 PM</p>
+                        </div>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>

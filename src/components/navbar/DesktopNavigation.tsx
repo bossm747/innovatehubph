@@ -1,102 +1,76 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  NavigationMenu, 
-  NavigationMenuContent, 
-  NavigationMenuItem, 
-  NavigationMenuList, 
-  NavigationMenuTrigger, 
-  navigationMenuTriggerStyle 
-} from "@/components/ui/navigation-menu";
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
+import { cn } from '@/lib/utils';
 import ListItem from './ListItem';
-import NavItem from './NavItem';
 
 const DesktopNavigation = () => {
   return (
-    <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-      <div className="flex">
-        <NavigationMenu>
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <NavItem to="/">Home</NavItem>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>About</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                  <ListItem href="/about-us" title="About Us">
-                    Our company history, mission, and vision
-                  </ListItem>
-                  <ListItem href="/team" title="Our Team">
-                    Meet the passionate professionals behind InnovateHub
-                  </ListItem>
-                  <ListItem href="/clients" title="Our Clients">
-                    Companies we've helped transform digitally
-                  </ListItem>
-                  <ListItem href="/partners" title="Partners">
-                    Our strategic partners and collaborators
-                  </ListItem>
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Services</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                  <ListItem href="/services" title="All Services">
-                    Overview of our complete service offerings
-                  </ListItem>
-                  <ListItem href="/platapay" title="PlataPay">
-                    Our flagship digital wallet and financial solution
-                  </ListItem>
-                  <ListItem href="/fintech-solutions" title="Fintech Solutions">
-                    Digital wallet and financial solutions
-                  </ListItem>
-                  <ListItem href="/digital-customizations" title="Digital Customizations">
-                    Crafting bespoke digital solutions for unique business needs
-                  </ListItem>
-                  <ListItem href="/ecommerce" title="E-commerce Solutions">
-                    Building and scaling online retail experiences
-                  </ListItem>
-                  <ListItem href="/ai-solutions" title="AI Solutions">
-                    Leveraging artificial intelligence to drive innovation
-                  </ListItem>
-                  <ListItem href="/global-expansion" title="Global Expansion">
-                    Strategies for businesses venturing into new markets
-                  </ListItem>
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavItem to="/partners">Partners</NavItem>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                  <ListItem href="/blog" title="Blog">
-                    News and articles from our team
-                  </ListItem>
-                  <ListItem href="/ai-tools" title="AI Tools">
-                    Productivity tools powered by AI
-                  </ListItem>
-                  <ListItem href="/ai-image-processing" title="AI Image Processing">
-                    Generate & process images with AI
-                  </ListItem>
-                  <ListItem href="/ai-apps-management" title="AI Apps Management">
-                    Manage AI resources and projects
-                  </ListItem>
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavItem to="/contact-us">Contact</NavItem>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
-      </div>
-    </nav>
+    <NavigationMenu className="hidden md:flex">
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <Link to="/" className="px-3 py-2 text-sm font-medium">
+            Home
+          </Link>
+        </NavigationMenuItem>
+        
+        <NavigationMenuItem>
+          <Link to="/about-us" className="px-3 py-2 text-sm font-medium">
+            About Us
+          </Link>
+        </NavigationMenuItem>
+        
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Services</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
+              <ListItem href="/platapay" title="PlataPay">
+                Digital wallet, bills payment, remittance, and e-loading services
+              </ListItem>
+              <ListItem href="/fintech-solutions" title="Fintech Solutions">
+                Financial technology solutions for businesses and individuals
+              </ListItem>
+              <ListItem href="/digital-customizations" title="Digital Customizations">
+                Custom software development and business model digitalization
+              </ListItem>
+              <ListItem href="/ecommerce" title="E-Commerce">
+                Online store development and e-commerce integration
+              </ListItem>
+              <ListItem href="/ai-solutions" title="AI Solutions">
+                Artificial intelligence and machine learning services
+              </ListItem>
+              <ListItem href="/global-expansion" title="Global Expansion">
+                International business expansion consulting services
+              </ListItem>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Partners</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid gap-3 p-4 w-[400px]">
+              <ListItem href="/clients" title="Our Clients">
+                Businesses and organizations we've helped transform
+              </ListItem>
+              <ListItem href="/partners" title="Strategic Partners">
+                Our technology and business partners
+              </ListItem>
+              <ListItem href="/platapay-agent" title="Become a PlataPay Agent">
+                Join our network of digital financial service providers
+              </ListItem>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        
+        <NavigationMenuItem>
+          <Link to="/contact-us" className="px-3 py-2 text-sm font-medium">
+            Contact Us
+          </Link>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
   );
 };
 

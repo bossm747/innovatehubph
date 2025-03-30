@@ -17,11 +17,15 @@ import { RefreshCw, Database, Eye, Trash2, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 
-// Define a more specific type for table records
+// Define a specific type for table records
 type BasicValue = string | number | boolean | null;
 type TableRecord = {
-  [key: string]: BasicValue | BasicValue[] | { [key: string]: BasicValue } | BasicValue[][] | undefined;
+  [key: string]: BasicValue | BasicValue[] | { [key: string]: BasicValue } | unknown;
   id: string;
+};
+
+type PgTable = {
+  tablename: string;
 };
 
 const DatabaseManagement = () => {
@@ -44,15 +48,13 @@ const DatabaseManagement = () => {
 
   const fetchTables = async () => {
     try {
-      const { data, error } = await supabase
-        .from('pg_catalog.pg_tables')
-        .select('tablename')
-        .eq('schemaname', 'public');
+      // We need to use the raw SQL query because Supabase JS client doesn't expose pg_catalog directly
+      const { data, error } = await supabase.rpc('get_all_tables');
 
       if (error) throw error;
 
       // Extract table names and sort alphabetically
-      const tableNames = data.map(table => table.tablename).sort();
+      const tableNames = data.map((table: PgTable) => table.tablename).sort();
       setTables(tableNames);
       
       // Set the first table as default if none is selected
@@ -68,12 +70,8 @@ const DatabaseManagement = () => {
   const fetchRecords = async (tableName: string) => {
     setLoading(true);
     try {
-      // Fetch up to 50 records to avoid overwhelming the UI
-      const { data, error } = await supabase
-        .from(tableName)
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(50);
+      // Use dynamic table name safely with RPC
+      const { data, error } = await supabase.rpc('get_table_records', { table_name: tableName });
 
       if (error) throw error;
 

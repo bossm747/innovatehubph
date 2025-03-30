@@ -9,6 +9,37 @@ interface ProviderConfig {
   model: string;
   capabilities: string[];
   icon: string;
+  defaultPrompt?: string;
+}
+
+export interface EmailCampaign {
+  id: string;
+  name: string;
+  subject: string;
+  content: string;
+  status: string;
+  created_at: string;
+  updated_at?: string;
+  scheduled_at?: string | null;
+  recipient_count?: number;
+}
+
+export interface PromoCode {
+  id: string;
+  code: string;
+  discount: number;
+  discount_type: string;
+  valid_from: string;
+  valid_to: string;
+  active: boolean;
+}
+
+export interface LeadSource {
+  id: string;
+  name: string;
+  source_type: string;
+  description?: string;
+  active: boolean;
 }
 
 export const getProviderConfig = (provider: AIProvider): ProviderConfig => {
@@ -19,7 +50,8 @@ export const getProviderConfig = (provider: AIProvider): ProviderConfig => {
         description: 'Google\'s advanced large language model',
         model: 'gemini-1.5-pro',
         capabilities: ['Text generation', 'Content creation', 'Code writing', 'Image understanding'],
-        icon: '🧠'
+        icon: '🧠',
+        defaultPrompt: 'Generate engaging marketing copy for a tech company specializing in digital solutions'
       };
     case 'openai':
       return {
@@ -27,7 +59,8 @@ export const getProviderConfig = (provider: AIProvider): ProviderConfig => {
         description: 'OpenAI\'s powerful language model',
         model: 'gpt-4o-mini',
         capabilities: ['Text generation', 'Creative writing', 'Summarization', 'Translation'],
-        icon: '🤖'
+        icon: '🤖',
+        defaultPrompt: 'Create persuasive marketing email content for a fintech product launch'
       };
     case 'anthropic':
       return {
@@ -35,7 +68,8 @@ export const getProviderConfig = (provider: AIProvider): ProviderConfig => {
         description: 'Anthropic\'s helpful, harmless AI assistant',
         model: 'claude-3-haiku',
         capabilities: ['Text generation', 'Reasoning', 'Safety-focused responses'],
-        icon: '🌟'
+        icon: '🌟',
+        defaultPrompt: 'Write an email follow-up sequence for new business inquiries'
       };
     case 'mistral':
       return {
@@ -43,7 +77,8 @@ export const getProviderConfig = (provider: AIProvider): ProviderConfig => {
         description: 'Cutting-edge large language model',
         model: 'mistral-large-latest',
         capabilities: ['Text generation', 'Information extraction', 'Text analysis'],
-        icon: '💫'
+        icon: '💫',
+        defaultPrompt: 'Draft a welcome email for new subscribers highlighting our services'
       };
     default:
       return {
@@ -51,7 +86,8 @@ export const getProviderConfig = (provider: AIProvider): ProviderConfig => {
         description: 'AI text generation provider',
         model: 'unknown',
         capabilities: ['Text generation'],
-        icon: '❓'
+        icon: '❓',
+        defaultPrompt: 'Generate marketing content'
       };
   }
 };

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
 
@@ -19,6 +19,7 @@ const FeaturedVideo: React.FC<FeaturedVideoProps> = ({
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const fetchVideo = async () => {
@@ -57,6 +58,7 @@ const FeaturedVideo: React.FC<FeaturedVideoProps> = ({
           .getPublicUrl(videoPath);
 
         if (data?.publicUrl) {
+          console.log('Video URL loaded:', data.publicUrl);
           setVideoUrl(data.publicUrl);
         } else {
           throw new Error('Failed to get video URL');
@@ -71,6 +73,24 @@ const FeaturedVideo: React.FC<FeaturedVideoProps> = ({
 
     fetchVideo();
   }, [videoPath]);
+
+  // When video URL changes or component mounts, ensure video plays
+  useEffect(() => {
+    if (videoRef.current && videoUrl) {
+      // Force the video to load
+      videoRef.current.load();
+      
+      // Play the video after a short delay to ensure it's loaded
+      const playPromise = setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.play()
+            .catch(e => console.error("Video play error:", e));
+        }
+      }, 100);
+      
+      return () => clearTimeout(playPromise);
+    }
+  }, [videoUrl]);
 
   // Apply performance optimizations
   const videoAttributes = {
@@ -107,6 +127,7 @@ const FeaturedVideo: React.FC<FeaturedVideoProps> = ({
       {videoUrl && (
         <>
           <video
+            ref={videoRef}
             {...videoAttributes}
             onLoadStart={() => setIsLoading(true)}
             onLoadedData={() => setIsLoading(false)}

@@ -1,7 +1,7 @@
 
 // Types and utilities for AI providers
 
-export type AIProvider = 'gemini' | 'openai' | 'anthropic' | 'mistral';
+export type AIProvider = 'gemini' | 'openai' | 'anthropic' | 'mistral' | 'multi-agent';
 
 interface ProviderConfig {
   name: string;
@@ -29,6 +29,11 @@ export const AI_PROVIDERS: Record<AIProvider, ProviderConfig> = {
     name: 'Mistral AI',
     model: 'mistral-large-latest',
     defaultPrompt: 'You are a professional email marketing expert for InnovateHub. Create engaging content for: {input}'
+  },
+  'multi-agent': {
+    name: 'Multi-Agent System',
+    model: 'collaborative',
+    defaultPrompt: 'You are a collaborative system of AI agents working together to create the best possible marketing content for: {input}'
   }
 };
 

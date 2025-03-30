@@ -4,12 +4,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart3, Users, Send, Settings, Brain, Sparkles } from 'lucide-react';
+import { BarChart3, Users, Send, Settings, Brain, Sparkles, Gift, Target } from 'lucide-react';
 import RecipientsList from './marketing/RecipientsList';
 import CampaignManager from './marketing/CampaignManager';
 import MarketingCopyGenerator from './marketing/MarketingCopyGenerator';
 import AIAgentsManager from './marketing/AIAgentsManager';
 import EmailTranslationTool from './marketing/EmailTranslationTool';
+import LeadsManagement from './marketing/LeadsManagement';
+import PromotionsManager from './marketing/PromotionsManager';
 
 const EmailMarketingTab: React.FC = () => {
   const [activeTab, setActiveTab] = useState('campaigns');
@@ -21,6 +23,10 @@ const EmailMarketingTab: React.FC = () => {
         return <CampaignManager />;
       case 'recipients':
         return <RecipientsList />;
+      case 'leads':
+        return <LeadsManagement />;
+      case 'promotions':
+        return <PromotionsManager />;
       case 'ai-tools':
         return <AIMarketingTools onCopyGenerated={setGeneratedContent} />;
       case 'analytics':
@@ -53,14 +59,22 @@ const EmailMarketingTab: React.FC = () => {
         onValueChange={setActiveTab}
         className="space-y-4"
       >
-        <TabsList className="grid grid-cols-5 w-full">
+        <TabsList className="grid grid-cols-7 w-full">
           <TabsTrigger value="campaigns" className="flex items-center">
             <Send className="w-4 h-4 mr-2" />
             Campaigns
           </TabsTrigger>
+          <TabsTrigger value="leads" className="flex items-center">
+            <Target className="w-4 h-4 mr-2" />
+            Leads
+          </TabsTrigger>
           <TabsTrigger value="recipients" className="flex items-center">
             <Users className="w-4 h-4 mr-2" />
             Recipients
+          </TabsTrigger>
+          <TabsTrigger value="promotions" className="flex items-center">
+            <Gift className="w-4 h-4 mr-2" />
+            Promotions
           </TabsTrigger>
           <TabsTrigger value="ai-tools" className="flex items-center">
             <Sparkles className="w-4 h-4 mr-2" />

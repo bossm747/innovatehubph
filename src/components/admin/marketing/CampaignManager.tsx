@@ -1,571 +1,394 @@
-
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
+import React, { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Trash2, 
-  Plus, 
-  Send, 
-  Calendar, 
-  Edit, 
-  Eye, 
-  Copy, 
-  Clock, 
-  CheckCircle, 
-  AlertCircle, 
-  Calendar as CalendarIcon,
-  Users
-} from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
 import { EmailCampaign } from '@/utils/aiProviders';
-import { useQuery } from '@tanstack/react-query';
+import { Loader2, Send, Plus, Calendar, CheckCircle2, XCircle, Clock, Pencil, Trash2, Users } from 'lucide-react';
 
-const formSchema = z.object({
-  name: z.string().min(2, { message: 'Campaign name must be at least 2 characters.' }),
-  subject: z.string().min(5, { message: 'Subject line must be at least 5 characters.' }),
-  content: z.string().min(10, { message: 'Email content must be at least 10 characters.' }),
-  template: z.string().optional(),
-  scheduledAt: z.string().optional(),
-});
+type EmailStatus = 'draft' | 'scheduled' | 'sent' | 'failed';
 
-const CampaignManager: React.FC = () => {
+const CampaignManager = () => {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState('drafts');
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [isPreviewDialogOpen, setIsPreviewDialogOpen] = useState(false);
+  const [campaigns, setCampaigns] = useState<EmailCampaign[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [openCreateDialog, setOpenCreateDialog] = useState(false);
+  const [campaignName, setCampaignName] = useState('');
+  const [campaignSubject, setCampaignSubject] = useState('');
+  const [campaignContent, setCampaignContent] = useState('');
+  const [campaignStatus, setCampaignStatus] = useState<EmailStatus>('draft');
   const [selectedCampaign, setSelectedCampaign] = useState<EmailCampaign | null>(null);
-  const [isEditing, setIsEditing] = useState(false);
-  
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: '',
-      subject: '',
-      content: '',
-      template: '',
-      scheduledAt: '',
-    },
-  });
+  const [openEditDialog, setOpenEditDialog] = useState(false);
 
-  // Fetch campaigns from Supabase
-  const { data: campaigns, isLoading, error, refetch } = useQuery({
-    queryKey: ['email-campaigns'],
-    queryFn: async () => {
-      try {
-        const { data, error } = await supabase
-          .from('marketing_campaigns')
-          .select('*');
-        
-        if (error) throw error;
-        
-        return data as EmailCampaign[];
-      } catch (err) {
-        console.error('Error fetching campaigns:', err);
-        return [] as EmailCampaign[];
-      }
-    }
-  });
+  useEffect(() => {
+    fetchCampaigns();
+  }, []);
 
-  // Helper for filtering campaigns
-  const filteredCampaigns = () => {
-    if (!campaigns) return [];
-    
-    switch (activeTab) {
-      case 'drafts':
-        return campaigns.filter(c => c.status === 'draft');
-      case 'scheduled':
-        return campaigns.filter(c => c.status === 'scheduled');
-      case 'sent':
-        return campaigns.filter(c => c.status === 'sent');
-      case 'all':
-      default:
-        return campaigns;
-    }
-  };
-
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const fetchCampaigns = async () => {
+    setLoading(true);
     try {
-      if (isEditing && selectedCampaign) {
-        // Update existing campaign
-        const { error } = await supabase
-          .from('marketing_campaigns')
-          .update({
-            name: values.name,
-            subject: values.subject,
-            content: values.content,
-            template: values.template,
-            scheduled_at: values.scheduledAt ? new Date(values.scheduledAt).toISOString() : null,
-            updated_at: new Date().toISOString(),
-          })
-          .eq('id', selectedCampaign.id);
-          
-        if (error) throw error;
-      } else {
-        // Create new campaign
-        const { error } = await supabase
-          .from('marketing_campaigns')
-          .insert({
-            name: values.name,
-            subject: values.subject,
-            content: values.content,
-            template: values.template || null,
-            scheduled_at: values.scheduledAt ? new Date(values.scheduledAt).toISOString() : null,
-            status: 'draft',
-          });
-          
-        if (error) throw error;
-      }
-      
-      await refetch();
-      
-      toast({
-        title: isEditing ? "Campaign updated" : "Campaign created",
-        description: `Your campaign has been ${isEditing ? 'updated' : 'created'} successfully.`,
-      });
-      
-      form.reset();
-      setIsCreateDialogOpen(false);
-      setIsEditing(false);
+      const { data, error } = await supabase
+        .from('email_campaigns')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setCampaigns(data || []);
     } catch (error) {
-      console.error('Error saving campaign:', error);
+      console.error('Error fetching campaigns:', error);
       toast({
-        title: "Failed to save campaign",
-        description: "There was an error saving your campaign. Please try again.",
-        variant: "destructive",
+        title: 'Error fetching campaigns',
+        description: 'Please try again later',
+        variant: 'destructive'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createCampaign = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('email_campaigns')
+        .insert({
+          name: campaignName,
+          subject: campaignSubject,
+          content: campaignContent,
+          status: campaignStatus
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+      setCampaigns(prev => [data, ...prev]);
+      setOpenCreateDialog(false);
+      setCampaignName('');
+      setCampaignSubject('');
+      setCampaignContent('');
+      setCampaignStatus('draft');
+      toast({
+        title: 'Campaign created',
+        description: 'Your new campaign has been created'
+      });
+    } catch (error) {
+      console.error('Error creating campaign:', error);
+      toast({
+        title: 'Error creating campaign',
+        description: 'Please try again later',
+        variant: 'destructive'
       });
     }
   };
 
-  const handleEditCampaign = (campaign: EmailCampaign) => {
-    setSelectedCampaign(campaign);
-    setIsEditing(true);
-    
-    form.reset({
-      name: campaign.name,
-      subject: campaign.subject,
-      content: campaign.content,
-      template: campaign.template || '',
-      scheduledAt: campaign.scheduledAt ? new Date(campaign.scheduledAt).toISOString().slice(0, 16) : '',
-    });
-    
-    setIsCreateDialogOpen(true);
+  const updateCampaign = async () => {
+    if (!selectedCampaign) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('email_campaigns')
+        .update({
+          name: campaignName,
+          subject: campaignSubject,
+          content: campaignContent,
+          status: campaignStatus
+        })
+        .eq('id', selectedCampaign.id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      setCampaigns(prev =>
+        prev.map(campaign => (campaign.id === selectedCampaign.id ? data : campaign))
+      );
+      setOpenEditDialog(false);
+      setSelectedCampaign(null);
+      setCampaignName('');
+      setCampaignSubject('');
+      setCampaignContent('');
+      setCampaignStatus('draft');
+      toast({
+        title: 'Campaign updated',
+        description: 'Campaign has been updated successfully'
+      });
+    } catch (error) {
+      console.error('Error updating campaign:', error);
+      toast({
+        title: 'Error updating campaign',
+        description: 'Please try again later',
+        variant: 'destructive'
+      });
+    }
   };
 
-  const handlePreviewCampaign = (campaign: EmailCampaign) => {
-    setSelectedCampaign(campaign);
-    setIsPreviewDialogOpen(true);
-  };
-
-  const handleDeleteCampaign = async (id: string) => {
+  const deleteCampaign = async (campaignId: string) => {
     try {
       const { error } = await supabase
-        .from('marketing_campaigns')
+        .from('email_campaigns')
         .delete()
-        .eq('id', id);
-        
+        .eq('id', campaignId);
+
       if (error) throw error;
-      
-      await refetch();
-      
+      setCampaigns(prev => prev.filter(campaign => campaign.id !== campaignId));
       toast({
-        title: "Campaign deleted",
-        description: "Your campaign has been deleted successfully.",
-        variant: "default",
+        title: 'Campaign deleted',
+        description: 'Campaign has been deleted successfully'
       });
     } catch (error) {
       console.error('Error deleting campaign:', error);
       toast({
-        title: "Failed to delete campaign",
-        description: "There was an error deleting your campaign. Please try again.",
-        variant: "destructive",
+        title: 'Error deleting campaign',
+        description: 'Please try again later',
+        variant: 'destructive'
       });
     }
   };
 
-  const scheduleCampaign = async (id: string, scheduledTime: string) => {
-    try {
-      if (!scheduledTime) {
-        toast({
-          title: "Schedule time required",
-          description: "Please select when you want to send this campaign.",
-          variant: "destructive",
-        });
-        return;
-      }
-      
-      const { error } = await supabase
-        .from('marketing_campaigns')
-        .update({
-          status: 'scheduled',
-          scheduled_at: new Date(scheduledTime).toISOString(),
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', id);
-        
-      if (error) throw error;
-      
-      await refetch();
-      
-      toast({
-        title: "Campaign scheduled",
-        description: "Your campaign has been scheduled successfully.",
-        variant: "default",
-      });
-    } catch (error) {
-      console.error('Error scheduling campaign:', error);
-      toast({
-        title: "Failed to schedule campaign",
-        description: "There was an error scheduling your campaign. Please try again.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'draft':
-        return <Badge variant="outline" className="flex items-center gap-1"><Edit className="w-3 h-3" /> Draft</Badge>;
-      case 'scheduled':
-        return <Badge variant="outline" className="flex items-center gap-1 bg-blue-50 text-blue-700 border-blue-200"><Clock className="w-3 h-3" /> Scheduled</Badge>;
-      case 'sent':
-        return <Badge variant="outline" className="flex items-center gap-1 bg-green-50 text-green-700 border-green-200"><CheckCircle className="w-3 h-3" /> Sent</Badge>;
-      case 'failed':
-        return <Badge variant="outline" className="flex items-center gap-1 bg-red-50 text-red-700 border-red-200"><AlertCircle className="w-3 h-3" /> Failed</Badge>;
-      default:
-        return <Badge variant="outline">{status}</Badge>;
-    }
+  const handleEditClick = (campaign: EmailCampaign) => {
+    setSelectedCampaign(campaign);
+    setCampaignName(campaign.name);
+    setCampaignSubject(campaign.subject);
+    setCampaignContent(campaign.content);
+    setCampaignStatus(campaign.status);
+    setOpenEditDialog(true);
   };
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-xl font-semibold">Email Campaigns</h2>
-          <p className="text-muted-foreground">Create and manage your InnovateHub email marketing campaigns</p>
+          <h2 className="text-2xl font-bold">Campaign Management</h2>
+          <p className="text-muted-foreground">
+            Create and manage your email marketing campaigns
+          </p>
         </div>
-        <Button 
-          onClick={() => {
-            form.reset();
-            setIsEditing(false);
-            setIsCreateDialogOpen(true);
-          }}
-        >
+        <Button onClick={() => setOpenCreateDialog(true)}>
           <Plus className="w-4 h-4 mr-2" />
           Create Campaign
         </Button>
       </div>
-      
-      <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList>
-          <TabsTrigger value="drafts">Drafts</TabsTrigger>
-          <TabsTrigger value="scheduled">Scheduled</TabsTrigger>
-          <TabsTrigger value="sent">Sent</TabsTrigger>
-          <TabsTrigger value="all">All</TabsTrigger>
-        </TabsList>
+
+      <div className="flex flex-col md:flex-row gap-4 mb-8">
+        <Card className="w-full md:w-1/3">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center">
+              <Users className="w-4 h-4 mr-2 text-blue-600" />
+              Recipients
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            Manage your email recipients and lists.
+          </CardContent>
+        </Card>
         
-        <TabsContent value={activeTab} className="pt-4">
-          {isLoading ? (
-            <div className="flex justify-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-            </div>
-          ) : error ? (
-            <Card className="border-red-200 bg-red-50">
-              <CardContent className="pt-6">
-                <div className="flex items-center text-red-800">
-                  <AlertCircle className="w-5 h-5 mr-2" />
-                  Error loading campaigns
-                </div>
-                <p className="text-sm text-red-600 mt-2">Please try again later</p>
+        <Card className="w-full md:w-1/3">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center">
+              <Calendar className="w-4 h-4 mr-2 text-green-600" />
+              Scheduling
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            Schedule your email campaigns for optimal send times.
+          </CardContent>
+        </Card>
+        
+        <Card className="w-full md:w-1/3">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center">
+              <CheckCircle2 className="w-4 h-4 mr-2 text-purple-600" />
+              Automation
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            Automate your email marketing workflows for efficiency.
+          </CardContent>
+        </Card>
+      </div>
+
+      {loading ? (
+        <div className="flex justify-center items-center">
+          <Loader2 className="w-6 h-6 animate-spin" />
+        </div>
+      ) : campaigns.length === 0 ? (
+        <div className="text-center text-muted-foreground">
+          No campaigns created yet.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {campaigns.map(campaign => (
+            <Card key={campaign.id} className="border">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">{campaign.name}</CardTitle>
+                <Badge variant="secondary">{campaign.status}</Badge>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">
+                  {campaign.subject}
+                </p>
               </CardContent>
-            </Card>
-          ) : filteredCampaigns().length === 0 ? (
-            <Card>
-              <CardContent className="pt-6 pb-4 text-center">
-                <p className="text-muted-foreground">No campaigns found</p>
-                <Button 
-                  variant="outline" 
-                  onClick={() => {
-                    form.reset();
-                    setIsEditing(false);
-                    setIsCreateDialogOpen(true);
-                  }}
-                  className="mt-4"
+              <div className="flex justify-end space-x-2 p-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleEditClick(campaign)}
                 >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create Your First Campaign
+                  <Pencil className="w-4 h-4 mr-2" />
+                  Edit
                 </Button>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {filteredCampaigns().map((campaign) => (
-                <Card key={campaign.id} className="overflow-hidden">
-                  <CardHeader className="pb-3">
-                    <div className="flex justify-between items-start">
-                      <CardTitle className="text-lg">{campaign.name}</CardTitle>
-                      {getStatusBadge(campaign.status)}
-                    </div>
-                    <CardDescription className="flex items-center mt-1">
-                      <span>Subject: {campaign.subject}</span>
-                    </CardDescription>
-                  </CardHeader>
-                  
-                  <CardContent className="pb-3">
-                    <div className="text-sm text-muted-foreground line-clamp-3">
-                      {campaign.content}
-                    </div>
-                    
-                    {campaign.scheduledAt && (
-                      <div className="flex items-center text-xs text-muted-foreground mt-3">
-                        <CalendarIcon className="w-3.5 h-3.5 mr-1" />
-                        Scheduled for: {new Date(campaign.scheduledAt).toLocaleString()}
-                      </div>
-                    )}
-                    
-                    {campaign.recipientCount && (
-                      <div className="flex items-center text-xs text-muted-foreground mt-1">
-                        <UsersIcon className="w-3.5 h-3.5 mr-1" />
-                        Recipients: {campaign.recipientCount}
-                      </div>
-                    )}
-                  </CardContent>
-                  
-                  <CardFooter className="flex justify-between gap-2 pt-2">
-                    <div className="flex gap-2">
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        onClick={() => handlePreviewCampaign(campaign)}
-                      >
-                        <Eye className="w-4 h-4 mr-1" />
-                        Preview
-                      </Button>
-                      
-                      {campaign.status === 'draft' && (
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={() => handleEditCampaign(campaign)}
-                        >
-                          <Edit className="w-4 h-4 mr-1" />
-                          Edit
-                        </Button>
-                      )}
-                    </div>
-                    
-                    <div className="flex gap-2">
-                      {campaign.status === 'draft' && (
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button size="sm">
-                              <Send className="w-4 h-4 mr-1" />
-                              Schedule
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle>Schedule Campaign</DialogTitle>
-                              <DialogDescription>
-                                When would you like to send this campaign?
-                              </DialogDescription>
-                            </DialogHeader>
-                            <div className="py-4">
-                              <Form {...form}>
-                                <FormField
-                                  control={form.control}
-                                  name="scheduledAt"
-                                  render={({ field }) => (
-                                    <FormItem>
-                                      <FormLabel>Schedule Date</FormLabel>
-                                      <FormControl>
-                                        <Input 
-                                          type="datetime-local" 
-                                          {...field} 
-                                          min={new Date().toISOString().slice(0, 16)} 
-                                        />
-                                      </FormControl>
-                                      <FormDescription>
-                                        Choose when this campaign should be sent.
-                                      </FormDescription>
-                                      <FormMessage />
-                                    </FormItem>
-                                  )}
-                                />
-                              </Form>
-                            </div>
-                            <DialogFooter>
-                              <Button 
-                                onClick={() => scheduleCampaign(campaign.id, form.getValues().scheduledAt || '')}
-                                disabled={!form.getValues().scheduledAt}
-                              >
-                                Schedule Campaign
-                              </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
-                      )}
-                      
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="text-red-600 hover:text-red-700"
-                        onClick={() => handleDeleteCampaign(campaign.id)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          )}
-        </TabsContent>
-      </Tabs>
-      
-      {/* Create/Edit Campaign Dialog */}
-      <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>{isEditing ? 'Edit Campaign' : 'Create New Campaign'}</DialogTitle>
-            <DialogDescription>
-              {isEditing 
-                ? 'Make changes to your campaign details below.'
-                : 'Fill in the details below to create a new email campaign.'}
-            </DialogDescription>
-          </DialogHeader>
-          
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Campaign Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Summer Promotion" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="template"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Template (Optional)</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a template" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="newsletter">Newsletter</SelectItem>
-                          <SelectItem value="promotion">Promotion</SelectItem>
-                          <SelectItem value="announcement">Announcement</SelectItem>
-                          <SelectItem value="update">Product Update</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => deleteCampaign(campaign.id)}
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Delete
+                </Button>
               </div>
-              
-              <FormField
-                control={form.control}
-                name="subject"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Subject Line</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Exciting news from InnovateHub!" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="content"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email Content</FormLabel>
-                    <FormControl>
-                      <Textarea 
-                        placeholder="Write your email content here..."
-                        className="min-h-[200px]"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <DialogFooter>
-                <Button type="submit">
-                  {isEditing ? 'Save Changes' : 'Create Campaign'}
-                </Button>
-              </DialogFooter>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
-      
-      {/* Preview Campaign Dialog */}
-      <Dialog open={isPreviewDialogOpen} onOpenChange={setIsPreviewDialogOpen}>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      <Dialog open={openCreateDialog} onOpenChange={setOpenCreateDialog}>
+        <DialogTrigger asChild>
+          <Button>Create Campaign</Button>
+        </DialogTrigger>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Campaign Preview</DialogTitle>
-            <DialogDescription>
-              Preview how your campaign will appear to recipients
-            </DialogDescription>
+            <DialogTitle>Create New Campaign</DialogTitle>
           </DialogHeader>
-          
-          {selectedCampaign && (
-            <div className="space-y-4">
-              <div className="border-b pb-2">
-                <p className="text-sm text-muted-foreground">From: InnovateHub &lt;marketing@innovatehub.ph&gt;</p>
-                <p className="text-sm text-muted-foreground">To: [Recipient]</p>
-                <p className="text-sm font-medium mt-2">Subject: {selectedCampaign.subject}</p>
-              </div>
-              
-              <div className="py-4">
-                <div className="whitespace-pre-wrap">
-                  {selectedCampaign.content}
-                </div>
-              </div>
-              
-              <div className="text-xs text-muted-foreground border-t pt-2">
-                <p>© 2024 InnovateHub Inc. All rights reserved.</p>
-                <p>RMCL Bldg., New Bypass Rd., Bayanan, San Pascual, Batangas</p>
-                <p className="mt-1">[Unsubscribe link will appear here]</p>
-              </div>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input
+                id="name"
+                value={campaignName}
+                onChange={e => setCampaignName(e.target.value)}
+                className="col-span-3"
+              />
             </div>
-          )}
-          
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsPreviewDialogOpen(false)}>
-              Close Preview
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="subject" className="text-right">
+                Subject
+              </Label>
+              <Input
+                id="subject"
+                value={campaignSubject}
+                onChange={e => setCampaignSubject(e.target.value)}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-start gap-4">
+              <Label htmlFor="content" className="text-right">
+                Content
+              </Label>
+              <Textarea
+                id="content"
+                value={campaignContent}
+                onChange={e => setCampaignContent(e.target.value)}
+                className="col-span-3 min-h-[150px]"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="status" className="text-right">
+                Status
+              </Label>
+              <Select value={campaignStatus} onValueChange={value => setCampaignStatus(value as EmailStatus)}>
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="draft">Draft</SelectItem>
+                  <SelectItem value="scheduled">Scheduled</SelectItem>
+                  <SelectItem value="sent">Sent</SelectItem>
+                  <SelectItem value="failed">Failed</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="flex justify-end space-x-2">
+            <Button variant="ghost" onClick={() => setOpenCreateDialog(false)}>
+              Cancel
             </Button>
-          </DialogFooter>
+            <Button onClick={createCampaign}>Create</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={openEditDialog} onOpenChange={setOpenEditDialog}>
+        <DialogTrigger asChild>
+          <Button>Edit Campaign</Button>
+        </DialogTrigger>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Edit Campaign</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input
+                id="name"
+                value={campaignName}
+                onChange={e => setCampaignName(e.target.value)}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="subject" className="text-right">
+                Subject
+              </Label>
+              <Input
+                id="subject"
+                value={campaignSubject}
+                onChange={e => setCampaignSubject(e.target.value)}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-start gap-4">
+              <Label htmlFor="content" className="text-right">
+                Content
+              </Label>
+              <Textarea
+                id="content"
+                value={campaignContent}
+                onChange={e => setCampaignContent(e.target.value)}
+                className="col-span-3 min-h-[150px]"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="status" className="text-right">
+                Status
+              </Label>
+              <Select value={campaignStatus} onValueChange={value => setCampaignStatus(value as EmailStatus)}>
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="draft">Draft</SelectItem>
+                  <SelectItem value="scheduled">Scheduled</SelectItem>
+                  <SelectItem value="sent">Sent</SelectItem>
+                  <SelectItem value="failed">Failed</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="flex justify-end space-x-2">
+            <Button variant="ghost" onClick={() => setOpenEditDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={updateCampaign}>Update</Button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

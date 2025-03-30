@@ -31,7 +31,7 @@ const DesktopNavigation = () => {
                   <ListItem href="/services" title="All Services">
                     Overview of our complete service offerings
                   </ListItem>
-                  <ListItem href="/platapay" title="Fintech Solutions">
+                  <ListItem href="/fintech-solutions" title="Fintech Solutions">
                     Digital wallet and financial solutions
                   </ListItem>
                   <ListItem href="/digital-customizations" title="Digital Customizations">

@@ -4,11 +4,11 @@ import React from 'react';
 const FintechHeroImage = () => {
   return (
     <div className="relative hidden lg:block">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg blur-xl"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-amber-500/20 rounded-lg blur-xl"></div>
       <div className="float-animation">
         <img 
-          src="/lovable-uploads/76ce780b-8888-4dee-93de-7439fe4a3fa0.png" 
-          alt="Fintech Solutions" 
+          src="/lovable-uploads/51105682-3d95-4413-be73-38763b9478f8.png" 
+          alt="Digital Payment Solutions" 
           className="relative z-10 rounded-lg shadow-lg w-full h-auto transform transition-all duration-500 pulse-glow"
         />
         

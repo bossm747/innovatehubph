@@ -33,7 +33,7 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
                 </Link>
               </li>
               <li>
-                <Link to="/platapay" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                <Link to="/fintech-solutions" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
                   Fintech Solutions
                 </Link>
               </li>

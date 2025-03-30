@@ -1,23 +1,23 @@
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import HomePage from '@/pages/HomePage';
-import AboutPage from '@/pages/AboutPage';
-import ServicesPage from '@/pages/ServicesPage';
-import ContactPage from '@/pages/ContactPage';
-import PlatapayPage from '@/pages/PlatapayPage';
-import AdminLayout from '@/pages/admin/AdminLayout';
-import AdminDashboard from '@/pages/admin/AdminDashboard';
-import AdminContentPage from '@/pages/admin/AdminContentPage';
-import AdminNavigationPage from '@/pages/admin/AdminNavigationPage';
-import AdminDesignPage from '@/pages/admin/AdminDesignPage';
-import AdminDatabasePage from '@/pages/admin/AdminDatabasePage';
-import AdminUsersPage from '@/pages/admin/AdminUsersPage';
-import AdminSettingsPage from '@/pages/admin/AdminSettingsPage';
-import AdminEmailPage from '@/pages/admin/AdminEmailPage';
-import AdminAIToolsPage from '@/pages/admin/AdminAIToolsPage';
-import AdminAIManagementPage from '@/pages/admin/AdminAIManagementPage';
-import AdminPaymentsPage from '@/pages/admin/AdminPaymentsPage';
-import NotFoundPage from '@/pages/NotFoundPage';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import ServicesPage from './pages/ServicesPage';
+import ContactPage from './pages/ContactPage';
+import PlatapayPage from './pages/PlatapayPage';
+import AdminLayout from './pages/admin/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminContentPage from './pages/admin/AdminContentPage';
+import AdminNavigationPage from './pages/admin/AdminNavigationPage';
+import AdminDesignPage from './pages/admin/AdminDesignPage';
+import AdminDatabasePage from './pages/admin/AdminDatabasePage';
+import AdminUsersPage from './pages/admin/AdminUsersPage';
+import AdminSettingsPage from './pages/admin/AdminSettingsPage';
+import AdminEmailPage from './pages/admin/AdminEmailPage';
+import AdminAIToolsPage from './pages/admin/AdminAIToolsPage';
+import AdminAIManagementPage from './pages/admin/AdminAIManagementPage';
+import AdminPaymentsPage from './pages/admin/AdminPaymentsPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   return (

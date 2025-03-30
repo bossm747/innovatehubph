@@ -9,23 +9,23 @@ interface TeamPageHeaderProps {
 
 const TeamPageHeader = ({ title, description }: TeamPageHeaderProps) => {
   return (
-    <section className="relative py-12 px-6 md:px-12 lg:px-16 overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
+    <section className="relative py-12 px-6 md:px-8 lg:px-16 overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
       <HeroBackground />
       
       <div className="container mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
           <div className="max-w-2xl">
-            <span className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-blue-200 rounded-full mb-4 animate-fade-in" style={{animationDelay: '100ms'}}>
+            <span className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-blue-200 rounded-full mb-3 animate-fade-in" style={{animationDelay: '100ms'}}>
               Our People
             </span>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white animate-fade-in" style={{animationDelay: '200ms'}}>
+            <h1 className="text-3xl md:text-4xl font-bold mb-3 text-white animate-fade-in" style={{animationDelay: '200ms'}}>
               {title}
             </h1>
-            <p className="text-lg text-blue-100 mb-6 animate-fade-in" style={{animationDelay: '300ms'}}>
+            <p className="text-base md:text-lg text-blue-100 mb-4 animate-fade-in" style={{animationDelay: '300ms'}}>
               {description}
             </p>
             
-            <div className="mt-8 flex items-center gap-6 text-blue-200 animate-fade-in" style={{animationDelay: '400ms'}}>
+            <div className="mt-6 flex items-center gap-4 text-blue-200 animate-fade-in" style={{animationDelay: '400ms'}}>
               <div className="flex items-center">
                 <span className="h-5 w-5 mr-2 text-blue-300">•</span>
                 Passionate Leaders

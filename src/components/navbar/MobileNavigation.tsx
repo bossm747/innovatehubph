@@ -145,7 +145,7 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
           </li>
           <li className="mt-4">
             <Link 
-              to="https://app.platapay.ph" 
+              to="/admin/dashboard" 
               className="block w-full py-2 px-4 text-center bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-all duration-200 shadow-md" 
               onClick={onClose}
             >

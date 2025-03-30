@@ -105,8 +105,8 @@ const ContactPage = () => {
               <div className="relative hidden lg:block">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-500/20 rounded-lg blur-xl"></div>
                 <img 
-                  src="/lovable-uploads/4d5b3eaa-0065-48e8-9976-3931a1836f81.png" 
-                  alt="Contact Us" 
+                  src="/lovable-uploads/50c0b0cb-18bb-408d-a179-75d6900152c8.png" 
+                  alt="Contact Us - Connected Digital Devices" 
                   className="relative z-10 rounded-lg shadow-lg object-cover w-full h-auto transform hover:scale-105 transition-all duration-500"
                 />
               </div>

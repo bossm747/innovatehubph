@@ -12,6 +12,7 @@ interface Client {
   id: number;
   name: string;
   type: "agent" | "business" | "remittance" | "food" | "retail";
+  joinDate?: string;
 }
 
 const CLIENTS: Client[] = [
@@ -23,71 +24,84 @@ const CLIENTS: Client[] = [
   {
     id: 2,
     name: "Barako Brews",
-    type: "food"
+    type: "food",
+    joinDate: "February 25, 2025"
   },
   {
     id: 3,
     name: "Maclyn Bills Payment and Remittance",
-    type: "remittance"
+    type: "remittance",
+    joinDate: "February 26, 2025"
   },
   {
     id: 4,
     name: "PIO Business Center",
-    type: "business"
+    type: "business",
+    joinDate: "February 26, 2025"
   },
   {
     id: 5,
     name: "TMSeven Business Center",
-    type: "business"
+    type: "business",
+    joinDate: "February 27, 2025"
   },
   {
     id: 6,
     name: "MMHA Business Center",
-    type: "business"
+    type: "business",
+    joinDate: "February 27, 2025"
   },
   {
     id: 7,
     name: "TEDBatangas",
-    type: "business"
+    type: "business",
+    joinDate: "March 1, 2025"
   },
   {
     id: 8,
     name: "Miss G",
-    type: "retail"
+    type: "retail",
+    joinDate: "March 04, 2025"
   },
   {
     id: 9,
     name: "RMCL-Maricel",
-    type: "business"
+    type: "business",
+    joinDate: "March 15, 2025"
   },
   {
     id: 10,
     name: "Majoy Bills Payment",
-    type: "remittance"
+    type: "remittance",
+    joinDate: "March 15, 2025"
   },
   {
     id: 11,
     name: "BTS - MaryAnn Mercado",
-    type: "business"
+    type: "business",
+    joinDate: "March 15, 2025"
   },
   {
     id: 12,
     name: "DIY Food Mart",
-    type: "food"
+    type: "food",
+    joinDate: "March 18, 2025"
   },
   {
     id: 13,
     name: "Precy's Store",
-    type: "retail"
+    type: "retail",
+    joinDate: "March 20, 2025"
   },
   {
     id: 14,
-    name: "Flayla Snack House",
-    type: "food"
+    name: "Landos Grill (Marc and Lyn Eatery)",
+    type: "food",
+    joinDate: "February 22, 2025"
   },
   {
     id: 15,
-    name: "Landos Eatery & Lomi House",
+    name: "Flayla Snack House",
     type: "food"
   }
 ];
@@ -112,13 +126,17 @@ const ClientCard = ({ client }: { client: Client }) => {
           <span className={`px-3 py-1 text-xs rounded-full ${getTypeColor(client.type)}`}>
             {formatType(client.type)}
           </span>
+          {client.joinDate && (
+            <p className="text-xs text-gray-500 mt-2">
+              Joined: {client.joinDate}
+            </p>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-// Helper functions
 const getTypeColor = (type: Client['type']): string => {
   switch (type) {
     case 'agent':

@@ -35,7 +35,7 @@ const BlogHighlight = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                   <div className="absolute bottom-3 left-3 bg-innovate-600 text-white text-xs px-2 py-1 rounded">
-                    February 28, 2025
+                    March 5, 2025
                   </div>
                 </div>
               </div>
@@ -46,25 +46,25 @@ const BlogHighlight = () => {
                     Partnership
                   </span>
                   <h3 className="text-xl md:text-2xl font-bold mb-3 text-gray-900">
-                    AllBank joins forces with InnovateHub Inc. to roll out QR payment solutions
+                    InnovateHub welcomes five new business partners in Batangas
                   </h3>
                   <p className="text-gray-600 mb-4">
-                    AllBank (A Thrift Bank), Inc. has partnered with InnovateHub Inc. to introduce innovative QR payment solutions to the market. This collaboration aims to enhance digital payment experiences for customers and merchants alike, leveraging InnovateHub's expertise in financial technology.
+                    InnovateHub Inc. is proud to announce the onboarding of five new business partners in Batangas region. The expansion includes partnerships with RMCL-Maricel, Majoy Bills Payment, BTS - MaryAnn Mercado, and several food establishments.
                   </p>
                   <p className="text-gray-600 mb-4 hidden md:block">
-                    The partnership will focus on deploying PlataPay, InnovateHub's flagship QR payment platform, to AllBank's network of merchants and customers, facilitating faster, more secure transactions.
+                    "We're excited to welcome these businesses to our network," said the CEO of InnovateHub. "These partnerships strengthen our presence in the Batangas region and help us deliver financial technology solutions to more communities."
                   </p>
                 </div>
                 
                 <div className="flex items-center justify-between mt-4">
-                  <span className="text-sm text-gray-500">Source: Manila Times</span>
+                  <span className="text-sm text-gray-500">Source: Company Press Release</span>
                   <Button variant="outline" className="text-innovate-600 border-innovate-200 hover:bg-innovate-50">
-                    <a href="https://www.manilatimes.net/2025/02/28/business/top-business/allbank-joins-forces-with-innovatehubinc-to-roll-out-qr-payment-solutions/2064552" target="_blank" rel="noopener noreferrer" className="flex items-center">
+                    <Link to="/blog" className="flex items-center">
                       Read Full Article
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
-                    </a>
+                    </Link>
                   </Button>
                 </div>
               </div>

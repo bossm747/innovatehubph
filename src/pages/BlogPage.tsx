@@ -6,6 +6,7 @@ import ContactSection from '@/components/ContactSection';
 import CircuitBackground from '@/components/CircuitBackground';
 import BlogHighlight from '@/components/BlogHighlight';
 import { Helmet } from 'react-helmet';
+import { Button } from '@/components/ui/button';
 
 const BlogPage = () => {
   // Add scroll reveal effect
@@ -90,6 +91,53 @@ const BlogPage = () => {
         </section>
         
         <BlogHighlight />
+        
+        {/* Recent Partner News Section */}
+        <section className="py-16 px-6 md:px-12 bg-gray-50">
+          <div className="container mx-auto">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Recent Partner Announcements</h2>
+              
+              <div className="grid md:grid-cols-2 gap-6 mb-8">
+                <div className="bg-white p-6 rounded-xl shadow-md">
+                  <span className="text-sm text-gray-500">March 15, 2025</span>
+                  <h3 className="text-xl font-semibold mt-2 mb-3">New Partners in Batangas Region</h3>
+                  <p className="text-gray-600 mb-4">
+                    InnovateHub welcomes RMCL-Maricel, Majoy Bills Payment, and BTS - MaryAnn Mercado as new business partners in the Batangas region.
+                  </p>
+                  <Button variant="outline" size="sm">Read More</Button>
+                </div>
+                
+                <div className="bg-white p-6 rounded-xl shadow-md">
+                  <span className="text-sm text-gray-500">March 4, 2025</span>
+                  <h3 className="text-xl font-semibold mt-2 mb-3">Retail Expansion with Miss G</h3>
+                  <p className="text-gray-600 mb-4">
+                    Miss G joins our network of retail partners, implementing our digital payment solutions to enhance customer experience.
+                  </p>
+                  <Button variant="outline" size="sm">Read More</Button>
+                </div>
+                
+                <div className="bg-white p-6 rounded-xl shadow-md">
+                  <span className="text-sm text-gray-500">March 1, 2025</span>
+                  <h3 className="text-xl font-semibold mt-2 mb-3">TEDBatangas Partnership</h3>
+                  <p className="text-gray-600 mb-4">
+                    TEDBatangas joins InnovateHub's growing network of business partners, leveraging our fintech solutions for enhanced operations.
+                  </p>
+                  <Button variant="outline" size="sm">Read More</Button>
+                </div>
+                
+                <div className="bg-white p-6 rounded-xl shadow-md">
+                  <span className="text-sm text-gray-500">February 27, 2025</span>
+                  <h3 className="text-xl font-semibold mt-2 mb-3">Business Center Collaborations</h3>
+                  <p className="text-gray-600 mb-4">
+                    TMSeven Business Center and MMHA Business Center implement InnovateHub's digital payment solutions for their customers.
+                  </p>
+                  <Button variant="outline" size="sm">Read More</Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
         
         <ContactSection />
         <Footer />

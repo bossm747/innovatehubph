@@ -15,6 +15,10 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Set maximum file size to 500MB
+  const MAX_FILE_SIZE = 524288000; // 500MB in bytes
+  const MAX_FILE_SIZE_DISPLAY = '500MB';
+
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files || event.target.files.length === 0) {
       return;
@@ -25,6 +29,12 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
       setUploadProgress(0);
       
       const file = event.target.files[0];
+      
+      // Check file size before trying to upload
+      if (file.size > MAX_FILE_SIZE) {
+        throw new Error(`File size exceeds the maximum allowed limit (${MAX_FILE_SIZE_DISPLAY}).`);
+      }
+      
       const fileExt = file.name.split('.').pop();
       const fileName = `${Math.random().toString(36).substring(2, 15)}_${new Date().getTime()}.${fileExt}`;
       
@@ -54,7 +64,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
           .storage
           .createBucket('project_files', {
             public: true,
-            fileSizeLimit: 52428800, // 50MB in bytes
+            fileSizeLimit: MAX_FILE_SIZE, // Updated to 500MB in bytes
           });
       }
 
@@ -86,7 +96,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
       } else if (error.message?.includes('permission') || error.message?.includes('access')) {
         toast.error('Permission denied. You may not have access to upload files.');
       } else if (error.message?.includes('size')) {
-        toast.error('File size exceeds the maximum allowed limit (50MB).');
+        toast.error(`File size exceeds the maximum allowed limit (${MAX_FILE_SIZE_DISPLAY}).`);
       } else {
         toast.error(`Error uploading file: ${error.message}`);
       }
@@ -134,7 +144,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
         <div className="text-sm text-blue-700">
           <p className="font-medium">File upload information:</p>
           <ul className="list-disc list-inside mt-1 space-y-1">
-            <li>Maximum file size: 50MB</li>
+            <li>Maximum file size: {MAX_FILE_SIZE_DISPLAY}</li>
             <li>Supported file types: images, documents, videos, and more</li>
             <li>Files are securely stored in Supabase storage</li>
           </ul>

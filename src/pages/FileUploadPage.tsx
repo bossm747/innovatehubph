@@ -19,6 +19,9 @@ const FileUploadPage = () => {
   const [files, setFiles] = useState<any[]>([]);
   const [hasBucket, setHasBucket] = useState(false);
   
+  // Set maximum file size to 500MB 
+  const MAX_FILE_SIZE = 524288000; // 500MB in bytes
+  
   // Development mode notice
   const isDevelopment = true;
 
@@ -47,7 +50,7 @@ const FileUploadPage = () => {
           .storage
           .createBucket('project_files', {
             public: true,
-            fileSizeLimit: 52428800, // 50MB in bytes
+            fileSizeLimit: MAX_FILE_SIZE, // Updated to 500MB in bytes
           });
           
         toast.success('File storage initialized successfully');

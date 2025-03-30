@@ -1,53 +1,52 @@
 
-import React, { useState } from 'react';
-import { CalendarClock } from 'lucide-react';
+import React from 'react';
 import { Button, ButtonProps } from '@/components/ui/button';
 import BookingDialog from './BookingDialog';
 
-interface BookingButtonProps extends Omit<ButtonProps, 'onClick'> {
-  label?: string;
+// Omit the type property from ButtonProps and define our own
+interface BookingButtonProps extends Omit<ButtonProps, 'type' | 'onClick'> {
+  meetingType?: 'call' | 'video';
   topic?: string;
-  type?: 'call' | 'video';
-  variant?: 'default' | 'outline' | 'secondary' | 'ghost' | 'link' | 'destructive';
-  icon?: boolean;
+  prefilledEmail?: string;
+  prefilledName?: string;
+  prefilledCompany?: string;
+  buttonText?: string;
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+  buttonType?: 'button' | 'submit' | 'reset';
 }
 
 const BookingButton: React.FC<BookingButtonProps> = ({
-  label = "Schedule a Meeting",
-  topic = "Demo Request",
-  type = "video",
-  variant = "default",
-  icon = true,
-  className,
-  ...props
+  meetingType = 'call',
+  topic = 'General Consultation',
+  prefilledEmail = '',
+  prefilledName = '',
+  prefilledCompany = '',
+  buttonText = 'Schedule a Meeting',
+  variant = 'default',
+  buttonType = 'button',
+  ...buttonProps
 }) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  const handleOpen = () => {
-    setIsDialogOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsDialogOpen(false);
-  };
+  const [open, setOpen] = React.useState(false);
 
   return (
     <>
       <Button 
-        variant={variant} 
-        onClick={handleOpen} 
-        className={className}
-        {...props}
+        onClick={() => setOpen(true)} 
+        variant={variant}
+        type={buttonType}
+        {...buttonProps}
       >
-        {icon && <CalendarClock className="w-4 h-4 mr-2" />}
-        {label}
+        {buttonText}
       </Button>
       
-      <BookingDialog 
-        isOpen={isDialogOpen} 
-        onClose={handleClose} 
+      <BookingDialog
+        open={open}
+        onOpenChange={setOpen}
+        meetingType={meetingType}
         defaultTopic={topic}
-        defaultType={type}
+        defaultEmail={prefilledEmail}
+        defaultName={prefilledName}
+        defaultCompany={prefilledCompany}
       />
     </>
   );

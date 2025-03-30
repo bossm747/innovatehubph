@@ -1,6 +1,7 @@
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.38.4'
+import { SmtpClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -108,7 +109,7 @@ async function sendCustomerEmail(appointment: AppointmentData) {
         <style>
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-          .header { background-color: #0f5ca5; padding: 20px; text-align: center; color: white; }
+          .header { background-color: #9b87f5; padding: 20px; text-align: center; color: white; }
           .content { padding: 20px; background-color: #f9f9f9; }
           .details { margin: 20px 0; }
           .details-item { padding: 5px 0; border-bottom: 1px solid #eee; }
@@ -152,28 +153,27 @@ async function sendCustomerEmail(appointment: AppointmentData) {
   `
 
   try {
-    // Use Resend to send the email
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${Deno.env.get('RESEND_API_KEY')}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        from: 'InnovateHub <appointments@innovatehub.ph>',
-        to: [appointment.email],
-        subject: subject,
-        html: html,
-        reply_to: 'businessdevelopment@innovatehub.ph'
-      })
-    })
+    // Use Hostinger SMTP to send the email
+    const client = new SmtpClient();
 
-    if (!response.ok) {
-      const errorData = await response.json()
-      throw new Error(`Failed to send customer email: ${JSON.stringify(errorData)}`)
-    }
+    // Connect to Hostinger SMTP server
+    await client.connectTLS({
+      hostname: Deno.env.get("SMTP_HOST") || "smtp.hostinger.com",
+      port: parseInt(Deno.env.get("SMTP_PORT") || "465"),
+      username: Deno.env.get("SMTP_USERNAME") || "appointments@innovatehub.ph",
+      password: Deno.env.get("SMTP_PASSWORD") || "",
+    });
 
-    return true
+    const result = await client.send({
+      from: "InnovateHub <appointments@innovatehub.ph>",
+      to: [appointment.email],
+      subject: subject,
+      html: html,
+      replyTo: "businessdevelopment@innovatehub.ph"
+    });
+
+    await client.close();
+    return true;
   } catch (error) {
     console.error('Error sending customer email:', error)
     throw error
@@ -203,11 +203,11 @@ async function sendStaffNotificationEmail(appointment: AppointmentData) {
         <style>
           body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-          .header { background-color: #0f5ca5; padding: 20px; text-align: center; color: white; }
+          .header { background-color: #9b87f5; padding: 20px; text-align: center; color: white; }
           .content { padding: 20px; background-color: #f9f9f9; }
           .details { margin: 20px 0; }
           .details-item { padding: 5px 0; border-bottom: 1px solid #eee; }
-          .notes { background-color: #f0f0f0; padding: 15px; border-left: 4px solid #0f5ca5; margin: 15px 0; }
+          .notes { background-color: #f0f0f0; padding: 15px; border-left: 4px solid #9b87f5; margin: 15px 0; }
           .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #666; }
         </style>
       </head>
@@ -252,28 +252,27 @@ async function sendStaffNotificationEmail(appointment: AppointmentData) {
   `
 
   try {
-    // Use Resend to send the email
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${Deno.env.get('RESEND_API_KEY')}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        from: 'InnovateHub Bookings <appointments@innovatehub.ph>',
-        to: ['businessdevelopment@innovatehub.ph'],
-        subject: subject,
-        html: html,
-        reply_to: appointment.email
-      })
-    })
+    // Use Hostinger SMTP to send the email
+    const client = new SmtpClient();
 
-    if (!response.ok) {
-      const errorData = await response.json()
-      throw new Error(`Failed to send staff notification email: ${JSON.stringify(errorData)}`)
-    }
+    // Connect to Hostinger SMTP server
+    await client.connectTLS({
+      hostname: Deno.env.get("SMTP_HOST") || "smtp.hostinger.com",
+      port: parseInt(Deno.env.get("SMTP_PORT") || "465"),
+      username: Deno.env.get("SMTP_USERNAME") || "appointments@innovatehub.ph",
+      password: Deno.env.get("SMTP_PASSWORD") || "",
+    });
 
-    return true
+    const result = await client.send({
+      from: "InnovateHub Bookings <appointments@innovatehub.ph>",
+      to: ["businessdevelopment@innovatehub.ph"],
+      subject: subject,
+      html: html,
+      replyTo: appointment.email
+    });
+
+    await client.close();
+    return true;
   } catch (error) {
     console.error('Error sending staff notification email:', error)
     throw error

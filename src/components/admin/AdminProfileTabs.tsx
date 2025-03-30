@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AdminProfileForm from './AdminProfileForm';
 import AdminSettingsTab from './AdminSettingsTab';
-import { CalendarIcon, UserIcon, SettingsIcon } from 'lucide-react';
+import { CalendarIcon, UserIcon, SettingsIcon, MailIcon } from 'lucide-react';
 import AppointmentsTab from './AppointmentsTab';
+import EmailMarketingTab from './EmailMarketingTab';
 
 interface AdminProfileTabsProps {
   profileData: {
@@ -38,6 +39,10 @@ const AdminProfileTabs: React.FC<AdminProfileTabsProps> = ({
           <CalendarIcon className="w-4 h-4 mr-2" />
           Appointments
         </TabsTrigger>
+        <TabsTrigger value="email" className="data-[state=active]:bg-innovate-50">
+          <MailIcon className="w-4 h-4 mr-2" />
+          Email Marketing
+        </TabsTrigger>
         <TabsTrigger value="settings" className="data-[state=active]:bg-innovate-50">
           <SettingsIcon className="w-4 h-4 mr-2" />
           Settings
@@ -53,6 +58,10 @@ const AdminProfileTabs: React.FC<AdminProfileTabsProps> = ({
       
       <TabsContent value="appointments" className="bg-white p-6 border rounded-md shadow-sm">
         <AppointmentsTab />
+      </TabsContent>
+      
+      <TabsContent value="email" className="bg-white p-6 border rounded-md shadow-sm">
+        <EmailMarketingTab />
       </TabsContent>
       
       <TabsContent value="settings" className="bg-white p-6 border rounded-md shadow-sm">

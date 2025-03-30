@@ -10,12 +10,12 @@ const MobileMenuToggle = ({ isOpen, onToggle }: MobileMenuToggleProps) => {
   return (
     <button 
       onClick={onToggle} 
-      className="flex items-center justify-center w-10 h-10 rounded-md hover:bg-white/10 transition-colors focus:outline-none" 
+      className="flex items-center justify-center w-10 h-10 rounded-md bg-white border border-gray-100 shadow-sm hover:bg-gray-50 transition-colors focus:outline-none" 
       aria-label="Toggle Menu"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6 text-white"
+        className="h-6 w-6 text-black"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"

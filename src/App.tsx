@@ -7,10 +7,12 @@ import { useScrollToTop } from './hooks/useScrollToTop';
 // Import page components
 import Index from '@/pages/Index';
 import AboutPage from '@/pages/AboutPage';
+import AboutUsPage from '@/pages/AboutUsPage';
 import ServicesPage from '@/pages/ServicesPage';
 import AllServicesPage from '@/pages/AllServicesPage';
 import TeamPage from '@/pages/TeamPage';
 import ContactPage from '@/pages/ContactPage';
+import ContactUsPage from '@/pages/ContactUsPage';
 import BlogPage from '@/pages/BlogPage';
 import ClientsPage from '@/pages/ClientsPage';
 import FacebookPage from '@/pages/FacebookPage';
@@ -30,6 +32,9 @@ import AIAppsManagementPage from '@/pages/AIAppsManagementPage';
 import FileUploadPage from '@/pages/FileUploadPage';
 import PartnersPage from '@/pages/PartnersPage';
 import AdminPortal from '@/components/AdminPortal';
+import PlatapayDetailsPage from '@/pages/PlatapayDetailsPage';
+import PrivacyPolicyPage from '@/pages/PrivacyPolicyPage';
+import EmailTemplatesPage from '@/components/email/EmailTemplatesPage';
 
 // Create a query client
 const queryClient = new QueryClient();
@@ -57,16 +62,21 @@ function App() {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/services" element={<ServicesPage />} />
         <Route path="/all-services" element={<AllServicesPage />} />
         <Route path="/team" element={<TeamPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/contact-us" element={<ContactUsPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/clients" element={<ClientsPage />} />
         <Route path="/partners" element={<PartnersPage />} />
         <Route path="/facebook" element={<FacebookPage />} />
         <Route path="/inquiry" element={<InquiryPage />} />
         <Route path="/fileupload" element={<FileUploadPage />} />
+        <Route path="/platapay" element={<PlatapayDetailsPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/email-templates" element={<EmailTemplatesPage />} />
         
         {/* Service Pages */}
         <Route path="/fintech-solutions" element={<FintechSolutionsPage />} />

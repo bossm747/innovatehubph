@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart3, Users, Send, Settings, Brain, Sparkles, Gift, Target, MessageSquare, FileType } from 'lucide-react';
+import { BarChart3, Users, Send, Settings, Brain, Sparkles, Gift, Target, MessageSquare, FileType, CreditCard } from 'lucide-react';
 import RecipientsList from './marketing/RecipientsList';
 import CampaignManager from './marketing/CampaignManager';
 import MarketingCopyGenerator from './marketing/MarketingCopyGenerator';
@@ -15,6 +14,7 @@ import PromotionsManager from './marketing/PromotionsManager';
 import PromoCreator from './marketing/PromoCreator';
 import EmailTemplateGenerator from '../email/EmailTemplateGenerator';
 import EmailTemplatesPage from '../email/EmailTemplatesPage';
+import PlatapayEmailTemplate from '../email/PlatapayEmailTemplate';
 
 const EmailMarketingTab: React.FC = () => {
   const [activeTab, setActiveTab] = useState('campaigns');
@@ -34,6 +34,8 @@ const EmailMarketingTab: React.FC = () => {
         return <PromoCreator />;
       case 'templates':
         return <EmailTemplatesPage />;
+      case 'platapay':
+        return <PlatapayEmailTemplate />;
       case 'ai-tools':
         return <AIMarketingTools onCopyGenerated={setGeneratedContent} />;
       case 'analytics':
@@ -66,7 +68,7 @@ const EmailMarketingTab: React.FC = () => {
         onValueChange={setActiveTab}
         className="space-y-4"
       >
-        <TabsList className="grid grid-cols-9 w-full">
+        <TabsList className="grid grid-cols-10 w-full">
           <TabsTrigger value="campaigns" className="flex items-center">
             <Send className="w-4 h-4 mr-2" />
             Campaigns
@@ -90,6 +92,10 @@ const EmailMarketingTab: React.FC = () => {
           <TabsTrigger value="templates" className="flex items-center">
             <FileType className="w-4 h-4 mr-2" />
             Templates
+          </TabsTrigger>
+          <TabsTrigger value="platapay" className="flex items-center">
+            <CreditCard className="w-4 h-4 mr-2" />
+            PlataPay
           </TabsTrigger>
           <TabsTrigger value="ai-tools" className="flex items-center">
             <Sparkles className="w-4 h-4 mr-2" />

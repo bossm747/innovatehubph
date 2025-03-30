@@ -74,18 +74,6 @@ const CompanyOverview = () => {
                 </div>
               </div>
               
-              <div className="absolute -top-6 -left-6 bg-white p-4 rounded-lg shadow-lg z-20">
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-innovate-100 rounded-full flex items-center justify-center">
-                    <Building className="h-6 w-6 text-innovate-700" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-innovate-800">Est. 2024</h4>
-                    <p className="text-sm text-gray-500">Founded in Batangas</p>
-                  </div>
-                </div>
-              </div>
-              
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -z-10">
                 <div className="w-64 h-64 rounded-full bg-gradient-to-br from-innovate-100 to-innovate-200 opacity-60 blur-2xl"></div>
               </div>

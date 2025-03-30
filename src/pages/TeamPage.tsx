@@ -10,7 +10,7 @@ import ContactSection from '@/components/ContactSection';
 
 const TeamPage = () => {
   return (
-    <>
+    <div className="min-h-screen w-full overflow-x-hidden relative">
       <Helmet>
         <title>Our Team | InnovateHub</title>
         <meta name="description" content="Meet the dedicated team behind InnovateHub, working to bring innovative solutions to the Philippine tech landscape." />
@@ -18,7 +18,7 @@ const TeamPage = () => {
       
       <Navbar />
       
-      <main>
+      <main className="w-full py-0">
         <TeamPageHeader 
           title="Our Team" 
           description="Meet the dedicated professionals behind InnovateHub's success"
@@ -26,10 +26,9 @@ const TeamPage = () => {
         <TeamSectionWithData />
         <TeamValues />
         <ContactSection />
+        <Footer />
       </main>
-      
-      <Footer />
-    </>
+    </div>
   );
 };
 

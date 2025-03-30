@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -8,6 +9,8 @@ import ServiceTiles from '@/components/ServiceTiles';
 import PlatapayServices from '@/components/PlatapayServices';
 import Features from '@/components/Features';
 import { Toaster } from 'sonner';
+import { Helmet } from 'react-helmet';
+
 const ServicesPage = () => {
   // Add scroll reveal effect
   useEffect(() => {
@@ -31,7 +34,14 @@ const ServicesPage = () => {
     // Clean up listener
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  return <div className="min-h-screen w-full overflow-x-hidden relative bg-gradient-to-b from-gray-50 to-white">
+  
+  return (
+    <div className="min-h-screen w-full overflow-x-hidden relative bg-gradient-to-b from-gray-50 to-white">
+      <Helmet>
+        <title>Our Services | InnovateHub Inc.</title>
+        <meta name="description" content="Discover our smart solutions for the digital economy - from PlataPay to AI Solutions." />
+      </Helmet>
+      
       <Toaster position="top-right" />
       
       {/* Background patterns */}
@@ -43,7 +53,7 @@ const ServicesPage = () => {
       
       {/* Main content */}
       <Navbar />
-      <main className="w-full pt-16 py-0">
+      <main className="w-full py-0">
         <ServicesHero title="What We Do" subtitle="Smart Solutions for the Digital Economy" imagePath="/lovable-uploads/d51f3d08-0518-4808-af9d-83ddda86ee94.png" />
         <ServiceTiles />
         <Features />
@@ -51,6 +61,8 @@ const ServicesPage = () => {
         <ContactSection />
         <Footer />
       </main>
-    </div>;
+    </div>
+  );
 };
+
 export default ServicesPage;

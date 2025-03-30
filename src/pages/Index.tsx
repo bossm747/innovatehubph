@@ -83,34 +83,36 @@ const Index = () => {
       />
       
       <Navbar />
-      <Hero />
-      
-      {/* Why Choose Us Section */}
-      <WhyChooseUsSection />
-      
-      {/* PlataPay Feature Section */}
-      <PlataPay />
-      
-      {/* Service Tiles Section */}
-      <ServiceTiles />
-      
-      {/* Client Showcase */}
-      <ClientShowcaseSection />
-      
-      {/* Testimonials Section */}
-      <Testimonials />
-      
-      {/* Team Preview Section */}
-      <TeamPreviewSection />
-      
-      {/* CTA Section */}
-      <CTASection />
-      
-      {/* Video Section */}
-      <YoutubeVideo />
-      
-      <ContactSection />
-      <Footer />
+      <div className="w-full py-0">
+        <Hero />
+        
+        {/* Why Choose Us Section */}
+        <WhyChooseUsSection />
+        
+        {/* PlataPay Feature Section */}
+        <PlataPay />
+        
+        {/* Service Tiles Section */}
+        <ServiceTiles />
+        
+        {/* Client Showcase */}
+        <ClientShowcaseSection />
+        
+        {/* Testimonials Section */}
+        <Testimonials />
+        
+        {/* Team Preview Section */}
+        <TeamPreviewSection />
+        
+        {/* CTA Section */}
+        <CTASection />
+        
+        {/* Video Section */}
+        <YoutubeVideo />
+        
+        <ContactSection />
+        <Footer />
+      </div>
     </div>
   );
 };

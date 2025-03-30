@@ -11,7 +11,7 @@ import { AvailableSecretsProvider } from "@/contexts/AvailableSecretsContext";
 
 const AIAppsManagementPage = () => {
   return (
-    <>
+    <div className="min-h-screen w-full overflow-x-hidden relative">
       <Helmet>
         <title>AI Apps Management - InnovateHub</title>
         <meta name="description" content="Internal AI tools and resources management for InnovateHub projects." />
@@ -51,7 +51,7 @@ const AIAppsManagementPage = () => {
       </main>
       
       <Footer />
-    </>
+    </div>
   );
 };
 

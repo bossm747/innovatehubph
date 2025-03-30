@@ -69,7 +69,7 @@ const ContactPage = () => {
       
       {/* Main content */}
       <Navbar />
-      <div className="w-full pt-16">
+      <div className="w-full py-0">
         <section className="relative py-12 px-6 md:px-12 lg:px-16 overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
           <HeroBackground />
           

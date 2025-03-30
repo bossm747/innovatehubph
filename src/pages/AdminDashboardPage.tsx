@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const AdminDashboardPage = () => {
   return (
-    <>
+    <div className="min-h-screen w-full overflow-x-hidden relative">
       <Helmet>
         <title>Admin Dashboard | InnovateHub</title>
         <meta name="description" content="InnovateHub administrative dashboard for admin members" />
@@ -20,7 +20,7 @@ const AdminDashboardPage = () => {
       
       <Navbar />
       
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start mb-8">
             <div>
@@ -74,7 +74,7 @@ const AdminDashboardPage = () => {
       </main>
       
       <Footer />
-    </>
+    </div>
   );
 };
 

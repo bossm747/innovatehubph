@@ -59,7 +59,7 @@ const BlogPage = () => {
       
       {/* Main content */}
       <Navbar />
-      <div className="w-full pt-16">
+      <div className="w-full py-0">
         <section className="py-20 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-blue-800 to-blue-900 text-white">
           {/* Background patterns */}
           <div className="absolute inset-0 overflow-hidden opacity-10">

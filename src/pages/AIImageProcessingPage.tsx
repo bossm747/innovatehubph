@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const AIImageProcessingPage = () => {
   return (
-    <>
+    <div className="min-h-screen w-full overflow-x-hidden relative">
       <Helmet>
         <title>AI Image Processing and Web Scraping - InnovateHub</title>
         <meta name="description" content="AI-powered image processing and web scraping tools for InnovateHub projects" />
@@ -42,7 +42,7 @@ const AIImageProcessingPage = () => {
       </main>
       
       <Footer />
-    </>
+    </div>
   );
 };
 

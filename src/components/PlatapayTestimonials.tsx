@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 
 interface Testimonial {
@@ -13,6 +13,7 @@ interface Testimonial {
 
 const PlatapayTestimonials = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   
   const testimonials: Testimonial[] = [
     {
@@ -41,13 +42,22 @@ const PlatapayTestimonials = () => {
     }
   ];
 
+  const totalTestimonials = testimonials.length;
+
+  const goToNextSlide = useCallback(() => {
+    setActiveIndex((current) => (current + 1) % totalTestimonials);
+  }, [totalTestimonials]);
+
+  // Auto-slide with continuous loop
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((current) => (current + 1) % testimonials.length);
-    }, 5000);
-    
-    return () => clearInterval(interval);
-  }, [testimonials.length]);
+    if (!isPaused) {
+      const interval = setInterval(() => {
+        goToNextSlide();
+      }, 5000);
+      
+      return () => clearInterval(interval);
+    }
+  }, [goToNextSlide, isPaused]);
 
   return (
     <section className="py-20 px-6 md:px-12 bg-gradient-to-b from-white to-innovate-50">
@@ -74,7 +84,9 @@ const PlatapayTestimonials = () => {
           </p>
         </div>
         
-        <div className="relative max-w-4xl mx-auto fade-up">
+        <div className="relative max-w-4xl mx-auto fade-up"
+             onMouseEnter={() => setIsPaused(true)}
+             onMouseLeave={() => setIsPaused(false)}>
           <div className="absolute -top-10 -left-10 text-innovate-200">
             <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M32 16H16V32C16 40.8366 23.1634 48 32 48V40C27.5817 40 24 36.4183 24 32H32V16Z" fill="currentColor"/>

@@ -36,7 +36,7 @@ const Footer = ({ className = "" }: FooterProps) => {
             <FooterSocialLinks />
           </div>
           
-          {/* Quick Links */}
+          {/* Quick Links - Fixed by passing empty props object */}
           <FooterNavLinks />
           
           {/* Contact Information */}

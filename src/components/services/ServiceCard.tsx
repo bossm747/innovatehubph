@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -46,8 +45,6 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
         {index === 0 && service.id === "fintech-solutions" ? (
           <div className="flex items-center mb-4">
             <div className="relative mr-4">
-              <div className="absolute inset-0 bg-black/80 rounded-full blur-sm transition-all duration-300 transform scale-110"></div>
-              <div className="absolute inset-0 bg-gradient-to-tr from-innovate-500/30 to-transparent rounded-full blur-md animation-pulse"></div>
               <img 
                 src="/lovable-uploads/9b23899d-8537-4e7c-996b-5fdc791cbde2.png" 
                 alt={`${service.title} Logo`} 

@@ -43,7 +43,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
     >
       <div className={`absolute top-0 left-0 w-2 h-full ${getGradientColor(index).split(' ')[0]}`}></div>
       <div className="p-8 relative z-10">
-        {index === 0 && service.id === "fintech-solutions" && (
+        {index === 0 && service.id === "fintech-solutions" ? (
           <div className="flex items-center mb-4">
             <div className="relative mr-4">
               <div className="absolute inset-0 bg-black/80 rounded-full blur-sm transition-all duration-300 transform scale-110"></div>

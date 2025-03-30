@@ -4,7 +4,6 @@
   margin: 0;
   padding: 0;
   text-align: center;
-  overflow-x: hidden;
 }
 
 html, body {
@@ -14,7 +13,6 @@ html, body {
   padding: 0;
   box-sizing: border-box;
   overflow-x: hidden;
-  /* Removing any potential smooth scrolling properties that could cause stuttering */
   scroll-behavior: auto;
 }
 
@@ -22,7 +20,6 @@ body {
   min-height: 100vh;
   position: relative;
   max-width: 100vw;
-  /* Adjust padding to account for navbar without torn paper edges */
   padding-top: 70px;
 }
 
@@ -62,7 +59,6 @@ body {
   color: #888;
 }
 
-/* Full width container overrides - removing any container classes that might restrict width */
 .container, 
 .container-fluid,
 .container-lg,
@@ -98,7 +94,6 @@ section {
   overflow-x: hidden;
 }
 
-/* Enhanced button styles */
 .btn-primary {
   @apply bg-innovate-600 hover:bg-innovate-700 text-white transition-all duration-300 shadow-md hover:shadow-lg;
   min-width: 160px;
@@ -134,7 +129,6 @@ section {
   overflow: hidden;
 }
 
-/* Enhanced animation effects */
 @keyframes float {
   0%, 100% {
     transform: translateY(0);
@@ -161,7 +155,6 @@ section {
   animation: pulse-glow 3s infinite;
 }
 
-/* Enhanced shine effect */
 .btn-shine::after {
   content: '';
   position: absolute;
@@ -183,7 +176,6 @@ section {
   transform: rotate(30deg) translateX(100%);
 }
 
-/* Typing cursor animation */
 @keyframes typing-cursor {
   0%, 100% {
     border-right-color: transparent;
@@ -200,7 +192,6 @@ section {
   white-space: nowrap;
 }
 
-/* Mobile screen device animation */
 .mobile-device {
   position: relative;
   transition: transform 0.5s ease-in-out;
@@ -210,7 +201,6 @@ section {
   transform: translateY(-10px) rotateY(10deg);
 }
 
-/* 3D Card effect */
 .card-3d {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   transform: perspective(1000px) rotateX(0) rotateY(0);
@@ -221,7 +211,6 @@ section {
   box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15);
 }
 
-/* Glowing dot animation for security icon */
 .security-dot {
   position: relative;
 }

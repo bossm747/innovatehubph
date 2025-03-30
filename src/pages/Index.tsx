@@ -54,7 +54,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className={`overflow-x-hidden w-[100vw] max-w-[100vw] min-h-screen m-0 p-0 relative ${isMobile ? 'pb-0' : ''}`}>
+    <div className="w-full min-h-screen m-0 p-0 relative">
       <Helmet>
         <title>InnovateHub Inc. | Digital Innovation Solutions</title>
         <meta name="description" content="Empowering the Future with Digital Innovation - Customized fintech, AI, and e-commerce solutions for a connected world." />
@@ -85,7 +85,7 @@ const Index = () => {
       />
       
       <Navbar />
-      <div className={`w-full py-0 ${isMobile ? 'pb-0' : ''}`}>
+      <div className="w-full py-0">
         <Hero />
         
         {/* Why Choose Us Section */}
@@ -113,7 +113,7 @@ const Index = () => {
         <YoutubeVideo />
         
         <ContactSection />
-        <Footer className={isMobile ? "pb-0 mb-0" : ""} />
+        <Footer />
       </div>
     </div>
   );

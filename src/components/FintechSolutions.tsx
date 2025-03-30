@@ -107,7 +107,7 @@ const FintechSolutions = () => {
               <div className="absolute -bottom-3 -right-3 w-24 h-24 bg-amber-100 rounded-lg -z-10"></div>
               <div className="rounded-xl overflow-hidden shadow-2xl relative">
                 <img 
-                  src="/lovable-uploads/cd9619d5-79ce-4e9a-8c8a-293137651a09.png" 
+                  src="/lovable-uploads/e01c80cc-5e3d-48bf-b1f9-6bd6a5868087.png" 
                   alt="Fintech Digital Payment Solution"
                   className="w-full h-auto rounded-xl"
                   loading="eager"
@@ -116,7 +116,6 @@ const FintechSolutions = () => {
                     mixBlendMode: 'multiply'
                   }}
                 />
-                {/* Removed background div and used styling on the image itself */}
               </div>
             </div>
           </div>

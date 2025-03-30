@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom';
-import { ArrowRight, Phone, Users } from 'lucide-react';
+import { ArrowRight, CreditCard, Users, Phone } from 'lucide-react';
 
 const HeroButtons = () => {
   return (
@@ -13,8 +13,9 @@ const HeroButtons = () => {
         asChild
         className="group"
       >
-        <Link to="/services" className="flex items-center justify-center">
-          Explore Our Services <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+        <Link to="/fintech-solutions" className="flex items-center justify-center">
+          <CreditCard className="mr-2 h-4 w-4" />
+          Fintech Solutions <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
         </Link>
       </Button>
       <Button 

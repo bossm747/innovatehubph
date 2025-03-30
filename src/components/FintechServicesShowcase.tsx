@@ -36,7 +36,7 @@ const FintechServicesShowcase = () => {
       description: "Contactless transactions with QR code scanning for fast and secure payments to merchants."
     },
     {
-      icon: "/lovable-uploads/0e79bef6-ea26-4da9-8c17-6bb4bacc118a.png",
+      icon: "/lovable-uploads/9a53fef4-fd04-4280-bcc3-c6dda954ca97.png",
       title: "Agent Network",
       description: "Become a financial agent and earn commissions by offering financial services in your community."
     }

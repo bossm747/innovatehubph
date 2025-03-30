@@ -25,6 +25,11 @@ const PartnersSection = () => {
       id: 4,
       name: "Foodpanda",
       logo: "/lovable-uploads/f0b7b62c-13ce-4b9c-bb0b-49b6bbd3e183.png",
+    },
+    {
+      id: 5,
+      name: "Sterling Bank",
+      logo: "/lovable-uploads/c482324a-e57b-4e5c-a15a-137cf7868b9a.png",
     }
   ];
   
@@ -38,7 +43,7 @@ const PartnersSection = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center justify-center mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 items-center justify-center mb-10">
           {partners.map((partner) => (
             <div 
               key={partner.id} 

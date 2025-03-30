@@ -113,6 +113,20 @@ const partnersData: Partner[] = [
       "E-load and gaming credits distribution",
       "Government service fee collection"
     ]
+  },
+  {
+    id: 9,
+    name: "Sterling Bank",
+    logo: "/lovable-uploads/c482324a-e57b-4e5c-a15a-137cf7868b9a.png", 
+    category: "Banking",
+    description: "Sterling Bank is a financial institution providing innovative banking solutions and financial services.",
+    details: "Sterling Bank partners with InnovateHub to offer digital banking services through PlataPay, enabling secure transactions and financial services for customers across the Philippines.",
+    website: "https://www.sterlingbank.com/",
+    integrations: [
+      "Secure mobile banking integration",
+      "Real-time transaction processing",
+      "Corporate banking solutions for business clients"
+    ]
   }
 ];
 

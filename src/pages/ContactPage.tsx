@@ -8,6 +8,7 @@ import ContactInfo from '@/components/ContactInfo';
 import CircuitBackground from '@/components/CircuitBackground';
 import { Button } from '@/components/ui/button';
 import { Helmet } from 'react-helmet';
+import HeroBackground from '@/components/hero/HeroBackground';
 
 const ContactPage = () => {
   // Add scroll reveal effect
@@ -69,35 +70,46 @@ const ContactPage = () => {
       {/* Main content */}
       <Navbar />
       <div className="w-full pt-16">
-        <section className="py-16 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-blue-800 to-blue-900 text-white">
-          {/* Background patterns */}
-          <div className="absolute inset-0 overflow-hidden opacity-10">
-            <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-blue-500 filter blur-3xl"></div>
-            <div className="absolute top-1/2 -left-24 w-64 h-64 rounded-full bg-white filter blur-3xl"></div>
-            <div className="absolute -bottom-32 right-1/4 w-80 h-80 rounded-full bg-blue-300 filter blur-3xl"></div>
-            
-            {/* Grid pattern */}
-            <div className="absolute inset-0" style={{ 
-              backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px)', 
-              backgroundSize: '20px 20px' 
-            }}></div>
-          </div>
+        <section className="relative py-12 px-6 md:px-12 lg:px-16 overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
+          <HeroBackground />
           
           <div className="container mx-auto relative z-10">
-            <div className="text-center mb-16 fade-up">
-              <span className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-gray-200 rounded-full mb-4">
-                Get In Touch
-              </span>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-                Ready to Collaborate? Let's Talk!
-              </h1>
-              <p className="text-lg text-gray-200 max-w-2xl mx-auto mb-6">
-                Reach out and let's co-create your digital future. We're here to help transform your business with innovative technology solutions.
-              </p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div className="max-w-2xl fade-up">
+                <span className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-blue-200 rounded-full mb-4 animate-fade-in" style={{animationDelay: '100ms'}}>
+                  Get In Touch
+                </span>
+                <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white animate-fade-in" style={{animationDelay: '200ms'}}>
+                  Ready to Collaborate? <span className="text-blue-300">Let's Talk!</span>
+                </h1>
+                <p className="text-lg text-blue-100 mb-6 animate-fade-in" style={{animationDelay: '300ms'}}>
+                  Reach out and let's co-create your digital future. We're here to help transform your business with innovative technology solutions.
+                </p>
+                
+                <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white btn-shine animate-fade-in" style={{animationDelay: '400ms'}}>
+                  <Link to="/inquiry">Service-Specific Inquiries</Link>
+                </Button>
+                
+                <div className="mt-8 flex items-center gap-6 text-blue-200 animate-fade-in" style={{animationDelay: '500ms'}}>
+                  <div className="flex items-center">
+                    <span className="h-5 w-5 mr-2 text-blue-300">•</span>
+                    Quick Response
+                  </div>
+                  <div className="flex items-center">
+                    <span className="h-5 w-5 mr-2 text-blue-300">•</span>
+                    Expert Consultation
+                  </div>
+                </div>
+              </div>
               
-              <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white btn-shine">
-                <Link to="/inquiry">Service-Specific Inquiries</Link>
-              </Button>
+              <div className="relative hidden lg:block">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-500/20 rounded-lg blur-xl"></div>
+                <img 
+                  src="/lovable-uploads/4d5b3eaa-0065-48e8-9976-3931a1836f81.png" 
+                  alt="Contact Us" 
+                  className="relative z-10 rounded-lg shadow-lg object-cover w-full h-auto transform hover:scale-105 transition-all duration-500"
+                />
+              </div>
             </div>
           </div>
         </section>

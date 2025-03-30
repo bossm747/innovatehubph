@@ -11,27 +11,27 @@ interface ServiceCard {
 const FintechServicesShowcase = () => {
   const services: ServiceCard[] = [
     {
-      icon: "/lovable-uploads/543761ed-5912-49d7-b9c8-bd42d3ae0167.png",
+      icon: "/lovable-uploads/a5490cb8-0d77-4fa8-bc13-86833f1e82b5.png",
       title: "Digital Wallet",
       description: "Secure mobile wallet for sending money, paying bills, and managing funds with just a few taps."
     },
     {
-      icon: "/lovable-uploads/8a83083d-1f94-4e7d-98d1-a1e602e39ff6.png",
+      icon: "/lovable-uploads/203794f3-d4dd-4331-afe6-652573fd1add.png",
       title: "Bills Payment",
       description: "Convenient payment of utilities, government fees, loans, and other bills through our app."
     },
     {
-      icon: "/lovable-uploads/3f4072eb-1c6d-4923-a9ba-65dec4af9f12.png",
+      icon: "/lovable-uploads/f4926fa8-99b1-4afd-8950-ecfb710f9aaf.png",
       title: "Remittance",
       description: "Fast and secure money transfers to friends and family across the Philippines and internationally."
     },
     {
-      icon: "/lovable-uploads/13d6fdac-7203-4f96-86da-e4730af74b31.png",
+      icon: "/lovable-uploads/a9344b31-8e05-46b4-957e-85bf7615799d.png",
       title: "E-Loading",
       description: "Quick and easy load service for all major mobile networks at competitive rates."
     },
     {
-      icon: "/lovable-uploads/e631387a-febd-43e4-a620-a6bdc8a4f081.png",
+      icon: "/lovable-uploads/65de4566-b370-45fd-a264-9be308c00a28.png",
       title: "QR Payments",
       description: "Contactless transactions with QR code scanning for fast and secure payments to merchants."
     },

@@ -1,23 +1,23 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart, PieChart, LineChart } from 'lucide-react';
+import { BarChart2, PieChart, TrendingUp } from 'lucide-react';
 
 const DataAnalysisToolsSection = () => {
   const tools = [
     {
+      title: "Business Intelligence",
+      description: "Transform your data into actionable insights with machine learning-powered BI tools.",
+      icon: <BarChart2 className="h-8 w-8 text-innovate-600" />
+    },
+    {
       title: "Predictive Analytics",
-      description: "Forecast trends and make data-driven predictions using historical data and AI algorithms.",
-      icon: <LineChart className="h-8 w-8 text-innovate-600" />
+      description: "Anticipate market trends and customer behaviors with our AI-driven prediction models.",
+      icon: <TrendingUp className="h-8 w-8 text-innovate-600" />
     },
     {
       title: "Data Visualization",
-      description: "Transform complex data into intuitive charts and graphs for better decision making.",
-      icon: <BarChart className="h-8 w-8 text-innovate-600" />
-    },
-    {
-      title: "Market Segmentation",
-      description: "Identify customer segments and understand market dynamics with AI-powered clustering.",
+      description: "Create dynamic visual reports that make complex data easy to understand and act upon.",
       icon: <PieChart className="h-8 w-8 text-innovate-600" />
     }
   ];
@@ -33,7 +33,7 @@ const DataAnalysisToolsSection = () => {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              Extract actionable insights from your data with our advanced analysis tools.
+              Make better business decisions with our data analysis tools powered by advanced AI algorithms.
             </p>
           </CardContent>
         </Card>

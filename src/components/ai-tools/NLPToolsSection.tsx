@@ -1,24 +1,24 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { MessageSquare, FileText, BookOpen } from 'lucide-react';
+import { MessageSquare, BookOpen, Mic } from 'lucide-react';
 
 const NLPToolsSection = () => {
   const tools = [
     {
-      title: "Text Generation",
-      description: "Generate human-like text for various applications including content creation, chatbots, and more.",
+      title: "Conversational AI",
+      description: "Build intelligent chatbots and virtual assistants that understand natural language.",
       icon: <MessageSquare className="h-8 w-8 text-innovate-600" />
     },
     {
-      title: "Document Analysis",
-      description: "Extract key information, summarize content, and analyze sentiment from documents and text.",
-      icon: <FileText className="h-8 w-8 text-innovate-600" />
+      title: "Text Analysis",
+      description: "Extract insights from documents, social media, and customer feedback with sentiment analysis.",
+      icon: <BookOpen className="h-8 w-8 text-innovate-600" />
     },
     {
-      title: "Research Assistant",
-      description: "AI-powered research tool that finds, summarizes, and organizes information from multiple sources.",
-      icon: <BookOpen className="h-8 w-8 text-innovate-600" />
+      title: "Speech Recognition",
+      description: "Convert spoken language into text for transcription and voice-enabled applications.",
+      icon: <Mic className="h-8 w-8 text-innovate-600" />
     }
   ];
 
@@ -33,7 +33,7 @@ const NLPToolsSection = () => {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              Leverage the power of natural language processing to streamline your workflows.
+              Harness the power of language processing to enhance customer engagement and automate communication tasks.
             </p>
           </CardContent>
         </Card>

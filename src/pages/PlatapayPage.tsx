@@ -1,5 +1,4 @@
 
-// Fix for error: Type '"accent"' is not assignable to type '"default" | "primary" | "blue" | "purple" | "gradient" | "secondary" | "light-blue"'
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Button } from '@/components/ui/button';
@@ -13,7 +12,7 @@ import TestimonialSlider from '@/components/TestimonialSlider';
 import PricingSection from '@/components/PricingSection';
 import FAQSection from '@/components/FAQSection';
 import CTASection from '@/components/CTASection';
-import { Agent, CircleUserRound, Hand, Smartphone, Store, QrCode } from 'lucide-react';
+import { CircleUserRound, Hand, Smartphone, Store, QrCode } from 'lucide-react';
 
 const PlatapayPage = () => {
   return (
@@ -40,13 +39,13 @@ const PlatapayPage = () => {
             <Card className="shadow-md bg-white border-blue-100 hover:shadow-lg transition-all">
               <CardContent className="p-6">
                 <div className="mb-4 h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-                  <Agent size={24} />
+                  <Store size={24} />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">For Agents</h3>
                 <p className="text-muted-foreground mb-4">
                   Earn additional income by offering digital financial services to your community.
                 </p>
-                <Button variant="blue" className="w-full">
+                <Button variant="primary" className="w-full">
                   Become an Agent
                 </Button>
               </CardContent>

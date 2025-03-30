@@ -1,23 +1,24 @@
 
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Tabs, TabsContent } from '@/components/ui/tabs';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import AIToolsHeader, { AIToolTab } from '@/components/AIToolsHeader';
+import AIToolsHeader, { AIToolTab } from '@/components/ai-tools/AIToolsHeader';
 import NLPToolsSection from '@/components/ai-tools/NLPToolsSection';
 import ImageToolsSection from '@/components/ai-tools/ImageToolsSection';
 import DataAnalysisToolsSection from '@/components/ai-tools/DataAnalysisToolsSection';
 
 const AIToolsPage = () => {
-  // Add state for active tab
   const [activeTab, setActiveTab] = useState<AIToolTab>('nlp');
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden relative">
+    <div className="min-h-screen w-full overflow-x-hidden">
       <Helmet>
         <title>AI Tools | InnovateHub</title>
-        <meta name="description" content="Explore InnovateHub's suite of AI tools for business automation, customer service, and data analysis." />
+        <meta 
+          name="description" 
+          content="Explore InnovateHub's suite of AI tools for natural language processing, image generation, and data analysis."
+        />
       </Helmet>
       
       <Navbar />
@@ -25,20 +26,36 @@ const AIToolsPage = () => {
       <main className="w-full py-0">
         <AIToolsHeader activeTab={activeTab} setActiveTab={setActiveTab} />
         
-        <div className="container mx-auto px-4 py-12 pb-0">
-          <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as AIToolTab)}>
-            <TabsContent value="nlp" className="mt-6">
+        <div className="container mx-auto px-4 py-12">
+          {activeTab === 'nlp' && (
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Natural Language Processing Tools</h2>
+              <p className="text-lg text-muted-foreground mb-8">
+                Our NLP tools help businesses understand and interact with text and speech data more effectively.
+              </p>
               <NLPToolsSection />
-            </TabsContent>
-            
-            <TabsContent value="image" className="mt-6">
+            </div>
+          )}
+          
+          {activeTab === 'image' && (
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Image Processing Tools</h2>
+              <p className="text-lg text-muted-foreground mb-8">
+                Transform your visual content with our AI-powered image generation and enhancement tools.
+              </p>
               <ImageToolsSection />
-            </TabsContent>
-            
-            <TabsContent value="data" className="mt-6">
+            </div>
+          )}
+          
+          {activeTab === 'data' && (
+            <div>
+              <h2 className="text-2xl font-bold mb-6">Data Analysis Tools</h2>
+              <p className="text-lg text-muted-foreground mb-8">
+                Turn raw data into valuable insights with our advanced analytics and visualization tools.
+              </p>
               <DataAnalysisToolsSection />
-            </TabsContent>
-          </Tabs>
+            </div>
+          )}
         </div>
       </main>
       

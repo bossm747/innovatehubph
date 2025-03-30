@@ -42,16 +42,18 @@ export interface PromoCode {
   updated_at?: string;
 }
 
-// Add AIProvider type
-export type AIProvider = 'gemini' | 'openai' | 'anthropic' | 'mistral';
+// Add AIProvider type and 'multi-agent' option
+export type AIProvider = 'gemini' | 'openai' | 'anthropic' | 'mistral' | 'multi-agent';
 
-// Add ProviderConfig interface
+// Add ProviderConfig interface with additional fields for model and defaultPrompt
 export interface ProviderConfig {
   name: string;
   description: string;
   icon: string;
   color: string;
   apiKeyName: string;
+  model?: string;
+  defaultPrompt?: string;
 }
 
 // Add provider configuration function
@@ -63,7 +65,9 @@ export const getProviderConfig = (provider: AIProvider): ProviderConfig => {
         description: 'Powerful multimodal AI model from Google',
         icon: 'brain',
         color: 'text-blue-600',
-        apiKeyName: 'GEMINI_API_KEY'
+        apiKeyName: 'GEMINI_API_KEY',
+        model: 'gemini-1.5-pro',
+        defaultPrompt: 'Generate marketing content for a digital payment solution'
       };
     case 'openai':
       return {
@@ -71,7 +75,9 @@ export const getProviderConfig = (provider: AIProvider): ProviderConfig => {
         description: 'Advanced language model from OpenAI',
         icon: 'sparkles',
         color: 'text-green-600',
-        apiKeyName: 'OPENAI_API_KEY'
+        apiKeyName: 'OPENAI_API_KEY',
+        model: 'gpt-4o',
+        defaultPrompt: 'Write persuasive marketing copy for a fintech product'
       };
     case 'anthropic':
       return {
@@ -79,7 +85,9 @@ export const getProviderConfig = (provider: AIProvider): ProviderConfig => {
         description: 'Human-centered AI assistant from Anthropic',
         icon: 'message-square',
         color: 'text-purple-600',
-        apiKeyName: 'ANTHROPIC_API_KEY'
+        apiKeyName: 'ANTHROPIC_API_KEY',
+        model: 'claude-3-opus',
+        defaultPrompt: 'Create email content for a financial services company'
       };
     case 'mistral':
       return {
@@ -87,7 +95,19 @@ export const getProviderConfig = (provider: AIProvider): ProviderConfig => {
         description: 'European AI language model',
         icon: 'zap',
         color: 'text-orange-600',
-        apiKeyName: 'MISTRAL_API_KEY'
+        apiKeyName: 'MISTRAL_API_KEY',
+        model: 'mistral-large',
+        defaultPrompt: 'Draft persuasive content for a digital payment platform'
+      };
+    case 'multi-agent':
+      return {
+        name: 'Multi-Agent System',
+        description: 'Collaborative AI system using multiple models',
+        icon: 'network',
+        color: 'text-indigo-600',
+        apiKeyName: 'MULTI_AGENT_CONFIG',
+        model: 'ensemble',
+        defaultPrompt: 'Collaborate on creating optimized marketing content for PlataPay'
       };
     default:
       return {

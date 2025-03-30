@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Phone, CheckCircle, LockKeyhole } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -12,14 +11,7 @@ const CTASection = () => {
         <div className="absolute top-1/2 -left-24 w-64 h-64 rounded-full bg-white filter blur-3xl"></div>
         <div className="absolute -bottom-32 right-1/4 w-80 h-80 rounded-full bg-blue-300 filter blur-3xl"></div>
         
-        {/* Security illustration */}
-        <div className="absolute top-1/4 right-1/4 w-40 h-40">
-          <img 
-            src="/lovable-uploads/9943e545-fc96-401b-98c2-3cb582ebab57.png" 
-            alt="" 
-            className="w-full h-full object-contain opacity-30"
-          />
-        </div>
+        {/* Removed Security illustration */}
         
         {/* Grid pattern */}
         <div className="absolute inset-0" style={{ 

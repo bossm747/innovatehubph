@@ -4,8 +4,7 @@ import React from 'react';
 const HeroBackground = () => {
   return (
     <>
-      {/* Circuit pattern overlay */}
-      <div className="circuit-bg"></div>
+      {/* Removed circuit pattern overlay */}
       
       {/* Background patterns */}
       <div className="absolute inset-0 overflow-hidden opacity-10">
@@ -19,14 +18,7 @@ const HeroBackground = () => {
           backgroundSize: '20px 20px' 
         }}></div>
         
-        {/* Security icon */}
-        <div className="absolute top-32 right-32 w-16 h-16 opacity-30">
-          <img 
-            src="/lovable-uploads/9943e545-fc96-401b-98c2-3cb582ebab57.png" 
-            alt="Security" 
-            className="w-full h-full object-contain" 
-          />
-        </div>
+        {/* Removed Security icon */}
       </div>
     </>
   );

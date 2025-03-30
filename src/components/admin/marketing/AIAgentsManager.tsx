@@ -1,147 +1,107 @@
 
 import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useQuery } from '@tanstack/react-query';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { Trash2, Plus, Brain, Zap, Edit, Power, Settings } from 'lucide-react';
+import { AIProvider, getProviderConfig } from '@/utils/aiProviders';
 import { supabase } from '@/integrations/supabase/client';
-import { AIProvider, AI_PROVIDERS, getProviderConfig } from '@/utils/aiProviders';
-import { Brain, Sparkles, Settings, Zap, Cpu, ArrowUpRight, FileText, BadgeCheck, Lightbulb, AlertCircle, RefreshCw, Bot, Plus, Edit, Trash, Send } from 'lucide-react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 interface AIAgent {
-  id: string;
+  id?: string;
   name: string;
-  description: string;
-  provider: AIProvider;
+  description?: string;
+  provider: string;
   model: string;
   temperature: number;
   max_tokens: number;
   prompt_template: string;
   is_active: boolean;
-  created_at: string;
-  updated_at: string;
   type: 'email' | 'content' | 'translation' | 'analysis' | 'general';
-  capabilities: string[];
+  capabilities?: string[];
+  created_at?: string;
+  updated_at?: string;
 }
+
+// Define the form schema
+const formSchema = z.object({
+  id: z.string().optional(),
+  name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
+  description: z.string().optional(),
+  provider: z.string(),
+  model: z.string(),
+  temperature: z.coerce.number().min(0).max(1),
+  max_tokens: z.coerce.number().min(100).max(8000),
+  prompt_template: z.string().min(10),
+  is_active: z.boolean().default(true),
+  type: z.enum(['email', 'content', 'translation', 'analysis', 'general']),
+  capabilities: z.array(z.string()).optional(),
+});
+
+type FormValues = z.infer<typeof formSchema>;
 
 const AIAgentsManager: React.FC = () => {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState<AIAgent | null>(null);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isTestDialogOpen, setIsTestDialogOpen] = useState(false);
-  const [testInput, setTestInput] = useState('');
-  const [testResult, setTestResult] = useState('');
-  const [isTestingAgent, setIsTestingAgent] = useState(false);
-  const [activeTab, setActiveTab] = useState('all');
-  
-  const [formData, setFormData] = useState<Partial<AIAgent>>({
-    name: '',
-    description: '',
-    provider: 'gemini',
-    model: '',
-    temperature: 0.7,
-    max_tokens: 1000,
-    prompt_template: '',
-    is_active: true,
-    type: 'email',
-    capabilities: []
-  });
+  const [isEditing, setIsEditing] = useState(false);
 
-  const { data: agents, isLoading, error, refetch } = useQuery({
-    queryKey: ['ai-agents'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('ai_agents')
-        .select('*')
-        .order('created_at', { ascending: false });
-        
-      if (error) throw error;
-      return data as AIAgent[];
-    }
-  });
-
-  useEffect(() => {
-    if (selectedAgent) {
-      setFormData(selectedAgent);
-    } else {
-      resetForm();
-    }
-  }, [selectedAgent]);
-
-  useEffect(() => {
-    if (formData.provider) {
-      const providerConfig = getProviderConfig(formData.provider as AIProvider);
-      setFormData(prev => ({
-        ...prev,
-        model: providerConfig.model,
-        prompt_template: prev.prompt_template || providerConfig.defaultPrompt
-      }));
-    }
-  }, [formData.provider]);
-
-  const resetForm = () => {
-    const defaultProvider = 'gemini';
-    const providerConfig = getProviderConfig(defaultProvider as AIProvider);
-    
-    setFormData({
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
       name: '',
       description: '',
-      provider: defaultProvider,
-      model: providerConfig.model,
+      provider: 'gemini',
+      model: 'gemini-1.5-pro',
       temperature: 0.7,
       max_tokens: 1000,
-      prompt_template: providerConfig.defaultPrompt,
+      prompt_template: 'You are an AI assistant for InnovateHub. {input}',
       is_active: true,
       type: 'email',
-      capabilities: []
-    });
-  };
+      capabilities: [],
+    },
+  });
 
-  const filteredAgents = () => {
-    if (!agents) return [];
-    
-    switch (activeTab) {
-      case 'email':
-        return agents.filter(agent => agent.type === 'email');
-      case 'content':
-        return agents.filter(agent => agent.type === 'content');
-      case 'translation':
-        return agents.filter(agent => agent.type === 'translation');
-      case 'analysis':
-        return agents.filter(agent => agent.type === 'analysis');
-      case 'active':
-        return agents.filter(agent => agent.is_active);
-      case 'all':
-      default:
-        return agents;
-    }
-  };
+  // Fetch AI agents
+  const { data: agents = [], isLoading, error, refetch } = useQuery({
+    queryKey: ['ai-agents'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('ai_agents').select('*');
+      if (error) throw error;
+      return data as AIAgent[];
+    },
+  });
 
-  const handleSaveAgent = async () => {
+  // Handle form submission
+  const onSubmit = async (values: FormValues) => {
     try {
-      if (!formData.name || !formData.prompt_template || !formData.model || !formData.provider) {
-        toast({
-          title: "Validation error",
-          description: "Please fill out all required fields",
-          variant: "destructive",
-        });
-        return;
-      }
-      
-      const agentData = {
-        ...formData,
-        updated_at: new Date().toISOString()
+      // Ensure all required fields are present for insert/update
+      const agentData: AIAgent = {
+        name: values.name,
+        description: values.description || '',
+        provider: values.provider,
+        model: values.model,
+        temperature: values.temperature,
+        max_tokens: values.max_tokens,
+        prompt_template: values.prompt_template,
+        is_active: values.is_active,
+        type: values.type,
+        capabilities: values.capabilities || [],
       };
-      
-      if (selectedAgent) {
+
+      if (isEditing && selectedAgent?.id) {
         // Update existing agent
         const { error } = await supabase
           .from('ai_agents')
@@ -151,569 +111,491 @@ const AIAgentsManager: React.FC = () => {
         if (error) throw error;
         
         toast({
-          title: "Agent updated",
-          description: "Your AI agent has been updated successfully",
-          variant: "default",
+          title: 'Agent Updated',
+          description: `${values.name} has been updated successfully.`,
         });
       } else {
         // Create new agent
-        // Make sure all required fields are present for a new agent
-        if (!agentData.name || !agentData.model || !agentData.provider || !agentData.prompt_template) {
-          toast({
-            title: "Missing required fields",
-            description: "Please fill in all required fields: name, model, provider, and prompt template",
-            variant: "destructive",
-          });
-          return;
-        }
-        
         const { error } = await supabase
           .from('ai_agents')
-          .insert([{
-            ...agentData,
-            created_at: new Date().toISOString()
-          }]);
+          .insert([agentData]);
           
         if (error) throw error;
         
         toast({
-          title: "Agent created",
-          description: "Your new AI agent has been created successfully",
-          variant: "default",
+          title: 'Agent Created',
+          description: `${values.name} has been created successfully.`,
         });
       }
       
-      resetForm();
-      setSelectedAgent(null);
-      setIsEditDialogOpen(false);
-      refetch();
+      // Reset form and close dialog
+      form.reset();
+      setIsDialogOpen(false);
+      setIsEditing(false);
+      queryClient.invalidateQueries({ queryKey: ['ai-agents'] });
     } catch (error) {
       console.error('Error saving agent:', error);
       toast({
-        title: "Error",
-        description: "Failed to save the AI agent. Please try again.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to save agent. Please try again.',
+        variant: 'destructive',
       });
     }
   };
 
+  // Handle agent edit
+  const handleEditAgent = (agent: AIAgent) => {
+    setSelectedAgent(agent);
+    setIsEditing(true);
+    
+    form.reset({
+      id: agent.id,
+      name: agent.name,
+      description: agent.description,
+      provider: agent.provider,
+      model: agent.model,
+      temperature: agent.temperature,
+      max_tokens: agent.max_tokens,
+      prompt_template: agent.prompt_template,
+      is_active: agent.is_active,
+      type: agent.type,
+      capabilities: agent.capabilities,
+    });
+    
+    setIsDialogOpen(true);
+  };
+
+  // Handle agent deletion
   const handleDeleteAgent = async (id: string) => {
     try {
-      const { error } = await supabase
-        .from('ai_agents')
-        .delete()
-        .eq('id', id);
-        
+      const { error } = await supabase.from('ai_agents').delete().eq('id', id);
+      
       if (error) throw error;
       
       toast({
-        title: "Agent deleted",
-        description: "Your AI agent has been deleted successfully",
-        variant: "default",
+        title: 'Agent Deleted',
+        description: 'The agent has been deleted successfully.',
       });
       
-      refetch();
+      queryClient.invalidateQueries({ queryKey: ['ai-agents'] });
     } catch (error) {
       console.error('Error deleting agent:', error);
       toast({
-        title: "Error",
-        description: "Failed to delete the AI agent. Please try again.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to delete agent. Please try again.',
+        variant: 'destructive',
       });
     }
   };
 
-  const handleToggleAgentStatus = async (agent: AIAgent) => {
+  // Toggle agent active status
+  const toggleAgentStatus = async (agent: AIAgent) => {
     try {
       const { error } = await supabase
         .from('ai_agents')
-        .update({ 
-          is_active: !agent.is_active,
-          updated_at: new Date().toISOString()
-        })
+        .update({ is_active: !agent.is_active })
         .eq('id', agent.id);
-        
+      
       if (error) throw error;
       
       toast({
-        title: agent.is_active ? "Agent deactivated" : "Agent activated",
-        description: `Your AI agent has been ${agent.is_active ? 'deactivated' : 'activated'} successfully`,
-        variant: "default",
+        title: agent.is_active ? 'Agent Deactivated' : 'Agent Activated',
+        description: `${agent.name} has been ${agent.is_active ? 'deactivated' : 'activated'}.`,
       });
       
-      refetch();
+      queryClient.invalidateQueries({ queryKey: ['ai-agents'] });
     } catch (error) {
       console.error('Error toggling agent status:', error);
       toast({
-        title: "Error",
-        description: "Failed to update agent status. Please try again.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to update agent status. Please try again.',
+        variant: 'destructive',
       });
     }
   };
 
-  const testAgent = async () => {
-    try {
-      setIsTestingAgent(true);
-      setTestResult('');
-      
-      // Call multi-agent-generate function with the agent's ID
-      const { data, error } = await supabase.functions.invoke('multi-agent-generate', {
-        body: {
-          prompt: testInput,
-          agentId: selectedAgent?.id,
-        }
-      });
-      
-      if (error) throw error;
-      
-      setTestResult(data.text);
-    } catch (error) {
-      console.error('Error testing agent:', error);
-      toast({
-        title: "Test failed",
-        description: "Failed to test the AI agent. Please check your settings and try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsTestingAgent(false);
-    }
+  // Update model options when provider changes
+  useEffect(() => {
+    const provider = form.watch('provider') as AIProvider;
+    const config = getProviderConfig(provider);
+    form.setValue('model', config.model);
+  }, [form.watch('provider')]);
+
+  // Reset form when dialog is opened for a new agent
+  const handleNewAgent = () => {
+    form.reset({
+      name: '',
+      description: '',
+      provider: 'gemini',
+      model: 'gemini-1.5-pro',
+      temperature: 0.7,
+      max_tokens: 1000,
+      prompt_template: 'You are an AI assistant for InnovateHub. {input}',
+      is_active: true,
+      type: 'email',
+      capabilities: [],
+    });
+    setIsEditing(false);
+    setSelectedAgent(null);
+    setIsDialogOpen(true);
   };
 
-  const getAgentTypeIcon = (type: string) => {
+  // Get type badge color
+  const getTypeBadge = (type: string) => {
     switch (type) {
       case 'email':
-        return <Send className="w-4 h-4" />;
+        return <Badge className="bg-blue-100 text-blue-800 border-blue-300">Email</Badge>;
       case 'content':
-        return <FileText className="w-4 h-4" />;
+        return <Badge className="bg-green-100 text-green-800 border-green-300">Content</Badge>;
       case 'translation':
-        return <ArrowUpRight className="w-4 h-4" />;
+        return <Badge className="bg-purple-100 text-purple-800 border-purple-300">Translation</Badge>;
       case 'analysis':
-        return <Cpu className="w-4 h-4" />;
+        return <Badge className="bg-amber-100 text-amber-800 border-amber-300">Analysis</Badge>;
+      case 'general':
+        return <Badge className="bg-gray-100 text-gray-800 border-gray-300">General</Badge>;
       default:
-        return <Bot className="w-4 h-4" />;
+        return <Badge>{type}</Badge>;
     }
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-center">
         <div>
           <h2 className="text-xl font-semibold flex items-center">
-            <Brain className="w-5 h-5 mr-2 text-innovate-600" />
-            AI Agents Manager
+            <Brain className="mr-2 h-5 w-5 text-primary" />
+            AI Agents
           </h2>
           <p className="text-muted-foreground">
-            Create and manage AI agents for your email marketing campaigns
+            Configure specialized AI agents for different tasks
           </p>
         </div>
-        <Button onClick={() => {
-          resetForm();
-          setSelectedAgent(null);
-          setIsEditDialogOpen(true);
-        }}>
-          <Plus className="w-4 h-4 mr-2" />
-          Create Agent
+        <Button onClick={handleNewAgent}>
+          <Plus className="h-4 w-4 mr-2" />
+          New Agent
         </Button>
       </div>
 
-      <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="mb-4">
-          <TabsTrigger value="all">All Agents</TabsTrigger>
-          <TabsTrigger value="email">Email</TabsTrigger>
-          <TabsTrigger value="content">Content</TabsTrigger>
-          <TabsTrigger value="translation">Translation</TabsTrigger>
-          <TabsTrigger value="analysis">Analysis</TabsTrigger>
-          <TabsTrigger value="active">Active Only</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value={activeTab}>
-          {isLoading ? (
-            <div className="flex justify-center py-12">
-              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-innovate-600"></div>
+      {isLoading ? (
+        <div className="flex justify-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+        </div>
+      ) : error ? (
+        <Card className="border-red-200 bg-red-50">
+          <CardContent className="pt-6">
+            <div className="flex items-center text-red-800">
+              <Trash2 className="w-5 h-5 mr-2" />
+              Error loading agents
             </div>
-          ) : error ? (
-            <Card className="border-red-200">
-              <CardContent className="pt-6">
-                <div className="flex items-center text-red-600">
-                  <AlertCircle className="w-5 h-5 mr-2" />
-                  Error loading AI agents
-                </div>
-                <p className="text-sm mt-2">There was an error loading your AI agents. Please try again later.</p>
-              </CardContent>
-            </Card>
-          ) : filteredAgents().length === 0 ? (
-            <Card>
-              <CardContent className="py-8 text-center">
-                <Brain className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                <h3 className="text-lg font-medium mb-2">No AI Agents Found</h3>
-                <p className="text-muted-foreground mb-4">
-                  {activeTab === 'all' 
-                    ? "You haven't created any AI agents yet."
-                    : `You don't have any ${activeTab} agents yet.`}
-                </p>
-                <Button onClick={() => {
-                  resetForm();
-                  if (activeTab !== 'all' && activeTab !== 'active') {
-                    setFormData(prev => ({ ...prev, type: activeTab as any }));
-                  }
-                  setSelectedAgent(null);
-                  setIsEditDialogOpen(true);
-                }}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Create Your First Agent
-                </Button>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredAgents().map(agent => (
-                <Card key={agent.id} className={`overflow-hidden ${!agent.is_active ? 'opacity-70' : ''}`}>
-                  <CardHeader className="pb-3">
-                    <div className="flex justify-between items-start">
-                      <div className="flex items-center">
-                        <div className={`w-8 h-8 rounded-md flex items-center justify-center ${agent.is_active ? 'bg-green-100' : 'bg-gray-100'} mr-2`}>
-                          {getAgentTypeIcon(agent.type)}
-                        </div>
-                        <CardTitle className="text-base">{agent.name}</CardTitle>
-                      </div>
-                      <Badge variant="outline" className={agent.is_active 
-                        ? "bg-green-50 text-green-700 border-green-200" 
-                        : "bg-gray-100 text-gray-600"
-                      }>
-                        {agent.is_active ? 'Active' : 'Inactive'}
-                      </Badge>
-                    </div>
-                    <CardDescription className="mt-1">
-                      {agent.description || "No description provided"}
+            <p className="text-sm text-red-600 mt-2">Please try again later</p>
+          </CardContent>
+        </Card>
+      ) : agents.length === 0 ? (
+        <Card>
+          <CardContent className="pt-6 pb-4 text-center">
+            <p className="text-muted-foreground">No agents configured</p>
+            <Button variant="outline" onClick={handleNewAgent} className="mt-4">
+              <Plus className="w-4 h-4 mr-2" />
+              Create Your First Agent
+            </Button>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {agents.map((agent) => (
+            <Card key={agent.id} className={`overflow-hidden ${!agent.is_active ? 'bg-gray-50 opacity-70' : ''}`}>
+              <CardHeader className="pb-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle className="text-lg flex items-center">
+                      {agent.name}
+                      {!agent.is_active && (
+                        <Badge variant="outline" className="ml-2 text-gray-500">
+                          Inactive
+                        </Badge>
+                      )}
+                    </CardTitle>
+                    <CardDescription className="flex items-center space-x-2 mt-1">
+                      <span className="capitalize">{agent.provider}</span>
+                      <span>•</span>
+                      <span>{agent.model}</span>
                     </CardDescription>
-                  </CardHeader>
-                  
-                  <CardContent className="pb-3">
-                    <div className="flex flex-wrap gap-1 mb-3">
-                      <Badge variant="outline" className="flex items-center gap-1">
-                        <Brain className="w-3 h-3" />
-                        {AI_PROVIDERS[agent.provider as AIProvider]?.name || agent.provider}
-                      </Badge>
-                      
-                      {agent.capabilities && agent.capabilities.length > 0 && agent.capabilities.slice(0, 2).map((capability, i) => (
-                        <Badge key={i} variant="outline" className="flex items-center gap-1">
-                          <Sparkles className="w-3 h-3" />
+                  </div>
+                  {getTypeBadge(agent.type)}
+                </div>
+              </CardHeader>
+              <CardContent className="pb-3">
+                <p className="text-sm text-muted-foreground line-clamp-2">
+                  {agent.description || 'No description provided'}
+                </p>
+                {agent.capabilities && agent.capabilities.length > 0 && (
+                  <div className="mt-3">
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {agent.capabilities.map((capability, idx) => (
+                        <Badge key={idx} variant="outline" className="bg-primary/5">
                           {capability}
                         </Badge>
                       ))}
-                      
-                      {agent.capabilities && agent.capabilities.length > 2 && (
-                        <Badge variant="outline">+{agent.capabilities.length - 2}</Badge>
-                      )}
                     </div>
-                    
-                    <div className="text-xs text-muted-foreground space-y-1">
-                      <div className="flex justify-between">
-                        <span>Type:</span>
-                        <span className="font-medium capitalize">{agent.type}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Temperature:</span>
-                        <span className="font-medium">{agent.temperature}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Max Tokens:</span>
-                        <span className="font-medium">{agent.max_tokens}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Last Updated:</span>
-                        <span className="font-medium">{new Date(agent.updated_at).toLocaleDateString()}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                  
-                  <CardFooter className="flex justify-between pt-2 border-t">
-                    <div className="flex gap-1">
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="h-8 w-8 p-0"
-                        onClick={() => {
-                          setSelectedAgent(agent);
-                          setIsEditDialogOpen(true);
-                        }}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="h-8 w-8 p-0 text-red-500"
-                        onClick={() => handleDeleteAgent(agent.id)}
-                      >
-                        <Trash className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    
-                    <div className="flex gap-2">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => {
-                          setSelectedAgent(agent);
-                          setTestInput('');
-                          setTestResult('');
-                          setIsTestDialogOpen(true);
-                        }}
-                      >
-                        <Zap className="w-4 h-4 mr-1" />
-                        Test
-                      </Button>
-                      <Button 
-                        variant={agent.is_active ? "outline" : "default"} 
-                        size="sm"
-                        onClick={() => handleToggleAgentStatus(agent)}
-                      >
-                        {agent.is_active ? 'Deactivate' : 'Activate'}
-                      </Button>
-                    </div>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          )}
-        </TabsContent>
-      </Tabs>
-
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>{selectedAgent ? 'Edit AI Agent' : 'Create New AI Agent'}</DialogTitle>
-            <DialogDescription>
-              {selectedAgent 
-                ? 'Update the configuration for this AI agent.'
-                : 'Configure a new AI agent for your marketing campaigns.'}
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="space-y-6 py-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="name">Agent Name</Label>
-                  <Input 
-                    id="name" 
-                    value={formData.name || ''} 
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    placeholder="Email Content Writer"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea 
-                    id="description" 
-                    value={formData.description || ''} 
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    placeholder="Generates email content for marketing campaigns"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="type">Agent Type</Label>
-                  <Select 
-                    value={formData.type as string} 
-                    onValueChange={(value) => setFormData({...formData, type: value as any})}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="email">Email Marketing</SelectItem>
-                      <SelectItem value="content">Content Creation</SelectItem>
-                      <SelectItem value="translation">Translation</SelectItem>
-                      <SelectItem value="analysis">Data Analysis</SelectItem>
-                      <SelectItem value="general">General Purpose</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div>
-                  <Label htmlFor="capabilities">Capabilities (comma separated)</Label>
-                  <Input 
-                    id="capabilities" 
-                    value={formData.capabilities?.join(', ') || ''} 
-                    onChange={(e) => setFormData({
-                      ...formData, 
-                      capabilities: e.target.value.split(',').map(cap => cap.trim()).filter(Boolean)
-                    })}
-                    placeholder="Email writing, Subject lines, CTA optimization"
-                  />
-                </div>
-              </div>
-              
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="provider">AI Provider</Label>
-                  <Select 
-                    value={formData.provider as string} 
-                    onValueChange={(value) => setFormData({...formData, provider: value as AIProvider})}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select provider" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="gemini">Google Gemini (Recommended)</SelectItem>
-                      <SelectItem value="openai">OpenAI</SelectItem>
-                      <SelectItem value="anthropic">Anthropic Claude</SelectItem>
-                      <SelectItem value="mistral">Mistral AI</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="temperature">Temperature</Label>
-                    <div className="flex items-center gap-2">
-                      <Input 
-                        id="temperature" 
-                        type="number" 
-                        min="0" 
-                        max="1" 
-                        step="0.1" 
-                        value={formData.temperature || 0.7} 
-                        onChange={(e) => setFormData({...formData, temperature: parseFloat(e.target.value)})}
-                      />
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Lower = more deterministic, Higher = more creative
-                    </p>
                   </div>
-                  
-                  <div>
-                    <Label htmlFor="max_tokens">Max Tokens</Label>
-                    <Input 
-                      id="max_tokens" 
-                      type="number" 
-                      min="100" 
-                      max="4000" 
-                      step="50" 
-                      value={formData.max_tokens || 1000} 
-                      onChange={(e) => setFormData({...formData, max_tokens: parseInt(e.target.value)})}
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <Label htmlFor="model">Model</Label>
-                  <Input 
-                    id="model" 
-                    value={formData.model || ''} 
-                    onChange={(e) => setFormData({...formData, model: e.target.value})}
-                    placeholder="gemini-1.5-pro"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="prompt_template">Prompt Template</Label>
-                  <Textarea 
-                    id="prompt_template" 
-                    value={formData.prompt_template || ''} 
-                    onChange={(e) => setFormData({...formData, prompt_template: e.target.value})}
-                    className="min-h-[120px]"
-                  />
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Use variables like {`{input}`}, {`{recipient_name}`}, {`{company_name}`}, etc.
-                  </p>
-                </div>
-                
-                <div className="flex items-center space-x-2">
-                  <Switch 
-                    id="is_active" 
-                    checked={formData.is_active} 
-                    onCheckedChange={(checked) => setFormData({...formData, is_active: checked})}
-                  />
-                  <Label htmlFor="is_active">Enable this agent</Label>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleSaveAgent}>
-              {selectedAgent ? 'Save Changes' : 'Create Agent'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={isTestDialogOpen} onOpenChange={setIsTestDialogOpen}>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle>Test AI Agent: {selectedAgent?.name}</DialogTitle>
-            <DialogDescription>
-              Enter a test prompt to see how this agent responds
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="space-y-6 py-4">
-            <div>
-              <Label htmlFor="test_input">Test Prompt</Label>
-              <Textarea 
-                id="test_input" 
-                value={testInput} 
-                onChange={(e) => setTestInput(e.target.value)}
-                placeholder="Enter your test prompt here..."
-                rows={3}
-              />
-            </div>
-            
-            <div className="flex justify-end">
-              <Button 
-                onClick={testAgent}
-                disabled={isTestingAgent || !testInput.trim()}
-              >
-                {isTestingAgent ? (
-                  <>
-                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                    Testing...
-                  </>
-                ) : (
-                  <>
-                    <Zap className="w-4 h-4 mr-2" />
-                    Test Agent
-                  </>
                 )}
-              </Button>
-            </div>
-            
-            {testResult && (
-              <div>
-                <Label>Response:</Label>
-                <div className="border rounded-md p-4 bg-gray-50 mt-2 max-h-[300px] overflow-y-auto">
-                  <div className="whitespace-pre-wrap">
-                    {testResult}
+              </CardContent>
+              <CardContent className="pt-0 pb-3">
+                <div className="flex items-center text-xs text-muted-foreground space-x-4">
+                  <div className="flex items-center">
+                    <Settings className="w-3.5 h-3.5 mr-1" />
+                    <span>Temp: {agent.temperature}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Zap className="w-3.5 h-3.5 mr-1" />
+                    <span>Max tokens: {agent.max_tokens}</span>
                   </div>
                 </div>
-              </div>
-            )}
-            
-            {selectedAgent && (
-              <div className="rounded-md bg-blue-50 p-4 text-blue-800 text-sm">
-                <h4 className="font-medium flex items-center">
-                  <Lightbulb className="w-4 h-4 mr-2" />
-                  Agent Configuration
-                </h4>
-                <div className="mt-2 space-y-1">
-                  <p><strong>Provider:</strong> {AI_PROVIDERS[selectedAgent.provider as AIProvider]?.name}</p>
-                  <p><strong>Model:</strong> {selectedAgent.model}</p>
-                  <p><strong>Temperature:</strong> {selectedAgent.temperature}</p>
-                  <p><strong>Max Tokens:</strong> {selectedAgent.max_tokens}</p>
+              </CardContent>
+              <div className="border-t px-6 py-3 flex justify-between items-center">
+                <div className="flex space-x-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleEditAgent(agent)}
+                  >
+                    <Edit className="h-4 w-4 mr-1" />
+                    Edit
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className={agent.is_active ? "text-amber-600" : "text-green-600"}
+                    onClick={() => toggleAgentStatus(agent)}
+                  >
+                    <Power className="h-4 w-4 mr-1" />
+                    {agent.is_active ? 'Deactivate' : 'Activate'}
+                  </Button>
                 </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-red-600 hover:text-red-700"
+                  onClick={() => handleDeleteAgent(agent.id!)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
               </div>
-            )}
-          </div>
-          
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsTestDialogOpen(false)}>Close</Button>
-          </DialogFooter>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>{isEditing ? 'Edit Agent' : 'Create New Agent'}</DialogTitle>
+            <DialogDescription>
+              {isEditing
+                ? 'Modify this AI agent to change its capabilities and behavior.'
+                : 'Configure a new AI agent to help with specific tasks.'}
+            </DialogDescription>
+          </DialogHeader>
+
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Agent Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Marketing Assistant" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Agent Type</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="email">Email</SelectItem>
+                          <SelectItem value="content">Content</SelectItem>
+                          <SelectItem value="translation">Translation</SelectItem>
+                          <SelectItem value="analysis">Analysis</SelectItem>
+                          <SelectItem value="general">General</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Describe what this agent does..."
+                        className="resize-none"
+                        {...field}
+                        value={field.value || ''}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="provider"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>AI Provider</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select provider" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="gemini">Google Gemini</SelectItem>
+                          <SelectItem value="openai">OpenAI</SelectItem>
+                          <SelectItem value="anthropic">Anthropic</SelectItem>
+                          <SelectItem value="mistral">Mistral AI</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="model"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Model</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="temperature"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Temperature (0.0 - 1.0)</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min="0"
+                          max="1"
+                          step="0.1"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Lower values are more precise, higher more creative
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="max_tokens"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Max Tokens</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min="100"
+                          max="8000"
+                          step="100"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Maximum length of generated text
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <FormField
+                control={form.control}
+                name="prompt_template"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Prompt Template</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="You are an AI assistant for InnovateHub. {input}"
+                        className="min-h-[120px]"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Use {'{input}'} as a placeholder for user input
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="is_active"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">Active Status</FormLabel>
+                      <FormDescription>
+                        Enable or disable this agent
+                      </FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <DialogFooter>
+                <Button type="submit">
+                  {isEditing ? 'Update Agent' : 'Create Agent'}
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </div>

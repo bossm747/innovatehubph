@@ -25,7 +25,7 @@ import {
   CheckCircle, 
   AlertCircle, 
   Calendar as CalendarIcon,
-  Users as UsersIcon 
+  Users
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { EmailCampaign } from '@/utils/aiProviders';
@@ -38,9 +38,6 @@ const formSchema = z.object({
   template: z.string().optional(),
   scheduledAt: z.string().optional(),
 });
-
-// Table needs to be created in Supabase
-const CAMPAIGNS_TABLE = 'marketing_campaigns';
 
 const CampaignManager: React.FC = () => {
   const { toast } = useToast();
@@ -61,12 +58,22 @@ const CampaignManager: React.FC = () => {
     },
   });
 
-  // Fetch campaigns from mock data for now - will need to be from Supabase after table is created
+  // Fetch campaigns from Supabase
   const { data: campaigns, isLoading, error, refetch } = useQuery({
     queryKey: ['email-campaigns'],
     queryFn: async () => {
-      // Mock data since the table doesn't exist yet
-      return [] as EmailCampaign[];
+      try {
+        const { data, error } = await supabase
+          .from('marketing_campaigns')
+          .select('*');
+        
+        if (error) throw error;
+        
+        return data as EmailCampaign[];
+      } catch (err) {
+        console.error('Error fetching campaigns:', err);
+        return [] as EmailCampaign[];
+      }
     }
   });
 
@@ -89,11 +96,38 @@ const CampaignManager: React.FC = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const campaignData = {
-        ...values,
-        status: 'draft',
-        created_at: new Date().toISOString(),
-      };
+      if (isEditing && selectedCampaign) {
+        // Update existing campaign
+        const { error } = await supabase
+          .from('marketing_campaigns')
+          .update({
+            name: values.name,
+            subject: values.subject,
+            content: values.content,
+            template: values.template,
+            scheduled_at: values.scheduledAt ? new Date(values.scheduledAt).toISOString() : null,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', selectedCampaign.id);
+          
+        if (error) throw error;
+      } else {
+        // Create new campaign
+        const { error } = await supabase
+          .from('marketing_campaigns')
+          .insert({
+            name: values.name,
+            subject: values.subject,
+            content: values.content,
+            template: values.template || null,
+            scheduled_at: values.scheduledAt ? new Date(values.scheduledAt).toISOString() : null,
+            status: 'draft',
+          });
+          
+        if (error) throw error;
+      }
+      
+      await refetch();
       
       toast({
         title: isEditing ? "Campaign updated" : "Campaign created",
@@ -135,6 +169,15 @@ const CampaignManager: React.FC = () => {
 
   const handleDeleteCampaign = async (id: string) => {
     try {
+      const { error } = await supabase
+        .from('marketing_campaigns')
+        .delete()
+        .eq('id', id);
+        
+      if (error) throw error;
+      
+      await refetch();
+      
       toast({
         title: "Campaign deleted",
         description: "Your campaign has been deleted successfully.",
@@ -152,6 +195,28 @@ const CampaignManager: React.FC = () => {
 
   const scheduleCampaign = async (id: string, scheduledTime: string) => {
     try {
+      if (!scheduledTime) {
+        toast({
+          title: "Schedule time required",
+          description: "Please select when you want to send this campaign.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      const { error } = await supabase
+        .from('marketing_campaigns')
+        .update({
+          status: 'scheduled',
+          scheduled_at: new Date(scheduledTime).toISOString(),
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', id);
+        
+      if (error) throw error;
+      
+      await refetch();
+      
       toast({
         title: "Campaign scheduled",
         description: "Your campaign has been scheduled successfully.",

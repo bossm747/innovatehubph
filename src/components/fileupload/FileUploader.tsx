@@ -76,6 +76,11 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
       clearInterval(progressInterval);
       
       if (error) {
+        // Check for specific RLS policy-related errors
+        if (error.message?.includes('Policy') || error.message?.includes('security')) {
+          console.error('RLS policy error:', error);
+          throw new Error('Permission denied. Storage security policies need to be configured.');
+        }
         throw error;
       }
 
@@ -93,8 +98,8 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
       // More descriptive error message based on common issues
       if (error.message?.includes('bucket') || error.message?.includes('not found')) {
         toast.error('Storage bucket not found. Please contact your administrator.');
-      } else if (error.message?.includes('permission') || error.message?.includes('access')) {
-        toast.error('Permission denied. You may not have access to upload files.');
+      } else if (error.message?.includes('permission') || error.message?.includes('access') || error.message?.includes('policy')) {
+        toast.error('Permission denied. You may not have access to upload files. Contact your administrator.');
       } else if (error.message?.includes('size')) {
         toast.error(`File size exceeds the maximum allowed limit (${MAX_FILE_SIZE_DISPLAY}).`);
       } else {

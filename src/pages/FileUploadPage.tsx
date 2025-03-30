@@ -78,6 +78,12 @@ const FileUploadPage = () => {
         .list();
 
       if (error) {
+        // If we get an RLS error, show a more helpful message
+        if (error.message.includes('Policy') || error.message.includes('security')) {
+          console.error('RLS policy error:', error);
+          toast.error('Permission denied. Storage security policies need to be configured.');
+          return;
+        }
         throw error;
       }
       

@@ -87,7 +87,7 @@ const PARTNERS: Partner[] = [
   },
   {
     id: 15,
-    name: "Sterling Bank",
+    name: "Sterling Bank of Asia",
     category: "banking"
   }
 ];

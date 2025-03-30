@@ -116,12 +116,12 @@ const partnersData: Partner[] = [
   },
   {
     id: 9,
-    name: "Sterling Bank",
-    logo: "/lovable-uploads/c482324a-e57b-4e5c-a15a-137cf7868b9a.png", 
+    name: "Sterling Bank of Asia",
+    logo: "/lovable-uploads/cc05597c-5b00-4c9f-a930-65c3693db624.png", 
     category: "Banking",
-    description: "Sterling Bank is a financial institution providing innovative banking solutions and financial services.",
-    details: "Sterling Bank partners with InnovateHub to offer digital banking services through PlataPay, enabling secure transactions and financial services for customers across the Philippines.",
-    website: "https://www.sterlingbank.com/",
+    description: "Sterling Bank of Asia is a savings bank providing innovative banking solutions and financial services.",
+    details: "Sterling Bank of Asia partners with InnovateHub to offer digital banking services through PlataPay, enabling secure transactions and financial services for customers across the Philippines.",
+    website: "https://www.sterlingbank.com.ph/",
     integrations: [
       "Secure mobile banking integration",
       "Real-time transaction processing",

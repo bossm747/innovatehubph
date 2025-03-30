@@ -28,8 +28,8 @@ const PartnersSection = () => {
     },
     {
       id: 5,
-      name: "Sterling Bank",
-      logo: "/lovable-uploads/c482324a-e57b-4e5c-a15a-137cf7868b9a.png",
+      name: "Sterling Bank of Asia",
+      logo: "/lovable-uploads/cc05597c-5b00-4c9f-a930-65c3693db624.png",
     }
   ];
   

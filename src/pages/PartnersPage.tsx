@@ -10,6 +10,9 @@ import partnersData from '@/data/partnersData';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
+import HeroSection from '@/components/shared/HeroSection';
+import PartnersHeroBackground from '@/components/partners/PartnersHeroBackground';
+import PartnersHeroImage from '@/components/partners/PartnersHeroImage';
 
 const PartnersPage = () => {
   const [partners, setPartners] = useState<Partner[]>(partnersData);
@@ -86,6 +89,22 @@ const PartnersPage = () => {
       
       {/* Main content */}
       <Navbar />
+      
+      {/* Hero Section */}
+      <HeroSection
+        title="Our Trusted Partners"
+        subtitle="Strategic Collaborations"
+        description="InnovateHub partners with leading financial institutions, technology providers, and service companies to deliver seamless digital solutions for our clients."
+        primaryButtonText="View Partners"
+        primaryButtonLink="#partners-grid"
+        backgroundComponent={<PartnersHeroBackground />}
+        imageComponent={<PartnersHeroImage />}
+        featureItems={[
+          { icon: <span className="h-5 w-5 mr-2 text-blue-300">•</span>, text: "Banking Partners" },
+          { icon: <span className="h-5 w-5 mr-2 text-blue-300">•</span>, text: "Technology Solutions" }
+        ]}
+      />
+      
       <div className="w-full py-10">
         <div className="container mx-auto px-4 md:px-8">
           <div className="mb-6">
@@ -94,7 +113,7 @@ const PartnersPage = () => {
                 <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
               </Link>
             </Button>
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">Our Partners</h1>
+            <h2 className="text-3xl md:text-4xl font-bold mb-2" id="partners-grid">Our Partners</h2>
             <p className="text-gray-600 max-w-3xl">
               InnovateHub collaborates with leading financial institutions, technology providers, and service companies 
               to deliver exceptional solutions to our clients. Learn more about our strategic partnerships.

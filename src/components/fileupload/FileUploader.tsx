@@ -39,6 +39,26 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
         });
       }, 100);
 
+      // Make sure the bucket exists before uploading
+      const { data: bucketExists } = await supabase
+        .storage
+        .getBucket('project_files');
+        
+      // Create bucket if it doesn't exist
+      if (!bucketExists) {
+        // This will only happen once during development
+        console.log('Creating project_files bucket');
+        
+        // Create the bucket first
+        await supabase
+          .storage
+          .createBucket('project_files', {
+            public: true,
+            fileSizeLimit: 52428800, // 50MB in bytes
+          });
+      }
+
+      // Now upload the file
       const { error } = await supabase.storage
         .from('project_files')
         .upload(fileName, file);
@@ -58,7 +78,18 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
         fileInputRef.current.value = '';
       }
     } catch (error: any) {
-      toast.error(`Error uploading file: ${error.message}`);
+      console.error('Error uploading file:', error.message);
+      
+      // More descriptive error message based on common issues
+      if (error.message?.includes('bucket') || error.message?.includes('not found')) {
+        toast.error('Storage bucket not found. Please contact your administrator.');
+      } else if (error.message?.includes('permission') || error.message?.includes('access')) {
+        toast.error('Permission denied. You may not have access to upload files.');
+      } else if (error.message?.includes('size')) {
+        toast.error('File size exceeds the maximum allowed limit (50MB).');
+      } else {
+        toast.error(`Error uploading file: ${error.message}`);
+      }
     } finally {
       setTimeout(() => {
         setUploading(false);

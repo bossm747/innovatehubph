@@ -17,14 +17,54 @@ import FileList from '@/components/fileupload/FileList';
 const FileUploadPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState<any[]>([]);
+  const [hasBucket, setHasBucket] = useState(false);
   
   // Development mode notice
   const isDevelopment = true;
 
   useEffect(() => {
-    // Fetch files on component mount
-    fetchFiles();
+    // Check if bucket exists and fetch files on component mount
+    checkBucketAndFetchFiles();
   }, []);
+
+  const checkBucketAndFetchFiles = async () => {
+    try {
+      setIsLoading(true);
+      
+      // Check if the bucket exists
+      const { data: bucketData, error: bucketError } = await supabase
+        .storage
+        .getBucket('project_files');
+        
+      if (bucketError && !bucketError.message.includes('not found')) {
+        throw bucketError;
+      }
+      
+      if (!bucketData) {
+        // Create the bucket if it doesn't exist (first time setup)
+        console.log('Creating project_files bucket');
+        await supabase
+          .storage
+          .createBucket('project_files', {
+            public: true,
+            fileSizeLimit: 52428800, // 50MB in bytes
+          });
+          
+        toast.success('File storage initialized successfully');
+        setHasBucket(true);
+      } else {
+        setHasBucket(true);
+      }
+      
+      // Now fetch files
+      await fetchFiles();
+    } catch (error: any) {
+      console.error('Error initializing storage:', error);
+      toast.error(`Error initializing file storage: ${error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const fetchFiles = async () => {
     try {
@@ -42,6 +82,7 @@ const FileUploadPage = () => {
         setFiles(data);
       }
     } catch (error: any) {
+      console.error('Error fetching files:', error);
       toast.error(`Error fetching files: ${error.message}`);
     } finally {
       setIsLoading(false);

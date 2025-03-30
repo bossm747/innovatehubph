@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
+import { servicesData } from '@/data/servicesData';
 
 interface ServiceTile {
   id: number;
@@ -99,6 +100,23 @@ const ServiceTiles = () => {
     },
     {
       id: 5,
+      title: "Web & Mobile Apps",
+      description: "Custom applications for web, iOS and Android platforms",
+      icon: "/lovable-uploads/91e21d7a-53f9-41d7-bd62-4a1f5dbe1d12.png",
+      features: [
+        "Responsive Web Apps",
+        "Native iOS & Android",
+        "Cross-Platform Solutions",
+        "UI/UX Design",
+        "Maintenance & Support"
+      ],
+      color: "bg-gradient-to-br from-pink-500 to-rose-700",
+      ctaText: "Explore Mobile App Solutions",
+      ctaLink: "/mobile-app-development",
+      isInternalLink: true
+    },
+    {
+      id: 6,
       title: "Global Expansion",
       description: "Extend Your Business to International Markets",
       icon: "/lovable-uploads/f27d4bed-d671-41e9-a719-422eff0cd698.png", // Server/cloud infrastructure image

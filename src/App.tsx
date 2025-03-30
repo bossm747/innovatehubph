@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query/devtools';
 
 // Import page components
 import Index from '@/pages/Index';
@@ -20,14 +21,10 @@ import AiSolutionsPage from '@/pages/AiSolutionsPage';
 import GlobalExpansionPage from '@/pages/GlobalExpansionPage';
 import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import AdminContentPage from '@/pages/AdminContentPage';
-import AdminContentManagementPage from '@/pages/AdminContentManagementPage';
-import AdminDesignPage from '@/pages/AdminDesignPage';
-import AdminNavigationPage from '@/pages/AdminNavigationPage';
-import AdminPageSectionsPage from '@/pages/AdminPageSectionsPage';
+import NotFound from '@/pages/NotFound';
 import AIToolsPage from '@/pages/AIToolsPage';
 import AIImageProcessingPage from '@/pages/AIImageProcessingPage';
 import AIAppsManagementPage from '@/pages/AIAppsManagementPage';
-import NotFound from '@/pages/NotFound';
 
 // Create a query client
 const queryClient = new QueryClient();
@@ -71,10 +68,6 @@ function App() {
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminDashboardPage />} />
         <Route path="/admin/content" element={<AdminContentPage />} />
-        <Route path="/admin/content-management" element={<AdminContentManagementPage />} />
-        <Route path="/admin/design" element={<AdminDesignPage />} />
-        <Route path="/admin/navigation" element={<AdminNavigationPage />} />
-        <Route path="/admin/page-sections" element={<AdminPageSectionsPage />} />
         
         {/* AI Tools */}
         <Route path="/ai-tools" element={<AIToolsPage />} />

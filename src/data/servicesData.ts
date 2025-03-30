@@ -1,3 +1,4 @@
+
 export interface ServiceFeature {
   title: string;
   description: string;
@@ -106,6 +107,29 @@ export const servicesData: Service[] = [
     ],
     ctaText: "Learn More",
     ctaLink: "/ai-solutions"
+  },
+  {
+    id: "mobile-app-development",
+    title: "Web & Mobile Apps",
+    description: "Custom web and native mobile applications that deliver exceptional user experiences across all devices.",
+    icon: "/lovable-uploads/91e21d7a-53f9-41d7-bd62-4a1f5dbe1d12.png",
+    slug: "mobile-app-development",
+    features: [
+      {
+        title: "Responsive Web Apps",
+        description: "Web applications that function beautifully on any screen size or device."
+      },
+      {
+        title: "Native iOS & Android",
+        description: "Platform-specific applications that leverage the full power of mobile devices."
+      },
+      {
+        title: "Cross-Platform Development",
+        description: "Efficient solutions that work seamlessly across multiple operating systems."
+      }
+    ],
+    ctaText: "Learn More",
+    ctaLink: "/mobile-app-development"
   },
   {
     id: "global-expansion",

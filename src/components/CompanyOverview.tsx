@@ -56,8 +56,8 @@ const CompanyOverview = () => {
             <div className="relative">
               <div className="relative z-10 rounded-lg overflow-hidden shadow-xl">
                 <img 
-                  src="/lovable-uploads/b46a7ef5-5912-4679-bbe1-aafd4ad7d717.png" 
-                  alt="BSP OPS Certificate" 
+                  src="/lovable-uploads/dde98a7d-f55c-499e-b5d7-1ada528182f3.png" 
+                  alt="BSP Certificate of Registration - INNOVATEHUB INC." 
                   className="w-full h-auto"
                 />
               </div>

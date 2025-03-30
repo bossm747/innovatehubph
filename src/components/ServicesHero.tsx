@@ -10,7 +10,7 @@ interface ServicesHeroProps {
 
 const ServicesHero = ({ title, subtitle, imagePath }: ServicesHeroProps) => {
   return (
-    <section className="relative py-28 px-6 md:px-12 lg:px-24 overflow-hidden">
+    <section className="relative py-16 px-6 md:px-12 lg:px-20 overflow-hidden">
       {/* Background image with overlay for opacity */}
       <div className="absolute inset-0 z-0">
         <img 
@@ -23,13 +23,13 @@ const ServicesHero = ({ title, subtitle, imagePath }: ServicesHeroProps) => {
       
       <div className="container mx-auto">
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <span className="inline-block px-4 py-1.5 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-6 animate-fade-in shadow-sm">
+          <span className="inline-block px-4 py-1.5 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4 animate-fade-in shadow-sm">
             Our Comprehensive Services
           </span>
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 hero-text-gradient animate-fade-in" style={{ animationDelay: '100ms' }}>
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 hero-text-gradient animate-fade-in" style={{ animationDelay: '100ms' }}>
             {title || "What We Do"}
           </h1>
-          <p className="text-xl md:text-2xl font-light text-gray-600 mb-10 animate-fade-in" style={{ animationDelay: '200ms' }}>
+          <p className="text-xl md:text-2xl font-light text-gray-600 mb-8 animate-fade-in" style={{ animationDelay: '200ms' }}>
             {subtitle || "Smart Solutions for the Digital Economy"}
           </p>
           

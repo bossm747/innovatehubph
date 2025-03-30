@@ -6,7 +6,7 @@ import { ArrowRight } from 'lucide-react';
 
 const AboutHero = () => {
   return (
-    <section className="py-24 relative overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
+    <section className="py-16 relative overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
       {/* Background patterns */}
       <div className="absolute inset-0 overflow-hidden opacity-10">
         <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-blue-500 filter blur-3xl"></div>
@@ -20,16 +20,16 @@ const AboutHero = () => {
         }}></div>
       </div>
       
-      <div className="container mx-auto px-6 md:px-12 lg:px-24 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="container mx-auto px-6 md:px-12 lg:px-20 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           <div className="max-w-2xl fade-up">
-            <span className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-gray-200 rounded-full mb-6">
+            <span className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-gray-200 rounded-full mb-4">
               Who We Are
             </span>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
               Passionate Innovators in the Philippine Tech Landscape
             </h1>
-            <p className="text-lg text-gray-200 mb-8">
+            <p className="text-lg text-gray-200 mb-6">
               InnovateHub Inc. is a forward-thinking technology company dedicated to creating groundbreaking digital solutions. From our roots in Batangas to our expanding presence in Dubai, we're committed to delivering exceptional value through innovation, expertise, and dedication.
             </p>
             <div className="flex flex-wrap gap-4">

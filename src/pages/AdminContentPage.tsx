@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ContentManagement from '@/components/admin/ContentManagement';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Toaster } from 'sonner';
 
 const AdminContentPage = () => {
@@ -18,7 +17,7 @@ const AdminContentPage = () => {
       <Navbar />
       <Toaster position="top-right" />
       
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-4 py-12 pb-0">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start mb-8">
             <div>

@@ -17,7 +17,7 @@ const AIImageProcessingPage = () => {
       
       <Navbar />
       
-      <main className="container mx-auto px-4 py-8 min-h-screen">
+      <main className="container mx-auto px-4 py-8 pb-0 min-h-screen">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">AI Image & Data Tools</h1>
           <p className="text-muted-foreground">

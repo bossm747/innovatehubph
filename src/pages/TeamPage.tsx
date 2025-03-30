@@ -26,8 +26,9 @@ const TeamPage = () => {
         <TeamSectionWithData />
         <TeamValues />
         <ContactSection />
-        <Footer />
       </main>
+      
+      <Footer />
     </div>
   );
 };

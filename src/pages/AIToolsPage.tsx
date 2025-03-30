@@ -1,17 +1,13 @@
 
-// Fix for error: Type '{}' is missing the following properties from type 'AIToolsHeaderProps': activeTab, setActiveTab
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import AIToolsHeader from '@/components/AIToolsHeader';
+import AIToolsHeader, { AIToolTab } from '@/components/AIToolsHeader';
 import NLPToolsSection from '@/components/ai-tools/NLPToolsSection';
 import ImageToolsSection from '@/components/ai-tools/ImageToolsSection';
 import DataAnalysisToolsSection from '@/components/ai-tools/DataAnalysisToolsSection';
-
-// Define the tab types
-type AIToolTab = 'nlp' | 'image' | 'data';
 
 const AIToolsPage = () => {
   // Add state for active tab
@@ -29,7 +25,7 @@ const AIToolsPage = () => {
       <main className="w-full py-0">
         <AIToolsHeader activeTab={activeTab} setActiveTab={setActiveTab} />
         
-        <div className="container mx-auto px-4 py-12">
+        <div className="container mx-auto px-4 py-12 pb-0">
           <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as AIToolTab)}>
             <TabsContent value="nlp" className="mt-6">
               <NLPToolsSection />

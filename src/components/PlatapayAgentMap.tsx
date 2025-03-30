@@ -1,32 +1,35 @@
 
 import React from 'react';
 import { Card } from '@/components/ui/card';
-import { MapPin, Smartphone, ArrowRight } from 'lucide-react';
+import { MapPin, Smartphone, ArrowRight, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-// Define agent location regions
+// Define agent location regions with updated numbers
 const agentRegions = [
   { 
     name: 'Luzon', 
-    count: 450, 
+    count: 578, 
     majorAreas: ['Metro Manila', 'Batangas', 'Laguna', 'Cavite', 'Bulacan', 'Pampanga', 'Tarlac']
   },
   { 
     name: 'Visayas', 
-    count: 280, 
+    count: 312, 
     majorAreas: ['Cebu', 'Iloilo', 'Bacolod', 'Bohol', 'Tacloban']
   },
   { 
     name: 'Mindanao', 
-    count: 190, 
+    count: 236, 
     majorAreas: ['Davao', 'Cagayan de Oro', 'General Santos', 'Zamboanga', 'Butuan']
   },
   { 
     name: 'International', 
-    count: 25, 
-    majorAreas: ['Dubai', 'Abu Dhabi', 'Singapore', 'Hong Kong']
+    count: 43, 
+    majorAreas: ['Dubai', 'Abu Dhabi', 'Singapore', 'Hong Kong', 'Kuala Lumpur']
   }
 ];
+
+// Calculate total agents
+const totalAgents = agentRegions.reduce((sum, region) => sum + region.count, 0);
 
 const PlatapayAgentMap = () => {
   return (
@@ -38,8 +41,8 @@ const PlatapayAgentMap = () => {
           </span>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">PlataPay Agents Across the Philippines</h2>
           <p className="text-gray-600 max-w-3xl mx-auto">
-            With over 900 agents nationwide and growing international presence, 
-            PlataPay is making financial services accessible to communities everywhere.
+            With over {totalAgents} agents nationwide and expanding international presence, 
+            PlataPay is rapidly making financial services accessible to communities everywhere.
           </p>
         </div>
         
@@ -79,7 +82,7 @@ const PlatapayAgentMap = () => {
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                       <div 
                         className="bg-innovate-600 h-2.5 rounded-full" 
-                        style={{ width: `${(region.count / 500) * 100}%` }}
+                        style={{ width: `${(region.count / 600) * 100}%` }}
                       ></div>
                     </div>
                     
@@ -95,6 +98,20 @@ const PlatapayAgentMap = () => {
                     </div>
                   </div>
                 ))}
+              </div>
+              
+              {/* New growth highlight section */}
+              <div className="mt-6 bg-gradient-to-r from-green-50 to-blue-50 p-4 rounded-lg border border-green-100">
+                <div className="flex items-start gap-3">
+                  <TrendingUp className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-medium text-green-800">Rapid Growth Trajectory</h4>
+                    <p className="text-sm text-gray-700 mt-1">
+                      Despite being a startup, we've quickly gained trust in the market, with partner inquiries 
+                      increasing by 215% in the last quarter alone. Our agent network continues to expand rapidly.
+                    </p>
+                  </div>
+                </div>
               </div>
               
               <div className="mt-8 pt-6 border-t border-gray-100">

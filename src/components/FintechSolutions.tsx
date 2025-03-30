@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Button } from '@/components/ui/card';
+import { ArrowRight, CheckCircle2, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const FintechSolutions = () => {
@@ -51,6 +51,20 @@ const FintechSolutions = () => {
               Empowering micropreneurs through accessible digital finance tools. 
               Our fintech platform offers a secure and income-generating platform for Filipino communities.
             </p>
+            
+            {/* New growth highlight section */}
+            <div className="bg-gradient-to-r from-blue-900/40 to-green-900/30 p-4 rounded-lg border border-blue-800/30 mb-5">
+              <div className="flex items-start gap-3">
+                <TrendingUp className="h-5 w-5 text-green-400 mt-1 flex-shrink-0" />
+                <div>
+                  <h3 className="font-medium text-green-300">Rapid Market Expansion</h3>
+                  <p className="text-sm text-gray-300 mt-1">
+                    Despite being a young startup, we've gained significant market trust with over 1,100 agents nationwide. 
+                    Our inquiries have increased by 215% this quarter, signaling strong and sustainable growth.
+                  </p>
+                </div>
+              </div>
+            </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
               <div className="flex items-start">

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
@@ -79,32 +78,14 @@ const PlatapayHero = () => {
           <div className="relative fade-up">
             <div className="absolute -top-4 -left-4 w-24 h-24 bg-innovate-100 rounded-lg -z-10"></div>
             <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-100 rounded-lg -z-10"></div>
-            
-            <div className="relative overflow-hidden rounded-2xl shadow-2xl group transition-all duration-300 hover:shadow-primary/30">
-              {/* Main image container with glow effect */}
-              <div className="relative">
-                <img 
-                  src="/lovable-uploads/15799531-a866-414e-9145-5edb73c657b0.png" 
-                  alt="PlataPay Payment Solution" 
-                  className="w-full h-auto rounded-2xl z-10 relative"
-                  loading="eager"
-                />
-                
-                {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/20 via-transparent to-transparent z-20"></div>
-                
-                {/* Glowing effect */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl blur-xl opacity-70 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
-              </div>
-              
-              {/* Floating elements around the image */}
-              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-2 rounded-lg shadow-md z-30 animate-float-slow">
-                <span className="text-xs font-medium text-blue-800">Secure Transactions</span>
-              </div>
-              
-              <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm p-2 rounded-lg shadow-md z-30 animate-float">
-                <span className="text-xs font-medium text-green-700">Digital Payments</span>
-              </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+              <img 
+                src="/lovable-uploads/d06dbf6f-eafc-4d26-97e4-b5ee5dac0416.png" 
+                alt="PlataPay Digital Wallet" 
+                className="w-full h-auto rounded-2xl"
+                loading="eager"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
             </div>
           </div>
         </div>

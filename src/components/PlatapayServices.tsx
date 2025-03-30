@@ -89,28 +89,19 @@ const PlatapayServices = () => {
         </div>
         
         <div className="mt-16 text-center fade-up">
-          <div className="p-6 bg-gradient-to-r from-blue-50 to-blue-100/50 rounded-lg max-w-3xl mx-auto shadow-sm">
+          <div className="p-6 bg-innovate-50 rounded-lg max-w-3xl mx-auto">
             <h3 className="text-xl font-semibold mb-3">Demo Walkthrough</h3>
             <p className="text-gray-600 mb-6">Watch a quick demo of how PlataPay works for customers and agents</p>
             
-            <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-md bg-gradient-to-r from-blue-100/40 to-purple-100/40 p-1">
-              <div className="bg-gray-200 w-full h-full flex items-center justify-center rounded-lg overflow-hidden relative group">
-                {/* Overlay with gradient and button */}
-                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/30 to-transparent flex items-center justify-center opacity-90 group-hover:opacity-100 transition-opacity">
-                  <div className="bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg transform transition-transform group-hover:scale-110">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
+            <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-md">
+              <div className="bg-gray-200 w-full h-full flex items-center justify-center">
+                <div className="text-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-innovate-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p className="mt-4 text-gray-500">PlataPay Demo Video</p>
                 </div>
-                
-                {/* Image placeholder for video thumbnail */}
-                <img 
-                  src="/lovable-uploads/15799531-a866-414e-9145-5edb73c657b0.png"
-                  alt="PlataPay Demo Video Thumbnail" 
-                  className="w-full h-full object-cover opacity-60"
-                />
               </div>
             </div>
           </div>

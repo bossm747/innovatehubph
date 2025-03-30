@@ -6,7 +6,9 @@ import ContactSection from '@/components/ContactSection';
 import CircuitBackground from '@/components/CircuitBackground';
 import { Helmet } from 'react-helmet';
 import ClientsShowcase from '@/components/ClientsShowcase';
-import HeroBackground from '@/components/hero/HeroBackground';
+import ServicesHero from '@/components/ServicesHero';
+import ClientsHeroImage from '@/components/clients/ClientsHeroImage';
+import ClientsHeroBackground from '@/components/clients/ClientsHeroBackground';
 
 const ClientsPage = () => {
   // Add scroll reveal effect
@@ -68,47 +70,29 @@ const ClientsPage = () => {
       {/* Main content */}
       <Navbar />
       <div className="w-full py-0">
-        <section className="relative py-12 px-6 md:px-12 lg:px-16 overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
-          <HeroBackground />
-          
-          <div className="container mx-auto relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-              <div className="max-w-2xl fade-up">
-                <span className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-blue-200 rounded-full mb-4 animate-fade-in" style={{animationDelay: '100ms'}}>
-                  Our Clients
-                </span>
-                <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white animate-fade-in" style={{animationDelay: '200ms'}}>
-                  Partners in <span className="text-blue-300">Digital Success</span>
-                </h1>
-                <p className="text-lg text-blue-100 mb-6 animate-fade-in" style={{animationDelay: '300ms'}}>
-                  Discover how we've helped businesses of all sizes transform their operations and achieve remarkable growth through innovative technology solutions.
-                </p>
-                
-                <div className="mt-8 flex items-center gap-6 text-blue-200 animate-fade-in" style={{animationDelay: '500ms'}}>
-                  <div className="flex items-center">
-                    <span className="h-5 w-5 mr-2 text-blue-300">•</span>
-                    Trusted Partnerships
-                  </div>
-                  <div className="flex items-center">
-                    <span className="h-5 w-5 mr-2 text-blue-300">•</span>
-                    Proven Results
-                  </div>
-                </div>
-              </div>
-              
-              <div className="relative hidden lg:block">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-500/20 rounded-lg blur-xl"></div>
-                <img 
-                  src="/lovable-uploads/45881ff2-13a3-4bc4-a639-da000d90c94a.png" 
-                  alt="Our Clients" 
-                  className="relative z-10 rounded-lg shadow-lg object-cover w-full h-auto transform hover:scale-105 transition-all duration-500"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
+        <ServicesHero 
+          title="Partners in Digital Success" 
+          subtitle="Our Clients"
+          description="Discover how we've helped businesses of all sizes transform their operations and achieve remarkable growth through innovative technology solutions."
+          primaryButtonText="Explore Partnerships"
+          primaryButtonLink="#client-showcase"
+          imageComponent={<ClientsHeroImage />}
+          backgroundComponent={<ClientsHeroBackground />}
+          featureItems={[
+            { icon: <span className="h-5 w-5 mr-2 text-blue-300">•</span>, text: "Trusted Partnerships" },
+            { icon: <span className="h-5 w-5 mr-2 text-blue-300">•</span>, text: "Proven Results" }
+          ]}
+        />
         
-        <ClientsShowcase />
+        <div id="client-showcase">
+          <ClientsShowcase 
+            title="Our Valued Partners" 
+            subtitle="Businesses that trust InnovateHub to deliver exceptional solutions"
+            showAll={true}
+            showFilters={true}
+            className="bg-gradient-to-b from-gray-50 to-white"
+          />
+        </div>
         
         <ContactSection />
         <Footer />

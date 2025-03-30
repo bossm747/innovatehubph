@@ -1,9 +1,10 @@
+
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart3, Users, Send, Settings, Brain, Sparkles, Gift, Target, MessageSquare, FileType, CreditCard } from 'lucide-react';
+import { BarChart3, Users, Send, Settings, Brain, Sparkles, Gift, Target, MessageSquare, FileType, CreditCard, AlertCircle } from 'lucide-react';
 import RecipientsList from './marketing/RecipientsList';
 import CampaignManager from './marketing/CampaignManager';
 import MarketingCopyGenerator from './marketing/MarketingCopyGenerator';
@@ -15,6 +16,7 @@ import PromoCreator from './marketing/PromoCreator';
 import EmailTemplateGenerator from '../email/EmailTemplateGenerator';
 import EmailTemplatesPage from '../email/EmailTemplatesPage';
 import PlatapayEmailTemplate from '../email/PlatapayEmailTemplate';
+import TestingDashboard from './marketing/TestingDashboard';
 
 const EmailMarketingTab: React.FC = () => {
   const [activeTab, setActiveTab] = useState('campaigns');
@@ -42,6 +44,8 @@ const EmailMarketingTab: React.FC = () => {
         return <MarketingAnalytics />;
       case 'agents':
         return <AIAgentsManager />;
+      case 'testing':
+        return <TestingDashboard />;
       default:
         return <CampaignManager />;
     }
@@ -68,7 +72,7 @@ const EmailMarketingTab: React.FC = () => {
         onValueChange={setActiveTab}
         className="space-y-4"
       >
-        <TabsList className="grid grid-cols-10 w-full">
+        <TabsList className="grid grid-cols-11 w-full">
           <TabsTrigger value="campaigns" className="flex items-center">
             <Send className="w-4 h-4 mr-2" />
             Campaigns
@@ -108,6 +112,10 @@ const EmailMarketingTab: React.FC = () => {
           <TabsTrigger value="analytics" className="flex items-center">
             <BarChart3 className="w-4 h-4 mr-2" />
             Analytics
+          </TabsTrigger>
+          <TabsTrigger value="testing" className="flex items-center">
+            <AlertCircle className="w-4 h-4 mr-2" />
+            Testing
           </TabsTrigger>
         </TabsList>
         

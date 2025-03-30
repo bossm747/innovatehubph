@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query/devtools';
 
 // Import page components
 import Index from '@/pages/Index';
@@ -19,6 +18,7 @@ import DigitalCustomizationsPage from '@/pages/DigitalCustomizationsPage';
 import EcommercePage from '@/pages/EcommercePage';
 import AiSolutionsPage from '@/pages/AiSolutionsPage';
 import GlobalExpansionPage from '@/pages/GlobalExpansionPage';
+import MobileAppDevelopmentPage from '@/pages/MobileAppDevelopmentPage';
 import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import AdminContentPage from '@/pages/AdminContentPage';
 import NotFound from '@/pages/NotFound';
@@ -33,7 +33,6 @@ const queryClient = new QueryClient();
 const QueryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <QueryClientProvider client={queryClient}>
     {children}
-    <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>
 );
 
@@ -63,6 +62,7 @@ function App() {
         <Route path="/digital-customizations" element={<DigitalCustomizationsPage />} />
         <Route path="/ecommerce" element={<EcommercePage />} />
         <Route path="/ai-solutions" element={<AiSolutionsPage />} />
+        <Route path="/mobile-app-development" element={<MobileAppDevelopmentPage />} />
         <Route path="/global-expansion" element={<GlobalExpansionPage />} />
         
         {/* Admin Routes */}

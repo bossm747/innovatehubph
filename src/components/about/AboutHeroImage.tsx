@@ -7,8 +7,8 @@ const AboutHeroImage = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg blur-xl"></div>
       <div className="float-animation">
         <img 
-          src="/lovable-uploads/e5cded83-8d62-4437-ad5d-69b26fd5828e.png" 
-          alt="InnovateHub Team" 
+          src="/lovable-uploads/be35daf5-2425-4624-a404-063bb8b56f6c.png" 
+          alt="Innovation and Teamwork" 
           className="relative z-10 rounded-lg shadow-lg w-full h-auto transform transition-all duration-500 pulse-glow"
         />
         

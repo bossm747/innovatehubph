@@ -20,26 +20,26 @@ const Testimonials = () => {
     {
       id: 1,
       name: "Business Owner",
-      role: "PlataPay Agent",
-      company: "MG Store",
-      testimonial: "Being a PlataPay agent has transformed my small sari-sari store. I now earn additional income through transaction fees while providing valuable services to my community.",
-      image: "https://images.unsplash.com/photo-1558203728-00f45181dd84?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      role: "Founder",
+      company: "Landos Grill",
+      testimonial: "We'd like to thank InnovateHub for creating our online restaurant platform with integrated payment gateway. It has streamlined our operations and significantly improved our customer experience.",
+      image: "/lovable-uploads/435e4809-830b-47f7-a2e1-c1667877fbc7.png"
     },
     {
       id: 2,
       name: "Business Owner",
-      role: "Founder",
-      company: "Santos Electronics",
-      testimonial: "InnovateHub developed a custom e-commerce solution for our electronics store that increased our online sales by 45% in just three months. Their attention to detail was impressive.",
-      image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      role: "Manager",
+      company: "Barako Brews",
+      testimonial: "Adding a point-of-sale system with QR payments through InnovateHub has transformed how we run our coffee shop. Transactions are faster and our customers love the convenience.",
+      image: "/lovable-uploads/c1082f13-5811-44d2-aaa4-123f819328bf.png"
     },
     {
       id: 3,
       name: "Business Owner",
       role: "CEO",
-      company: "TechVentures Inc.",
-      testimonial: "The AI-powered customer service solution developed by InnovateHub has significantly improved our response times and customer satisfaction. It was a game-changer for our business.",
-      image: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      company: "BTS Delivery",
+      testimonial: "InnovateHub created an integrated online delivery ecosystem with seamless payment integrations for both our web and mobile apps. This has revolutionized our business model completely.",
+      image: "/lovable-uploads/a281e700-f986-4113-a9d3-5fcaaba04b67.png"
     }
   ];
   
@@ -85,7 +85,7 @@ const Testimonials = () => {
           </p>
         </div>
         
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden max-w-4xl mx-auto">
           <div 
             className="flex transition-transform duration-500 ease-in-out"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -97,25 +97,20 @@ const Testimonials = () => {
               >
                 <Card className="bg-white rounded-xl shadow-medium overflow-hidden">
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-                    <div className="md:col-span-4 min-h-[300px] md:min-h-full">
-                      <div className="h-full relative">
+                    <div className="md:col-span-5 min-h-[280px] md:min-h-full flex items-center justify-center p-6 bg-gray-50">
+                      <div className="h-[180px] w-[180px] relative rounded-full overflow-hidden border-4 border-innovate-100/20">
                         <img 
                           src={testimonial.image} 
-                          alt={testimonial.name} 
-                          className="w-full h-full object-cover object-center"
+                          alt={testimonial.company} 
+                          className="w-full h-full object-contain"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-transparent md:bg-gradient-to-t"></div>
-                        <div className="absolute bottom-0 left-0 p-6 md:p-8 text-white md:hidden">
-                          <h3 className="text-xl font-semibold">{testimonial.name}</h3>
-                          <p className="text-white/80">{testimonial.role}, {testimonial.company}</p>
-                        </div>
                       </div>
                     </div>
                     
-                    <div className="md:col-span-8 p-6 md:p-8 flex flex-col justify-center">
-                      <div className="hidden md:block mb-6">
-                        <h3 className="text-xl font-semibold">{testimonial.name}</h3>
-                        <p className="text-gray-600">{testimonial.role}, {testimonial.company}</p>
+                    <div className="md:col-span-7 p-6 md:p-8 flex flex-col justify-center">
+                      <div className="mb-6">
+                        <h3 className="text-xl font-semibold text-gray-900">{testimonial.company}</h3>
+                        <p className="text-gray-600">{testimonial.role}</p>
                       </div>
                       
                       <div className="mb-6">

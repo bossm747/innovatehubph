@@ -18,7 +18,7 @@ const PlatapayTestimonials = () => {
     {
       id: 1,
       content: "PlataPay changed the way I do business. Now I can offer financial services in my community and earn additional income while helping my neighbors avoid long trips to the city.",
-      author: "Maria Santos",
+      author: "Business Owner",
       role: "PlataPay Agent",
       location: "Batangas City",
       image: "/lovable-uploads/45881ff2-13a3-4bc4-a639-da000d90c94a.png"
@@ -26,7 +26,7 @@ const PlatapayTestimonials = () => {
     {
       id: 2,
       content: "I used to spend half a day traveling and waiting in line to pay bills. With PlataPay, I can pay all my utilities in minutes from my phone. It's a game-changer!",
-      author: "Juan Dela Cruz",
+      author: "Business Owner",
       role: "PlataPay User",
       location: "San Pascual",
       image: "/lovable-uploads/e0d195e2-9fce-4899-9cb5-2842af7d93fb.png"
@@ -34,7 +34,7 @@ const PlatapayTestimonials = () => {
     {
       id: 3,
       content: "As a small store owner, becoming a PlataPay agent has not only increased foot traffic to my shop but also provided a steady additional income stream through service commissions.",
-      author: "Elena Reyes",
+      author: "Business Owner",
       role: "Sari-Sari Store Owner & Agent",
       location: "Lemery",
       image: "/lovable-uploads/35a5cc72-be03-4410-879b-3f1ad0ad3b00.png"

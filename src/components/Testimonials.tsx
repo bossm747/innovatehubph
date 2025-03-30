@@ -19,7 +19,7 @@ const Testimonials = () => {
   const testimonials: Testimonial[] = [
     {
       id: 1,
-      name: "Maria Garcia",
+      name: "Business Owner",
       role: "PlataPay Agent",
       company: "MG Store",
       testimonial: "Being a PlataPay agent has transformed my small sari-sari store. I now earn additional income through transaction fees while providing valuable services to my community.",
@@ -27,15 +27,15 @@ const Testimonials = () => {
     },
     {
       id: 2,
-      name: "Ricardo Santos",
-      role: "Business Owner",
+      name: "Business Owner",
+      role: "Founder",
       company: "Santos Electronics",
       testimonial: "InnovateHub developed a custom e-commerce solution for our electronics store that increased our online sales by 45% in just three months. Their attention to detail was impressive.",
       image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
     },
     {
       id: 3,
-      name: "Jasmine Reyes",
+      name: "Business Owner",
       role: "CEO",
       company: "TechVentures Inc.",
       testimonial: "The AI-powered customer service solution developed by InnovateHub has significantly improved our response times and customer satisfaction. It was a game-changer for our business.",

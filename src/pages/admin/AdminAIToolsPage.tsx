@@ -1,33 +1,62 @@
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Sparkles } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import AIAgentsManager from '@/components/admin/marketing/AIAgentsManager';
 
 const AdminAIToolsPage: React.FC = () => {
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold">AI Tools</h2>
-          <p className="text-muted-foreground">
-            Access and utilize powerful AI tools to boost productivity
-          </p>
-        </div>
+      <div>
+        <h2 className="text-2xl font-bold">AI Tools</h2>
+        <p className="text-muted-foreground">
+          Configure and manage AI assistants and tools
+        </p>
       </div>
       
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <Sparkles className="mr-2 h-5 w-5 text-innovate-600" />
-            AI Productivity Tools
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-center text-muted-foreground py-8">
-            AI tools interface will be available here. Use content generation, data analysis, and automation features.
-          </p>
-        </CardContent>
-      </Card>
+      <Tabs defaultValue="agents">
+        <TabsList>
+          <TabsTrigger value="agents">AI Agents</TabsTrigger>
+          <TabsTrigger value="integrations">Integrations</TabsTrigger>
+          <TabsTrigger value="settings">Settings</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="agents" className="space-y-4 mt-4">
+          <AIAgentsManager />
+        </TabsContent>
+        
+        <TabsContent value="integrations" className="space-y-4 mt-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>API Integrations</CardTitle>
+              <CardDescription>
+                Connect to external AI services and APIs
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-center py-8 text-muted-foreground">
+                AI integrations configuration will be available here soon.
+              </p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="settings" className="space-y-4 mt-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>AI Settings</CardTitle>
+              <CardDescription>
+                Configure global AI settings and defaults
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-center py-8 text-muted-foreground">
+                Global AI settings configuration will be available here soon.
+              </p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

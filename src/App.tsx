@@ -30,6 +30,10 @@ import AIAppsManagementPage from '@/pages/AIAppsManagementPage';
 import FileUploadPage from '@/pages/FileUploadPage';
 import PartnersPage from '@/pages/PartnersPage';
 import AdminPortal from '@/components/AdminPortal';
+import AdminNavigationPage from '@/pages/admin/AdminNavigationPage';
+import AdminDesignPage from '@/pages/admin/AdminDesignPage';
+import AdminContentManagementPage from '@/pages/admin/AdminContentManagementPage';
+import AdminPageSectionsPage from '@/pages/admin/AdminPageSectionsPage';
 
 // Create a query client
 const queryClient = new QueryClient();
@@ -77,9 +81,13 @@ function App() {
         <Route path="/global-expansion" element={<GlobalExpansionPage />} />
         
         {/* Admin Routes */}
-        <Route path="/admin" element={<AdminDashboardPage />} />
+        <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
         <Route path="/admin/content" element={<AdminContentPage />} />
         <Route path="/admin/portal" element={<AdminPortal />} />
+        <Route path="/admin/navigation" element={<AdminNavigationPage />} />
+        <Route path="/admin/design" element={<AdminDesignPage />} />
+        <Route path="/admin/content-management" element={<AdminContentManagementPage />} />
+        <Route path="/admin/page-sections/:pageId" element={<AdminPageSectionsPage />} />
         
         {/* AI Tools */}
         <Route path="/ai-tools" element={<AIToolsPage />} />

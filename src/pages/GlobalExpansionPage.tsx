@@ -6,6 +6,8 @@ import Footer from '@/components/Footer';
 import ServicesHero from '@/components/ServicesHero';
 import GlobalExpansionForm from '@/components/forms/GlobalExpansionForm';
 import { useNavigate } from 'react-router-dom';
+import GlobalExpansionHeroImage from '@/components/global/GlobalExpansionHeroImage';
+import GlobalExpansionHeroBackground from '@/components/global/GlobalExpansionHeroBackground';
 
 const GlobalExpansionPage = () => {
   const navigate = useNavigate();
@@ -23,10 +25,18 @@ const GlobalExpansionPage = () => {
         <ServicesHero 
           title="Global Expansion" 
           subtitle="Strategies for businesses venturing into new markets"
-          imagePath="/lovable-uploads/91e21d7a-53f9-41d7-bd62-4a1f5dbe1d12.png"
+          description="Extend your reach to international markets with our comprehensive global expansion services"
+          primaryButtonText="Explore Services"
+          primaryButtonLink="#global-services"
+          imageComponent={<GlobalExpansionHeroImage />}
+          backgroundComponent={<GlobalExpansionHeroBackground />}
+          featureItems={[
+            { icon: <span className="h-5 w-5 mr-2 text-purple-300">•</span>, text: "Dubai Trade License" },
+            { icon: <span className="h-5 w-5 mr-2 text-purple-300">•</span>, text: "International Market Entry" }
+          ]}
         />
         
-        <div className="container mx-auto px-4 py-16">
+        <div id="global-services" className="container mx-auto px-4 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
             <div>
               <h2 className="text-2xl md:text-3xl font-bold mb-4">Extend Your Reach to Global Markets</h2>

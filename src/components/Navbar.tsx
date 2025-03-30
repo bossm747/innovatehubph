@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import AdminPortalButton from './AdminPortalButton';
 import NavbarLogo from './navbar/NavbarLogo';
 import DesktopNavigation from './navbar/DesktopNavigation';
 import MobileNavigation from './navbar/MobileNavigation';
@@ -27,6 +28,9 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center space-x-4">
+          <div className="hidden md:flex">
+            <AdminPortalButton />
+          </div>
           <div className="md:hidden">
             <MobileMenuToggle isOpen={isMobileMenuOpen} onToggle={toggleMobileMenu} />
           </div>

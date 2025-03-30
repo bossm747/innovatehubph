@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -14,23 +15,6 @@ import { CalendarIcon, Plus, Gift, Trash2, Copy, Tag, Check, RefreshCw, AlertCir
 import { format } from 'date-fns';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-
-// Define an internal interface that matches what's coming from the database
-interface DatabasePromoCode {
-  id: string;
-  code: string;
-  discount: number;
-  discount_type: string;
-  valid_from: string;
-  valid_to: string;
-  max_uses?: number;
-  times_used: number;
-  active: boolean;
-  description?: string;
-  applicable_to?: string[];
-  created_at: string;
-  updated_at?: string;
-}
 
 const PromotionsManager = () => {
   const { toast } = useToast();
@@ -67,16 +51,24 @@ const PromotionsManager = () => {
       if (error) throw error;
       
       // Map database response to our PromoCode interface
-      const mappedPromoCodes: PromoCode[] = (data || []).map((promo: DatabasePromoCode) => ({
+      const mappedPromoCodes: PromoCode[] = (data || []).map(promo => ({
         id: promo.id,
         code: promo.code,
-        discount_percent: promo.discount_type === 'percentage' ? promo.discount : undefined,
-        discount_amount: promo.discount_type === 'fixed' ? promo.discount : undefined,
-        valid_until: promo.valid_to,
+        discount: promo.discount,
+        discountType: promo.discount_type as 'percentage' | 'fixed',
+        discount_type: promo.discount_type,
+        validFrom: promo.valid_from,
+        valid_from: promo.valid_from,
+        validTo: promo.valid_to,
+        valid_to: promo.valid_to,
+        maxUses: promo.max_uses,
         max_uses: promo.max_uses,
-        current_uses: promo.times_used,
+        timesUsed: promo.times_used,
+        times_used: promo.times_used,
         active: promo.active,
         description: promo.description,
+        applicableTo: promo.applicable_to,
+        applicable_to: promo.applicable_to,
         created_at: promo.created_at,
         updated_at: promo.updated_at
       }));
@@ -243,7 +235,6 @@ const PromotionsManager = () => {
     return format(new Date(dateString), 'MMM d, yyyy');
   };
 
-  // Update the render function to use the correct properties from the PromoCode interface
   const renderPromoCodesTab = () => (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -309,20 +300,27 @@ const PromotionsManager = () => {
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Discount:</span>
                     <span className="font-medium">
-                      {promo.discount_percent ? `${promo.discount_percent}%` : `$${promo.discount_amount}`}
+                      {promo.discount}{promo.discountType === 'percentage' ? '%' : ' USD'}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Valid until:</span>
+                    <span className="text-muted-foreground">Valid:</span>
                     <span className="font-medium">
-                      {formatDate(promo.valid_until)}
+                      {formatDate(promo.validFrom)} - {formatDate(promo.validTo)}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Usage:</span>
                     <span className="font-medium">
-                      {promo.current_uses} / {promo.max_uses || '∞'}
+                      {promo.timesUsed} / {promo.maxUses || '∞'}
                     </span>
+                  </div>
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {promo.applicableTo?.map(tag => (
+                      <Badge key={tag} variant="outline" className="text-xs">
+                        {tag}
+                      </Badge>
+                    ))}
                   </div>
                   {promo.description && (
                     <p className="text-sm text-muted-foreground mt-2">

@@ -26,6 +26,7 @@ import {
   Globe,
   Palette,
 } from 'lucide-react';
+import AdminPortalButton from '../AdminPortalButton';
 
 interface BackofficeNavigationProps {
   children: React.ReactNode;
@@ -45,7 +46,7 @@ const BackofficeNavigation: React.FC<BackofficeNavigationProps> = ({ children })
                 alt="InnovateHub Logo" 
                 className="h-8 w-8 mr-2"
               />
-              <span className="text-lg font-semibold">Admin Dashboard</span>
+              <span className="text-lg font-semibold">Admin Portal</span>
             </div>
           </SidebarHeader>
           
@@ -154,7 +155,7 @@ const BackofficeNavigation: React.FC<BackofficeNavigationProps> = ({ children })
           <header className="h-14 border-b flex items-center px-4 justify-between">
             <SidebarTrigger />
             <div className="flex items-center space-x-4">
-              {/* AdminPortalButton removed */}
+              <AdminPortalButton />
             </div>
           </header>
           

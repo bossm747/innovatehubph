@@ -45,8 +45,13 @@ import {
 // Define a type for the available tables
 type AvailableTable = 'ai_projects' | 'ai_generated_files' | 'staff_profiles' | 'inquiries' | 'subscribers' | 'appointments' | 'marketing_campaigns' | 'email_logs';
 
-// Define a simple Record type to avoid deep recursive types
-type TableRecord = Record<string, string | number | boolean | null | string[] | object>;
+// Define a basic type for table record values
+type BasicValue = string | number | boolean | null;
+
+// Define a non-recursive type for table records
+interface TableRecord {
+  [key: string]: BasicValue | BasicValue[] | { [key: string]: BasicValue } | BasicValue[][];
+}
 
 const DatabaseManagement = () => {
   const [selectedTable, setSelectedTable] = useState<AvailableTable>('inquiries');

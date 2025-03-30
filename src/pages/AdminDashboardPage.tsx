@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Navbar from '@/components/Navbar';
@@ -7,13 +6,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AdminOverview from '@/components/admin/AdminOverview';
 import UserManagement from '@/components/admin/UserManagement';
 import DatabaseManagement from '@/components/admin/DatabaseManagement';
+import EmailLogViewer from '@/components/admin/EmailLogViewer';
 import SeedDatabaseButton from '@/components/admin/SeedDatabaseButton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { toast, Toaster } from 'sonner';
 import { DashboardStats } from '@/components/admin/DashboardStats';
 import CampaignManager from '@/components/admin/marketing/CampaignManager';
-import { RefreshCw, Mail, BarChart } from 'lucide-react';
+import { RefreshCw, Mail, BarChart, Database as DatabaseIcon, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const AdminDashboardPage = () => {
@@ -120,16 +120,29 @@ const AdminDashboardPage = () => {
                 <CardTitle>Dashboard Overview</CardTitle>
               </CardHeader>
               <CardContent>
-                <p>Welcome to the InnovateHub admin dashboard. From here, you can manage your website content, users, and database entries. Use the tabs below to navigate through different management sections.</p>
+                <p>Welcome to the InnovateHub admin dashboard. From here, you can manage your website content, users, database entries, and monitor email communications. Use the tabs below to navigate through different management sections.</p>
               </CardContent>
             </Card>
           </div>
           
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList className="flex flex-wrap">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="users">Users</TabsTrigger>
-              <TabsTrigger value="database">Database</TabsTrigger>
+              <TabsTrigger value="overview">
+                <BarChart className="h-4 w-4 mr-2" />
+                Overview
+              </TabsTrigger>
+              <TabsTrigger value="users">
+                <Users className="h-4 w-4 mr-2" />
+                Users
+              </TabsTrigger>
+              <TabsTrigger value="database">
+                <DatabaseIcon className="h-4 w-4 mr-2" />
+                Database
+              </TabsTrigger>
+              <TabsTrigger value="email-logs">
+                <Mail className="h-4 w-4 mr-2" />
+                Email Logs
+              </TabsTrigger>
               <TabsTrigger value="email-marketing">
                 <Mail className="h-4 w-4 mr-2" />
                 Email Marketing
@@ -146,6 +159,10 @@ const AdminDashboardPage = () => {
             
             <TabsContent value="database">
               <DatabaseManagement />
+            </TabsContent>
+            
+            <TabsContent value="email-logs">
+              <EmailLogViewer />
             </TabsContent>
             
             <TabsContent value="email-marketing">

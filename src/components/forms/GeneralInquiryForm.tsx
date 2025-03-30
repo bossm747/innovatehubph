@@ -69,15 +69,19 @@ const GeneralInquiryForm = ({ navigate }: GeneralInquiryFormProps) => {
       logFormSubmission('general', data);
       
       // Submit the form
+      console.log('Calling submitInquiryForm with:', formDataWithService);
       const result = await submitInquiryForm(formDataWithService);
+      console.log('Inquiry submission result:', result);
       
       // Dismiss loading toast
       toast.dismiss(loadingToast);
       
       if (result.success) {
-        // Show success message
+        // Show success message with email status
         toast.success("Inquiry Submitted", {
-          description: "We'll get back to you soon!",
+          description: result.emailSent 
+            ? "We've sent you a confirmation email. We'll get back to you soon!"
+            : "We've received your inquiry and will get back to you soon!",
         });
         
         // Reset form
@@ -94,6 +98,8 @@ const GeneralInquiryForm = ({ navigate }: GeneralInquiryFormProps) => {
         });
       }
     } catch (error) {
+      console.error('Error in form submission:', error);
+      
       // Dismiss loading toast
       toast.dismiss(loadingToast);
       

@@ -97,6 +97,7 @@ export const submitInquiryForm = async (formData: InquiryFormData) => {
     }
     
     // Now, call the Supabase Edge Function to send emails
+    console.log('Calling process-inquiry function with inquiry ID:', inquiryData?.id);
     const { data: emailData, error: emailError } = await supabase.functions.invoke('process-inquiry', {
       body: { 
         ...formData,
@@ -115,6 +116,8 @@ export const submitInquiryForm = async (formData: InquiryFormData) => {
         error_message: emailError.message,
         inquiry_id: inquiryData?.id
       });
+      
+      console.log('Logged email failure in email_logs table');
     } else {
       // Log successful email
       await supabase.from('email_logs').insert({
@@ -133,6 +136,8 @@ export const submitInquiryForm = async (formData: InquiryFormData) => {
         successful: true,
         inquiry_id: inquiryData?.id
       });
+      
+      console.log('Logged successful emails in email_logs table');
     }
 
     return { 

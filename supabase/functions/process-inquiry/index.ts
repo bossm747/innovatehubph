@@ -1,8 +1,6 @@
-
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { SmtpClient } from "https://deno.land/x/smtp@v0.7.0/mod.ts";
 
-// CORS headers for browser requests
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -18,11 +16,10 @@ interface FormData {
   budget?: string;
   timeline?: string;
   requirements?: string;
-  inquiryId?: string; // Added to track the saved inquiry
-  [key: string]: any; // For any additional form-specific fields
+  inquiryId?: string;
+  [key: string]: any;
 }
 
-// Email templates for different services
 const getEmailTemplate = (data: FormData): string => {
   const commonHeader = `
     <!DOCTYPE html>
@@ -112,7 +109,6 @@ const getEmailTemplate = (data: FormData): string => {
     </html>
   `;
 
-  // Service-specific email content
   let serviceContent = '';
   
   switch(data.service) {
@@ -225,9 +221,7 @@ const getEmailTemplate = (data: FormData): string => {
   return commonHeader + serviceContent + commonFooter;
 };
 
-// Customer confirmation email template
 const getConfirmationEmailTemplate = (data: FormData): string => {
-  // Service type to human-readable name mapping
   const serviceNames: Record<string, string> = {
     'platapay': 'PlataPay Services',
     'digital': 'Digital Customizations',
@@ -341,6 +335,8 @@ const getConfirmationEmailTemplate = (data: FormData): string => {
 
 const sendEmail = async (data: FormData): Promise<{ success: boolean, message: string }> => {
   try {
+    console.log('Attempting to send email notifications for inquiry');
+    
     const client = new SmtpClient();
 
     // Connect to Hostinger SMTP server
@@ -351,7 +347,10 @@ const sendEmail = async (data: FormData): Promise<{ success: boolean, message: s
       password: Deno.env.get("SMTP_PASSWORD") || "",
     });
 
+    console.log('Connected to SMTP server successfully');
+
     // Send notification email to business
+    console.log('Sending notification email to business');
     const notificationEmail = await client.send({
       from: Deno.env.get("SMTP_USERNAME") || "inquiries@innovatehub.ph",
       to: "businessdevelopment@innovatehub.ph",
@@ -359,13 +358,18 @@ const sendEmail = async (data: FormData): Promise<{ success: boolean, message: s
       html: getEmailTemplate(data),
     });
 
+    console.log('Business notification email sent');
+
     // Send confirmation email to customer
+    console.log('Sending confirmation email to customer:', data.email);
     const confirmationEmail = await client.send({
       from: Deno.env.get("SMTP_USERNAME") || "inquiries@innovatehub.ph",
       to: data.email,
       subject: "Thank You for Your Inquiry - InnovateHub Inc.",
       html: getConfirmationEmailTemplate(data),
     });
+
+    console.log('Customer confirmation email sent');
 
     await client.close();
     
@@ -375,6 +379,12 @@ const sendEmail = async (data: FormData): Promise<{ success: boolean, message: s
     };
   } catch (error) {
     console.error("Error sending email:", error);
+    console.error("SMTP settings:", {
+      host: Deno.env.get("SMTP_HOST") || "smtp.hostinger.com",
+      port: Deno.env.get("SMTP_PORT") || "465",
+      username: Deno.env.get("SMTP_USERNAME") || "inquiries@innovatehub.ph",
+      passwordProvided: Boolean(Deno.env.get("SMTP_PASSWORD"))
+    });
     return { 
       success: false, 
       message: `Failed to send email: ${error.message}` 
@@ -405,6 +415,12 @@ serve(async (req) => {
   try {
     // Parse the request body
     const formData: FormData = await req.json();
+    console.log('Received inquiry data for processing:', {
+      service: formData.service,
+      name: formData.name,
+      email: formData.email ? `${formData.email.substring(0, 3)}...` : undefined,
+      inquiryId: formData.inquiryId
+    });
     
     // Validate required fields
     if (!formData.service || !formData.name || !formData.email) {
@@ -418,9 +434,11 @@ serve(async (req) => {
     }
 
     // Process the form and send emails
+    console.log('Starting email sending process');
     const result = await sendEmail(formData);
 
     if (!result.success) {
+      console.error('Failed to send emails:', result.message);
       return new Response(JSON.stringify({ error: result.message }), {
         status: 500,
         headers: {
@@ -431,6 +449,7 @@ serve(async (req) => {
     }
 
     // Return success response
+    console.log('Email process completed successfully');
     return new Response(JSON.stringify({ 
       success: true, 
       message: 'Emails sent successfully', 

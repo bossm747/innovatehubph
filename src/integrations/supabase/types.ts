@@ -9,6 +9,54 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      ai_agents: {
+        Row: {
+          capabilities: string[] | null
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          max_tokens: number
+          model: string
+          name: string
+          prompt_template: string
+          provider: string
+          temperature: number
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          capabilities?: string[] | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          max_tokens?: number
+          model: string
+          name: string
+          prompt_template: string
+          provider: string
+          temperature?: number
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          capabilities?: string[] | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          max_tokens?: number
+          model?: string
+          name?: string
+          prompt_template?: string
+          provider?: string
+          temperature?: number
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       ai_generated_files: {
         Row: {
           created_at: string | null

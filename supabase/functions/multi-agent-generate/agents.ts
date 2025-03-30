@@ -10,6 +10,8 @@ export interface Agent {
 export interface AgentResult {
   text: string;
   analysis?: any;
+  provider?: string;
+  domain?: string;
 }
 
 export async function enhanceContent(

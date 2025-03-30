@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -247,14 +246,11 @@ const AIAgentsManager: React.FC = () => {
       setIsTestingAgent(true);
       setTestResult('');
       
-      // Call generate-text function with the agent's settings
-      const { data, error } = await supabase.functions.invoke('generate-text', {
+      // Call multi-agent-generate function with the agent's ID
+      const { data, error } = await supabase.functions.invoke('multi-agent-generate', {
         body: {
           prompt: testInput,
-          provider: selectedAgent?.provider,
-          model: selectedAgent?.model,
-          temperature: selectedAgent?.temperature,
-          maxTokens: selectedAgent?.max_tokens
+          agentId: selectedAgent?.id,
         }
       });
       
@@ -474,7 +470,6 @@ const AIAgentsManager: React.FC = () => {
         </TabsContent>
       </Tabs>
 
-      {/* Edit Agent Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
@@ -628,7 +623,6 @@ const AIAgentsManager: React.FC = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Test Agent Dialog */}
       <Dialog open={isTestDialogOpen} onOpenChange={setIsTestDialogOpen}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>

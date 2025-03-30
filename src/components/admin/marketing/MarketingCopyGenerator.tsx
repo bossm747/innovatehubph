@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -10,10 +10,25 @@ import { supabase } from '@/integrations/supabase/client';
 import { Loader2, Wand2, Copy, CheckCheck, Brain, Sparkles, RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useQuery } from '@tanstack/react-query';
 
 interface MarketingCopyGeneratorProps {
   onCopyGenerated: (content: string) => void;
   type?: 'newsletter' | 'promotion' | 'announcement' | 'update';
+}
+
+interface AIAgent {
+  id: string;
+  name: string;
+  description: string;
+  provider: AIProvider;
+  model: string;
+  temperature: number;
+  max_tokens: number;
+  prompt_template: string;
+  is_active: boolean;
+  type: string;
+  capabilities: string[];
 }
 
 const MarketingCopyGenerator: React.FC<MarketingCopyGeneratorProps> = ({
@@ -26,6 +41,7 @@ const MarketingCopyGenerator: React.FC<MarketingCopyGeneratorProps> = ({
     return `${basePrompt} The email should be a ${type}.`;
   });
   const [selectedProvider, setSelectedProvider] = useState<AIProvider>('multi-agent');
+  const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedContent, setGeneratedContent] = useState('');
   const [copied, setCopied] = useState(false);
@@ -33,10 +49,42 @@ const MarketingCopyGenerator: React.FC<MarketingCopyGeneratorProps> = ({
   const [activeTab, setActiveTab] = useState('content');
   const [useAgents, setUseAgents] = useState<string[]>(['enhancement', 'analysis']);
 
+  // Fetch available agents from database
+  const { data: agents, isLoading: isLoadingAgents } = useQuery({
+    queryKey: ['ai-agents'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('ai_agents')
+        .select('*')
+        .eq('is_active', true)
+        .eq('type', 'email')
+        .order('name');
+        
+      if (error) throw error;
+      return data as AIAgent[];
+    }
+  });
+
   const handleProviderChange = (value: AIProvider) => {
     setSelectedProvider(value);
+    setSelectedAgentId(null);
     const basePrompt = getProviderConfig(value).defaultPrompt;
     setPrompt(`${basePrompt} The email should be a ${type}.`);
+  };
+
+  const handleAgentChange = (agentId: string) => {
+    setSelectedAgentId(agentId);
+    setSelectedProvider('multi-agent');
+    
+    // Find the selected agent
+    const selectedAgent = agents?.find(agent => agent.id === agentId);
+    if (selectedAgent) {
+      // Extract the prompt template and replace the {input} placeholder with empty string
+      // to allow the user to input their own prompt
+      const template = selectedAgent.prompt_template;
+      const basePrompt = template.replace('{input}', '').trim();
+      setPrompt(basePrompt);
+    }
   };
 
   const handleRegenerate = async () => {
@@ -49,8 +97,24 @@ const MarketingCopyGenerator: React.FC<MarketingCopyGeneratorProps> = ({
       setIsGenerating(true);
       setAnalysisData(null);
       
-      // If using multi-agent system, call our specialized function
-      if (selectedProvider === 'multi-agent') {
+      // If using a specific agent
+      if (selectedAgentId) {
+        const { data, error } = await supabase.functions.invoke('multi-agent-generate', {
+          body: { 
+            prompt, 
+            agentId: selectedAgentId,
+            temperature: 0.7,
+            maxTokens: 1500,
+            domain: "innovatehub.ph"
+          }
+        });
+        
+        if (error) throw error;
+        
+        setGeneratedContent(data.text);
+      }
+      // If using multi-agent system
+      else if (selectedProvider === 'multi-agent') {
         const agents = useAgents.map(agentType => {
           if (agentType === 'enhancement') {
             return {
@@ -142,10 +206,16 @@ const MarketingCopyGenerator: React.FC<MarketingCopyGeneratorProps> = ({
         <CardTitle className="flex items-center">
           <Wand2 className="mr-2 h-5 w-5 text-innovate-600" />
           AI Marketing Copy Generator
-          {selectedProvider === 'multi-agent' && (
+          {selectedProvider === 'multi-agent' && !selectedAgentId && (
             <Badge variant="outline" className="ml-2 bg-gradient-to-r from-blue-50 to-purple-50 text-purple-700 border-purple-200">
               <Sparkles className="w-3 h-3 mr-1" />
               Multi-Agent
+            </Badge>
+          )}
+          {selectedAgentId && (
+            <Badge variant="outline" className="ml-2 bg-gradient-to-r from-blue-50 to-green-50 text-green-700 border-green-200">
+              <Brain className="w-3 h-3 mr-1" />
+              Custom Agent
             </Badge>
           )}
         </CardTitle>
@@ -155,27 +225,58 @@ const MarketingCopyGenerator: React.FC<MarketingCopyGeneratorProps> = ({
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <label className="text-sm font-medium">AI Provider</label>
-          <Select value={selectedProvider} onValueChange={value => handleProviderChange(value as AIProvider)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select AI Provider" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="multi-agent" className="font-medium">
-                <div className="flex items-center">
-                  <Brain className="w-4 h-4 mr-2 text-purple-500" />
-                  AI Agent Collaboration (Recommended)
-                </div>
-              </SelectItem>
-              <SelectItem value="gemini">Google Gemini Pro 2.5</SelectItem>
-              <SelectItem value="openai">OpenAI GPT-4o Mini</SelectItem>
-              <SelectItem value="anthropic">Anthropic Claude 3</SelectItem>
-              <SelectItem value="mistral">Mistral Large</SelectItem>
-            </SelectContent>
-          </Select>
+          <label className="text-sm font-medium">AI Provider or Agent</label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <Select 
+              value={selectedAgentId || selectedProvider} 
+              onValueChange={(value) => {
+                if (value === 'multi-agent' || 
+                    value === 'gemini' || 
+                    value === 'openai' || 
+                    value === 'anthropic' || 
+                    value === 'mistral') {
+                  handleProviderChange(value as AIProvider);
+                } else {
+                  handleAgentChange(value);
+                }
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select AI Provider or Agent" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="multi-agent" className="font-medium">
+                  <div className="flex items-center">
+                    <Brain className="w-4 h-4 mr-2 text-purple-500" />
+                    AI Agent Collaboration (Recommended)
+                  </div>
+                </SelectItem>
+                <SelectItem value="gemini">Google Gemini Pro 2.5</SelectItem>
+                <SelectItem value="openai">OpenAI GPT-4o Mini</SelectItem>
+                <SelectItem value="anthropic">Anthropic Claude 3</SelectItem>
+                <SelectItem value="mistral">Mistral Large</SelectItem>
+                
+                {!isLoadingAgents && agents && agents.length > 0 && (
+                  <>
+                    <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+                      Custom AI Agents
+                    </div>
+                    {agents.map(agent => (
+                      <SelectItem key={agent.id} value={agent.id}>
+                        <div className="flex items-center">
+                          <Sparkles className="w-4 h-4 mr-2 text-green-500" />
+                          {agent.name}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </>
+                )}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
         
-        {selectedProvider === 'multi-agent' && (
+        {selectedProvider === 'multi-agent' && !selectedAgentId && (
           <div className="space-y-2 bg-blue-50 p-3 rounded-md">
             <label className="text-sm font-medium text-blue-800">Agent Configuration</label>
             <div className="flex flex-wrap gap-2">

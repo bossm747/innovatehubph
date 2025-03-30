@@ -32,7 +32,7 @@ const ServiceTiles = () => {
       id: 1,
       title: "PlataPay",
       description: "Digital Wallet and Financial Services Platform",
-      icon: "/lovable-uploads/8e59a0de-c852-49fd-bd6d-27a95f97e079.png",
+      icon: "/lovable-uploads/97f0f4de-a8d2-4527-8374-3152c6e866c4.png", // Payment/digital wallet device image
       features: [
         "Digital Wallet",
         "Bills Payment",
@@ -51,7 +51,7 @@ const ServiceTiles = () => {
       id: 2,
       title: "Digital Customizations",
       description: "Tailored Digital Solutions for Your Business",
-      icon: "/lovable-uploads/184545ab-3005-4f2b-8b3d-ef576aff4877.png",
+      icon: "/lovable-uploads/2a279838-b02e-478c-b41c-5f9480622eba.png", // App/website interface image
       features: [
         "Custom Software",
         "Business Model Development",
@@ -68,7 +68,7 @@ const ServiceTiles = () => {
       id: 3,
       title: "E-Commerce Development",
       description: "Complete Online Store Solutions",
-      icon: "/lovable-uploads/1ba10581-63f4-48e7-b872-fc97ae9f9f79.png",
+      icon: "/lovable-uploads/d7a51504-2997-48f7-9e8a-32738ecc513d.png", // POS/transaction device image
       features: [
         "Online Stores",
         "Payment Integration",
@@ -85,7 +85,7 @@ const ServiceTiles = () => {
       id: 4,
       title: "AI Solutions",
       description: "Intelligent Automation for Business Growth",
-      icon: "/lovable-uploads/520fec44-f8fe-4fcf-b3fb-dc9156169e22.png",
+      icon: "/lovable-uploads/e45ba6f6-0256-452d-a877-fb6a9c868d57.png", // Media player/AI interface image
       features: [
         "Chatbots",
         "Predictive Analytics",
@@ -102,7 +102,7 @@ const ServiceTiles = () => {
       id: 5,
       title: "Global Expansion",
       description: "Extend Your Business to International Markets",
-      icon: "/lovable-uploads/ed1ffe66-3b7c-4957-aa5f-53948529fdee.png",
+      icon: "/lovable-uploads/f27d4bed-d671-41e9-a719-422eff0cd698.png", // Server/cloud infrastructure image
       features: [
         "Dubai Trade License",
         "International Fintech Reach",

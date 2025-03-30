@@ -20,7 +20,7 @@ export const servicesData: Service[] = [
     id: "platapay",
     title: "PlataPay",
     description: "Digital wallet and payment solutions that empower communities and create income opportunities for agents.",
-    icon: "/lovable-uploads/e093393f-ce20-401d-be26-6d54dda3ace1.png",
+    icon: "/lovable-uploads/97f0f4de-a8d2-4527-8374-3152c6e866c4.png",
     slug: "platapay",
     features: [
       {
@@ -43,7 +43,7 @@ export const servicesData: Service[] = [
     id: "digital-customizations",
     title: "Digital Customizations",
     description: "Tailor-made software solutions designed to meet your specific business needs and challenges.",
-    icon: "/lovable-uploads/cd2085af-aad8-4b80-bba9-675dbee01908.png",
+    icon: "/lovable-uploads/2a279838-b02e-478c-b41c-5f9480622eba.png",
     slug: "digital-customizations",
     features: [
       {
@@ -66,7 +66,7 @@ export const servicesData: Service[] = [
     id: "ecommerce",
     title: "E-Commerce Development",
     description: "Comprehensive online store solutions that help businesses sell products and services effectively.",
-    icon: "/lovable-uploads/91381d0d-4da4-4d24-bb11-5970f5e2d23e.png",
+    icon: "/lovable-uploads/d7a51504-2997-48f7-9e8a-32738ecc513d.png",
     slug: "ecommerce",
     features: [
       {
@@ -89,7 +89,7 @@ export const servicesData: Service[] = [
     id: "ai-solutions",
     title: "AI Solutions",
     description: "Cutting-edge artificial intelligence technologies to automate processes and gain competitive advantages.",
-    icon: "/lovable-uploads/ae1af8ab-fd44-41f7-a04f-cc8817d2b3e5.png",
+    icon: "/lovable-uploads/e45ba6f6-0256-452d-a877-fb6a9c868d57.png",
     slug: "ai-solutions",
     features: [
       {
@@ -112,7 +112,7 @@ export const servicesData: Service[] = [
     id: "global-expansion",
     title: "Global Expansion",
     description: "Strategic services to help your business expand internationally, with a focus on Dubai and UAE markets.",
-    icon: "/lovable-uploads/7f87021f-ff1f-40c1-9928-adcf5f825dd9.png",
+    icon: "/lovable-uploads/f27d4bed-d671-41e9-a719-422eff0cd698.png",
     slug: "global-expansion",
     features: [
       {

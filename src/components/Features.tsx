@@ -37,29 +37,29 @@ const Feature = ({ icon, title, description, className, delay = 0 }: FeatureProp
 const Features = () => {
   const features = [
     {
-      icon: "/lovable-uploads/cd2085af-aad8-4b80-bba9-675dbee01908.png",
-      title: "Software Development",
-      description: "Custom software development for your business needs, built with the latest technologies."
+      icon: "/lovable-uploads/97f0f4de-a8d2-4527-8374-3152c6e866c4.png",
+      title: "Payment Solutions",
+      description: "Secure digital payment and financial services solutions for businesses and consumers."
     },
     {
-      icon: "/lovable-uploads/91381d0d-4da4-4d24-bb11-5970f5e2d23e.png",
+      icon: "/lovable-uploads/2a279838-b02e-478c-b41c-5f9480622eba.png",
       title: "Digital Transformation",
       description: "Comprehensive solutions to transform your business operations into digital processes."
     },
     {
-      icon: "/lovable-uploads/6ad1a40f-6765-4470-9c90-9e9f8aebc540.png",
-      title: "IT Consultation",
-      description: "Strategic IT consultation to help you navigate the complex technology landscape."
+      icon: "/lovable-uploads/d7a51504-2997-48f7-9e8a-32738ecc513d.png",
+      title: "E-Commerce Solutions",
+      description: "End-to-end e-commerce platforms with integrated payment and order management systems."
     },
     {
-      icon: "/lovable-uploads/ae1af8ab-fd44-41f7-a04f-cc8817d2b3e5.png",
+      icon: "/lovable-uploads/e45ba6f6-0256-452d-a877-fb6a9c868d57.png",
       title: "AI & Machine Learning",
       description: "Cutting-edge AI solutions that help you leverage data for intelligent decision-making."
     },
     {
-      icon: "/lovable-uploads/7f87021f-ff1f-40c1-9928-adcf5f825dd9.png",
-      title: "Digital Marketing",
-      description: "Strategic digital marketing to help you reach your target audience effectively."
+      icon: "/lovable-uploads/f27d4bed-d671-41e9-a719-422eff0cd698.png",
+      title: "Cloud Infrastructure",
+      description: "Scalable cloud solutions for global reach and seamless operations across borders."
     },
     {
       icon: "/lovable-uploads/aa140611-8402-49e4-856c-760e84dd4a61.png",

@@ -152,10 +152,7 @@ async function sendCustomerEmail(appointment: AppointmentData) {
   `
 
   try {
-    // Use SMTP to send the email
-    const username = Deno.env.get('SMTP_USERNAME')
-    const password = Deno.env.get('SMTP_PASSWORD')
-    
+    // Use Resend to send the email
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -255,10 +252,7 @@ async function sendStaffNotificationEmail(appointment: AppointmentData) {
   `
 
   try {
-    // Use SMTP to send the email
-    const username = Deno.env.get('SMTP_USERNAME')
-    const password = Deno.env.get('SMTP_PASSWORD')
-    
+    // Use Resend to send the email
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {

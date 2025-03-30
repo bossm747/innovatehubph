@@ -29,6 +29,7 @@ import AIImageProcessingPage from '@/pages/AIImageProcessingPage';
 import AIAppsManagementPage from '@/pages/AIAppsManagementPage';
 import FileUploadPage from '@/pages/FileUploadPage';
 import PartnersPage from '@/pages/PartnersPage';
+import AdminPortal from '@/components/AdminPortal';
 
 // Create a query client
 const queryClient = new QueryClient();
@@ -78,6 +79,7 @@ function App() {
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminDashboardPage />} />
         <Route path="/admin/content" element={<AdminContentPage />} />
+        <Route path="/admin/portal" element={<AdminPortal />} />
         
         {/* AI Tools */}
         <Route path="/ai-tools" element={<AIToolsPage />} />

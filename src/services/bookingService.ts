@@ -23,7 +23,7 @@ export const submitBooking = async (bookingData: BookingData) => {
     const dateTimeString = `${bookingData.date.toISOString().split('T')[0]}T${bookingData.time}:00`;
     const dateTime = new Date(dateTimeString);
     
-    // Store in Supabase (this will be created later)
+    // Store in Supabase
     const { data, error } = await supabase
       .from('appointments')
       .insert({
@@ -46,6 +46,17 @@ export const submitBooking = async (bookingData: BookingData) => {
       throw new Error(error.message || 'Failed to submit booking request');
     }
     
+    // Trigger the process-appointment Edge Function
+    const { error: processingError } = await supabase.functions.invoke('process-appointment', {
+      body: { appointmentId: data.id },
+    });
+
+    if (processingError) {
+      console.error('Error processing appointment:', processingError);
+      // The booking was saved, so we don't throw an error here
+      // Just log it for investigation
+    }
+    
     return { 
       success: true, 
       data,
@@ -62,7 +73,7 @@ export const submitBooking = async (bookingData: BookingData) => {
 
 export const getAvailableTimeSlots = (date: Date, duration: string = '30min') => {
   // In a real app, this would query the database for available slots
-  // For now, we'll return some mock data
+  // Here's a simple implementation that returns time slots between 9 AM and 5 PM
   const businessHours = {
     start: 9, // 9 AM
     end: 17,  // 5 PM

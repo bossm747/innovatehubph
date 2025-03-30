@@ -1,46 +1,64 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import AdminProfileForm from './AdminProfileForm';
 import AdminSettingsTab from './AdminSettingsTab';
-
-interface ProfileData {
-  full_name: string;
-  position: string;
-  department: string;
-  avatar_url: string;
-}
+import { CalendarIcon, UserIcon, SettingsIcon } from 'lucide-react';
+import AppointmentsTab from './AppointmentsTab';
 
 interface AdminProfileTabsProps {
-  profileData: ProfileData;
-  setProfileData: React.Dispatch<React.SetStateAction<ProfileData>>;
+  profileData: {
+    full_name: string;
+    position: string;
+    department: string;
+    avatar_url: string;
+  };
+  setProfileData: React.Dispatch<React.SetStateAction<{
+    full_name: string;
+    position: string;
+    department: string;
+    avatar_url: string;
+  }>>;
 }
 
-const AdminProfileTabs: React.FC<AdminProfileTabsProps> = ({ profileData, setProfileData }) => {
+const AdminProfileTabs: React.FC<AdminProfileTabsProps> = ({
+  profileData,
+  setProfileData
+}) => {
+  const [activeTab, setActiveTab] = useState('profile');
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Profile Management</CardTitle>
-        <CardDescription>Update your admin profile information</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="mb-4 w-full grid grid-cols-2">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="profile">
-            <AdminProfileForm profileData={profileData} setProfileData={setProfileData} />
-          </TabsContent>
-          
-          <TabsContent value="settings">
-            <AdminSettingsTab />
-          </TabsContent>
-        </Tabs>
-      </CardContent>
-    </Card>
+    <Tabs defaultValue="profile" value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+      <TabsList className="bg-background border">
+        <TabsTrigger value="profile" className="data-[state=active]:bg-innovate-50">
+          <UserIcon className="w-4 h-4 mr-2" />
+          Profile
+        </TabsTrigger>
+        <TabsTrigger value="appointments" className="data-[state=active]:bg-innovate-50">
+          <CalendarIcon className="w-4 h-4 mr-2" />
+          Appointments
+        </TabsTrigger>
+        <TabsTrigger value="settings" className="data-[state=active]:bg-innovate-50">
+          <SettingsIcon className="w-4 h-4 mr-2" />
+          Settings
+        </TabsTrigger>
+      </TabsList>
+      
+      <TabsContent value="profile" className="bg-white p-6 border rounded-md shadow-sm">
+        <AdminProfileForm 
+          profileData={profileData} 
+          setProfileData={setProfileData} 
+        />
+      </TabsContent>
+      
+      <TabsContent value="appointments" className="bg-white p-6 border rounded-md shadow-sm">
+        <AppointmentsTab />
+      </TabsContent>
+      
+      <TabsContent value="settings" className="bg-white p-6 border rounded-md shadow-sm">
+        <AdminSettingsTab />
+      </TabsContent>
+    </Tabs>
   );
 };
 

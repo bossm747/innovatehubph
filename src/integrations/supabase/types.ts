@@ -77,6 +77,57 @@ export type Database = {
         }
         Relationships: []
       }
+      appointments: {
+        Row: {
+          company: string | null
+          created_at: string
+          duration: string
+          email: string
+          id: string
+          meeting_type: string
+          name: string
+          notes: string | null
+          notified_at: string | null
+          phone: string | null
+          processed_at: string | null
+          scheduled_at: string
+          status: string
+          topic: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          duration: string
+          email: string
+          id?: string
+          meeting_type: string
+          name: string
+          notes?: string | null
+          notified_at?: string | null
+          phone?: string | null
+          processed_at?: string | null
+          scheduled_at: string
+          status?: string
+          topic: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          duration?: string
+          email?: string
+          id?: string
+          meeting_type?: string
+          name?: string
+          notes?: string | null
+          notified_at?: string | null
+          phone?: string | null
+          processed_at?: string | null
+          scheduled_at?: string
+          status?: string
+          topic?: string
+        }
+        Relationships: []
+      }
       documents: {
         Row: {
           content: string | null

@@ -30,7 +30,8 @@ export const submitContactForm = async (submission: ContactSubmission): Promise<
         service: 'general', // Required field in inquiries table
         type: 'contact',
         created_at: new Date().toISOString(),
-        status: 'new'
+        status: 'new',
+        meta: submission.source ? { source: submission.source } : undefined
       });
     
     if (error) {
@@ -64,17 +65,20 @@ export const getContactSubmissions = async (): Promise<ContactSubmission[]> => {
       return [];
     }
     
-    // Explicitly map the data to the ContactSubmission interface to avoid typing issues
-    return (data || []).map(item => ({
-      name: item.name,
-      email: item.email,
-      company: item.company,
-      phone: item.phone,
-      message: item.message,
-      created_at: item.created_at,
-      // Only add source if it exists in the item
-      ...(item.meta && item.meta.source ? { source: item.meta.source } : {})
-    })) as ContactSubmission[];
+    // Explicitly map the data to the ContactSubmission interface
+    return (data || []).map(item => {
+      const meta = item.meta as Record<string, any> | null;
+      return {
+        name: item.name,
+        email: item.email,
+        company: item.company,
+        phone: item.phone,
+        message: item.message,
+        created_at: item.created_at,
+        // Only add source if it exists in meta
+        ...(meta && typeof meta === 'object' && 'source' in meta ? { source: meta.source } : {})
+      };
+    });
   } catch (error) {
     console.error('Contact service error:', error);
     return [];

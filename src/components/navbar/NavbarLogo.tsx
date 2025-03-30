@@ -8,9 +8,9 @@ const NavbarLogo = () => {
       <img 
         src="/logo.svg" 
         alt="InnovateHub Logo" 
-        className="h-8 w-auto mr-1"
+        className="h-10 w-auto mr-2" // Increased size from h-8 to h-10 and added more margin
       />
-      <span className="font-bold">
+      <span className="font-bold text-lg"> {/* Increased text size */}
         <span className="text-black">Innovate</span>
         <span className="text-purple-500">Hub</span>
       </span>

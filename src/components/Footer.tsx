@@ -17,30 +17,35 @@ const Footer = ({ className = "" }: FooterProps) => {
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 lg:gap-8 mb-8">
           {/* Company Info */}
-          <div className="col-span-1">
-            <div className="flex items-center mb-4">
+          <div className="col-span-1 md:col-span-1 lg:col-span-1">
+            <div className="flex flex-col md:flex-row items-center md:items-start mb-6">
               <img 
                 src="/lovable-uploads/e057441a1-afb4-4ef6-9528-d2b5677d9842.png" 
                 alt="InnovateHub Logo"
-                className="h-12 w-auto mr-3"
+                className="h-16 md:h-20 w-auto mb-4 md:mb-0 md:mr-3"
               />
-              <div>
-                <h3 className="font-bold text-lg">InnovateHub</h3>
+              <div className="text-center md:text-left md:ml-3">
+                <h3 className="font-bold text-lg md:text-xl">InnovateHub</h3>
                 <p className="text-gray-400 text-sm">Digital Innovation Solutions</p>
               </div>
             </div>
-            <p className="text-gray-400 mb-6">
+            <p className="text-gray-400 mb-6 text-center md:text-left">
               Empowering the future with innovative digital solutions for businesses in the Philippines and beyond.
             </p>
             
-            <FooterSocialLinks />
+            <div className="flex justify-center md:justify-start">
+              <FooterSocialLinks />
+            </div>
           </div>
           
           {/* Quick Links - Now we don't need to pass props as the component has defaults */}
           <FooterNavLinks />
           
           {/* Contact Information */}
-          <FooterContactInfo />
+          <div className="md:col-span-2">
+            <h3 className="font-bold text-lg mb-4 text-center md:text-left">Contact Us</h3>
+            <FooterContactInfo />
+          </div>
         </div>
         
         <div className="pt-8 mt-8 border-t border-gray-800 text-center md:text-left">

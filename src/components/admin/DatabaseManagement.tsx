@@ -45,9 +45,12 @@ import {
 // Define a type for the available tables
 type AvailableTable = 'ai_projects' | 'ai_generated_files' | 'staff_profiles' | 'inquiries' | 'subscribers' | 'appointments' | 'marketing_campaigns' | 'email_logs';
 
+// Define a simple Record type to avoid deep recursive types
+type TableRecord = Record<string, string | number | boolean | null | string[] | object>;
+
 const DatabaseManagement = () => {
   const [selectedTable, setSelectedTable] = useState<AvailableTable>('inquiries');
-  const [tableData, setTableData] = useState<any[]>([]);
+  const [tableData, setTableData] = useState<TableRecord[]>([]);
   const [columns, setColumns] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [tables] = useState<AvailableTable[]>([
@@ -63,12 +66,12 @@ const DatabaseManagement = () => {
   
   // State for edit dialog
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [editRecord, setEditRecord] = useState<Record<string, any> | null>(null);
-  const [editedValues, setEditedValues] = useState<Record<string, any>>({});
+  const [editRecord, setEditRecord] = useState<TableRecord | null>(null);
+  const [editedValues, setEditedValues] = useState<TableRecord>({});
   
   // State for delete dialog
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [recordToDelete, setRecordToDelete] = useState<Record<string, any> | null>(null);
+  const [recordToDelete, setRecordToDelete] = useState<TableRecord | null>(null);
 
   const fetchTableData = async () => {
     setIsLoading(true);
@@ -120,21 +123,21 @@ const DatabaseManagement = () => {
     fetchTableData();
   }, [selectedTable]);
 
-  const formatValue = (value: any) => {
+  const formatValue = (value: any): string => {
     if (value === null) return 'null';
     if (typeof value === 'object') return JSON.stringify(value);
     return String(value);
   };
 
-  const truncateValue = (value: string, maxLength = 50) => {
+  const truncateValue = (value: string, maxLength = 50): string => {
     return value.length > maxLength 
       ? `${value.substring(0, maxLength)}...` 
       : value;
   };
 
-  const handleEditClick = (row: Record<string, any>) => {
+  const handleEditClick = (row: TableRecord) => {
     setEditRecord(row);
-    const initialValues: Record<string, any> = {};
+    const initialValues: TableRecord = {};
     columns.forEach(column => {
       initialValues[column] = row[column];
     });
@@ -142,7 +145,7 @@ const DatabaseManagement = () => {
     setEditDialogOpen(true);
   };
 
-  const handleDeleteClick = (row: Record<string, any>) => {
+  const handleDeleteClick = (row: TableRecord) => {
     setRecordToDelete(row);
     setDeleteDialogOpen(true);
   };

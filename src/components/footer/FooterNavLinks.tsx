@@ -18,8 +18,10 @@ const FooterNavLinks = ({ title = "Quick Links", links }: FooterNavLinksProps) =
     { name: "Home", path: "/" },
     { name: "About Us", path: "/about" },
     { name: "Services", path: "/services" },
+    { name: "PlataPay", path: "/fintech-solutions" },
+    { name: "AI Tools", path: "/ai-tools" },
     { name: "Partners", path: "/partners" },
-    { name: "PlataPay", path: "/services/platapay" },
+    { name: "Team", path: "/team" },
     { name: "Contact Us", path: "/contact" }
   ];
 

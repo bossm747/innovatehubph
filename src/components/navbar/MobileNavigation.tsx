@@ -87,6 +87,11 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
             )}
           </li>
           <li>
+            <Link to="/partners" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+              Partners
+            </Link>
+          </li>
+          <li>
             <Link to="/team" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
               Our Team
             </Link>

@@ -11,7 +11,7 @@ const NavbarLogo = () => {
         className="h-8 w-auto mr-1"
       />
       <span className="font-bold">
-        <span className="text-white">Innovate</span>
+        <span className="text-black">Innovate</span>
         <span className="text-purple-500">Hub</span>
       </span>
     </Link>

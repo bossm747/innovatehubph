@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useScrollToTop } from './hooks/useScrollToTop';
 
 // Import page components
 import Index from '@/pages/Index';
@@ -41,6 +42,9 @@ const QueryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 function App() {
   const location = useLocation();
   const [isHomePage, setIsHomePage] = useState(location.pathname === '/');
+  
+  // Use the scroll to top hook
+  useScrollToTop();
 
   useEffect(() => {
     setIsHomePage(location.pathname === '/');

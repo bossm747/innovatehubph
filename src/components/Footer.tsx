@@ -36,7 +36,7 @@ const Footer = ({ className = "" }: FooterProps) => {
             <FooterSocialLinks />
           </div>
           
-          {/* Quick Links - Fixed by passing empty props object */}
+          {/* Quick Links - Now we don't need to pass props as the component has defaults */}
           <FooterNavLinks />
           
           {/* Contact Information */}

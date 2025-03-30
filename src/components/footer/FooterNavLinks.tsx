@@ -9,16 +9,26 @@ interface NavLink {
 }
 
 interface FooterNavLinksProps {
-  title: string;
-  links: NavLink[];
+  title?: string;
+  links?: NavLink[];
 }
 
-const FooterNavLinks = ({ title, links }: FooterNavLinksProps) => {
+const FooterNavLinks = ({ title = "Quick Links", links }: FooterNavLinksProps) => {
+  const defaultLinks: NavLink[] = [
+    { name: "Home", path: "/" },
+    { name: "About Us", path: "/about" },
+    { name: "Services", path: "/services" },
+    { name: "PlataPay", path: "/services/platapay" },
+    { name: "Contact Us", path: "/contact" }
+  ];
+
+  const navLinks = links || defaultLinks;
+  
   return (
-    <div>
+    <div className="col-span-1">
       <h3 className="text-lg font-semibold mb-6 text-white">{title}</h3>
       <ul className="space-y-3">
-        {links.map((link, index) => (
+        {navLinks.map((link, index) => (
           <li key={index}>
             <Link 
               to={link.path} 

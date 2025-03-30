@@ -67,10 +67,21 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
         if (error) throw error;
         
         if (data && data.length > 0) {
-          setLeadSources(data);
+          // Map database response to our LeadSource interface
+          const mappedSources: LeadSource[] = data.map(source => ({
+            id: source.id,
+            name: source.name,
+            source_type: source.source_type as LeadSource['source_type'],
+            description: source.description,
+            active: source.active,
+            created_at: source.created_at,
+            updated_at: source.updated_at
+          }));
+          
+          setLeadSources(mappedSources);
           
           // Try to find a matching lead source based on the leadSource prop
-          const matchingSource = data.find(src => 
+          const matchingSource = mappedSources.find(src => 
             src.name.toLowerCase().includes(leadSource.toLowerCase()) || 
             (src.description && src.description.toLowerCase().includes(leadSource.toLowerCase()))
           );
@@ -79,7 +90,7 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
             setSelectedSourceId(matchingSource.id);
           } else {
             // Default to the first source if no match
-            setSelectedSourceId(data[0].id);
+            setSelectedSourceId(mappedSources[0].id);
           }
         }
       } catch (err) {

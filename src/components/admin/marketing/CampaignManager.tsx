@@ -41,7 +41,25 @@ const CampaignManager = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setCampaigns(data || []);
+      
+      // Map database response to our EmailCampaign interface
+      const mappedCampaigns: EmailCampaign[] = (data || []).map(campaign => ({
+        id: campaign.id,
+        name: campaign.name,
+        subject: campaign.subject,
+        content: campaign.content,
+        template: campaign.template,
+        status: campaign.status as EmailCampaign['status'],
+        scheduledAt: campaign.scheduled_at,
+        scheduled_at: campaign.scheduled_at,
+        recipientCount: campaign.recipient_count,
+        recipient_count: campaign.recipient_count,
+        segment_ids: campaign.segment_ids,
+        created_at: campaign.created_at,
+        updated_at: campaign.updated_at
+      }));
+      
+      setCampaigns(mappedCampaigns);
     } catch (error) {
       console.error('Error fetching campaigns:', error);
       toast({
@@ -156,7 +174,7 @@ const CampaignManager = () => {
     setCampaignName(campaign.name);
     setCampaignSubject(campaign.subject);
     setCampaignContent(campaign.content);
-    setCampaignStatus(campaign.status);
+    setCampaignStatus(campaign.status as EmailStatus);
     setOpenEditDialog(true);
   };
 

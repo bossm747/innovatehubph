@@ -47,9 +47,11 @@ export interface EmailCampaign {
   subject: string;
   content: string;
   template?: string;
-  status: 'draft' | 'scheduled' | 'sent' | 'failed';
+  status: 'draft' | 'scheduled' | 'sent' | 'failed' | string; // Added string to accommodate database values
   scheduledAt?: string;
+  scheduled_at?: string; // Added to match DB column
   recipientCount?: number;
+  recipient_count?: number; // Added to match DB column
   segment_ids?: string[];
   created_at: string;
   updated_at?: string;
@@ -79,6 +81,9 @@ export interface MarketingSegment {
     custom?: Record<string, any>;
   };
   recipientCount?: number;
+  recipient_count?: number; // Added to match DB column
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface PromoCode {
@@ -86,21 +91,31 @@ export interface PromoCode {
   code: string;
   discount: number;
   discountType: 'percentage' | 'fixed';
+  discount_type?: string; // Added for DB mapping
   validFrom: string;
+  valid_from?: string; // Added for DB mapping
   validTo: string;
+  valid_to?: string; // Added for DB mapping
   maxUses?: number;
+  max_uses?: number; // Added for DB mapping
   timesUsed: number;
+  times_used?: number; // Added for DB mapping
   active: boolean;
   description?: string;
+  applicable_to?: string[];
   applicableTo?: string[];
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface LeadSource {
   id: string;
   name: string;
-  source_type: 'website' | 'email' | 'social' | 'ad' | 'event' | 'referral' | 'other';
+  source_type: 'website' | 'email' | 'social' | 'ad' | 'event' | 'referral' | 'other' | string; // Added string to be more flexible
   description?: string;
   active: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface CampaignSend {
@@ -111,6 +126,6 @@ export interface CampaignSend {
   opened_at?: string;
   clicked_at?: string;
   links_clicked?: Record<string, any>[];
-  status: 'queued' | 'sent' | 'delivered' | 'opened' | 'clicked' | 'bounced' | 'failed' | 'unsubscribed';
+  status: 'queued' | 'sent' | 'delivered' | 'opened' | 'clicked' | 'bounced' | 'failed' | 'unsubscribed' | string; // Added string to be more flexible
   error_message?: string;
 }

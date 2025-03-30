@@ -50,7 +50,30 @@ const PromotionsManager = () => {
 
       if (error) throw error;
       
-      setPromoCodes(data || []);
+      // Map database response to our PromoCode interface
+      const mappedPromoCodes: PromoCode[] = (data || []).map(promo => ({
+        id: promo.id,
+        code: promo.code,
+        discount: promo.discount,
+        discountType: promo.discount_type as 'percentage' | 'fixed',
+        discount_type: promo.discount_type,
+        validFrom: promo.valid_from,
+        valid_from: promo.valid_from,
+        validTo: promo.valid_to,
+        valid_to: promo.valid_to,
+        maxUses: promo.max_uses,
+        max_uses: promo.max_uses,
+        timesUsed: promo.times_used,
+        times_used: promo.times_used,
+        active: promo.active,
+        description: promo.description,
+        applicableTo: promo.applicable_to,
+        applicable_to: promo.applicable_to,
+        created_at: promo.created_at,
+        updated_at: promo.updated_at
+      }));
+      
+      setPromoCodes(mappedPromoCodes);
     } catch (error) {
       console.error('Error fetching promo codes:', error);
       toast({

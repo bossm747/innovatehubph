@@ -124,21 +124,21 @@ const FeaturedVideo: React.FC<FeaturedVideoProps> = ({
             height="100%"
             playsinline
             volume={1}
+            onError={handleError}
+            onReady={handleReady}
             config={{
               file: {
                 attributes: {
-                  controlsList: 'nodownload',
-                  crossOrigin: 'anonymous',
-                  preload: 'auto'
+                  playsInline: true,
+                  autoPlay: true,
+                  preload: 'auto',
+                  controlsList: 'nodownload'
                 },
                 forceVideo: true
               }
             }}
             className={`object-cover ${className}`}
             style={{ objectFit: 'cover' }}
-            onReady={handleReady}
-            onStart={() => setIsLoading(false)}
-            onError={handleError}
           />
           
           {overlay && (

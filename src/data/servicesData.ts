@@ -1,4 +1,3 @@
-
 export interface ServiceFeature {
   title: string;
   description: string;
@@ -17,11 +16,11 @@ export interface Service {
 
 export const servicesData: Service[] = [
   {
-    id: "platapay",
+    id: "fintech-solutions",
     title: "Fintech Solutions",
     description: "Digital wallet and payment solutions that empower communities and create income opportunities for agents.",
     icon: "/lovable-uploads/97f0f4de-a8d2-4527-8374-3152c6e866c4.png",
-    slug: "platapay",
+    slug: "fintech-solutions",
     features: [
       {
         title: "Digital Wallet",
@@ -37,7 +36,7 @@ export const servicesData: Service[] = [
       }
     ],
     ctaText: "Learn More",
-    ctaLink: "/platapay"
+    ctaLink: "/fintech-solutions"
   },
   {
     id: "digital-customizations",

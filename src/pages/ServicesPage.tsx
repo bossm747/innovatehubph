@@ -6,7 +6,7 @@ import ContactSection from '@/components/ContactSection';
 import CircuitBackground from '@/components/CircuitBackground';
 import ServicesHero from '@/components/ServicesHero';
 import ServiceTiles from '@/components/ServiceTiles';
-import PlatapayServices from '@/components/PlatapayServices';
+import FintechServicesShowcase from '@/components/FintechServicesShowcase';
 import Features from '@/components/Features';
 import { Toaster } from 'sonner';
 import { Helmet } from 'react-helmet';
@@ -39,7 +39,7 @@ const ServicesPage = () => {
     <div className="min-h-screen w-full overflow-x-hidden relative bg-gradient-to-b from-gray-50 to-white">
       <Helmet>
         <title>Our Services | InnovateHub Inc.</title>
-        <meta name="description" content="Discover our smart solutions for the digital economy - from PlataPay to AI Solutions." />
+        <meta name="description" content="Discover our smart solutions for the digital economy - from Fintech Solutions to AI Solutions." />
       </Helmet>
       
       <Toaster position="top-right" />
@@ -57,7 +57,7 @@ const ServicesPage = () => {
         <ServicesHero title="What We Do" subtitle="Smart Solutions for the Digital Economy" imagePath="/lovable-uploads/d51f3d08-0518-4808-af9d-83ddda86ee94.png" />
         <ServiceTiles />
         <Features />
-        <PlatapayServices />
+        <FintechServicesShowcase />
         <ContactSection />
         <Footer />
       </main>

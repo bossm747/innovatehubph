@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import PlataPay from '@/components/PlataPay';
+import FintechSolutions from '@/components/FintechSolutions';
 import Testimonials from '@/components/Testimonials';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
@@ -89,8 +89,8 @@ const Index = () => {
         {/* Why Choose Us Section */}
         <WhyChooseUsSection />
         
-        {/* PlataPay Feature Section */}
-        <PlataPay />
+        {/* Fintech Solutions Feature Section */}
+        <FintechSolutions />
         
         {/* Service Tiles Section */}
         <ServiceTiles />

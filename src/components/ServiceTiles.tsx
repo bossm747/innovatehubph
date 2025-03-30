@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -42,7 +41,7 @@ const ServiceTiles = () => {
       ],
       color: "bg-gradient-to-br from-innovate-500 to-innovate-700",
       ctaText: "Learn More about Fintech Solutions",
-      ctaLink: "/platapay",
+      ctaLink: "/fintech-solutions",
       highlight: true,
       isInternalLink: true,
       logo: "/lovable-uploads/9b23899d-8537-4e7c-996b-5fdc791cbde2.png"
@@ -148,7 +147,6 @@ const ServiceTiles = () => {
                 {service.logo ? (
                   <div className="flex items-center mb-4">
                     <div className="relative mr-4">
-                      {/* Enhanced logo background with glow effect */}
                       <div className="absolute inset-0 bg-black/80 rounded-full blur-sm transition-all duration-300 transform scale-110"></div>
                       <div className="absolute inset-0 bg-gradient-to-tr from-innovate-500/30 to-transparent rounded-full blur-md animation-pulse"></div>
                       <img 
@@ -218,7 +216,6 @@ const ServiceTiles = () => {
                 </div>
               </div>
               
-              {/* Decorative background pattern */}
               <div className="absolute bottom-0 right-0 w-32 h-32 opacity-5 pointer-events-none">
                 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                   <path fill="currentColor" d="M42.8,-73.1C54.7,-67.3,63.2,-54.2,69.4,-40.9C75.5,-27.6,79.4,-13.8,79.2,-0.1C79,13.5,74.7,27.1,68.3,40.6C61.9,54.2,53.3,67.8,41.3,73.4C29.2,79.1,14.6,76.7,0.7,75.6C-13.1,74.5,-26.3,74.7,-39.3,70.4C-52.4,66.1,-65.4,57.3,-71.3,45.3C-77.2,33.3,-76,18.1,-75.9,3.3C-75.8,-11.5,-76.7,-23,-74.1,-36C-71.5,-49,-65.3,-63.6,-54.2,-70.1C-43.1,-76.5,-27.1,-74.8,-12.3,-72.7C2.4,-70.7,30.8,-78.9,42.8,-73.1Z" transform="translate(100 100)" />

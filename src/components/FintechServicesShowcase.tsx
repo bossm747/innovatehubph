@@ -8,7 +8,7 @@ interface ServiceCard {
   description: string;
 }
 
-const PlatapayServices = () => {
+const FintechServicesShowcase = () => {
   const services: ServiceCard[] = [
     {
       icon: "/lovable-uploads/60c28117-5e6a-45ad-ae8f-38d4c7c0240f.png",
@@ -43,7 +43,7 @@ const PlatapayServices = () => {
   ];
 
   return (
-    <section id="platapay-services" className="py-20 px-6 md:px-12">
+    <section id="fintech-services" className="py-20 px-6 md:px-12">
       <div className="container mx-auto">
         <div className="mb-16 text-center fade-up">
           <div className="flex items-center justify-center mb-6">
@@ -111,4 +111,4 @@ const PlatapayServices = () => {
   );
 };
 
-export default PlatapayServices;
+export default FintechServicesShowcase;

@@ -1,77 +1,90 @@
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import AIToolsPage from '@/pages/AIToolsPage';
-import ImageProcessingTool from '@/components/ImageProcessingTool';
-import AdminDashboardPage from '@/pages/AdminDashboardPage';
-import AdminPortal from '@/components/AdminPortal';
-import AdminContentPage from '@/pages/AdminContentPage';
-import { QueryProvider } from '@/providers/QueryProvider';
-import NotFound from '@/pages/NotFound';
-import IndexPage from '@/pages/Index';
+// Import page components
+import Index from '@/pages/Index';
 import AboutPage from '@/pages/AboutPage';
-import ContactPage from '@/pages/ContactPage';
 import ServicesPage from '@/pages/ServicesPage';
 import TeamPage from '@/pages/TeamPage';
+import ContactPage from '@/pages/ContactPage';
 import BlogPage from '@/pages/BlogPage';
 import ClientsPage from '@/pages/ClientsPage';
-import PlatapayPage from '@/pages/PlatapayPage';
-import AIAppsManagementPage from '@/pages/AIAppsManagementPage';
-import AIImageProcessingPage from '@/pages/AIImageProcessingPage';
+import FacebookPage from '@/pages/FacebookPage';
+import InquiryPage from '@/pages/InquiryPage';
+import FintechSolutionsPage from '@/pages/FintechSolutionsPage';
 import DigitalCustomizationsPage from '@/pages/DigitalCustomizationsPage';
 import EcommercePage from '@/pages/EcommercePage';
 import AiSolutionsPage from '@/pages/AiSolutionsPage';
 import GlobalExpansionPage from '@/pages/GlobalExpansionPage';
+import AdminDashboardPage from '@/pages/AdminDashboardPage';
+import AdminContentPage from '@/pages/AdminContentPage';
+import AdminContentManagementPage from '@/pages/AdminContentManagementPage';
+import AdminDesignPage from '@/pages/AdminDesignPage';
+import AdminNavigationPage from '@/pages/AdminNavigationPage';
+import AdminPageSectionsPage from '@/pages/AdminPageSectionsPage';
+import AIToolsPage from '@/pages/AIToolsPage';
+import AIImageProcessingPage from '@/pages/AIImageProcessingPage';
+import AIAppsManagementPage from '@/pages/AIAppsManagementPage';
+import NotFound from '@/pages/NotFound';
 
-// Admin Pages
-import AdminContentManagementPage from '@/pages/admin/AdminContentManagementPage';
-import AdminPageSectionsPage from '@/pages/admin/AdminPageSectionsPage';
-import AdminNavigationPage from '@/pages/admin/AdminNavigationPage';
-import AdminDesignPage from '@/pages/admin/AdminDesignPage';
+// Create a query client
+const queryClient = new QueryClient();
+
+// Create a wrapper for the QueryClientProvider
+const QueryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <QueryClientProvider client={queryClient}>
+    {children}
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>
+);
 
 function App() {
-  return (
-    <React.StrictMode>
-      <QueryProvider>
-        <BrowserRouter>
-          <Routes>
-            {/* Main Routes */}
-            <Route path="/" element={<IndexPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/team" element={<TeamPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/clients" element={<ClientsPage />} />
-            <Route path="/platapay" element={<PlatapayPage />} />
-            
-            {/* Services Routes - Updated to match footer links */}
-            <Route path="/digital-customizations" element={<DigitalCustomizationsPage />} />
-            <Route path="/ecommerce" element={<EcommercePage />} />
-            <Route path="/ai-solutions" element={<AiSolutionsPage />} />
-            <Route path="/global-expansion" element={<GlobalExpansionPage />} />
+  const location = useLocation();
+  const [isHomePage, setIsHomePage] = useState(location.pathname === '/');
 
-            {/* AI Tools Routes */}
-            <Route path="/ai-tools" element={<AIToolsPage />} />
-            <Route path="/ai-image-processing" element={<AIImageProcessingPage />} />
-            <Route path="/ai-apps-management" element={<AIAppsManagementPage />} />
-            
-            {/* Admin Routes */}
-            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-            <Route path="/admin/portal" element={<AdminPortal />} />
-            
-            {/* New Admin Routes */}
-            <Route path="/admin/content" element={<AdminContentManagementPage />} />
-            <Route path="/admin/content/:pageId" element={<AdminPageSectionsPage />} />
-            <Route path="/admin/navigation" element={<AdminNavigationPage />} />
-            <Route path="/admin/design" element={<AdminDesignPage />} />
-            
-            {/* 404 Route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </QueryProvider>
-    </React.StrictMode>
+  useEffect(() => {
+    setIsHomePage(location.pathname === '/');
+  }, [location]);
+
+  return (
+    <QueryProvider>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/team" element={<TeamPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/clients" element={<ClientsPage />} />
+        <Route path="/facebook" element={<FacebookPage />} />
+        <Route path="/inquiry" element={<InquiryPage />} />
+        
+        {/* Service Pages */}
+        <Route path="/fintech-solutions" element={<FintechSolutionsPage />} />
+        <Route path="/digital-customizations" element={<DigitalCustomizationsPage />} />
+        <Route path="/ecommerce" element={<EcommercePage />} />
+        <Route path="/ai-solutions" element={<AiSolutionsPage />} />
+        <Route path="/global-expansion" element={<GlobalExpansionPage />} />
+        
+        {/* Admin Routes */}
+        <Route path="/admin" element={<AdminDashboardPage />} />
+        <Route path="/admin/content" element={<AdminContentPage />} />
+        <Route path="/admin/content-management" element={<AdminContentManagementPage />} />
+        <Route path="/admin/design" element={<AdminDesignPage />} />
+        <Route path="/admin/navigation" element={<AdminNavigationPage />} />
+        <Route path="/admin/page-sections" element={<AdminPageSectionsPage />} />
+        
+        {/* AI Tools */}
+        <Route path="/ai-tools" element={<AIToolsPage />} />
+        <Route path="/ai-image-processing" element={<AIImageProcessingPage />} />
+        <Route path="/ai-apps-management" element={<AIAppsManagementPage />} />
+        
+        {/* 404 Page */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </QueryProvider>
   );
 }
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { CheckCircle2, XCircle, HelpCircle, AlertCircle } from 'lucide-react';
 
-const PlatapayComparisonTable = () => {
+const FintechComparisonTable = () => {
   // Define the features to compare
   const features = [
     { name: 'Bills Payment', description: 'Pay utilities, loans, and government fees' },
@@ -20,7 +20,7 @@ const PlatapayComparisonTable = () => {
   // Define competitors and their support for each feature
   const competitors = [
     { 
-      name: 'PlataPay', 
+      name: 'Fintech Solutions', 
       logo: '/lovable-uploads/9b23899d-8537-4e7c-996b-5fdc791cbde2.png',
       features: {
         'Bills Payment': { supported: true, note: 'Extensive biller network' },
@@ -86,9 +86,9 @@ const PlatapayComparisonTable = () => {
           <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
             Market Comparison
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">How PlataPay Compares</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">How Fintech Solutions Compares</h2>
           <p className="text-gray-600 max-w-3xl mx-auto">
-            See how PlataPay stacks up against other financial service providers in the Philippines. 
+            See how Fintech Solutions stacks up against other financial service providers in the Philippines. 
             We're committed to offering the best service and highest value for both agents and users.
           </p>
         </div>
@@ -158,4 +158,4 @@ const PlatapayComparisonTable = () => {
   );
 };
 
-export default PlatapayComparisonTable;
+export default FintechComparisonTable;

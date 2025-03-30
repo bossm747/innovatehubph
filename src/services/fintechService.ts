@@ -1,7 +1,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
-export interface PlatapayAgent {
+export interface FintechAgent {
   id: string;
   agent_name: string;
   location: string;
@@ -14,8 +14,8 @@ export interface PlatapayAgent {
   created_at: string;
 }
 
-// Mock PlataPay agents data
-const mockAgents: PlatapayAgent[] = [
+// Mock Fintech agents data
+const mockAgents: FintechAgent[] = [
   {
     id: '1',
     agent_name: 'Central Market Agent',
@@ -43,40 +43,40 @@ const mockAgents: PlatapayAgent[] = [
 ];
 
 /**
- * Fetch all PlataPay agents
+ * Fetch all Fintech agents
  */
-export const fetchPlatapayAgents = async (): Promise<PlatapayAgent[]> => {
+export const fetchFintechAgents = async (): Promise<FintechAgent[]> => {
   try {
-    console.log('Fetching all PlataPay agents (mock data)');
+    console.log('Fetching all Fintech agents (mock data)');
     return mockAgents;
   } catch (error) {
-    console.error('Error in fetchPlatapayAgents:', error);
+    console.error('Error in fetchFintechAgents:', error);
     return [];
   }
 };
 
 /**
- * Fetch featured PlataPay agents
+ * Fetch featured Fintech agents
  */
-export const fetchFeaturedPlatapayAgents = async (): Promise<PlatapayAgent[]> => {
+export const fetchFeaturedFintechAgents = async (): Promise<FintechAgent[]> => {
   try {
-    console.log('Fetching featured PlataPay agents (mock data)');
+    console.log('Fetching featured Fintech agents (mock data)');
     return mockAgents.filter(agent => agent.is_featured);
   } catch (error) {
-    console.error('Error in fetchFeaturedPlatapayAgents:', error);
+    console.error('Error in fetchFeaturedFintechAgents:', error);
     return [];
   }
 };
 
 /**
- * Fetch PlataPay agent by ID
+ * Fetch Fintech agent by ID
  */
-export const fetchPlatapayAgentById = async (id: string): Promise<PlatapayAgent | null> => {
+export const fetchFintechAgentById = async (id: string): Promise<FintechAgent | null> => {
   try {
-    console.log(`Fetching PlataPay agent by ID: ${id} (mock data)`);
+    console.log(`Fetching Fintech agent by ID: ${id} (mock data)`);
     return mockAgents.find(agent => agent.id === id) || null;
   } catch (error) {
-    console.error('Error in fetchPlatapayAgentById:', error);
+    console.error('Error in fetchFintechAgentById:', error);
     return null;
   }
 };

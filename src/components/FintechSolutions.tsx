@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const PlataPay = () => {
+const FintechSolutions = () => {
   const imgContainerRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
@@ -27,7 +27,7 @@ const PlataPay = () => {
   }, []);
   
   return (
-    <section id="platapay" className="py-16 px-4 md:px-8 bg-gradient-to-b from-white to-blue-50/30">
+    <section id="fintech-solutions" className="py-16 px-4 md:px-8 bg-gradient-to-b from-white to-blue-50/30">
       <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row items-center gap-8">
           <div className="w-full lg:w-1/2 order-2 lg:order-1 fade-up">
@@ -88,7 +88,7 @@ const PlataPay = () => {
             
             <div className="flex flex-col sm:flex-row gap-3">
               <Button className="bg-innovate-600 hover:bg-innovate-700" asChild>
-                <Link to="/platapay">
+                <Link to="/fintech-solutions">
                   Learn More <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -122,4 +122,4 @@ const PlataPay = () => {
   );
 };
 
-export default PlataPay;
+export default FintechSolutions;

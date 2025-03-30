@@ -4,26 +4,26 @@ import { Card } from '@/components/ui/card';
 import { MapPin, Smartphone, ArrowRight, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-// Define agent location regions with updated numbers
+// Define agent location regions with accurate numbers based on client data
 const agentRegions = [
   { 
     name: 'Luzon', 
-    count: 578, 
+    count: 678, 
     majorAreas: ['Metro Manila', 'Batangas', 'Laguna', 'Cavite', 'Bulacan', 'Pampanga', 'Tarlac']
   },
   { 
     name: 'Visayas', 
-    count: 312, 
+    count: 298, 
     majorAreas: ['Cebu', 'Iloilo', 'Bacolod', 'Bohol', 'Tacloban']
   },
   { 
     name: 'Mindanao', 
-    count: 236, 
+    count: 124, 
     majorAreas: ['Davao', 'Cagayan de Oro', 'General Santos', 'Zamboanga', 'Butuan']
   },
   { 
     name: 'International', 
-    count: 43, 
+    count: 15, 
     majorAreas: ['Dubai', 'Abu Dhabi', 'Singapore', 'Hong Kong', 'Kuala Lumpur']
   }
 ];
@@ -50,7 +50,6 @@ const PlatapayAgentMap = () => {
           <div className="lg:col-span-2 fade-up">
             <Card className="h-full overflow-hidden border-none shadow-lg">
               <div className="relative h-full min-h-[400px] bg-gray-100 flex items-center justify-center">
-                {/* Replace the old SVG map with the new Philippines map image */}
                 <img 
                   src="/lovable-uploads/dc4ee6f7-4310-43aa-b6d7-9b430abe6306.png" 
                   alt="Philippines Network Map" 
@@ -82,7 +81,7 @@ const PlatapayAgentMap = () => {
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                       <div 
                         className="bg-innovate-600 h-2.5 rounded-full" 
-                        style={{ width: `${(region.count / 600) * 100}%` }}
+                        style={{ width: `${(region.count / 700) * 100}%` }}
                       ></div>
                     </div>
                     
@@ -100,7 +99,7 @@ const PlatapayAgentMap = () => {
                 ))}
               </div>
               
-              {/* New growth highlight section */}
+              {/* Growth highlight section */}
               <div className="mt-6 bg-gradient-to-r from-green-50 to-blue-50 p-4 rounded-lg border border-green-100">
                 <div className="flex items-start gap-3">
                   <TrendingUp className="h-5 w-5 text-green-600 mt-1 flex-shrink-0" />

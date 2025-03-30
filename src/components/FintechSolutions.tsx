@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
-import { Button } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle2, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

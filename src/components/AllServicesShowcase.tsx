@@ -41,7 +41,7 @@ const AllServicesShowcase = () => {
               <div className="flex items-center justify-center mb-6 flex-shrink-0">
                 <div className="p-3 rounded-full bg-innovate-50">
                   <img 
-                    src={service.imageSrc || service.icon} 
+                    src={service.icon} 
                     alt={service.title} 
                     className="h-20 w-auto transition-transform hover:scale-105 duration-300"
                   />

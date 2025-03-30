@@ -1,6 +1,5 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai@1.0.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.23.0";
 import { 
   GeminiClient, 
@@ -37,12 +36,6 @@ const geminiClient = new GeminiClient(GEMINI_API_KEY || "");
 const openAIClient = new OpenAIClient(OPENAI_API_KEY || "");
 const anthropicClient = new AnthropicClient(ANTHROPIC_API_KEY || "");
 const mistralClient = new MistralClient(MISTRAL_API_KEY || "");
-
-// Set up Google API client
-if (GEMINI_API_KEY) {
-  const googleAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-  geminiClient.setClient(googleAI);
-}
 
 // Interface for agent configurations from database
 interface DbAgent {
@@ -290,10 +283,9 @@ async function processWithAgents(
       } else {
         // Fall back to default implementations if no matching agents in database
         if (agent.type === 'enhancement') {
-          // Only initialize Google client if needed for enhancement
+          // Only proceed with enhancement if GEMINI_API_KEY exists
           if (GEMINI_API_KEY) {
-            const googleAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-            result = await enhanceContent(result, agent, googleAI, domain);
+            result = await enhanceContent(result, agent, geminiClient, domain);
             console.log(`Enhanced content with ${agent.name} agent`);
           }
         } else if (agent.type === 'analysis') {

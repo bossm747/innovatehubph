@@ -20,45 +20,35 @@ export async function enhanceContent(
   geminiClient: any,
   domain: string = "innovatehub.ph"
 ): Promise<string> {
-  // Use Gemini by default for enhancement
-  if (geminiClient) {
-    try {
-      const model = geminiClient.getGenerativeModel({ model: "gemini-pro" });
-      
-      const enhancementPrompt = `
-      You are a specialized email enhancement AI agent named "${agent.name}".
-      
-      Your task is to enhance the following email content according to these guidelines:
-      - Improve the structure and formatting
-      - Enhance the call-to-action
-      - Ensure professional tone and branding for ${domain}
-      - Fix any grammatical or spelling issues
-      - Maintain the original message intent
-      
-      Original content:
-      ${content}
-      
-      Provide the enhanced version only, no explanations.
-      `;
-      
-      const result = await model.generateContent({
-        contents: [{ parts: [{ text: enhancementPrompt }] }],
-        generationConfig: {
-          temperature: 0.3, // Lower temperature for more conservative enhancements
-          maxOutputTokens: 2000,
-        }
-      });
-      
-      return result.response.text();
-    } catch (error) {
-      console.error("Enhancement failed:", error);
-      // If enhancement fails, return original content
-      return content;
-    }
+  // Use the Gemini client directly for enhancement
+  try {
+    const enhancementPrompt = `
+    You are a specialized email enhancement AI agent named "${agent.name}".
+    
+    Your task is to enhance the following email content according to these guidelines:
+    - Improve the structure and formatting
+    - Enhance the call-to-action
+    - Ensure professional tone and branding for ${domain}
+    - Fix any grammatical or spelling issues
+    - Maintain the original message intent
+    
+    Original content:
+    ${content}
+    
+    Provide the enhanced version only, no explanations.
+    `;
+    
+    return await geminiClient.generate(
+      enhancementPrompt,
+      0.3, // Lower temperature for more conservative enhancements
+      2000,
+      domain
+    );
+  } catch (error) {
+    console.error("Enhancement failed:", error);
+    // If enhancement fails, return original content
+    return content;
   }
-  
-  // If Gemini not available, return original
-  return content;
 }
 
 export async function analyzeContent(

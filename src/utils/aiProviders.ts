@@ -1,52 +1,40 @@
 
-export type AIProvider = 'gemini' | 'openai' | 'anthropic' | 'mistral' | 'multi-agent';
+// Types and utilities for AI providers
 
-export const AI_PROVIDERS: Record<AIProvider, { name: string, model: string, defaultPrompt: string }> = {
+export type AIProvider = 'gemini' | 'openai' | 'anthropic' | 'mistral';
+
+interface ProviderConfig {
+  name: string;
+  model: string;
+  defaultPrompt: string;
+}
+
+export const AI_PROVIDERS: Record<AIProvider, ProviderConfig> = {
   gemini: {
-    name: 'Google Gemini Pro 2.5',
+    name: 'Google Gemini',
     model: 'gemini-1.5-pro',
-    defaultPrompt: 'Generate engaging email marketing content for a tech company called InnovateHub that provides digital solutions including PlataPay, a digital payment system. The content should be professional, informative, and include a clear call to action.'
+    defaultPrompt: 'You are a professional email marketing expert for InnovateHub. Create engaging content for: {input}'
   },
   openai: {
-    name: 'OpenAI GPT-4o',
+    name: 'OpenAI GPT',
     model: 'gpt-4o-mini',
-    defaultPrompt: 'Create compelling email marketing copy for InnovateHub, a tech company specializing in digital solutions including PlataPay. The tone should be professional yet approachable, highlighting innovation and customer benefits.'
+    defaultPrompt: 'You are a professional email marketing expert for InnovateHub. Create engaging content for: {input}'
   },
   anthropic: {
-    name: 'Anthropic Claude 3',
-    model: 'claude-3-opus-20240229',
-    defaultPrompt: 'Write an email marketing message for InnovateHub, a technology company that offers digital solutions including PlataPay, a payment platform. The email should be concise, engaging, and include appropriate subject lines and CTAs.'
+    name: 'Anthropic Claude',
+    model: 'claude-3-haiku-20240307',
+    defaultPrompt: 'You are a professional email marketing expert for InnovateHub. Create engaging content for: {input}'
   },
   mistral: {
-    name: 'Mistral Large',
+    name: 'Mistral AI',
     model: 'mistral-large-latest',
-    defaultPrompt: 'Draft an email marketing campaign for InnovateHub, a technology innovation company with products like PlataPay. The content should be business-focused, highlight key benefits, and encourage the reader to take action.'
-  },
-  'multi-agent': {
-    name: 'AI Agent Collaboration',
-    model: 'multi-agent',
-    defaultPrompt: 'Create a professional email marketing message for InnovateHub, highlighting our digital solutions including PlataPay. Make it engaging, with clear value propositions and a compelling call to action. Use professional language appropriate for business clients.'
+    defaultPrompt: 'You are a professional email marketing expert for InnovateHub. Create engaging content for: {input}'
   }
 };
 
-export const getProviderConfig = (provider: AIProvider) => {
+export const getProviderConfig = (provider: AIProvider): ProviderConfig => {
   return AI_PROVIDERS[provider] || AI_PROVIDERS.gemini;
 };
-
-export interface AIGenerationOptions {
-  provider: AIProvider;
-  prompt: string;
-  temperature?: number;
-  maxTokens?: number;
-}
-
-export interface EmailTemplate {
-  id: string;
-  name: string;
-  subject: string;
-  content: string;
-  type: 'newsletter' | 'promotion' | 'announcement' | 'update';
-}
 
 export interface EmailCampaign {
   id: string;
@@ -54,7 +42,9 @@ export interface EmailCampaign {
   subject: string;
   content: string;
   template?: string;
-  scheduledAt?: Date;
-  recipientCount?: number;
   status: 'draft' | 'scheduled' | 'sent' | 'failed';
+  scheduledAt?: string;
+  recipientCount?: number;
+  created_at: string;
+  updated_at?: string;
 }

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -126,7 +127,7 @@ const AIAgentsManager: React.FC = () => {
 
   const handleSaveAgent = async () => {
     try {
-      if (!formData.name || !formData.prompt_template) {
+      if (!formData.name || !formData.prompt_template || !formData.model || !formData.provider) {
         toast({
           title: "Validation error",
           description: "Please fill out all required fields",
@@ -156,6 +157,16 @@ const AIAgentsManager: React.FC = () => {
         });
       } else {
         // Create new agent
+        // Make sure all required fields are present for a new agent
+        if (!agentData.name || !agentData.model || !agentData.provider || !agentData.prompt_template) {
+          toast({
+            title: "Missing required fields",
+            description: "Please fill in all required fields: name, model, provider, and prompt template",
+            variant: "destructive",
+          });
+          return;
+        }
+        
         const { error } = await supabase
           .from('ai_agents')
           .insert([{
@@ -488,7 +499,7 @@ const AIAgentsManager: React.FC = () => {
                   <Label htmlFor="name">Agent Name</Label>
                   <Input 
                     id="name" 
-                    value={formData.name} 
+                    value={formData.name || ''} 
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
                     placeholder="Email Content Writer"
                   />
@@ -498,7 +509,7 @@ const AIAgentsManager: React.FC = () => {
                   <Label htmlFor="description">Description</Label>
                   <Textarea 
                     id="description" 
-                    value={formData.description} 
+                    value={formData.description || ''} 
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
                     placeholder="Generates email content for marketing campaigns"
                   />
@@ -527,7 +538,7 @@ const AIAgentsManager: React.FC = () => {
                   <Label htmlFor="capabilities">Capabilities (comma separated)</Label>
                   <Input 
                     id="capabilities" 
-                    value={formData.capabilities?.join(', ')} 
+                    value={formData.capabilities?.join(', ') || ''} 
                     onChange={(e) => setFormData({
                       ...formData, 
                       capabilities: e.target.value.split(',').map(cap => cap.trim()).filter(Boolean)
@@ -566,7 +577,7 @@ const AIAgentsManager: React.FC = () => {
                         min="0" 
                         max="1" 
                         step="0.1" 
-                        value={formData.temperature} 
+                        value={formData.temperature || 0.7} 
                         onChange={(e) => setFormData({...formData, temperature: parseFloat(e.target.value)})}
                       />
                     </div>
@@ -583,17 +594,27 @@ const AIAgentsManager: React.FC = () => {
                       min="100" 
                       max="4000" 
                       step="50" 
-                      value={formData.max_tokens} 
+                      value={formData.max_tokens || 1000} 
                       onChange={(e) => setFormData({...formData, max_tokens: parseInt(e.target.value)})}
                     />
                   </div>
                 </div>
                 
                 <div>
+                  <Label htmlFor="model">Model</Label>
+                  <Input 
+                    id="model" 
+                    value={formData.model || ''} 
+                    onChange={(e) => setFormData({...formData, model: e.target.value})}
+                    placeholder="gemini-1.5-pro"
+                  />
+                </div>
+                
+                <div>
                   <Label htmlFor="prompt_template">Prompt Template</Label>
                   <Textarea 
                     id="prompt_template" 
-                    value={formData.prompt_template} 
+                    value={formData.prompt_template || ''} 
                     onChange={(e) => setFormData({...formData, prompt_template: e.target.value})}
                     className="min-h-[120px]"
                   />

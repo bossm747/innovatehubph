@@ -1,352 +1,354 @@
 
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import { format } from 'date-fns';
-import { CalendarIcon, Clock, Video, Phone } from 'lucide-react';
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogFooter, 
+  DialogHeader, 
+  DialogTitle 
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { toast } from 'sonner';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
-import { BookingData, submitBooking, getAvailableTimeSlots } from '@/services/bookingService';
+import { CalendarIcon, PhoneIcon, VideoIcon } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
-interface BookingDialogProps {
+const timeSlots = [
+  '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+  '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
+  '16:00', '16:30'
+];
+
+const durationOptions = [
+  { value: '30', label: '30 minutes' },
+  { value: '45', label: '45 minutes' },
+  { value: '60', label: '1 hour' }
+];
+
+export interface BookingDialogProps {
   isOpen: boolean;
-  onClose: () => void;
-  defaultTopic?: string;
-  defaultType?: 'call' | 'video';
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  meetingType: 'call' | 'video';
+  defaultTopic: string;
+  defaultEmail: string;
+  defaultName: string;
+  defaultCompany: string;
 }
 
 const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  email: z.string().email({ message: "Please enter a valid email address." }),
+  name: z.string().min(2, { message: 'Name is required' }),
+  email: z.string().email({ message: 'Invalid email address' }),
   phone: z.string().optional(),
   company: z.string().optional(),
-  date: z.date({ required_error: "Please select a date." }),
-  time: z.string({ required_error: "Please select a time." }),
-  duration: z.string().default("30min"),
-  type: z.enum(["call", "video"]),
-  topic: z.string().min(5, { message: "Topic must be at least 5 characters." }),
+  date: z.date({ required_error: 'Please select a date' }),
+  time: z.string({ required_error: 'Please select a time' }),
+  duration: z.string({ required_error: 'Please select a duration' }),
+  topic: z.string().min(2, { message: 'Topic is required' }),
   notes: z.string().optional(),
 });
 
-const BookingDialog: React.FC<BookingDialogProps> = ({ 
-  isOpen, 
-  onClose, 
-  defaultTopic = "Demo Request",
-  defaultType = "video"
+type FormValues = z.infer<typeof formSchema>;
+
+const BookingDialog: React.FC<BookingDialogProps> = ({
+  isOpen,
+  setIsOpen,
+  meetingType,
+  defaultTopic,
+  defaultEmail,
+  defaultName,
+  defaultCompany
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const { toast } = useToast();
   
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      company: "",
-      duration: "30min",
-      type: defaultType,
-      topic: defaultTopic,
-      notes: "",
+      name: defaultName || '',
+      email: defaultEmail || '',
+      company: defaultCompany || '',
+      topic: defaultTopic || 'General Consultation',
+      duration: '30',
     },
   });
-  
-  const timeSlots = selectedDate ? getAvailableTimeSlots(selectedDate, form.watch('duration')) : [];
-  
-  const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+
+  const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
-    
+
     try {
-      const result = await submitBooking(data as BookingData);
-      
-      if (result.success) {
-        toast.success("Appointment scheduled!", {
-          description: "We'll send you a confirmation email with the details.",
-        });
-        onClose();
-        form.reset();
-      } else {
-        toast.error("Failed to schedule appointment", {
-          description: result.error || "Please try again later.",
-        });
+      // Combine date and time into a single timestamp
+      const dateTime = new Date(data.date);
+      const [hours, minutes] = data.time.split(':').map(Number);
+      dateTime.setHours(hours, minutes);
+
+      // Insert the appointment into Supabase
+      const { data: appointment, error } = await supabase
+        .from('appointments')
+        .insert({
+          name: data.name,
+          email: data.email,
+          phone: data.phone || null,
+          company: data.company || null,
+          scheduled_at: dateTime.toISOString(),
+          duration: data.duration,
+          meeting_type: meetingType,
+          topic: data.topic,
+          notes: data.notes || null,
+        })
+        .select();
+
+      if (error) {
+        throw error;
       }
+
+      // Now process the appointment with our edge function
+      await supabase.functions.invoke('process-appointment', {
+        body: { appointmentId: appointment[0].id }
+      });
+
+      toast({
+        title: "Appointment Scheduled",
+        description: "We've received your booking request. You'll receive a confirmation email shortly.",
+      });
+
+      setIsOpen(false);
+      form.reset();
     } catch (error) {
-      console.error("Error scheduling appointment:", error);
-      toast.error("An error occurred", {
-        description: "Please try again later.",
+      console.error('Error booking appointment:', error);
+      toast({
+        title: "Booking Failed",
+        description: "We couldn't schedule your appointment. Please try again.",
+        variant: "destructive",
       });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const onDateChange = (date: Date | undefined) => {
-    setSelectedDate(date);
-    form.setValue('date', date as Date);
-    
-    // Reset time when date changes
-    form.setValue('time', '');
-  };
-
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-auto">
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Schedule an Appointment</DialogTitle>
+          <DialogTitle>
+            {meetingType === 'call' ? (
+              <span className="flex items-center">
+                <PhoneIcon className="h-5 w-5 mr-2 text-innovate-600" />
+                Schedule a Call
+              </span>
+            ) : (
+              <span className="flex items-center">
+                <VideoIcon className="h-5 w-5 mr-2 text-innovate-600" />
+                Schedule a Video Meeting
+              </span>
+            )}
+          </DialogTitle>
           <DialogDescription>
-            Choose your preferred date and time for a {form.watch('type')} consultation.
+            Book a time to discuss your project with our team
           </DialogDescription>
         </DialogHeader>
-        
+
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-5">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Full Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="John Doe" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input placeholder="john@example.com" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Phone (Optional)</FormLabel>
-                      <FormControl>
-                        <Input placeholder="+63 XXX XXX XXXX" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="company"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Company (Optional)</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Your Company" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              
-              <div className="md:col-span-1 space-y-5">
-                <FormField
-                  control={form.control}
-                  name="date"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Date</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "PPP")
-                              ) : (
-                                <span>Select a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={onDateChange}
-                            disabled={(date) =>
-                              date < new Date(new Date().setHours(0, 0, 0, 0))
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormDescription>
-                        Business days, Monday to Friday
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="duration"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Duration</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select duration" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="30min">30 minutes</SelectItem>
-                          <SelectItem value="60min">60 minutes</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="type"
-                  render={({ field }) => (
-                    <FormItem className="space-y-3">
-                      <FormLabel>Meeting Type</FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          className="flex flex-col space-y-1"
-                        >
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="video" id="video" />
-                            <Video className="h-4 w-4 mr-2 text-innovate-600" />
-                            <label htmlFor="video" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                              Video Conference
-                            </label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="call" id="call" />
-                            <Phone className="h-4 w-4 mr-2 text-innovate-600" />
-                            <label htmlFor="call" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                              Phone Call
-                            </label>
-                          </div>
-                        </RadioGroup>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              
-              <div className="md:col-span-1 space-y-5">
-                <FormField
-                  control={form.control}
-                  name="time"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Time</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value} disabled={!selectedDate}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select time slot" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {timeSlots.length > 0 ? (
-                            timeSlots.map((time) => (
-                              <SelectItem key={time} value={time}>
-                                {time} {parseInt(time.split(':')[0]) >= 12 ? 'PM' : 'AM'}
-                              </SelectItem>
-                            ))
-                          ) : (
-                            <SelectItem value="no-slots" disabled>
-                              No available slots
-                            </SelectItem>
-                          )}
-                        </SelectContent>
-                      </Select>
-                      <FormDescription>
-                        {selectedDate ? 'Philippine Time (GMT+8)' : 'Select a date first'}
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="topic"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Topic</FormLabel>
-                      <FormControl>
-                        <Input placeholder="What would you like to discuss?" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="notes"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Additional Notes (Optional)</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Any specific questions or points you'd like to discuss?"
-                          className="resize-none"
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem className="col-span-2 sm:col-span-1">
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Your name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="col-span-2 sm:col-span-1">
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Your email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem className="col-span-2 sm:col-span-1">
+                    <FormLabel>Phone (optional)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Your phone number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="company"
+                render={({ field }) => (
+                  <FormItem className="col-span-2 sm:col-span-1">
+                    <FormLabel>Company (optional)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Your company" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            
+
+            <div className="grid grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem className="col-span-2 sm:col-span-1">
+                    <FormLabel>Date</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date) => 
+                            date < new Date(new Date().setHours(0, 0, 0, 0)) || 
+                            date.getDay() === 0 || 
+                            date.getDay() === 6
+                          }
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="time"
+                render={({ field }) => (
+                  <FormItem className="col-span-2 sm:col-span-1">
+                    <FormLabel>Time</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a time" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {timeSlots.map((time) => (
+                          <SelectItem key={time} value={time}>
+                            {time}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
+              control={form.control}
+              name="duration"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Duration</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select duration" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {durationOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="topic"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Topic</FormLabel>
+                  <FormControl>
+                    <Input placeholder="What would you like to discuss?" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="notes"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Additional Notes (optional)</FormLabel>
+                  <FormControl>
+                    <Textarea 
+                      placeholder="Any specific questions or requirements?"
+                      className="resize-none"
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={onClose}>
-                Cancel
-              </Button>
-              <Button type="submit" className="bg-innovate-600 hover:bg-innovate-700" disabled={isSubmitting}>
-                {isSubmitting ? "Scheduling..." : "Schedule Appointment"}
+              <Button type="submit" disabled={isSubmitting} className="w-full">
+                {isSubmitting ? "Scheduling..." : "Schedule Meeting"}
               </Button>
             </DialogFooter>
           </form>

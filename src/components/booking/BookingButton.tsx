@@ -11,6 +11,7 @@ interface BookingButtonProps extends Omit<ButtonProps, 'type' | 'onClick'> {
   prefilledName?: string;
   prefilledCompany?: string;
   buttonText?: string;
+  label?: string; // Added label property
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
   buttonType?: 'button' | 'submit' | 'reset';
 }
@@ -22,26 +23,27 @@ const BookingButton: React.FC<BookingButtonProps> = ({
   prefilledName = '',
   prefilledCompany = '',
   buttonText = 'Schedule a Meeting',
+  label = buttonText, // Use label or fallback to buttonText
   variant = 'default',
   buttonType = 'button',
   ...buttonProps
 }) => {
-  const [open, setOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   return (
     <>
       <Button 
-        onClick={() => setOpen(true)} 
+        onClick={() => setIsOpen(true)} 
         variant={variant}
         type={buttonType}
         {...buttonProps}
       >
-        {buttonText}
+        {label || buttonText}
       </Button>
       
       <BookingDialog
-        open={open}
-        onOpenChange={setOpen}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
         meetingType={meetingType}
         defaultTopic={topic}
         defaultEmail={prefilledEmail}

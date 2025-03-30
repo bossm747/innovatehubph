@@ -1,645 +1,915 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Loader2, Mail, Send, Upload, UserPlus, CalendarClock } from 'lucide-react';
-import { DatePicker } from '@/components/ui/date-picker';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { CalendarIcon, MailIcon, SendIcon, TagIcon, UsersIcon } from 'lucide-react';
 
-// Template types
-const templateTypes = [
-  { value: 'welcome', label: 'Welcome Email' },
-  { value: 'newsletter', label: 'Newsletter' },
-  { value: 'promotion', label: 'Promotion/Offer' },
-  { value: 'follow_up', label: 'Follow-up' },
-  { value: 'service_announcement', label: 'Service Announcement' },
-];
+// Email template types with all fields
+interface NewsletterTemplate {
+  title: string;
+  intro: string; 
+  message: string;
+  ctaLink: string;
+  ctaText: string;
+}
 
-// Example recipient lists - in a real app, these would come from your database
-const recipientLists = [
-  { value: 'all', label: 'All Contacts' },
-  { value: 'leads', label: 'Recent Leads' },
-  { value: 'newsletter', label: 'Newsletter Subscribers' },
-  { value: 'clients', label: 'Existing Clients' },
-  { value: 'custom', label: 'Custom List' },
-];
+interface PromotionTemplate {
+  title: string;
+  intro: string;
+  offerTitle: string;
+  offerDescription: string;
+  message: string;
+  ctaLink: string;
+  ctaText: string;
+}
 
-// For demo purposes
-const mockRecipients = {
-  all: [
-    { email: 'contact1@example.com', name: 'Contact One', company: 'Company A' },
-    { email: 'contact2@example.com', name: 'Contact Two', company: 'Company B' },
-    { email: 'contact3@example.com', name: 'Contact Three', company: 'Company C' },
-  ],
-  leads: [
-    { email: 'lead1@example.com', name: 'Lead One', company: 'Company D' },
-    { email: 'lead2@example.com', name: 'Lead Two', company: 'Company E' },
-  ],
-  newsletter: [
-    { email: 'subscriber1@example.com', name: 'Subscriber One' },
-    { email: 'subscriber2@example.com', name: 'Subscriber Two' },
-    { email: 'subscriber3@example.com', name: 'Subscriber Three' },
-  ],
-  clients: [
-    { email: 'client1@example.com', name: 'Client One', company: 'Client Company A' },
-    { email: 'client2@example.com', name: 'Client Two', company: 'Client Company B' },
-  ],
-  custom: [],
-};
+interface WelcomeTemplate {
+  title: string;
+  intro: string;
+  message: string;
+  service: string;
+  customMessage: string;
+  ctaLink: string;
+  ctaText: string;
+  calendlyLink: string;
+}
+
+interface ServiceHighlightTemplate {
+  title: string;
+  intro: string;
+  serviceName: string;
+  serviceDescription: string;
+  message: string;
+  ctaLink: string;
+  ctaText: string;
+  learnMoreLink: string;
+}
+
+// Form schemas
+const emailFormSchema = z.object({
+  subject: z.string().min(1, "Subject is required"),
+  recipients: z.string().min(1, "At least one recipient is required"),
+  template: z.string(),
+  scheduledDate: z.string().optional(),
+  scheduledTime: z.string().optional(),
+});
+
+const recipientFormSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email address"),
+  company: z.string().optional(),
+  tags: z.string().optional(),
+});
 
 const EmailMarketingTab: React.FC = () => {
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('compose');
+  const [recipients, setRecipients] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [templateType, setTemplateType] = useState('welcome');
-  const [subject, setSubject] = useState('');
-  const [previewEmail, setPreviewEmail] = useState('');
-  const [recipientListType, setRecipientListType] = useState('leads');
-  const [customRecipients, setCustomRecipients] = useState('');
-  const [senderName, setSenderName] = useState('InnovateHub');
-  const [senderEmail, setSenderEmail] = useState('marketing@innovatehub.ph');
-  const [replyToEmail, setReplyToEmail] = useState('businessdevelopment@innovatehub.ph');
-  const [isScheduled, setIsScheduled] = useState(false);
-  const [scheduledDate, setScheduledDate] = useState<Date | undefined>(undefined);
-  const [templateData, setTemplateData] = useState({
-    title: '',
-    intro: '',
-    message: '',
+  const [isSending, setIsSending] = useState(false);
+  
+  // Template state management
+  const [selectedTemplate, setSelectedTemplate] = useState('newsletter');
+  const [newsletterTemplate, setNewsletterTemplate] = useState<NewsletterTemplate>({
+    title: 'InnovateHub Monthly Newsletter',
+    intro: 'Hello from InnovateHub!',
+    message: 'Here are the latest updates and insights from our team.',
+    ctaLink: 'https://innovatehub.ph/blog',
+    ctaText: 'Read More',
+  });
+  
+  const [promotionTemplate, setPromotionTemplate] = useState<PromotionTemplate>({
+    title: 'Special Offer Inside!',
+    intro: 'Limited Time Opportunity',
+    offerTitle: 'Get 15% Off Your Next Project',
+    offerDescription: 'Book a consultation before the end of the month to claim your discount',
+    message: 'Our team is ready to help bring your digital project to life with premium quality and competitive pricing.',
+    ctaLink: 'https://innovatehub.ph/contact',
+    ctaText: 'Claim Offer',
+  });
+  
+  const [welcomeTemplate, setWelcomeTemplate] = useState<WelcomeTemplate>({
+    title: 'Welcome to InnovateHub',
+    intro: 'Thank you for your interest',
+    service: 'digital solutions',
+    customMessage: 'We're excited to learn more about your project and how we can help.',
+    message: 'Our team of experts is ready to provide top-notch service and support.',
     ctaLink: 'https://innovatehub.ph/services',
+    ctaText: 'Explore Our Services',
+    calendlyLink: 'https://innovatehub.ph/book',
+  });
+  
+  const [serviceTemplate, setServiceTemplate] = useState<ServiceHighlightTemplate>({
+    title: 'Introducing Our Services',
+    intro: 'Discover what we can do for you',
+    serviceName: 'PlataPay Integration',
+    serviceDescription: 'Seamless digital payment solutions for your business needs',
+    message: 'Our team specializes in providing tailored solutions to meet your unique requirements.',
+    ctaLink: 'https://innovatehub.ph/services/platapay',
     ctaText: 'Learn More',
+    learnMoreLink: 'https://innovatehub.ph/case-studies',
   });
 
-  // Handle sending a test email
-  const handleSendTest = async () => {
-    if (!previewEmail || !subject) {
-      toast.error('Please provide a subject and test email address');
-      return;
-    }
+  // Forms
+  const emailForm = useForm<z.infer<typeof emailFormSchema>>({
+    resolver: zodResolver(emailFormSchema),
+    defaultValues: {
+      subject: '',
+      recipients: '',
+      template: 'newsletter',
+    },
+  });
 
+  const recipientForm = useForm<z.infer<typeof recipientFormSchema>>({
+    resolver: zodResolver(recipientFormSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      company: '',
+      tags: '',
+    },
+  });
+
+  // Load recipients on mount
+  useEffect(() => {
+    fetchRecipients();
+  }, []);
+
+  const fetchRecipients = async () => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('email-marketing', {
+      const { data, error } = await supabase
+        .from('marketing_recipients')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setRecipients(data || []);
+    } catch (error) {
+      console.error('Error fetching recipients:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load recipients list",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const addRecipient = async (data: z.infer<typeof recipientFormSchema>) => {
+    try {
+      setIsLoading(true);
+      const { error } = await supabase
+        .from('marketing_recipients')
+        .insert({
+          name: data.name,
+          email: data.email,
+          company: data.company || null,
+          tags: data.tags ? data.tags.split(',').map(tag => tag.trim()) : null,
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Recipient added successfully",
+      });
+
+      recipientForm.reset();
+      fetchRecipients();
+    } catch (error) {
+      console.error('Error adding recipient:', error);
+      toast({
+        title: "Error",
+        description: "Failed to add recipient",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const sendEmail = async (data: z.infer<typeof emailFormSchema>) => {
+    setIsSending(true);
+    try {
+      // Get template content based on selection
+      let templateContent;
+      switch (data.template) {
+        case 'newsletter':
+          templateContent = newsletterTemplate;
+          break;
+        case 'promotion':
+          templateContent = promotionTemplate;
+          break;
+        case 'welcome':
+          templateContent = welcomeTemplate;
+          break;
+        case 'service':
+          templateContent = serviceTemplate;
+          break;
+        default:
+          templateContent = newsletterTemplate;
+      }
+
+      const recipientsList = data.recipients.split(',').map(email => email.trim());
+      
+      // Prepare scheduling information if applicable
+      let scheduledAt = null;
+      if (data.scheduledDate && data.scheduledTime) {
+        scheduledAt = new Date(`${data.scheduledDate}T${data.scheduledTime}`).toISOString();
+      }
+
+      // Call the email-marketing edge function
+      const { data: result, error } = await supabase.functions.invoke('email-marketing', {
         body: {
-          templateType,
-          subject,
-          recipients: [{ email: previewEmail }],
-          templateData,
-          senderName,
-          senderEmail,
-          replyTo: replyToEmail,
-        },
+          subject: data.subject,
+          recipients: recipientsList,
+          templateType: data.template,
+          templateContent,
+          scheduledAt
+        }
       });
 
       if (error) throw error;
-      
-      toast.success('Test email sent successfully!');
-    } catch (error) {
-      console.error('Error sending test email:', error);
-      toast.error('Failed to send test email. Please check the console for details.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
-  // Handle sending the campaign
-  const handleSendCampaign = async () => {
-    if (!subject) {
-      toast.error('Please provide a subject for your email');
-      return;
-    }
-
-    // Get recipients based on selected list
-    let recipients = mockRecipients[recipientListType as keyof typeof mockRecipients];
-    
-    // If custom list, parse the textarea input
-    if (recipientListType === 'custom') {
-      if (!customRecipients.trim()) {
-        toast.error('Please add at least one recipient email');
-        return;
-      }
-      
-      // Parse custom recipients - expecting one email per line or comma-separated
-      recipients = customRecipients.split(/[\n,]/)
-        .map(email => email.trim())
-        .filter(email => email && email.includes('@'))
-        .map(email => ({ email }));
-    }
-
-    if (recipients.length === 0) {
-      toast.error('No valid recipients found');
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const campaignData = {
-        templateType,
-        subject,
-        recipients,
-        templateData,
-        senderName,
-        senderEmail,
-        replyTo: replyToEmail,
-        scheduledFor: isScheduled && scheduledDate ? scheduledDate.toISOString() : undefined,
-      };
-
-      const { data, error } = await supabase.functions.invoke('email-marketing', {
-        body: campaignData,
+      toast({
+        title: scheduledAt ? "Email Scheduled" : "Email Sent",
+        description: scheduledAt ? "Your email has been scheduled successfully" : "Your email has been sent successfully",
       });
 
-      if (error) throw error;
-      
-      if (isScheduled && scheduledDate) {
-        toast.success(`Campaign scheduled for ${scheduledDate.toLocaleString()}`);
-      } else {
-        toast.success(`Campaign sent! ${data.sent} emails delivered, ${data.failed} failed.`);
-      }
-      
-      // Reset form after successful send
-      setSubject('');
-      setTemplateData({
-        title: '',
-        intro: '',
-        message: '',
-        ctaLink: 'https://innovatehub.ph/services',
-        ctaText: 'Learn More',
-      });
+      emailForm.reset();
     } catch (error) {
-      console.error('Error sending campaign:', error);
-      toast.error('Failed to send campaign. Please check the console for details.');
+      console.error('Error sending email:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send email",
+        variant: "destructive",
+      });
     } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Dynamic template fields based on selected template type
-  const renderTemplateFields = () => {
-    switch (templateType) {
-      case 'welcome':
-        return (
-          <>
-            <div className="mb-4">
-              <Label htmlFor="ctaLink">CTA Button Link</Label>
-              <Input
-                id="ctaLink"
-                value={templateData.ctaLink}
-                onChange={(e) => setTemplateData({...templateData, ctaLink: e.target.value})}
-                placeholder="https://innovatehub.ph/services"
-              />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="ctaText">CTA Button Text</Label>
-              <Input
-                id="ctaText"
-                value={templateData.ctaText}
-                onChange={(e) => setTemplateData({...templateData, ctaText: e.target.value})}
-                placeholder="Explore Our Services"
-              />
-            </div>
-          </>
-        );
-      
-      case 'newsletter':
-        return (
-          <>
-            <div className="mb-4">
-              <Label htmlFor="title">Newsletter Title</Label>
-              <Input
-                id="title"
-                value={templateData.title}
-                onChange={(e) => setTemplateData({...templateData, title: e.target.value})}
-                placeholder="InnovateHub Monthly Newsletter"
-              />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="intro">Introduction Text</Label>
-              <Textarea
-                id="intro"
-                value={templateData.intro}
-                onChange={(e) => setTemplateData({...templateData, intro: e.target.value})}
-                placeholder="Here are the latest updates from InnovateHub..."
-                rows={3}
-              />
-            </div>
-            {/* In a real app, you would add support for adding multiple articles */}
-          </>
-        );
-      
-      case 'promotion':
-        return (
-          <>
-            <div className="mb-4">
-              <Label htmlFor="title">Promotion Title</Label>
-              <Input
-                id="title"
-                value={templateData.title}
-                onChange={(e) => setTemplateData({...templateData, title: e.target.value})}
-                placeholder="Special Offer"
-              />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="intro">Introduction Text</Label>
-              <Textarea
-                id="intro"
-                value={templateData.intro}
-                onChange={(e) => setTemplateData({...templateData, intro: e.target.value})}
-                placeholder="We have an exciting offer just for you!"
-                rows={3}
-              />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="offerTitle">Offer Title</Label>
-              <Input
-                id="offerTitle"
-                value={templateData.offerTitle || ''}
-                onChange={(e) => setTemplateData({...templateData, offerTitle: e.target.value})}
-                placeholder="Limited Time Offer"
-              />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="offerDescription">Offer Description</Label>
-              <Textarea
-                id="offerDescription"
-                value={templateData.offerDescription || ''}
-                onChange={(e) => setTemplateData({...templateData, offerDescription: e.target.value})}
-                placeholder="Description of your special offer or promotion"
-                rows={3}
-              />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="ctaLink">CTA Button Link</Label>
-              <Input
-                id="ctaLink"
-                value={templateData.ctaLink}
-                onChange={(e) => setTemplateData({...templateData, ctaLink: e.target.value})}
-                placeholder="https://innovatehub.ph/contact"
-              />
-            </div>
-          </>
-        );
-      
-      case 'follow_up':
-        return (
-          <>
-            <div className="mb-4">
-              <Label htmlFor="service">Service Name</Label>
-              <Input
-                id="service"
-                value={templateData.service || ''}
-                onChange={(e) => setTemplateData({...templateData, service: e.target.value})}
-                placeholder="Digital Customizations"
-              />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="customMessage">Custom Message</Label>
-              <Textarea
-                id="customMessage"
-                value={templateData.customMessage || ''}
-                onChange={(e) => setTemplateData({...templateData, customMessage: e.target.value})}
-                placeholder="Our team is ready to assist you with any inquiries..."
-                rows={3}
-              />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="calendlyLink">Booking Link</Label>
-              <Input
-                id="calendlyLink"
-                value={templateData.calendlyLink || ''}
-                onChange={(e) => setTemplateData({...templateData, calendlyLink: e.target.value})}
-                placeholder="https://innovatehub.ph/contact"
-              />
-            </div>
-          </>
-        );
-      
-      case 'service_announcement':
-        return (
-          <>
-            <div className="mb-4">
-              <Label htmlFor="title">Announcement Title</Label>
-              <Input
-                id="title"
-                value={templateData.title}
-                onChange={(e) => setTemplateData({...templateData, title: e.target.value})}
-                placeholder="New Service Announcement"
-              />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="serviceName">Service Name</Label>
-              <Input
-                id="serviceName"
-                value={templateData.serviceName || ''}
-                onChange={(e) => setTemplateData({...templateData, serviceName: e.target.value})}
-                placeholder="AI Solutions"
-              />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="serviceDescription">Service Description</Label>
-              <Textarea
-                id="serviceDescription"
-                value={templateData.serviceDescription || ''}
-                onChange={(e) => setTemplateData({...templateData, serviceDescription: e.target.value})}
-                placeholder="Description of your new service..."
-                rows={3}
-              />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="learnMoreLink">Learn More Link</Label>
-              <Input
-                id="learnMoreLink"
-                value={templateData.learnMoreLink || ''}
-                onChange={(e) => setTemplateData({...templateData, learnMoreLink: e.target.value})}
-                placeholder="https://innovatehub.ph/services"
-              />
-            </div>
-          </>
-        );
-      
-      default:
-        return (
-          <>
-            <div className="mb-4">
-              <Label htmlFor="title">Email Title</Label>
-              <Input
-                id="title"
-                value={templateData.title}
-                onChange={(e) => setTemplateData({...templateData, title: e.target.value})}
-                placeholder="Message from InnovateHub"
-              />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="message">Email Message</Label>
-              <Textarea
-                id="message"
-                value={templateData.message}
-                onChange={(e) => setTemplateData({...templateData, message: e.target.value})}
-                placeholder="Your message content here..."
-                rows={5}
-              />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="ctaLink">CTA Button Link (Optional)</Label>
-              <Input
-                id="ctaLink"
-                value={templateData.ctaLink}
-                onChange={(e) => setTemplateData({...templateData, ctaLink: e.target.value})}
-                placeholder="https://innovatehub.ph/"
-              />
-            </div>
-            <div className="mb-4">
-              <Label htmlFor="ctaText">CTA Button Text</Label>
-              <Input
-                id="ctaText"
-                value={templateData.ctaText}
-                onChange={(e) => setTemplateData({...templateData, ctaText: e.target.value})}
-                placeholder="Learn More"
-              />
-            </div>
-          </>
-        );
+      setIsSending(false);
     }
   };
 
   return (
     <div className="space-y-6">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="compose">
-            <Mail className="w-4 h-4 mr-2" />
+        <TabsList className="grid grid-cols-3">
+          <TabsTrigger value="compose" className="flex items-center">
+            <SendIcon className="w-4 h-4 mr-2" />
             Compose Email
           </TabsTrigger>
-          <TabsTrigger value="recipients">
-            <UserPlus className="w-4 h-4 mr-2" />
-            Recipients
+          <TabsTrigger value="recipients" className="flex items-center">
+            <UsersIcon className="w-4 h-4 mr-2" />
+            Manage Recipients
           </TabsTrigger>
-          <TabsTrigger value="settings">
-            <Send className="w-4 h-4 mr-2" />
-            Send Options
+          <TabsTrigger value="templates" className="flex items-center">
+            <MailIcon className="w-4 h-4 mr-2" />
+            Email Templates
           </TabsTrigger>
         </TabsList>
-        
-        <TabsContent value="compose" className="space-y-4">
+
+        <TabsContent value="compose" className="space-y-4 pt-4">
           <Card>
             <CardHeader>
               <CardTitle>Compose Marketing Email</CardTitle>
               <CardDescription>
-                Create professional marketing emails using our templates
+                Create and send marketing emails to your audience
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="mb-4">
-                <Label htmlFor="templateType">Email Template</Label>
-                <Select value={templateType} onValueChange={setTemplateType}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a template" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {templateTypes.map((template) => (
-                      <SelectItem key={template.value} value={template.value}>
-                        {template.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="mb-4">
-                <Label htmlFor="subject">Email Subject</Label>
-                <Input
-                  id="subject"
-                  value={subject}
-                  onChange={(e) => setSubject(e.target.value)}
-                  placeholder="Enter subject line"
-                />
-              </div>
-              
-              {renderTemplateFields()}
-              
-              <div className="mb-4">
-                <Label htmlFor="previewEmail">Send Test To</Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="previewEmail"
-                    value={previewEmail}
-                    onChange={(e) => setPreviewEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    type="email"
+            <CardContent>
+              <Form {...emailForm}>
+                <form onSubmit={emailForm.handleSubmit(sendEmail)} className="space-y-6">
+                  <FormField
+                    control={emailForm.control}
+                    name="subject"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email Subject</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Enter email subject" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                  <Button 
-                    onClick={handleSendTest} 
-                    disabled={isLoading || !previewEmail}
-                    variant="outline"
-                  >
-                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Test
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="recipients" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Email Recipients</CardTitle>
-              <CardDescription>
-                Choose who will receive this email campaign
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="mb-4">
-                <Label htmlFor="recipientList">Recipient List</Label>
-                <Select value={recipientListType} onValueChange={setRecipientListType}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select recipients" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {recipientLists.map((list) => (
-                      <SelectItem key={list.value} value={list.value}>
-                        {list.label} {list.value !== 'custom' ? `(${mockRecipients[list.value as keyof typeof mockRecipients].length})` : ''}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              {recipientListType === 'custom' && (
-                <div className="mb-4">
-                  <Label htmlFor="customRecipients">Custom Recipients</Label>
-                  <Textarea
-                    id="customRecipients"
-                    value={customRecipients}
-                    onChange={(e) => setCustomRecipients(e.target.value)}
-                    placeholder="Enter email addresses (one per line or comma-separated)"
-                    rows={5}
+
+                  <FormField
+                    control={emailForm.control}
+                    name="recipients"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Recipients</FormLabel>
+                        <FormControl>
+                          <Textarea 
+                            placeholder="Enter email addresses separated by commas" 
+                            className="min-h-[80px]"
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Enter one email address per line or separate with commas
-                  </p>
-                </div>
-              )}
-              
-              {recipientListType !== 'custom' && (
-                <div className="border rounded-md p-4">
-                  <h3 className="font-medium mb-2">Recipients Preview</h3>
-                  <div className="max-h-60 overflow-y-auto">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b">
-                          <th className="text-left py-2">Email</th>
-                          <th className="text-left py-2">Name</th>
-                          <th className="text-left py-2">Company</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {mockRecipients[recipientListType as keyof typeof mockRecipients].map((recipient, index) => (
-                          <tr key={index} className="border-b">
-                            <td className="py-2">{recipient.email}</td>
-                            <td className="py-2">{recipient.name || '-'}</td>
-                            <td className="py-2">{recipient.company || '-'}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    {mockRecipients[recipientListType as keyof typeof mockRecipients].length} recipients in this list
-                  </p>
-                </div>
-              )}
-              
-              <div className="mt-4">
-                <Button variant="outline" className="w-full">
-                  <Upload className="mr-2 h-4 w-4" />
-                  Upload CSV Contact List
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="settings" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Email Settings & Sending Options</CardTitle>
-              <CardDescription>
-                Configure sender information and schedule your campaign
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="mb-4">
-                <Label htmlFor="senderName">Sender Name</Label>
-                <Input
-                  id="senderName"
-                  value={senderName}
-                  onChange={(e) => setSenderName(e.target.value)}
-                  placeholder="InnovateHub"
-                />
-              </div>
-              
-              <div className="mb-4">
-                <Label htmlFor="senderEmail">Sender Email</Label>
-                <Input
-                  id="senderEmail"
-                  value={senderEmail}
-                  onChange={(e) => setSenderEmail(e.target.value)}
-                  placeholder="marketing@innovatehub.ph"
-                />
-              </div>
-              
-              <div className="mb-4">
-                <Label htmlFor="replyToEmail">Reply-To Email</Label>
-                <Input
-                  id="replyToEmail"
-                  value={replyToEmail}
-                  onChange={(e) => setReplyToEmail(e.target.value)}
-                  placeholder="businessdevelopment@innovatehub.ph"
-                />
-              </div>
-              
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="schedule"
-                  checked={isScheduled}
-                  onCheckedChange={setIsScheduled}
-                />
-                <Label htmlFor="schedule" className="flex items-center">
-                  <CalendarClock className="mr-2 h-4 w-4" />
-                  Schedule for later
-                </Label>
-              </div>
-              
-              {isScheduled && (
-                <div className="mt-4">
-                  <Label htmlFor="scheduleDate">Select Date and Time</Label>
-                  <div className="mt-2">
-                    <DatePicker
-                      date={scheduledDate}
-                      setDate={setScheduledDate}
-                      showTimePicker={true}
+
+                  <FormField
+                    control={emailForm.control}
+                    name="template"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email Template</FormLabel>
+                        <Select onValueChange={(value) => {
+                          field.onChange(value);
+                          setSelectedTemplate(value);
+                        }} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a template" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="newsletter">Newsletter</SelectItem>
+                            <SelectItem value="promotion">Promotion</SelectItem>
+                            <SelectItem value="welcome">Welcome</SelectItem>
+                            <SelectItem value="service">Service Highlight</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={emailForm.control}
+                      name="scheduledDate"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Schedule Date (Optional)</FormLabel>
+                          <FormControl>
+                            <div className="flex items-center">
+                              <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
+                              <Input type="date" {...field} />
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={emailForm.control}
+                      name="scheduledTime"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Schedule Time (Optional)</FormLabel>
+                          <FormControl>
+                            <Input type="time" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
                   </div>
-                </div>
-              )}
+
+                  <div className="border p-4 rounded-md bg-muted/30">
+                    <h3 className="font-medium mb-2">Template Preview:</h3>
+                    <div className="text-sm text-muted-foreground">
+                      {selectedTemplate === 'newsletter' && (
+                        <>
+                          <p><strong>Title:</strong> {newsletterTemplate.title}</p>
+                          <p><strong>Intro:</strong> {newsletterTemplate.intro}</p>
+                          <p><strong>Message:</strong> {newsletterTemplate.message}</p>
+                        </>
+                      )}
+                      {selectedTemplate === 'promotion' && (
+                        <>
+                          <p><strong>Title:</strong> {promotionTemplate.title}</p>
+                          <p><strong>Intro:</strong> {promotionTemplate.intro}</p>
+                          <p><strong>Offer:</strong> {promotionTemplate.offerTitle}</p>
+                        </>
+                      )}
+                      {selectedTemplate === 'welcome' && (
+                        <>
+                          <p><strong>Title:</strong> {welcomeTemplate.title}</p>
+                          <p><strong>Intro:</strong> {welcomeTemplate.intro}</p>
+                          <p><strong>Service:</strong> {welcomeTemplate.service}</p>
+                        </>
+                      )}
+                      {selectedTemplate === 'service' && (
+                        <>
+                          <p><strong>Title:</strong> {serviceTemplate.title}</p>
+                          <p><strong>Intro:</strong> {serviceTemplate.intro}</p>
+                          <p><strong>Service:</strong> {serviceTemplate.serviceName}</p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <Button type="submit" disabled={isSending} className="w-full">
+                    {isSending ? "Sending..." : emailForm.watch("scheduledDate") ? "Schedule Email" : "Send Email"}
+                  </Button>
+                </form>
+              </Form>
             </CardContent>
-            <CardFooter>
-              <Button 
-                onClick={handleSendCampaign} 
-                disabled={isLoading} 
-                className="w-full"
-              >
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {isScheduled ? 'Schedule Campaign' : 'Send Campaign'}
-              </Button>
-            </CardFooter>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="recipients" className="space-y-4 pt-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="md:col-span-1">
+              <CardHeader>
+                <CardTitle>Add Recipient</CardTitle>
+                <CardDescription>
+                  Add new subscribers to your mailing list
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Form {...recipientForm}>
+                  <form onSubmit={recipientForm.handleSubmit(addRecipient)} className="space-y-4">
+                    <FormField
+                      control={recipientForm.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Full name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={recipientForm.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Email address" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={recipientForm.control}
+                      name="company"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Company (Optional)</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Company name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={recipientForm.control}
+                      name="tags"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Tags (Optional)</FormLabel>
+                          <FormControl>
+                            <div className="flex items-center">
+                              <TagIcon className="mr-2 h-4 w-4 opacity-50" />
+                              <Input placeholder="customer, lead, partner (comma separated)" {...field} />
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <Button type="submit" disabled={isLoading} className="w-full">
+                      {isLoading ? "Adding..." : "Add Recipient"}
+                    </Button>
+                  </form>
+                </Form>
+              </CardContent>
+            </Card>
+
+            <Card className="md:col-span-2">
+              <CardHeader>
+                <CardTitle>Recipients List</CardTitle>
+                <CardDescription>
+                  Manage your mailing list subscribers
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ScrollArea className="h-[400px]">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Company</TableHead>
+                        <TableHead>Tags</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {isLoading ? (
+                        <TableRow>
+                          <TableCell colSpan={4} className="text-center">Loading recipients...</TableCell>
+                        </TableRow>
+                      ) : recipients.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={4} className="text-center">No recipients found</TableCell>
+                        </TableRow>
+                      ) : (
+                        recipients.map((recipient) => (
+                          <TableRow key={recipient.id}>
+                            <TableCell>{recipient.name}</TableCell>
+                            <TableCell>{recipient.email}</TableCell>
+                            <TableCell>{recipient.company || '-'}</TableCell>
+                            <TableCell>
+                              {recipient.tags ? 
+                                recipient.tags.map((tag: string) => (
+                                  <span key={tag} className="inline-block bg-muted rounded-full px-2 py-1 text-xs mr-1 mb-1">
+                                    {tag}
+                                  </span>
+                                )) : '-'
+                              }
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </Table>
+                </ScrollArea>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="templates" className="space-y-4 pt-4">
+          <div className="grid grid-cols-1 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Newsletter Template</CardTitle>
+                <CardDescription>
+                  Edit your newsletter email template
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="newsletter-title">Title</Label>
+                      <Input 
+                        id="newsletter-title"
+                        value={newsletterTemplate.title}
+                        onChange={(e) => setNewsletterTemplate({...newsletterTemplate, title: e.target.value})}
+                        placeholder="Newsletter Title"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="newsletter-intro">Introduction</Label>
+                      <Input 
+                        id="newsletter-intro"
+                        value={newsletterTemplate.intro}
+                        onChange={(e) => setNewsletterTemplate({...newsletterTemplate, intro: e.target.value})}
+                        placeholder="Newsletter Introduction"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="newsletter-message">Main Message</Label>
+                      <Textarea 
+                        id="newsletter-message"
+                        value={newsletterTemplate.message}
+                        onChange={(e) => setNewsletterTemplate({...newsletterTemplate, message: e.target.value})}
+                        placeholder="Newsletter Message"
+                        rows={3}
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="newsletter-cta-text">CTA Text</Label>
+                      <Input 
+                        id="newsletter-cta-text"
+                        value={newsletterTemplate.ctaText}
+                        onChange={(e) => setNewsletterTemplate({...newsletterTemplate, ctaText: e.target.value})}
+                        placeholder="Call to Action Text"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="newsletter-cta-link">CTA Link</Label>
+                      <Input 
+                        id="newsletter-cta-link"
+                        value={newsletterTemplate.ctaLink}
+                        onChange={(e) => setNewsletterTemplate({...newsletterTemplate, ctaLink: e.target.value})}
+                        placeholder="Call to Action URL"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Promotion Template</CardTitle>
+                <CardDescription>
+                  Edit your promotional email template
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="promo-title">Title</Label>
+                      <Input 
+                        id="promo-title"
+                        value={promotionTemplate.title}
+                        onChange={(e) => setPromotionTemplate({...promotionTemplate, title: e.target.value})}
+                        placeholder="Promotion Title"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="promo-intro">Introduction</Label>
+                      <Input 
+                        id="promo-intro"
+                        value={promotionTemplate.intro}
+                        onChange={(e) => setPromotionTemplate({...promotionTemplate, intro: e.target.value})}
+                        placeholder="Promotion Introduction"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="promo-offer-title">Offer Title</Label>
+                      <Input 
+                        id="promo-offer-title"
+                        value={promotionTemplate.offerTitle}
+                        onChange={(e) => setPromotionTemplate({...promotionTemplate, offerTitle: e.target.value})}
+                        placeholder="Offer Title"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="promo-offer-desc">Offer Description</Label>
+                      <Textarea 
+                        id="promo-offer-desc"
+                        value={promotionTemplate.offerDescription}
+                        onChange={(e) => setPromotionTemplate({...promotionTemplate, offerDescription: e.target.value})}
+                        placeholder="Offer Description"
+                        rows={2}
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="promo-message">Main Message</Label>
+                      <Textarea 
+                        id="promo-message"
+                        value={promotionTemplate.message}
+                        onChange={(e) => setPromotionTemplate({...promotionTemplate, message: e.target.value})}
+                        placeholder="Promotion Message"
+                        rows={3}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="promo-cta-text">CTA Text</Label>
+                      <Input 
+                        id="promo-cta-text"
+                        value={promotionTemplate.ctaText}
+                        onChange={(e) => setPromotionTemplate({...promotionTemplate, ctaText: e.target.value})}
+                        placeholder="Call to Action Text"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="promo-cta-link">CTA Link</Label>
+                      <Input 
+                        id="promo-cta-link"
+                        value={promotionTemplate.ctaLink}
+                        onChange={(e) => setPromotionTemplate({...promotionTemplate, ctaLink: e.target.value})}
+                        placeholder="Call to Action URL"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Welcome Template</CardTitle>
+                <CardDescription>
+                  Edit your welcome email template
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="welcome-title">Title</Label>
+                      <Input 
+                        id="welcome-title"
+                        value={welcomeTemplate.title}
+                        onChange={(e) => setWelcomeTemplate({...welcomeTemplate, title: e.target.value})}
+                        placeholder="Welcome Title"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="welcome-intro">Introduction</Label>
+                      <Input 
+                        id="welcome-intro"
+                        value={welcomeTemplate.intro}
+                        onChange={(e) => setWelcomeTemplate({...welcomeTemplate, intro: e.target.value})}
+                        placeholder="Welcome Introduction"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="welcome-service">Service</Label>
+                      <Input 
+                        id="welcome-service"
+                        value={welcomeTemplate.service}
+                        onChange={(e) => setWelcomeTemplate({...welcomeTemplate, service: e.target.value})}
+                        placeholder="Service Type"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="welcome-custom">Custom Message</Label>
+                      <Textarea 
+                        id="welcome-custom"
+                        value={welcomeTemplate.customMessage}
+                        onChange={(e) => setWelcomeTemplate({...welcomeTemplate, customMessage: e.target.value})}
+                        placeholder="Custom Welcome Message"
+                        rows={2}
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="welcome-message">Main Message</Label>
+                      <Textarea 
+                        id="welcome-message"
+                        value={welcomeTemplate.message}
+                        onChange={(e) => setWelcomeTemplate({...welcomeTemplate, message: e.target.value})}
+                        placeholder="Welcome Message"
+                        rows={2}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="welcome-cta-text">CTA Text</Label>
+                      <Input 
+                        id="welcome-cta-text"
+                        value={welcomeTemplate.ctaText}
+                        onChange={(e) => setWelcomeTemplate({...welcomeTemplate, ctaText: e.target.value})}
+                        placeholder="Call to Action Text"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="welcome-cta-link">CTA Link</Label>
+                      <Input 
+                        id="welcome-cta-link"
+                        value={welcomeTemplate.ctaLink}
+                        onChange={(e) => setWelcomeTemplate({...welcomeTemplate, ctaLink: e.target.value})}
+                        placeholder="Call to Action URL"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="welcome-calendly">Calendly Link</Label>
+                      <Input 
+                        id="welcome-calendly"
+                        value={welcomeTemplate.calendlyLink}
+                        onChange={(e) => setWelcomeTemplate({...welcomeTemplate, calendlyLink: e.target.value})}
+                        placeholder="Booking Link"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Service Highlight Template</CardTitle>
+                <CardDescription>
+                  Edit your service highlight email template
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="service-title">Title</Label>
+                      <Input 
+                        id="service-title"
+                        value={serviceTemplate.title}
+                        onChange={(e) => setServiceTemplate({...serviceTemplate, title: e.target.value})}
+                        placeholder="Service Email Title"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="service-intro">Introduction</Label>
+                      <Input 
+                        id="service-intro"
+                        value={serviceTemplate.intro}
+                        onChange={(e) => setServiceTemplate({...serviceTemplate, intro: e.target.value})}
+                        placeholder="Service Introduction"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="service-name">Service Name</Label>
+                      <Input 
+                        id="service-name"
+                        value={serviceTemplate.serviceName}
+                        onChange={(e) => setServiceTemplate({...serviceTemplate, serviceName: e.target.value})}
+                        placeholder="Service Name"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="service-desc">Service Description</Label>
+                      <Textarea 
+                        id="service-desc"
+                        value={serviceTemplate.serviceDescription}
+                        onChange={(e) => setServiceTemplate({...serviceTemplate, serviceDescription: e.target.value})}
+                        placeholder="Service Description"
+                        rows={2}
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="service-message">Main Message</Label>
+                      <Textarea 
+                        id="service-message"
+                        value={serviceTemplate.message}
+                        onChange={(e) => setServiceTemplate({...serviceTemplate, message: e.target.value})}
+                        placeholder="Service Message"
+                        rows={2}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="service-cta-text">CTA Text</Label>
+                      <Input 
+                        id="service-cta-text"
+                        value={serviceTemplate.ctaText}
+                        onChange={(e) => setServiceTemplate({...serviceTemplate, ctaText: e.target.value})}
+                        placeholder="Call to Action Text"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="service-cta-link">CTA Link</Label>
+                      <Input 
+                        id="service-cta-link"
+                        value={serviceTemplate.ctaLink}
+                        onChange={(e) => setServiceTemplate({...serviceTemplate, ctaLink: e.target.value})}
+                        placeholder="Call to Action URL"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="service-learn-more">Learn More Link</Label>
+                      <Input 
+                        id="service-learn-more"
+                        value={serviceTemplate.learnMoreLink}
+                        onChange={(e) => setServiceTemplate({...serviceTemplate, learnMoreLink: e.target.value})}
+                        placeholder="Learn More Link"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
       </Tabs>
     </div>

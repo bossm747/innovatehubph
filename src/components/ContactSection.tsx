@@ -1,43 +1,82 @@
 
 import React from 'react';
-import ContactSectionInfo from './contact/ContactSectionInfo';
-import ContactSectionForm from './contact/ContactSectionForm';
-import BookingButton from './booking/BookingButton';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { MailIcon, PhoneIcon, MapPinIcon } from 'lucide-react';
+import BookingButton from '@/components/booking/BookingButton';
 
-const ContactSection = () => {
+const ContactSection: React.FC = () => {
   return (
-    <section id="contact" className="py-20 px-6 md:px-12 lg:px-24 bg-gray-50">
-      <div className="container mx-auto">
-        <div className="text-center mb-16">
-          <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
-            Contact Us
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Collaborate? Let's Talk!</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto mb-6">
-            Reach out and let's co-create your digital future. We're here to help you transform your business with innovative technology solutions.
+    <section className="py-16 px-4 bg-white">
+      <div className="container mx-auto max-w-6xl">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Get in Touch</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Have questions or ready to start your next project? Reach out to our team for expert guidance and support.
           </p>
-          <BookingButton 
-            variant="secondary"
-            className="mx-auto mt-4"
-            label="Schedule a Consultation Call"
-            topic="General Consultation"
-            type="call"
-          />
         </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div className="relative hidden lg:block lg:col-span-1">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg blur-xl"></div>
-            <img 
-              src="/lovable-uploads/50c0b0cb-18bb-408d-a179-75d6900152c8.png" 
-              alt="Contact Us - Connected Digital Devices" 
-              className="relative z-10 rounded-lg shadow-lg w-full h-auto transform hover:scale-105 transition-all duration-500"
-            />
-          </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <Card className="border-0 shadow-md">
+            <CardContent className="pt-6 text-center">
+              <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-innovate-50 text-innovate-600 mb-4">
+                <PhoneIcon className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Call Us</h3>
+              <p className="text-gray-500 mb-4">Speak directly with our team</p>
+              <a href="tel:+639176851216" className="text-innovate-600 font-medium hover:underline">+63 917 685 1216</a>
+              <div className="mt-4">
+                <BookingButton 
+                  variant="secondary" 
+                  className="w-full"
+                  buttonText="Schedule a Call"
+                  topic="Phone Consultation"
+                  meetingType="call"
+                />
+              </div>
+            </CardContent>
+          </Card>
           
-          <div className="lg:col-span-1">
-            <ContactSectionForm />
-          </div>
+          <Card className="border-0 shadow-md">
+            <CardContent className="pt-6 text-center">
+              <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-innovate-50 text-innovate-600 mb-4">
+                <MailIcon className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Email Us</h3>
+              <p className="text-gray-500 mb-4">Send us your inquiries</p>
+              <a href="mailto:businessdevelopment@innovatehub.ph" className="text-innovate-600 font-medium hover:underline">
+                businessdevelopment@innovatehub.ph
+              </a>
+              <div className="mt-4">
+                <Button variant="outline" className="w-full" asChild>
+                  <a href="mailto:businessdevelopment@innovatehub.ph">
+                    Send Email
+                  </a>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="border-0 shadow-md">
+            <CardContent className="pt-6 text-center">
+              <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-innovate-50 text-innovate-600 mb-4">
+                <MapPinIcon className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Visit Us</h3>
+              <p className="text-gray-500 mb-4">Come to our office</p>
+              <address className="not-italic text-innovate-600 font-medium">
+                RMCL Bldg., New Bypass Rd., <br />
+                Bayanan, San Pascual, Batangas
+              </address>
+              <div className="mt-4">
+                <Button variant="outline" className="w-full" asChild>
+                  <a href="https://maps.google.com/?q=RMCL+Bldg.+New+Bypass+Rd.+Bayanan+San+Pascual+Batangas" target="_blank" rel="noopener noreferrer">
+                    Get Directions
+                  </a>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </section>

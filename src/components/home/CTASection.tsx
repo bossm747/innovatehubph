@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Phone, CheckCircle, LockKeyhole } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -10,8 +11,6 @@ const CTASection = () => {
         <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-blue-500 filter blur-3xl"></div>
         <div className="absolute top-1/2 -left-24 w-64 h-64 rounded-full bg-white filter blur-3xl"></div>
         <div className="absolute -bottom-32 right-1/4 w-80 h-80 rounded-full bg-blue-300 filter blur-3xl"></div>
-        
-        {/* Removed Security illustration */}
         
         {/* Grid pattern */}
         <div className="absolute inset-0" style={{ 
@@ -51,7 +50,7 @@ const CTASection = () => {
               size="xl" 
               variant="outline" 
               width="fixed"
-              className="border-white/30 text-white hover:bg-white/10"
+              className="border-white/30 bg-green-600 text-white hover:bg-green-700"
               asChild
             >
               <Link to="/services" className="flex items-center justify-center">

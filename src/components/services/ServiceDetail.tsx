@@ -64,7 +64,7 @@ const ServiceDetail = ({ id, title, detailTitle, detailDesc, image }: ServiceDet
         
         <div className="flex flex-wrap gap-4">
           <Button 
-            className="bg-innovate-600 hover:bg-innovate-700 text-white btn-shine"
+            className="bg-green-600 hover:bg-green-700 text-white btn-shine"
             asChild
           >
             <Link to={`${id === 'ai-solutions' ? '/ai-solutions' : '/services'}`}>
@@ -73,7 +73,7 @@ const ServiceDetail = ({ id, title, detailTitle, detailDesc, image }: ServiceDet
           </Button>
           <Button 
             variant="outline" 
-            className="border-innovate-200 text-innovate-700 hover:bg-innovate-50"
+            className="border-green-600 text-white bg-green-600 hover:bg-green-700"
             asChild
           >
             <Link to="/contact">

@@ -16,7 +16,7 @@ const ServiceTileCTA = () => {
     <div className="mt-16 text-center">
       <Button 
         size="lg" 
-        className="bg-innovate-600 hover:bg-innovate-700 text-white btn-shine shadow-md hover:shadow-lg transition-all"
+        className="bg-green-600 hover:bg-green-700 text-white btn-shine shadow-md hover:shadow-lg transition-all"
         onClick={handleClick}
       >
         <span className="mr-2">Get Started with Our Services</span>

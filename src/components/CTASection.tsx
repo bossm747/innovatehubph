@@ -27,7 +27,7 @@ const CTASection = ({
           {subtitle}
         </p>
         <Button 
-          variant="secondary" 
+          variant="green" 
           size="lg" 
           className="px-8 font-medium"
           asChild

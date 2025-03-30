@@ -33,7 +33,7 @@ const WhyChooseUsSection = () => {
       description: "Quick implementation and turnaround times for all our digital solutions."
     },
     {
-      imageUrl: "/lovable-uploads/1e9b7dba-d745-4d1c-9601-b3c773e6a7bb.png",
+      imageUrl: "/lovable-uploads/fcf61027-0cbd-43c4-b4a7-e48cca436693.png",
       title: "Security",
       description: "Enterprise-grade security across all our platforms and applications."
     },

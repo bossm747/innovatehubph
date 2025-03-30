@@ -112,7 +112,7 @@ export const servicesData: Service[] = [
     id: "mobile-app-development",
     title: "Web & Mobile Apps",
     description: "Custom web and native mobile applications that deliver exceptional user experiences across all devices.",
-    icon: "/lovable-uploads/91e21d7a-53f9-41d7-bd62-4a1f5dbe1d12.png",
+    icon: "/lovable-uploads/452c6c65-4e61-4243-80da-65e3c69fecfa.png",
     slug: "mobile-app-development",
     features: [
       {

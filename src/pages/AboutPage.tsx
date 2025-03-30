@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -7,6 +8,7 @@ import AboutHero from '@/components/AboutHero';
 import CompanyOverview from '@/components/CompanyOverview';
 import TeamSection from '@/components/TeamSection';
 import { Helmet } from 'react-helmet';
+
 const AboutPage = () => {
   // Add scroll reveal effect
   useEffect(() => {
@@ -30,7 +32,9 @@ const AboutPage = () => {
     // Clean up listener
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  return <div className="min-h-screen w-full overflow-x-hidden relative">
+
+  return (
+    <div className="min-h-screen w-full overflow-x-hidden relative">
       <Helmet>
         <title>About Us | InnovateHub Inc.</title>
         <meta name="description" content="Learn about InnovateHub - Passionate Innovators in the Philippine Tech Landscape" />
@@ -45,13 +49,15 @@ const AboutPage = () => {
       
       {/* Main content */}
       <Navbar />
-      <div className="w-full pt-16 py-0">
+      <div className="w-full py-0">
         <AboutHero />
         <CompanyOverview />
         <TeamSection />
         <ContactSection />
         <Footer />
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default AboutPage;

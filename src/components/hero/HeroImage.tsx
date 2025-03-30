@@ -13,7 +13,7 @@ const HeroImage = () => {
         />
         
         {/* Security-themed decorative elements */}
-        <div className="absolute -bottom-10 -right-10 w-24 mobile-device opacity-90">
+        <div className="absolute -bottom-8 -right-8 w-20 mobile-device opacity-90">
           <img 
             src="/lovable-uploads/9943e545-fc96-401b-98c2-3cb582ebab57.png" 
             alt="Security Icon" 

@@ -7,19 +7,19 @@ import HeroBackground from './hero/HeroBackground';
 
 const AboutHero = () => {
   return (
-    <section className="relative py-12 px-6 md:px-8 lg:px-16 overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
+    <section className="relative py-8 md:py-10 px-4 md:px-8 lg:px-16 overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
       <HeroBackground />
       
       <div className="container mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
-          <div className="max-w-2xl fade-up">
-            <span className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-blue-200 rounded-full mb-3 animate-fade-in" style={{animationDelay: '100ms'}}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 items-center">
+          <div className="max-w-xl fade-up">
+            <span className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-blue-200 rounded-full mb-2 animate-fade-in" style={{animationDelay: '100ms'}}>
               Who We Are
             </span>
-            <h1 className="text-3xl md:text-4xl font-bold mb-3 text-white animate-fade-in" style={{animationDelay: '200ms'}}>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-white animate-fade-in" style={{animationDelay: '200ms'}}>
               Passionate Innovators in the <span className="text-blue-300">Philippine Tech Landscape</span>
             </h1>
-            <p className="text-base md:text-lg text-gray-200 mb-4 animate-fade-in" style={{animationDelay: '300ms'}}>
+            <p className="text-sm md:text-base text-gray-200 mb-3 animate-fade-in" style={{animationDelay: '300ms'}}>
               InnovateHub Inc. is a forward-thinking technology company dedicated to creating groundbreaking digital solutions. From our roots in Batangas to our expanding presence in Dubai, we're committed to delivering exceptional value through innovation, expertise, and dedication.
             </p>
             <div className="flex flex-wrap gap-3 animate-fade-in" style={{animationDelay: '400ms'}}>
@@ -33,7 +33,7 @@ const AboutHero = () => {
               </Button>
             </div>
             
-            <div className="mt-6 flex items-center gap-4 text-blue-200 animate-fade-in" style={{animationDelay: '500ms'}}>
+            <div className="mt-4 flex items-center gap-4 text-blue-200 animate-fade-in" style={{animationDelay: '500ms'}}>
               <div className="flex items-center">
                 <span className="h-5 w-5 mr-2 text-blue-300">•</span>
                 Innovation-Driven

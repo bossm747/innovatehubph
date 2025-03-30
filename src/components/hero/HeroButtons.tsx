@@ -6,9 +6,9 @@ import { ArrowRight, Phone } from 'lucide-react';
 
 const HeroButtons = () => {
   return (
-    <div className="flex flex-wrap gap-3 animate-fade-in" style={{animationDelay: '500ms'}}>
+    <div className="flex flex-wrap gap-2 animate-fade-in" style={{animationDelay: '500ms'}}>
       <Button 
-        size="default" 
+        size="sm" 
         variant="green"
         asChild
         className="group"
@@ -18,7 +18,7 @@ const HeroButtons = () => {
         </Link>
       </Button>
       <Button 
-        size="default" 
+        size="sm" 
         variant="purple"
         asChild
         className="group text-white"

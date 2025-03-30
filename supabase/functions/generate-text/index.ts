@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const corsHeaders = {
@@ -13,7 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    const { prompt, provider } = await req.json();
+    const { prompt, provider = 'gemini', temperature = 0.7, maxTokens = 1000 } = await req.json();
     
     if (!prompt) {
       return new Response(
@@ -22,38 +21,35 @@ serve(async (req) => {
       );
     }
 
-    if (!provider) {
-      return new Response(
-        JSON.stringify({ error: 'Provider is required' }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
-      );
-    }
-
-    let result;
+    // Default to Gemini if provider not specified or invalid
+    const validProvider = ['gemini', 'openai', 'anthropic', 'mistral'].includes(provider) 
+      ? provider 
+      : 'gemini';
     
-    switch (provider.toLowerCase()) {
+    let result;
+    console.log(`Generating text with ${validProvider} provider`);
+    
+    switch (validProvider) {
+      case 'gemini':
+        result = await generateWithGemini(prompt, temperature, maxTokens);
+        break;
       case 'openai':
-        result = await generateWithOpenAI(prompt);
+        result = await generateWithOpenAI(prompt, temperature, maxTokens);
         break;
       case 'anthropic':
-        result = await generateWithAnthropic(prompt);
-        break;
-      case 'gemini':
-        result = await generateWithGemini(prompt);
+        result = await generateWithAnthropic(prompt, temperature, maxTokens);
         break;
       case 'mistral':
-        result = await generateWithMistral(prompt);
+        result = await generateWithMistral(prompt, temperature, maxTokens);
         break;
       default:
-        return new Response(
-          JSON.stringify({ error: 'Unsupported provider' }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
-        );
+        // Fallback to Gemini
+        result = await generateWithGemini(prompt, temperature, maxTokens);
     }
     
     // Create a response with the text data
     return new Response(
-      JSON.stringify({ text: result, prompt }),
+      JSON.stringify({ text: result, prompt, provider: validProvider }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
@@ -66,7 +62,67 @@ serve(async (req) => {
   }
 });
 
-async function generateWithOpenAI(prompt: string): Promise<string> {
+async function generateWithGemini(
+  prompt: string, 
+  temperature: number = 0.7,
+  maxTokens: number = 1000
+): Promise<string> {
+  const apiKey = Deno.env.get('GEMINI_API_KEY');
+  
+  if (!apiKey) {
+    throw new Error('GEMINI_API_KEY is not set');
+  }
+  
+  // Check if we can use Gemini 2.5 or fall back to 1.0
+  const modelVersionParam = await isGemini25Available() ? "gemini-2.5-pro" : "gemini-pro";
+  console.log(`Using Gemini model: ${modelVersionParam}`);
+  
+  const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/${modelVersionParam}:generateContent?key=${apiKey}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      contents: [
+        {
+          parts: [
+            {
+              text: prompt
+            }
+          ]
+        }
+      ],
+      generationConfig: {
+        temperature,
+        maxOutputTokens: maxTokens,
+        topP: 0.8,
+        topK: 40,
+      }
+    })
+  });
+  
+  if (!response.ok) {
+    const errorData = await response.text();
+    console.error('Gemini API error response:', errorData);
+    throw new Error(`Gemini API error: ${response.status} ${errorData}`);
+  }
+  
+  const data = await response.json();
+  
+  // Check if we have candidates
+  if (!data.candidates || data.candidates.length === 0) {
+    console.error('Gemini returned no candidates:', data);
+    throw new Error('Gemini returned no text');
+  }
+  
+  return data.candidates[0].content.parts[0].text;
+}
+
+async function generateWithOpenAI(
+  prompt: string, 
+  temperature: number = 0.7,
+  maxTokens: number = 1000
+): Promise<string> {
   const apiKey = Deno.env.get('OPENAI_API_KEY');
   
   if (!apiKey) {
@@ -91,7 +147,8 @@ async function generateWithOpenAI(prompt: string): Promise<string> {
           content: prompt
         }
       ],
-      max_tokens: 1000
+      temperature,
+      max_tokens: maxTokens
     })
   });
   
@@ -104,7 +161,11 @@ async function generateWithOpenAI(prompt: string): Promise<string> {
   return data.choices[0].message.content;
 }
 
-async function generateWithAnthropic(prompt: string): Promise<string> {
+async function generateWithAnthropic(
+  prompt: string, 
+  temperature: number = 0.7,
+  maxTokens: number = 1000
+): Promise<string> {
   const apiKey = Deno.env.get('ANTHROPIC_API_KEY');
   
   if (!apiKey) {
@@ -126,7 +187,8 @@ async function generateWithAnthropic(prompt: string): Promise<string> {
           content: prompt
         }
       ],
-      max_tokens: 1000
+      temperature,
+      max_tokens: maxTokens
     })
   });
   
@@ -139,44 +201,11 @@ async function generateWithAnthropic(prompt: string): Promise<string> {
   return data.content[0].text;
 }
 
-async function generateWithGemini(prompt: string): Promise<string> {
-  const apiKey = Deno.env.get('GEMINI_API_KEY');
-  
-  if (!apiKey) {
-    throw new Error('GEMINI_API_KEY is not set');
-  }
-  
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      contents: [
-        {
-          parts: [
-            {
-              text: prompt
-            }
-          ]
-        }
-      ],
-      generationConfig: {
-        maxOutputTokens: 1000
-      }
-    })
-  });
-  
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(`Gemini API error: ${errorData.error?.message || response.statusText}`);
-  }
-  
-  const data = await response.json();
-  return data.candidates[0].content.parts[0].text;
-}
-
-async function generateWithMistral(prompt: string): Promise<string> {
+async function generateWithMistral(
+  prompt: string, 
+  temperature: number = 0.7,
+  maxTokens: number = 1000
+): Promise<string> {
   const apiKey = Deno.env.get('MISTRAL_API_KEY');
   
   if (!apiKey) {
@@ -197,7 +226,8 @@ async function generateWithMistral(prompt: string): Promise<string> {
           content: prompt
         }
       ],
-      max_tokens: 1000
+      temperature,
+      max_tokens: maxTokens
     })
   });
   
@@ -208,4 +238,45 @@ async function generateWithMistral(prompt: string): Promise<string> {
   
   const data = await response.json();
   return data.choices[0].message.content;
+}
+
+// Utility to check if Gemini 2.5 is available by making a test call
+async function isGemini25Available(): Promise<boolean> {
+  try {
+    const apiKey = Deno.env.get('GEMINI_API_KEY');
+    if (!apiKey) return false;
+    
+    const testResponse = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-2.5-pro:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: "Hello" }] }],
+        generationConfig: { maxOutputTokens: 1 }
+      })
+    });
+    
+    // If status is 404, the model doesn't exist
+    if (testResponse.status === 404) {
+      console.log("Gemini 2.5 is not available yet");
+      return false;
+    }
+    
+    // Other error status, but the model exists
+    if (!testResponse.ok) {
+      // Check if error is because the API key is valid but something else
+      const errorData = await testResponse.json();
+      if (errorData.error?.code === 400 || errorData.error?.code === 401) {
+        console.log("Gemini 2.5 check error, but model exists:", errorData.error);
+        return false;
+      }
+      // If we get here, the model likely exists
+      return true;
+    }
+    
+    // Success response means the model exists
+    return true;
+  } catch (error) {
+    console.error("Error checking for Gemini 2.5:", error);
+    return false;
+  }
 }

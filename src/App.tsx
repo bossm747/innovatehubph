@@ -17,6 +17,7 @@ import AdminEmailPage from './pages/admin/AdminEmailPage';
 import AdminAIToolsPage from './pages/admin/AdminAIToolsPage';
 import AdminAIManagementPage from './pages/admin/AdminAIManagementPage';
 import AdminPaymentsPage from './pages/admin/AdminPaymentsPage';
+import AdminPortal from './components/AdminPortal';
 import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
         <Route path="ai-tools" element={<AdminAIToolsPage />} />
         <Route path="ai-management" element={<AdminAIManagementPage />} />
         <Route path="payments" element={<AdminPaymentsPage />} />
+        <Route path="portal" element={<AdminPortal />} />
       </Route>
       
       {/* 404 route */}

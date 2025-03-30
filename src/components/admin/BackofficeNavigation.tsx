@@ -25,6 +25,11 @@ import {
   Database,
   Globe,
   Palette,
+  Mail,
+  CreditCard,
+  Sparkles,
+  BrainCircuit,
+  UserCircle
 } from 'lucide-react';
 import AdminPortalButton from '../AdminPortalButton';
 
@@ -65,10 +70,37 @@ const BackofficeNavigation: React.FC<BackofficeNavigationProps> = ({ children })
                   </SidebarMenuItem>
                   
                   <SidebarMenuItem>
+                    <SidebarMenuButton asChild active={location.pathname === '/admin/portal'}>
+                      <Link to="/admin/portal" className="flex items-center">
+                        <UserCircle className="h-4 w-4 mr-3" />
+                        <span>Admin Portal</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  
+                  <SidebarMenuItem>
                     <SidebarMenuButton asChild active={location.pathname.startsWith('/admin/content')}>
                       <Link to="/admin/content" className="flex items-center">
                         <FileText className="h-4 w-4 mr-3" />
                         <span>Content Management</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild active={location.pathname === '/admin/email'}>
+                      <Link to="/admin/email" className="flex items-center">
+                        <Mail className="h-4 w-4 mr-3" />
+                        <span>Email Marketing</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild active={location.pathname === '/admin/payments'}>
+                      <Link to="/admin/payments" className="flex items-center">
+                        <CreditCard className="h-4 w-4 mr-3" />
+                        <span>Payments & Promos</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -103,6 +135,24 @@ const BackofficeNavigation: React.FC<BackofficeNavigationProps> = ({ children })
                       <Link to="/admin/database" className="flex items-center">
                         <Database className="h-4 w-4 mr-3" />
                         <span>Database</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild active={location.pathname === '/admin/ai-tools'}>
+                      <Link to="/admin/ai-tools" className="flex items-center">
+                        <Sparkles className="h-4 w-4 mr-3" />
+                        <span>AI Tools</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild active={location.pathname === '/admin/ai-management'}>
+                      <Link to="/admin/ai-management" className="flex items-center">
+                        <BrainCircuit className="h-4 w-4 mr-3" />
+                        <span>AI Management</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

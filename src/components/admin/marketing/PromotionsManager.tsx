@@ -55,22 +55,14 @@ const PromotionsManager = () => {
         id: promo.id,
         code: promo.code,
         discount: promo.discount,
-        discountType: promo.discount_type as 'percentage' | 'fixed',
         discount_type: promo.discount_type,
-        validFrom: promo.valid_from,
         valid_from: promo.valid_from,
-        validTo: promo.valid_to,
         valid_to: promo.valid_to,
-        maxUses: promo.max_uses,
-        max_uses: promo.max_uses,
-        timesUsed: promo.times_used,
-        times_used: promo.times_used,
         active: promo.active,
+        times_used: promo.times_used,
+        max_uses: promo.max_uses,
         description: promo.description,
-        applicableTo: promo.applicable_to,
-        applicable_to: promo.applicable_to,
-        created_at: promo.created_at,
-        updated_at: promo.updated_at
+        applicable_to: promo.applicable_to
       }));
       
       setPromoCodes(mappedPromoCodes);
@@ -300,23 +292,23 @@ const PromotionsManager = () => {
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Discount:</span>
                     <span className="font-medium">
-                      {promo.discount}{promo.discountType === 'percentage' ? '%' : ' USD'}
+                      {promo.discount}{promo.discount_type === 'percentage' ? '%' : ' USD'}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Valid:</span>
                     <span className="font-medium">
-                      {formatDate(promo.validFrom)} - {formatDate(promo.validTo)}
+                      {formatDate(promo.valid_from)} - {formatDate(promo.valid_to)}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Usage:</span>
                     <span className="font-medium">
-                      {promo.timesUsed} / {promo.maxUses || '∞'}
+                      {promo.times_used} / {promo.max_uses || '∞'}
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-1 mt-2">
-                    {promo.applicableTo?.map(tag => (
+                    {promo.applicable_to?.map(tag => (
                       <Badge key={tag} variant="outline" className="text-xs">
                         {tag}
                       </Badge>

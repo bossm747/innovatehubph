@@ -48,18 +48,22 @@ const DatabaseManagement = () => {
 
   const fetchTables = async () => {
     try {
-      // We need to use the raw SQL query because Supabase JS client doesn't expose pg_catalog directly
-      const { data, error } = await supabase.rpc('get_all_tables');
+      // Execute a SQL query to get all tables in the public schema
+      const { data, error } = await supabase.query(`
+        SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname = 'public';
+      `);
 
       if (error) throw error;
 
-      // Extract table names and sort alphabetically
-      const tableNames = data.map((table: PgTable) => table.tablename).sort();
-      setTables(tableNames);
-      
-      // Set the first table as default if none is selected
-      if (tableNames.length > 0 && !selectedTable) {
-        setSelectedTable(tableNames[0]);
+      if (Array.isArray(data)) {
+        // Extract table names and sort alphabetically
+        const tableNames = data.map((table: PgTable) => table.tablename).sort();
+        setTables(tableNames);
+        
+        // Set the first table as default if none is selected
+        if (tableNames.length > 0 && !selectedTable) {
+          setSelectedTable(tableNames[0]);
+        }
       }
     } catch (error) {
       console.error('Error fetching tables:', error);
@@ -70,19 +74,21 @@ const DatabaseManagement = () => {
   const fetchRecords = async (tableName: string) => {
     setLoading(true);
     try {
-      // Use dynamic table name safely with RPC
-      const { data, error } = await supabase.rpc('get_table_records', { table_name: tableName });
+      // Execute a SQL query to get records from the selected table
+      const { data, error } = await supabase.query(`
+        SELECT * FROM "${tableName}" LIMIT 50;
+      `);
 
       if (error) throw error;
 
       // Extract column names from the first record
-      if (data && data.length > 0) {
+      if (Array.isArray(data) && data.length > 0) {
         setColumns(Object.keys(data[0]));
+        setRecords(data as TableRecord[]);
       } else {
         setColumns([]);
+        setRecords([]);
       }
-
-      setRecords(data as TableRecord[] || []);
     } catch (error) {
       console.error(`Error fetching records from ${tableName}:`, error);
       toast.error(`Failed to load records from ${tableName}`);

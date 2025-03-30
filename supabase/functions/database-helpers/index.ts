@@ -24,7 +24,9 @@ serve(async (req) => {
     const { action, tableName, limit = 50 } = await req.json();
     
     if (action === 'listTables') {
-      const { data, error } = await supabase.from('pg_catalog.pg_tables')
+      // Query to get all tables in the public schema
+      const { data, error } = await supabase
+        .from('pg_catalog.pg_tables')
         .select('tablename')
         .eq('schemaname', 'public');
         
@@ -40,12 +42,12 @@ serve(async (req) => {
         throw new Error('Invalid table name');
       }
       
-      // WARNING: This is a potential security risk if not properly sanitized
-      // Using prepared statement in a real-world application would be better
-      const { data, error } = await supabase.rpc('select_from_table', { 
-        table_name: tableName,
-        row_limit: limit
-      });
+      // Execute a raw query to select data from the specified table
+      const { data, error } = await supabase
+        .rpc('select_from_table', { 
+          table_name: tableName,
+          row_limit: limit
+        });
         
       if (error) throw error;
       return new Response(JSON.stringify({ data }), { 

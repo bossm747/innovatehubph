@@ -35,7 +35,7 @@ const EmailMarketingTab: React.FC = () => {
       case 'templates':
         return <EmailTemplatesPage />;
       case 'ai-tools':
-        return <AIMarketingTools onCopyGenerated={setGeneratedContent} />;
+        return <AIMarketingTools generatedContent={generatedContent} setGeneratedContent={setGeneratedContent} />;
       case 'analytics':
         return <MarketingAnalytics />;
       case 'agents':
@@ -114,13 +114,18 @@ const EmailMarketingTab: React.FC = () => {
 };
 
 // AI Marketing Tools Tab Content
-const AIMarketingTools: React.FC<{ onCopyGenerated: (content: string) => void }> = ({ onCopyGenerated }) => {
+interface AIMarketingToolsProps {
+  generatedContent: string;
+  setGeneratedContent: (content: string) => void;
+}
+
+const AIMarketingTools: React.FC<AIMarketingToolsProps> = ({ generatedContent, setGeneratedContent }) => {
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row gap-6">
         <div className="md:w-1/2">
           <MarketingCopyGenerator 
-            onCopyGenerated={onCopyGenerated} 
+            onCopyGenerated={setGeneratedContent} 
           />
         </div>
         

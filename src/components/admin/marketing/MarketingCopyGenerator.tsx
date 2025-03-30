@@ -25,7 +25,11 @@ const contentTypes = [
 
 type ProviderType = AIProvider | 'multi-agent';
 
-const MarketingCopyGenerator = () => {
+interface MarketingCopyGeneratorProps {
+  onCopyGenerated: (content: string) => void;
+}
+
+const MarketingCopyGenerator: React.FC<MarketingCopyGeneratorProps> = ({ onCopyGenerated }) => {
   const [contentType, setContentType] = useState('email');
   const [provider, setProvider] = useState<ProviderType>('gemini');
   const [prompt, setPrompt] = useState('');
@@ -49,17 +53,18 @@ const MarketingCopyGenerator = () => {
     // Load saved prompts
     const loadSavedPrompts = async () => {
       try {
+        // We'll use the ai_agents table to store prompts for now
         const { data, error } = await supabase
-          .from('ai_generated_content')
-          .select('prompt')
-          .eq('type', 'marketing')
+          .from('ai_agents')
+          .select('prompt_template')
+          .eq('type', 'email')
           .order('created_at', { ascending: false })
           .limit(10);
           
         if (error) throw error;
         
         if (data) {
-          const uniquePrompts = [...new Set(data.map(item => item.prompt))];
+          const uniquePrompts = [...new Set(data.map(item => item.prompt_template))];
           setSavedPrompts(uniquePrompts);
         }
       } catch (error) {
@@ -111,14 +116,17 @@ const MarketingCopyGenerator = () => {
       // Add to history
       setCopyHistory(prev => [generatedContent, ...prev].slice(0, 5));
       
-      // Save prompt to database
-      await supabase.from('ai_generated_content').insert({
-        prompt: prompt,
-        content: generatedContent,
-        type: 'marketing',
-        content_type: contentType,
-        provider: provider === 'multi-agent' ? 'multi' : provider,
-        metadata: { tone, targetAudience, temperature }
+      // Save prompt to ai_agents table
+      await supabase.from('ai_agents').insert({
+        name: `Marketing ${contentType}`,
+        type: contentType,
+        prompt_template: prompt,
+        provider: provider === 'multi-agent' ? 'gemini' : provider,
+        model: 'marketing-agent',
+        temperature: temperature,
+        max_tokens: 1000,
+        is_active: true,
+        description: `Generated ${contentType} content with ${tone} tone for ${targetAudience || 'general audience'}`
       });
       
     } catch (error) {
@@ -208,14 +216,19 @@ PlataPay is trusted by over 500 businesses across various industries, from small
   const copyToClipboard = () => {
     navigator.clipboard.writeText(generatedContent);
     toast.success('Content copied to clipboard');
+    if (onCopyGenerated) {
+      onCopyGenerated(generatedContent);
+    }
   };
   
   const saveAsTemplate = async () => {
     try {
-      await supabase.from('email_templates').insert({
+      // Save to the marketing_campaigns table as a template
+      await supabase.from('marketing_campaigns').insert({
         name: `${contentType.charAt(0).toUpperCase() + contentType.slice(1)} Template`,
         content: generatedContent,
-        type: contentType
+        subject: `${contentType.charAt(0).toUpperCase() + contentType.slice(1)} Template`,
+        status: 'draft'
       });
       
       toast.success('Saved as template');

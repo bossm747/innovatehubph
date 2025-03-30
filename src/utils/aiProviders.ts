@@ -32,6 +32,10 @@ export interface PromoCode {
   valid_from: string;
   valid_to: string;
   active: boolean;
+  times_used?: number;
+  max_uses?: number;
+  description?: string;
+  applicable_to?: string[];
 }
 
 export interface LeadSource {

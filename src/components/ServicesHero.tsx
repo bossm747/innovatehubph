@@ -20,7 +20,7 @@ const ServicesHero = ({ title, subtitle, imagePath }: ServicesHeroProps) => {
       primaryButtonText="Explore Services"
       primaryButtonLink="#service-tiles"
       backgroundComponent={<ServicesHeroBackground />}
-      imageComponent={<ServicesHeroImage imagePath={imagePath} />}
+      imageComponent={<ServicesHeroImage imagePath="/lovable-uploads/532edcfe-0bf3-4962-8ca3-b1e5d0576301.png" />}
       featureItems={[
         { icon: <span className="h-5 w-5 mr-2 text-blue-300">•</span>, text: "Custom Solutions" },
         { icon: <span className="h-5 w-5 mr-2 text-blue-300">•</span>, text: "Expert Support" }

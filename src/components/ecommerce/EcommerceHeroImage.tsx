@@ -7,7 +7,7 @@ const EcommerceHeroImage = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg blur-xl"></div>
       <div className="float-animation">
         <img 
-          src="/lovable-uploads/5c085ba8-48d9-4a1a-9bb0-97e24b646f38.png" 
+          src="/lovable-uploads/12cb2330-c221-43a9-a45f-bc216abfb4b0.png" 
           alt="E-commerce Solutions" 
           className="relative z-10 rounded-lg shadow-lg w-full h-auto transform transition-all duration-500 pulse-glow"
         />

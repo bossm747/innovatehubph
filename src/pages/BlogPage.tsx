@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import ContactSection from '@/components/ContactSection';
 import CircuitBackground from '@/components/CircuitBackground';
 import BlogHighlight from '@/components/BlogHighlight';
+import BlogHeroImage from '@/components/blog/BlogHeroImage';
 import { Helmet } from 'react-helmet';
 import { Button } from '@/components/ui/button';
 
@@ -76,16 +77,19 @@ const BlogPage = () => {
           </div>
           
           <div className="container mx-auto relative z-10">
-            <div className="text-center mb-16 fade-up">
-              <span className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-gray-200 rounded-full mb-4">
-                Our Blog
-              </span>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-                Industry News & Updates
-              </h1>
-              <p className="text-gray-200 max-w-3xl mx-auto">
-                Stay informed with the latest news, trends, and insights from the world of digital innovation and fintech.
-              </p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div className="text-left mb-8 lg:mb-0 fade-up">
+                <span className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-gray-200 rounded-full mb-4">
+                  Our Blog
+                </span>
+                <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+                  Industry News & Updates
+                </h1>
+                <p className="text-gray-200 max-w-3xl">
+                  Stay informed with the latest news, trends, and insights from the world of digital innovation and fintech.
+                </p>
+              </div>
+              <BlogHeroImage />
             </div>
           </div>
         </section>

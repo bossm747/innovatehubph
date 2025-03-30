@@ -298,6 +298,39 @@ export type Database = {
         }
         Relationships: []
       }
+      marketing_recipients: {
+        Row: {
+          company: string | null
+          created_at: string | null
+          email: string
+          id: string
+          name: string
+          subscribed: boolean | null
+          tags: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          name: string
+          subscribed?: boolean | null
+          tags?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          company?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          name?: string
+          subscribed?: boolean | null
+          tags?: string[] | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       navigation_items: {
         Row: {
           created_at: string | null
@@ -407,6 +440,45 @@ export type Database = {
           slug?: string
           title?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      scheduled_emails: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          id: string
+          recipients: string[]
+          scheduled_at: string
+          sent: boolean | null
+          sent_at: string | null
+          subject: string
+          template_content: Json
+          template_type: string
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          recipients: string[]
+          scheduled_at: string
+          sent?: boolean | null
+          sent_at?: string | null
+          subject: string
+          template_content: Json
+          template_type: string
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          recipients?: string[]
+          scheduled_at?: string
+          sent?: boolean | null
+          sent_at?: string | null
+          subject?: string
+          template_content?: Json
+          template_type?: string
         }
         Relationships: []
       }

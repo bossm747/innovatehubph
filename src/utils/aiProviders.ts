@@ -1,10 +1,10 @@
 
-export type AIProvider = 'gemini' | 'openai' | 'anthropic' | 'mistral';
+export type AIProvider = 'gemini' | 'openai' | 'anthropic' | 'mistral' | 'multi-agent';
 
 export const AI_PROVIDERS: Record<AIProvider, { name: string, model: string, defaultPrompt: string }> = {
   gemini: {
-    name: 'Google Gemini Pro 2.0',
-    model: 'gemini-pro',
+    name: 'Google Gemini Pro 2.5',
+    model: 'gemini-1.5-pro',
     defaultPrompt: 'Generate engaging email marketing content for a tech company called InnovateHub that provides digital solutions including PlataPay, a digital payment system. The content should be professional, informative, and include a clear call to action.'
   },
   openai: {
@@ -21,6 +21,11 @@ export const AI_PROVIDERS: Record<AIProvider, { name: string, model: string, def
     name: 'Mistral Large',
     model: 'mistral-large-latest',
     defaultPrompt: 'Draft an email marketing campaign for InnovateHub, a technology innovation company with products like PlataPay. The content should be business-focused, highlight key benefits, and encourage the reader to take action.'
+  },
+  'multi-agent': {
+    name: 'AI Agent Collaboration',
+    model: 'multi-agent',
+    defaultPrompt: 'Create a professional email marketing message for InnovateHub, highlighting our digital solutions including PlataPay. Make it engaging, with clear value propositions and a compelling call to action. Use professional language appropriate for business clients.'
   }
 };
 

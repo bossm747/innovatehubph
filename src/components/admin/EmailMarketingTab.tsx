@@ -8,9 +8,12 @@ import { BarChart3, Users, Send, Settings, Brain, Sparkles } from 'lucide-react'
 import RecipientsList from './marketing/RecipientsList';
 import CampaignManager from './marketing/CampaignManager';
 import MarketingCopyGenerator from './marketing/MarketingCopyGenerator';
+import AIAgentsManager from './marketing/AIAgentsManager';
+import EmailTranslationTool from './marketing/EmailTranslationTool';
 
 const EmailMarketingTab: React.FC = () => {
   const [activeTab, setActiveTab] = useState('campaigns');
+  const [generatedContent, setGeneratedContent] = useState("");
 
   const getTabContent = () => {
     switch (activeTab) {
@@ -19,9 +22,11 @@ const EmailMarketingTab: React.FC = () => {
       case 'recipients':
         return <RecipientsList />;
       case 'ai-tools':
-        return <AIMarketingTools />;
+        return <AIMarketingTools onCopyGenerated={setGeneratedContent} />;
       case 'analytics':
         return <MarketingAnalytics />;
+      case 'agents':
+        return <AIAgentsManager />;
       default:
         return <CampaignManager />;
     }
@@ -48,7 +53,7 @@ const EmailMarketingTab: React.FC = () => {
         onValueChange={setActiveTab}
         className="space-y-4"
       >
-        <TabsList className="grid grid-cols-4 w-full">
+        <TabsList className="grid grid-cols-5 w-full">
           <TabsTrigger value="campaigns" className="flex items-center">
             <Send className="w-4 h-4 mr-2" />
             Campaigns
@@ -58,8 +63,12 @@ const EmailMarketingTab: React.FC = () => {
             Recipients
           </TabsTrigger>
           <TabsTrigger value="ai-tools" className="flex items-center">
-            <Brain className="w-4 h-4 mr-2" />
+            <Sparkles className="w-4 h-4 mr-2" />
             AI Tools
+          </TabsTrigger>
+          <TabsTrigger value="agents" className="flex items-center">
+            <Brain className="w-4 h-4 mr-2" />
+            AI Agents
           </TabsTrigger>
           <TabsTrigger value="analytics" className="flex items-center">
             <BarChart3 className="w-4 h-4 mr-2" />
@@ -76,55 +85,83 @@ const EmailMarketingTab: React.FC = () => {
 };
 
 // AI Marketing Tools Tab Content
-const AIMarketingTools: React.FC = () => {
-  const [generatedContent, setGeneratedContent] = useState("");
-  
+const AIMarketingTools: React.FC<{ onCopyGenerated: (content: string) => void }> = ({ onCopyGenerated }) => {
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row gap-6">
         <div className="md:w-1/2">
           <MarketingCopyGenerator 
-            onCopyGenerated={setGeneratedContent} 
+            onCopyGenerated={onCopyGenerated} 
           />
         </div>
         
         <div className="md:w-1/2">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Sparkles className="mr-2 h-5 w-5 text-innovate-600" />
-                Email Marketing Tips
-              </CardTitle>
-              <CardDescription>AI-powered tips to improve your email marketing</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-3">
-                <h4 className="font-medium">Best Practices</h4>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Personalize your emails with recipient names and relevant content</li>
-                  <li>Use clear and compelling subject lines (30-50 characters)</li>
-                  <li>Include a single, clear call-to-action button</li>
-                  <li>Optimize for mobile devices (over 60% of emails are read on mobile)</li>
-                  <li>Keep emails concise with scannable content (paragraphs of 1-3 sentences)</li>
-                  <li>Test different send times to find what works for your audience</li>
-                  <li>Segment your recipients for more targeted messaging</li>
-                </ul>
-              </div>
-              
-              <div className="space-y-3">
-                <h4 className="font-medium">AI Writing Tips</h4>
-                <ul className="list-disc pl-5 space-y-1 text-sm">
-                  <li>Be specific in your AI prompts about tone, context, and objective</li>
-                  <li>Include brand context about InnovateHub and PlataPay for consistent messaging</li>
-                  <li>Request specific formats like bullet points or short paragraphs</li>
-                  <li>Use AI for A/B testing different approaches</li>
-                  <li>Always review and edit AI-generated content for brand voice</li>
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
+          <EmailTranslationTool />
         </div>
       </div>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Sparkles className="mr-2 h-5 w-5 text-innovate-600" />
+            AI-Powered Email Marketing System
+          </CardTitle>
+          <CardDescription>
+            InnovateHub's intelligent marketing assistant uses multiple AI providers for optimal results
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium flex items-center">
+                  <Brain className="w-4 h-4 mr-2 text-blue-600" />
+                  Multi-Provider System
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm">
+                <p>Our system uses Google Gemini 2.5 as the primary AI, with automatic fallback to OpenAI, Anthropic, and Mistral for optimal results.</p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium flex items-center">
+                  <Sparkles className="w-4 h-4 mr-2 text-purple-600" />
+                  Agent Collaboration
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm">
+                <p>Multiple specialized AI agents work together for content creation, translation, personalization and analysis to create high-performing campaigns.</p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium flex items-center">
+                  <Settings className="w-4 h-4 mr-2 text-green-600" />
+                  Custom Domain Integration
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm">
+                <p>The system integrates with your @innovatehub.ph domain to ensure deliverability and maintain brand consistency across all communications.</p>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <div className="bg-blue-50 p-4 rounded-md">
+            <h4 className="text-blue-800 font-medium mb-2">How the AI System Works</h4>
+            <ul className="list-disc pl-5 space-y-1 text-sm text-blue-700">
+              <li>Email content is generated using Google Gemini 2.5 model for optimal efficiency</li>
+              <li>Multiple specialized AI agents collaborate on different aspects of your campaigns</li>
+              <li>Content is automatically optimized for engagement and deliverability</li>
+              <li>The system learns from previous campaign performance to improve over time</li>
+              <li>Built-in translation capabilities to reach international audiences</li>
+              <li>Analytics data is processed to provide actionable insights</li>
+            </ul>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

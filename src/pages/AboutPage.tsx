@@ -40,12 +40,8 @@ const AboutPage = () => {
         <meta name="description" content="Learn about InnovateHub - Passionate Innovators in the Philippine Tech Landscape" />
       </Helmet>
       
-      {/* Background patterns */}
-      <CircuitBackground pattern="curvy-line" className="fixed top-0 right-0" size="lg" opacity={0.1} color="primary" />
-      
-      <CircuitBackground pattern="blue-curve" className="fixed -bottom-40 -left-40" size="xl" opacity={0.2} color="primary" />
-      
-      <CircuitBackground pattern="dotted-grid" className="fixed top-1/4 right-1/4" size="md" opacity={0.1} />
+      {/* Background patterns - simplified and reduced */}
+      <CircuitBackground pattern="dotted-grid" className="fixed top-1/3 right-1/4" size="sm" opacity={0.05} />
       
       {/* Main content */}
       <Navbar />

@@ -13,7 +13,9 @@ const AdminAIManagementPage: React.FC = () => {
         </p>
       </div>
       
-      <AdminAIManagement />
+      <div className="grid grid-cols-1 gap-6">
+        <AdminAIManagement />
+      </div>
     </div>
   );
 };

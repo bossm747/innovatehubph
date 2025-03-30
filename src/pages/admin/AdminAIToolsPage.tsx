@@ -14,18 +14,18 @@ const AdminAIToolsPage: React.FC = () => {
         </p>
       </div>
       
-      <Tabs defaultValue="agents">
-        <TabsList>
+      <Tabs defaultValue="agents" className="w-full">
+        <TabsList className="grid grid-cols-3 w-full mb-4">
           <TabsTrigger value="agents">AI Agents</TabsTrigger>
           <TabsTrigger value="integrations">Integrations</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="agents" className="space-y-4 mt-4">
+        <TabsContent value="agents" className="space-y-4">
           <AIAgentsManager />
         </TabsContent>
         
-        <TabsContent value="integrations" className="space-y-4 mt-4">
+        <TabsContent value="integrations" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>API Integrations</CardTitle>
@@ -41,7 +41,7 @@ const AdminAIToolsPage: React.FC = () => {
           </Card>
         </TabsContent>
         
-        <TabsContent value="settings" className="space-y-4 mt-4">
+        <TabsContent value="settings" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>AI Settings</CardTitle>

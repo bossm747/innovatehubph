@@ -14,18 +14,18 @@ const AdminPaymentsPage: React.FC = () => {
         </p>
       </div>
       
-      <Tabs defaultValue="promotions">
-        <TabsList>
+      <Tabs defaultValue="promotions" className="w-full">
+        <TabsList className="grid grid-cols-3 w-full mb-4">
           <TabsTrigger value="promotions">Promotions</TabsTrigger>
           <TabsTrigger value="transactions">Transactions</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="promotions" className="space-y-4 mt-4">
+        <TabsContent value="promotions" className="space-y-4">
           <PromotionsManager />
         </TabsContent>
         
-        <TabsContent value="transactions" className="space-y-4 mt-4">
+        <TabsContent value="transactions" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Transaction History</CardTitle>
@@ -41,7 +41,7 @@ const AdminPaymentsPage: React.FC = () => {
           </Card>
         </TabsContent>
         
-        <TabsContent value="settings" className="space-y-4 mt-4">
+        <TabsContent value="settings" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Payment Settings</CardTitle>

@@ -1,77 +1,61 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import FooterSocialLinks from './footer/FooterSocialLinks';
-import FooterContactInfo from './footer/FooterContactInfo';
-import FooterNavLinks from './footer/FooterNavLinks';
+import FooterNavLinks from '@/components/footer/FooterNavLinks';
+import FooterContactInfo from '@/components/footer/FooterContactInfo';
+import FooterSocialLinks from '@/components/footer/FooterSocialLinks';
 
-const Footer = () => {
+interface FooterProps {
+  className?: string;
+}
+
+const Footer = ({ className = "" }: FooterProps) => {
   const currentYear = new Date().getFullYear();
   
-  const serviceLinks = [
-    { name: "All Services", path: "/services" },
-    { name: "PlataPay", path: "/platapay" },
-    { name: "Digital Customizations", path: "/digital-customizations" },
-    { name: "E-Commerce Development", path: "/ecommerce" },
-    { name: "AI Solutions", path: "/ai-solutions" },
-    { name: "Global Expansion", path: "/global-expansion" },
-  ];
-  
-  const quickLinks = [
-    { name: "Home", path: "/" },
-    { name: "About Us", path: "/about" },
-    { name: "Team", path: "/team" },
-    { name: "Clients", path: "/clients" },
-    { name: "Blog", path: "/blog" },
-    { name: "Contact", path: "/contact" },
-  ];
-
   return (
-    <footer className="bg-black pt-20 relative overflow-hidden text-white w-full m-0 p-0 max-w-[100vw]">
-      {/* Background shapes - more subtle in dark theme */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-gray-800 rounded-full opacity-10 blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-gray-800 rounded-full opacity-10 blur-3xl transform -translate-x-1/2 translate-y-1/4"></div>
-      
-      <div className="w-full m-0 p-0 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 px-6 md:px-12">
-          {/* Company Info & Social */}
-          <div>
-            <div className="flex items-center mb-6">
+    <footer className={`py-12 md:py-16 px-6 bg-slate-900 text-white relative ${className}`}>
+      <div className="container mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 lg:gap-8 mb-8">
+          {/* Company Info */}
+          <div className="col-span-1">
+            <div className="flex items-center mb-4">
               <img 
-                src="/lovable-uploads/e0b50f3f-fb7b-4832-8041-8c82e7f630ad.png" 
-                alt="InnovateHub Logo" 
-                className="h-10 w-10 mr-3"
+                src="/lovable-uploads/e057441a1-afb4-4ef6-9528-d2b5677d9842.png" 
+                alt="InnovateHub Logo"
+                className="h-12 w-auto mr-3"
               />
-              <span className="text-xl font-display font-bold text-white">Innovate<span className="text-innovate-500">Hub</span></span>
+              <div>
+                <h3 className="font-bold text-lg">InnovateHub</h3>
+                <p className="text-gray-400 text-sm">Digital Innovation Solutions</p>
+              </div>
             </div>
-            <p className="text-gray-300 mb-6">
-              Empowering businesses through innovative digital solutions and financial technology. From custom software to global expansion, we bring your vision to life.
+            <p className="text-gray-400 mb-6">
+              Empowering the future with innovative digital solutions for businesses in the Philippines and beyond.
             </p>
+            
             <FooterSocialLinks />
           </div>
           
-          {/* Services Links */}
-          <FooterNavLinks title="Our Services" links={serviceLinks} />
-          
           {/* Quick Links */}
-          <FooterNavLinks title="Quick Links" links={quickLinks} />
+          <FooterNavLinks />
           
-          {/* Contact Info */}
-          <div>
-            <h3 className="text-lg font-semibold mb-6 text-white">Contact Us</h3>
-            <FooterContactInfo />
-          </div>
+          {/* Contact Information */}
+          <FooterContactInfo />
         </div>
         
-        {/* Copyright and Policy Links */}
-        <div className="pt-8 border-t border-gray-800 text-center md:flex justify-between items-center px-6 md:px-12 pb-8">
-          <p className="text-gray-400 text-sm mb-4 md:mb-0">
-            &copy; {currentYear} InnovateHub Inc. All rights reserved.
-          </p>
-          
-          <div className="flex space-x-6 justify-center md:justify-end text-sm text-gray-400">
-            <Link to="/privacy-policy" className="hover:text-innovate-400">Privacy Policy</Link>
-            <Link to="/terms-of-service" className="hover:text-innovate-400">Terms of Service</Link>
+        <div className="pt-8 mt-8 border-t border-gray-800 text-center md:text-left">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="text-sm text-gray-400">
+              &copy; {currentYear} InnovateHub Inc. All rights reserved.
+            </p>
+            <div className="flex space-x-6 mt-4 md:mt-0">
+              <Link to="/privacy-policy" className="text-sm text-gray-400 hover:text-white transition-colors">
+                Privacy Policy
+              </Link>
+              <Link to="/terms" className="text-sm text-gray-400 hover:text-white transition-colors">
+                Terms of Service
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -14,10 +14,12 @@ import TeamPreviewSection from '@/components/home/TeamPreviewSection';
 import CTASection from '@/components/home/CTASection';
 import ClientShowcaseSection from '@/components/home/ClientShowcaseSection';
 import { Helmet } from 'react-helmet';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
   // Use a ref to prevent unnecessary re-calculations
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     // Use Intersection Observer API for better performance
@@ -52,7 +54,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="overflow-x-hidden w-[100vw] max-w-[100vw] min-h-screen m-0 p-0 relative">
+    <div className={`overflow-x-hidden w-[100vw] max-w-[100vw] min-h-screen m-0 p-0 relative ${isMobile ? 'pb-0' : ''}`}>
       <Helmet>
         <title>InnovateHub Inc. | Digital Innovation Solutions</title>
         <meta name="description" content="Empowering the Future with Digital Innovation - Customized fintech, AI, and e-commerce solutions for a connected world." />
@@ -83,7 +85,7 @@ const Index = () => {
       />
       
       <Navbar />
-      <div className="w-full py-0">
+      <div className={`w-full py-0 ${isMobile ? 'pb-0' : ''}`}>
         <Hero />
         
         {/* Why Choose Us Section */}
@@ -111,7 +113,7 @@ const Index = () => {
         <YoutubeVideo />
         
         <ContactSection />
-        <Footer />
+        <Footer className={isMobile ? "pb-0 mb-0" : ""} />
       </div>
     </div>
   );

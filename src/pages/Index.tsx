@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -13,6 +12,7 @@ import WhyChooseUsSection from '@/components/home/WhyChooseUsSection';
 import TeamPreviewSection from '@/components/home/TeamPreviewSection';
 import CTASection from '@/components/home/CTASection';
 import ClientShowcaseSection from '@/components/home/ClientShowcaseSection';
+import FeaturedVideoSection from '@/components/home/FeaturedVideoSection';
 import { Helmet } from 'react-helmet';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -90,6 +90,9 @@ const Index = () => {
         
         {/* Why Choose Us Section */}
         <WhyChooseUsSection />
+        
+        {/* Featured Video Section */}
+        <FeaturedVideoSection />
         
         {/* Fintech Solutions Feature Section */}
         <FintechSolutions />

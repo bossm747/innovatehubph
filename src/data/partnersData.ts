@@ -33,7 +33,7 @@ const partnersData: Partner[] = [
   {
     id: 3,
     name: "Nationlink",
-    logo: "/lovable-uploads/2d9edd2e-f7dc-4974-aaeb-7090e85b730f.png",
+    logo: "/lovable-uploads/f5ded1f4-41ac-4276-a2f8-6725e3f5542f.png",
     category: "Financial Services",
     description: "Nationlink is a financial services provider offering ATM services and digital payment solutions.",
     details: "Nationlink operates one of the largest ATM networks in the Philippines, allowing PlataPay users to access cash withdrawal services from their digital wallets across the country.",

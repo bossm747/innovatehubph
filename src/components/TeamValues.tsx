@@ -13,17 +13,17 @@ const TeamValues = () => {
     {
       icon: <Heart className="h-10 w-10 text-blue-600" />,
       title: 'Passion',
-      description: 'Our team brings enthusiasm and dedication to every project we undertake.'
+      description: "Our team brings enthusiasm and dedication to every project we undertake."
     },
     {
       icon: <Target className="h-10 w-10 text-blue-600" />,
       title: 'Excellence',
-      description: 'We strive for the highest standards in everything we do, from code to customer service.'
+      description: "We strive for the highest standards in everything we do, from code to customer service."
     },
     {
       icon: <Award className="h-10 w-10 text-blue-600" />,
       title: 'Integrity',
-      description: 'We build trust through transparent communication and ethical business practices.'
+      description: "We build trust through transparent communication and ethical business practices."
     }
   ];
 

@@ -8,7 +8,7 @@ const TeamValues = () => {
     {
       icon: <Brain className="h-10 w-10 text-blue-600" />,
       title: 'Innovation',
-      description: 'We constantly push the boundaries of what's possible in digital technology.'
+      description: "We constantly push the boundaries of what's possible in digital technology."
     },
     {
       icon: <Heart className="h-10 w-10 text-blue-600" />,

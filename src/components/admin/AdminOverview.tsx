@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Mail, RefreshCw, ArrowRight, Clock, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, RefreshCw, ArrowRight, Clock, CheckCircle, AlertCircle, Users } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 
 const AdminOverview = () => {

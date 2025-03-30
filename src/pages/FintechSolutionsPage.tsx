@@ -53,7 +53,9 @@ const FintechSolutionsPage = () => {
       <Navbar />
       <main className="w-full py-0">
         <FintechHero />
-        <FintechServicesShowcase />
+        <div id="fintech-services">
+          <FintechServicesShowcase />
+        </div>
         <FintechComparisonTable />
         <PlatapayAgentMap />
         <PlatapayPartners />

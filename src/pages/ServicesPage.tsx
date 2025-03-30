@@ -55,7 +55,9 @@ const ServicesPage = () => {
       <Navbar />
       <main className="w-full py-0">
         <ServicesHero title="What We Do" subtitle="Smart Solutions for the Digital Economy" imagePath="/lovable-uploads/d51f3d08-0518-4808-af9d-83ddda86ee94.png" />
-        <ServiceTiles />
+        <div id="service-tiles">
+          <ServiceTiles />
+        </div>
         <Features />
         <FintechServicesShowcase />
         <ContactSection />

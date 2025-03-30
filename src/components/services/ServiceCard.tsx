@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -41,7 +42,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
       }}
     >
       <div className={`absolute top-0 left-0 w-2 h-full ${getGradientColor(index).split(' ')[0]}`}></div>
-      <div className="p-8 relative z-10">
+      <div className="p-8 relative z-10 flex flex-col h-full">
         {index === 0 && service.id === "fintech-solutions" ? (
           <div className="flex items-center mb-4">
             <div className="relative mr-4">
@@ -68,7 +69,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
           />
         </div>
         
-        <ul className="mb-8 space-y-4">
+        <ul className="mb-8 space-y-4 flex-grow">
           {service.features.map((feature, i) => (
             <li key={i} className="space-y-1">
               <div className="flex items-start">
@@ -88,7 +89,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
           ))}
         </ul>
         
-        <div className="space-y-3">
+        <div className="mt-auto pt-4 border-t border-gray-100 space-y-3">
           <Button 
             className={`w-full group ${
               index === 0 
@@ -110,12 +111,6 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
             Request a Demo
           </Button>
         </div>
-      </div>
-      
-      <div className="absolute bottom-0 right-0 w-32 h-32 opacity-5 pointer-events-none">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <path fill="currentColor" d="M42.8,-73.1C54.7,-67.3,63.2,-54.2,69.4,-40.9C75.5,-27.6,79.4,-13.8,79.2,-0.1C79,13.5,74.7,27.1,68.3,40.6C61.9,54.2,53.3,67.8,41.3,73.4C29.2,79.1,14.6,76.7,0.7,75.6C-13.1,74.5,-26.3,74.7,-39.3,70.4C-52.4,66.1,-65.4,57.3,-71.3,45.3C-77.2,33.3,-76,18.1,-75.9,3.3C-75.8,-11.5,-76.7,-23,-74.1,-36C-71.5,-49,-65.3,-63.6,-54.2,-70.1C-43.1,-76.5,-27.1,-74.8,-12.3,-72.7C2.4,-70.7,30.8,-78.9,42.8,-73.1Z" transform="translate(100 100)" />
-        </svg>
       </div>
     </div>
   );

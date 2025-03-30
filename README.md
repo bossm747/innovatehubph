@@ -1,69 +1,146 @@
-# Welcome to your Lovable project
 
-## Project info
+# InnovateHub Inc. Website
 
-**URL**: https://lovable.dev/projects/ef30ad6e-7793-4eb0-a217-5a35cf383527
+![InnovateHub Logo](/public/logo.svg)
 
-## How can I edit this code?
+A modern web application for InnovateHub Inc., showcasing their digital innovation solutions including PlataPay, AI integration, e-commerce, and global expansion services.
 
-There are several ways of editing your application.
+## 🚀 Features
 
-**Use Lovable**
+- **Responsive Design:** Mobile-first approach with adaptive layouts
+- **Service Showcase:** Detailed presentation of InnovateHub's service offerings
+- **PlataPay Integration:** Dedicated sections for their flagship digital payment solution
+- **Admin Portal:** Comprehensive dashboard for content and marketing management
+- **AI-Powered Tools:** Email generation and marketing automation
+- **Email Marketing System:** Campaign management, templates, and analytics
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/ef30ad6e-7793-4eb0-a217-5a35cf383527) and start prompting.
+## 📋 Project Structure
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+src/
+├── components/        # Reusable UI components
+│   ├── admin/         # Admin portal components
+│   ├── email/         # Email template and marketing components
+│   ├── footer/        # Footer components
+│   ├── forms/         # Form components
+│   ├── navbar/        # Navigation components
+│   └── ui/            # UI components from shadcn/ui
+├── pages/             # Main page components
+├── hooks/             # Custom React hooks
+├── utils/             # Utility functions
+├── services/          # API and business logic
+├── integrations/      # Third-party integrations
+│   └── supabase/      # Supabase client and types
+└── contexts/          # React contexts
 ```
 
-**Edit a file directly in GitHub**
+## 🛠️ Technology Stack
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **Frontend:** React 18 with TypeScript
+- **Routing:** React Router DOM
+- **State Management:** React Query for server state
+- **Styling:** Tailwind CSS with shadcn/ui components
+- **Icons:** Lucide React
+- **Data Visualization:** Recharts
+- **Backend:** Supabase for database, authentication, and serverless functions
 
-**Use GitHub Codespaces**
+## 🔧 Setup and Installation
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Prerequisites
 
-## What technologies are used for this project?
+- Node.js (v18+ recommended)
+- npm or yarn or bun
+- Git
 
-This project is built with .
+### Installation Steps
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+1. Clone the repository
+```sh
+git clone <repository-url>
+cd innovatehub-website
+```
 
-## How can I deploy this project?
+2. Install dependencies
+```sh
+npm install
+# or
+yarn install
+# or
+bun install
+```
 
-Simply open [Lovable](https://lovable.dev/projects/ef30ad6e-7793-4eb0-a217-5a35cf383527) and click on Share -> Publish.
+3. Start the development server
+```sh
+npm run dev
+# or
+yarn dev
+# or
+bun dev
+```
 
-## I want to use a custom domain - is that possible?
+4. Open your browser and visit `http://localhost:5173`
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+## 📱 Key Features Breakdown
+
+### Public Website
+- **Home Page:** Hero section, services showcase, testimonials, and CTAs
+- **About Page:** Company overview, team information, and growth story
+- **Services Pages:** Detailed information on various services offered
+- **PlataPay Pages:** Dedicated sections for their digital payment solution
+- **Contact Page:** Contact form and information display
+
+### Admin Portal
+- **Dashboard:** Overview of website performance and metrics
+- **Content Management:** Edit website content and sections
+- **Email Marketing:** Create and manage email campaigns
+- **Email Templates:** AI-powered email template generation
+- **User Management:** Manage admin users and permissions
+
+### Email Marketing System
+- **Campaign Management:** Create, schedule, and track email campaigns
+- **Template Generation:** AI-powered email template creation
+- **Analytics:** Track email performance metrics
+- **Recipient Management:** Manage email lists and segments
+
+## 🌐 Deployment
+
+The project can be deployed using Netlify or any other static site hosting service.
+
+1. Build the project
+```sh
+npm run build
+# or
+yarn build
+# or
+bun run build
+```
+
+2. Deploy the `dist` folder to your hosting provider
+
+## 📝 Development Guidelines
+
+- Follow the existing code style and organization
+- Create focused, reusable components
+- Use TypeScript for type safety
+- Make use of shadcn/ui components for consistent UI
+- Test components across different screen sizes for responsiveness
+
+## 👥 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and ensure the code builds
+5. Submit a pull request
+
+## 📄 License
+
+[MIT License](LICENSE)
+
+## 📞 Contact
+
+For questions about the project or business inquiries:
+- 📧 Email: businessdevelopment@innovatehub.ph
+- 🌐 Website: innovatehub.ph
+- 📍 Address: RMCL Bldg., New Bypass Rd., Bayanan, San Pascual, Batangas
+- 📞 Phone: +63 917 685 1216

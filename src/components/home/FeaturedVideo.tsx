@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
+import ReactPlayer from 'react-player';
 
 interface FeaturedVideoProps {
   className?: string;
@@ -19,7 +20,7 @@ const FeaturedVideo: React.FC<FeaturedVideoProps> = ({
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const playerRef = useRef<ReactPlayer>(null);
 
   useEffect(() => {
     const fetchVideo = async () => {
@@ -74,36 +75,15 @@ const FeaturedVideo: React.FC<FeaturedVideoProps> = ({
     fetchVideo();
   }, [videoPath]);
 
-  // When video URL changes or component mounts, ensure video plays
-  useEffect(() => {
-    if (videoRef.current && videoUrl) {
-      // Force the video to load
-      videoRef.current.load();
-      
-      // Play the video after a short delay to ensure it's loaded
-      const playPromise = setTimeout(() => {
-        if (videoRef.current) {
-          videoRef.current.play()
-            .catch(e => console.error("Video play error:", e));
-        }
-      }, 100);
-      
-      return () => clearTimeout(playPromise);
-    }
-  }, [videoUrl]);
+  const handleReady = () => {
+    setIsLoading(false);
+    console.log('Video is ready to play');
+  };
 
-  // Apply performance optimizations
-  const videoAttributes = {
-    playsInline: true,
-    autoPlay: true,
-    loop: true,
-    muted: true, // Important for autoplay to work consistently
-    preload: "auto" as const, 
-    disablePictureInPicture: true,
-    disableRemotePlayback: true,
-    controlsList: "nodownload", // Prevent download option
-    // Reduce quality to improve performance
-    className: `object-cover w-full h-full ${className}`,
+  const handleError = (err: any) => {
+    console.error('Video playback error:', err);
+    setError('Failed to play video');
+    setIsLoading(false);
   };
 
   return (
@@ -125,21 +105,36 @@ const FeaturedVideo: React.FC<FeaturedVideoProps> = ({
       )}
       
       {videoUrl && (
-        <>
-          <video
-            ref={videoRef}
-            {...videoAttributes}
-            onLoadStart={() => setIsLoading(true)}
-            onLoadedData={() => setIsLoading(false)}
-          >
-            <source src={videoUrl} type={`video/${videoPath?.split('.').pop()}`} />
-            Your browser does not support the video tag.
-          </video>
+        <div className="relative w-full h-full">
+          <ReactPlayer
+            ref={playerRef}
+            url={videoUrl}
+            playing={true}
+            loop={true}
+            muted={true}
+            width="100%"
+            height="100%"
+            playsinline
+            config={{
+              file: {
+                attributes: {
+                  controlsList: 'nodownload',
+                  disablePictureInPicture: true,
+                  preload: 'auto',
+                }
+              }
+            }}
+            className={`object-cover ${className}`}
+            style={{ objectFit: 'cover' }}
+            onReady={handleReady}
+            onStart={() => setIsLoading(false)}
+            onError={handleError}
+          />
           
           {overlay && (
             <div className="absolute inset-0 bg-gradient-to-r from-blue-900/30 to-black/30 pointer-events-none" />
           )}
-        </>
+        </div>
       )}
     </div>
   );

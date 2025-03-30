@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart3, Users, Send, Settings, Brain, Sparkles, Gift, Target } from 'lucide-react';
+import { BarChart3, Users, Send, Settings, Brain, Sparkles, Gift, Target, MessageSquare } from 'lucide-react';
 import RecipientsList from './marketing/RecipientsList';
 import CampaignManager from './marketing/CampaignManager';
 import MarketingCopyGenerator from './marketing/MarketingCopyGenerator';
@@ -12,6 +12,7 @@ import AIAgentsManager from './marketing/AIAgentsManager';
 import EmailTranslationTool from './marketing/EmailTranslationTool';
 import LeadsManagement from './marketing/LeadsManagement';
 import PromotionsManager from './marketing/PromotionsManager';
+import PromoCreator from './marketing/PromoCreator';
 
 const EmailMarketingTab: React.FC = () => {
   const [activeTab, setActiveTab] = useState('campaigns');
@@ -27,6 +28,8 @@ const EmailMarketingTab: React.FC = () => {
         return <LeadsManagement />;
       case 'promotions':
         return <PromotionsManager />;
+      case 'promo-creator':
+        return <PromoCreator />;
       case 'ai-tools':
         return <AIMarketingTools onCopyGenerated={setGeneratedContent} />;
       case 'analytics':
@@ -59,7 +62,7 @@ const EmailMarketingTab: React.FC = () => {
         onValueChange={setActiveTab}
         className="space-y-4"
       >
-        <TabsList className="grid grid-cols-7 w-full">
+        <TabsList className="grid grid-cols-8 w-full">
           <TabsTrigger value="campaigns" className="flex items-center">
             <Send className="w-4 h-4 mr-2" />
             Campaigns
@@ -74,7 +77,11 @@ const EmailMarketingTab: React.FC = () => {
           </TabsTrigger>
           <TabsTrigger value="promotions" className="flex items-center">
             <Gift className="w-4 h-4 mr-2" />
-            Promotions
+            Promos
+          </TabsTrigger>
+          <TabsTrigger value="promo-creator" className="flex items-center">
+            <MessageSquare className="w-4 h-4 mr-2" />
+            Content
           </TabsTrigger>
           <TabsTrigger value="ai-tools" className="flex items-center">
             <Sparkles className="w-4 h-4 mr-2" />
@@ -134,7 +141,7 @@ const AIMarketingTools: React.FC<{ onCopyGenerated: (content: string) => void }>
                 </CardTitle>
               </CardHeader>
               <CardContent className="text-sm">
-                <p>Our system uses Google Gemini 2.5 as the primary AI, with automatic fallback to OpenAI, Anthropic, and Mistral for optimal results.</p>
+                <p>Our system uses Google Gemini 1.5 as the primary AI, with automatic fallback to OpenAI, Anthropic, and Mistral for optimal results.</p>
               </CardContent>
             </Card>
             
@@ -166,7 +173,7 @@ const AIMarketingTools: React.FC<{ onCopyGenerated: (content: string) => void }>
           <div className="bg-blue-50 p-4 rounded-md">
             <h4 className="text-blue-800 font-medium mb-2">How the AI System Works</h4>
             <ul className="list-disc pl-5 space-y-1 text-sm text-blue-700">
-              <li>Email content is generated using Google Gemini 2.5 model for optimal efficiency</li>
+              <li>Email content is generated using Google Gemini 1.5 model for optimal efficiency</li>
               <li>Multiple specialized AI agents collaborate on different aspects of your campaigns</li>
               <li>Content is automatically optimized for engagement and deliverability</li>
               <li>The system learns from previous campaign performance to improve over time</li>

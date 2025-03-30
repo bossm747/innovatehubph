@@ -11,7 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { PromoCode } from '@/utils/aiProviders';
-import { CalendarIcon, Plus, Gift, Trash2, Copy, Tag, Check, RefreshCw, AlertCircle } from 'lucide-react';
+import { CalendarIcon, Plus, Gift, Trash2, Copy, Tag, Check, RefreshCw, AlertCircle, ArrowDown, Sparkles } from 'lucide-react';
 import { format } from 'date-fns';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -20,37 +20,8 @@ const PromotionsManager = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('promo-codes');
   const [isLoading, setIsLoading] = useState(false);
-
-  // Placeholder for future implementation of promo codes
-  // This will be implemented when the backend table is created
-  const [promoCodes, setPromoCodes] = useState<PromoCode[]>([
-    {
-      id: '1',
-      code: 'WELCOME10',
-      discount: 10,
-      discountType: 'percentage',
-      validFrom: new Date().toISOString(),
-      validTo: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-      maxUses: 100,
-      timesUsed: 0,
-      active: true,
-      description: 'Welcome offer for new customers',
-      applicableTo: ['platapay', 'digital']
-    },
-    {
-      id: '2',
-      code: 'AGENT25',
-      discount: 25,
-      discountType: 'percentage',
-      validFrom: new Date().toISOString(),
-      validTo: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString(),
-      maxUses: 50,
-      timesUsed: 5,
-      active: true,
-      description: 'Special discount for PlataPay agents',
-      applicableTo: ['platapay']
-    }
-  ]);
+  const [promoCodes, setPromoCodes] = useState<PromoCode[]>([]);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const [formData, setFormData] = useState({
     code: '',
@@ -64,6 +35,33 @@ const PromotionsManager = () => {
   });
 
   const [showDialog, setShowDialog] = useState(false);
+
+  useEffect(() => {
+    fetchPromoCodes();
+  }, [refreshKey]);
+
+  const fetchPromoCodes = async () => {
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('promo_codes')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      
+      setPromoCodes(data || []);
+    } catch (error) {
+      console.error('Error fetching promo codes:', error);
+      toast({
+        title: 'Error fetching promo codes',
+        description: 'Please try again later',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -102,25 +100,27 @@ const PromotionsManager = () => {
     setIsLoading(true);
     
     try {
-      // This is a placeholder for when we have the table created
-      // For now, just simulate adding to our local state
+      const { data, error } = await supabase
+        .from('promo_codes')
+        .insert({
+          code: formData.code,
+          discount: Number(formData.discount),
+          discount_type: formData.discountType,
+          valid_from: formData.validFrom.toISOString(),
+          valid_to: formData.validTo.toISOString(),
+          max_uses: Number(formData.maxUses),
+          times_used: 0,
+          active: true,
+          description: formData.description,
+          applicable_to: formData.applicableTo
+        })
+        .select()
+        .single();
       
-      const newPromoCode: PromoCode = {
-        id: (promoCodes.length + 1).toString(),
-        code: formData.code,
-        discount: Number(formData.discount),
-        discountType: formData.discountType as 'percentage' | 'fixed',
-        validFrom: formData.validFrom.toISOString(),
-        validTo: formData.validTo.toISOString(),
-        maxUses: Number(formData.maxUses),
-        timesUsed: 0,
-        active: true,
-        description: formData.description,
-        applicableTo: formData.applicableTo
-      };
+      if (error) throw error;
       
-      setPromoCodes(prev => [newPromoCode, ...prev]);
       setShowDialog(false);
+      setRefreshKey(prev => prev + 1);
       
       toast({
         title: 'Promo code created',
@@ -158,26 +158,54 @@ const PromotionsManager = () => {
     });
   };
 
-  const togglePromoCodeStatus = (id: string, currentStatus: boolean) => {
-    setPromoCodes(prev => 
-      prev.map(promo => 
-        promo.id === id ? { ...promo, active: !currentStatus } : promo
-      )
-    );
-    
-    toast({
-      title: currentStatus ? 'Promo code deactivated' : 'Promo code activated',
-      description: `The promo code has been ${currentStatus ? 'deactivated' : 'activated'}.`
-    });
+  const togglePromoCodeStatus = async (id: string, currentStatus: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('promo_codes')
+        .update({ active: !currentStatus })
+        .eq('id', id);
+      
+      if (error) throw error;
+      
+      setRefreshKey(prev => prev + 1);
+      
+      toast({
+        title: currentStatus ? 'Promo code deactivated' : 'Promo code activated',
+        description: `The promo code has been ${currentStatus ? 'deactivated' : 'activated'}.`
+      });
+    } catch (error) {
+      console.error('Error updating promo code status:', error);
+      toast({
+        title: 'Error updating promo code',
+        description: 'An error occurred while updating the promo code.',
+        variant: 'destructive'
+      });
+    }
   };
 
-  const deletePromoCode = (id: string) => {
-    setPromoCodes(prev => prev.filter(promo => promo.id !== id));
-    
-    toast({
-      title: 'Promo code deleted',
-      description: 'The promo code has been deleted.'
-    });
+  const deletePromoCode = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('promo_codes')
+        .delete()
+        .eq('id', id);
+      
+      if (error) throw error;
+      
+      setRefreshKey(prev => prev + 1);
+      
+      toast({
+        title: 'Promo code deleted',
+        description: 'The promo code has been deleted.'
+      });
+    } catch (error) {
+      console.error('Error deleting promo code:', error);
+      toast({
+        title: 'Error deleting promo code',
+        description: 'An error occurred while deleting the promo code.',
+        variant: 'destructive'
+      });
+    }
   };
 
   const formatDate = (dateString: string) => {
@@ -497,12 +525,59 @@ const PromotionsManager = () => {
   );
 
   const renderSpecialOffersTab = () => (
-    <div className="p-6 text-center">
-      <Gift className="w-12 h-12 mx-auto text-muted-foreground" />
-      <h2 className="text-xl font-medium mt-4">Special Offers Coming Soon</h2>
-      <p className="text-muted-foreground mt-2 max-w-md mx-auto">
-        We're working on a new feature to help you create and manage special offers and bundles for your services. Stay tuned!
-      </p>
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Gift className="w-5 h-5 mr-2 text-purple-600" />
+            Special Offers
+          </CardTitle>
+          <CardDescription>
+            Create and manage special promotional offers for your services
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg flex items-center">
+                  <ArrowDown className="w-4 h-4 mr-2 text-green-600" />
+                  Bundle Discounts
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm mb-4">Create special pricing when customers purchase multiple services together.</p>
+                <Button variant="outline" className="w-full">
+                  Create Bundle Offer
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg flex items-center">
+                  <Sparkles className="w-4 h-4 mr-2 text-blue-600" />
+                  Limited-Time Offers
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm mb-4">Create time-sensitive special promotions for your services.</p>
+                <Button variant="outline" className="w-full">
+                  Create Limited-Time Offer
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+          
+          <div className="bg-muted rounded-lg p-6 text-center">
+            <Gift className="w-12 h-12 mx-auto text-muted-foreground mb-3" />
+            <h3 className="text-xl font-medium">Expanded Offers Coming Soon</h3>
+            <p className="text-muted-foreground mt-2 max-w-md mx-auto">
+              We're working on enhanced functionality to help you create more complex promotional offers including multi-service bundles, tiered discounts, and automated seasonal promotions.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 

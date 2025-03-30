@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2 } from 'lucide-react';
+import { LeadSource } from '@/utils/aiProviders';
 
 interface LeadCaptureFormProps {
   formType?: 'popup' | 'inline' | 'floating';
@@ -33,6 +34,9 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
 }) => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [leadSources, setLeadSources] = useState<LeadSource[]>([]);
+  const [selectedSourceId, setSelectedSourceId] = useState<string | null>(null);
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -49,6 +53,42 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
     { id: 'ai', label: 'AI Solutions' },
     { id: 'global', label: 'Global Expansion' }
   ];
+
+  // Fetch lead sources on component mount
+  useEffect(() => {
+    async function fetchLeadSources() {
+      try {
+        const { data, error } = await supabase
+          .from('lead_sources')
+          .select('*')
+          .eq('active', true)
+          .order('name');
+          
+        if (error) throw error;
+        
+        if (data && data.length > 0) {
+          setLeadSources(data);
+          
+          // Try to find a matching lead source based on the leadSource prop
+          const matchingSource = data.find(src => 
+            src.name.toLowerCase().includes(leadSource.toLowerCase()) || 
+            (src.description && src.description.toLowerCase().includes(leadSource.toLowerCase()))
+          );
+          
+          if (matchingSource) {
+            setSelectedSourceId(matchingSource.id);
+          } else {
+            // Default to the first source if no match
+            setSelectedSourceId(data[0].id);
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching lead sources:', err);
+      }
+    }
+    
+    fetchLeadSources();
+  }, [leadSource]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -75,15 +115,18 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
 
     try {
       // Insert into marketing_recipients
-      const { error: recipientError } = await supabase
+      const { data: recipientData, error: recipientError } = await supabase
         .from('marketing_recipients')
         .insert({
           name: formData.name,
           email: formData.email,
           company: formData.company,
           tags: formData.interests,
-          subscribed: formData.subscribe
-        });
+          subscribed: formData.subscribe,
+          source_id: selectedSourceId
+        })
+        .select('id')
+        .single();
 
       if (recipientError) throw recipientError;
 
@@ -97,6 +140,20 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
         });
 
       if (subscriberError) throw subscriberError;
+
+      // If there's a message, create an inquiry
+      if (formData.message) {
+        await supabase
+          .from('inquiries')
+          .insert({
+            name: formData.name,
+            email: formData.email,
+            company: formData.company || null,
+            message: formData.message,
+            service: formData.interests.join(', '),
+            subscribe: formData.subscribe
+          });
+      }
 
       // Call multi-agent function to generate personalized welcome message if available
       if (formData.subscribe) {
@@ -116,8 +173,8 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
 
       // Success state
       toast({
-        title: "Thank you for subscribing!",
-        description: "We'll keep you updated with the latest news and offers.",
+        title: "Thank you for your interest!",
+        description: "We'll be in touch with you shortly.",
       });
       
       // Reset form
@@ -152,10 +209,12 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
 
   return (
     <div className={embedded ? '' : formClasses[formType]}>
-      <div className="mb-4">
-        <h3 className="text-xl font-bold mb-1">{title}</h3>
-        <p className="text-gray-600 text-sm">{subtitle}</p>
-      </div>
+      {!embedded && (
+        <div className="mb-4">
+          <h3 className="text-xl font-bold mb-1">{title}</h3>
+          <p className="text-gray-600 text-sm">{subtitle}</p>
+        </div>
+      )}
       
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -195,26 +254,40 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
         </div>
         
         {showInterestFields && (
-          <div>
-            <Label>Interests</Label>
-            <div className="grid grid-cols-2 gap-2 mt-1">
-              {interestOptions.map(option => (
-                <div key={option.id} className="flex items-center space-x-2">
-                  <Checkbox 
-                    id={`interest-${option.id}`} 
-                    checked={formData.interests.includes(option.id)}
-                    onCheckedChange={() => handleInterestChange(option.id)}
-                  />
-                  <label 
-                    htmlFor={`interest-${option.id}`}
-                    className="text-sm cursor-pointer"
-                  >
-                    {option.label}
-                  </label>
-                </div>
-              ))}
+          <>
+            <div>
+              <Label>Interests</Label>
+              <div className="grid grid-cols-2 gap-2 mt-1">
+                {interestOptions.map(option => (
+                  <div key={option.id} className="flex items-center space-x-2">
+                    <Checkbox 
+                      id={`interest-${option.id}`} 
+                      checked={formData.interests.includes(option.id)}
+                      onCheckedChange={() => handleInterestChange(option.id)}
+                    />
+                    <label 
+                      htmlFor={`interest-${option.id}`}
+                      className="text-sm cursor-pointer"
+                    >
+                      {option.label}
+                    </label>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+            
+            <div>
+              <Label htmlFor="message">Message (Optional)</Label>
+              <Textarea
+                id="message"
+                name="message"
+                placeholder="Tell us about your specific needs or questions"
+                value={formData.message}
+                onChange={handleInputChange}
+                className="min-h-[80px]"
+              />
+            </div>
+          </>
         )}
         
         <div className="flex items-center space-x-2">

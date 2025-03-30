@@ -50,12 +50,12 @@ export interface EmailCampaign {
   status: 'draft' | 'scheduled' | 'sent' | 'failed';
   scheduledAt?: string;
   recipientCount?: number;
+  segment_ids?: string[];
   created_at: string;
   updated_at?: string;
 }
 
-// Let's add more types for our marketing system
-
+// Marketing system types
 export interface MarketingRecipient {
   id: string;
   name: string;
@@ -63,6 +63,7 @@ export interface MarketingRecipient {
   company?: string;
   tags?: string[];
   subscribed: boolean;
+  source_id?: string;
   created_at: string;
   updated_at?: string;
 }
@@ -92,4 +93,24 @@ export interface PromoCode {
   active: boolean;
   description?: string;
   applicableTo?: string[];
+}
+
+export interface LeadSource {
+  id: string;
+  name: string;
+  source_type: 'website' | 'email' | 'social' | 'ad' | 'event' | 'referral' | 'other';
+  description?: string;
+  active: boolean;
+}
+
+export interface CampaignSend {
+  id: string;
+  campaign_id: string;
+  recipient_id: string;
+  sent_at: string;
+  opened_at?: string;
+  clicked_at?: string;
+  links_clicked?: Record<string, any>[];
+  status: 'queued' | 'sent' | 'delivered' | 'opened' | 'clicked' | 'bounced' | 'failed' | 'unsubscribed';
+  error_message?: string;
 }

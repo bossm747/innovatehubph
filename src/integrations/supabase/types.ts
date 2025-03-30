@@ -176,6 +176,57 @@ export type Database = {
         }
         Relationships: []
       }
+      campaign_sends: {
+        Row: {
+          campaign_id: string
+          clicked_at: string | null
+          error_message: string | null
+          id: string
+          links_clicked: Json | null
+          opened_at: string | null
+          recipient_id: string
+          sent_at: string | null
+          status: string
+        }
+        Insert: {
+          campaign_id: string
+          clicked_at?: string | null
+          error_message?: string | null
+          id?: string
+          links_clicked?: Json | null
+          opened_at?: string | null
+          recipient_id: string
+          sent_at?: string | null
+          status?: string
+        }
+        Update: {
+          campaign_id?: string
+          clicked_at?: string | null
+          error_message?: string | null
+          id?: string
+          links_clicked?: Json | null
+          opened_at?: string | null
+          recipient_id?: string
+          sent_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_sends_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "marketing_campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaign_sends_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "marketing_recipients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       documents: {
         Row: {
           content: string | null
@@ -346,6 +397,36 @@ export type Database = {
         }
         Relationships: []
       }
+      lead_sources: {
+        Row: {
+          active: boolean
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          source_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          source_type?: string
+          updated_at?: string | null
+        }
+        Update: {
+          active?: boolean
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          source_type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       marketing_campaigns: {
         Row: {
           content: string
@@ -354,6 +435,7 @@ export type Database = {
           name: string
           recipient_count: number | null
           scheduled_at: string | null
+          segment_ids: string[] | null
           status: string
           subject: string
           template: string | null
@@ -366,6 +448,7 @@ export type Database = {
           name: string
           recipient_count?: number | null
           scheduled_at?: string | null
+          segment_ids?: string[] | null
           status?: string
           subject: string
           template?: string | null
@@ -378,6 +461,7 @@ export type Database = {
           name?: string
           recipient_count?: number | null
           scheduled_at?: string | null
+          segment_ids?: string[] | null
           status?: string
           subject?: string
           template?: string | null
@@ -392,6 +476,7 @@ export type Database = {
           email: string
           id: string
           name: string
+          source_id: string | null
           subscribed: boolean | null
           tags: string[] | null
           updated_at: string | null
@@ -402,6 +487,7 @@ export type Database = {
           email: string
           id?: string
           name: string
+          source_id?: string | null
           subscribed?: boolean | null
           tags?: string[] | null
           updated_at?: string | null
@@ -412,8 +498,47 @@ export type Database = {
           email?: string
           id?: string
           name?: string
+          source_id?: string | null
           subscribed?: boolean | null
           tags?: string[] | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketing_recipients_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "lead_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketing_segments: {
+        Row: {
+          created_at: string | null
+          criteria: Json
+          description: string | null
+          id: string
+          name: string
+          recipient_count: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          criteria?: Json
+          description?: string | null
+          id?: string
+          name: string
+          recipient_count?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          criteria?: Json
+          description?: string | null
+          id?: string
+          name?: string
+          recipient_count?: number | null
           updated_at?: string | null
         }
         Relationships: []
@@ -527,6 +652,54 @@ export type Database = {
           slug?: string
           title?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      promo_codes: {
+        Row: {
+          active: boolean
+          applicable_to: string[] | null
+          code: string
+          created_at: string | null
+          description: string | null
+          discount: number
+          discount_type: string
+          id: string
+          max_uses: number | null
+          times_used: number
+          updated_at: string | null
+          valid_from: string
+          valid_to: string
+        }
+        Insert: {
+          active?: boolean
+          applicable_to?: string[] | null
+          code: string
+          created_at?: string | null
+          description?: string | null
+          discount: number
+          discount_type: string
+          id?: string
+          max_uses?: number | null
+          times_used?: number
+          updated_at?: string | null
+          valid_from?: string
+          valid_to: string
+        }
+        Update: {
+          active?: boolean
+          applicable_to?: string[] | null
+          code?: string
+          created_at?: string | null
+          description?: string | null
+          discount?: number
+          discount_type?: string
+          id?: string
+          max_uses?: number | null
+          times_used?: number
+          updated_at?: string | null
+          valid_from?: string
+          valid_to?: string
         }
         Relationships: []
       }

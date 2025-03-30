@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -84,15 +83,12 @@ const ImageProcessingTool: React.FC = () => {
     ]
   };
   
-  // Set default model when provider changes
   React.useEffect(() => {
     if (providerModels[provider] && providerModels[provider].length > 0) {
       setSelectedModel(providerModels[provider][0].id);
     }
     
-    // Fetch projects on component mount
     fetchProjects();
-    // Fetch previous results
     fetchGeneratedImages();
   }, [provider]);
   
@@ -124,7 +120,6 @@ const ImageProcessingTool: React.FC = () => {
       
       if (data && data.length > 0) {
         const images = await Promise.all(data.map(async (item: AIGeneratedFile) => {
-          // Get public URL for each image
           const { data: storageData } = await supabase.storage
             .from('ai-generated')
             .getPublicUrl(item.storage_path);
@@ -192,7 +187,6 @@ const ImageProcessingTool: React.FC = () => {
         
         setProgress(30);
         
-        // Call the Supabase Edge Function
         const { data, error } = await supabase.functions.invoke('generate-image', {
           body: { 
             prompt, 
@@ -237,7 +231,6 @@ const ImageProcessingTool: React.FC = () => {
         
         setResults(prev => [newResult, ...prev]);
         
-        // Auto-save if enabled
         if (saveToProject && projectId) {
           await saveImageToProject(newResult);
         }
@@ -261,13 +254,11 @@ const ImageProcessingTool: React.FC = () => {
   
   const saveImageToProject = async (result: ProcessingResult) => {
     try {
-      // Fetch the image and convert to blob
       const imageResponse = await fetch(result.imageUrl);
       const imageBlob = await imageResponse.blob();
       const filename = `${result.operation}-${Date.now()}.png`;
       const imageFile = new File([imageBlob], filename, { type: 'image/png' });
       
-      // Upload the image file to storage
       const storagePath = `images/${filename}`;
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('ai-generated')
@@ -275,7 +266,6 @@ const ImageProcessingTool: React.FC = () => {
         
       if (uploadError) throw uploadError;
       
-      // Insert record for uploaded file
       const { error: insertError } = await supabase
         .from('ai_generated_files')
         .insert({
@@ -330,7 +320,6 @@ const ImageProcessingTool: React.FC = () => {
         
       if (error) throw error;
       
-      // Update UI
       setResults(prev => prev.filter(result => result.id !== id));
       
       toast({
@@ -620,7 +609,6 @@ const ImageProcessingTool: React.FC = () => {
         </CardContent>
       </Card>
       
-      {/* Results Gallery */}
       <Card className="shadow-md">
         <CardHeader className="bg-gradient-to-r from-gray-50 to-slate-100 rounded-t-lg border-b">
           <div className="flex justify-between items-center">

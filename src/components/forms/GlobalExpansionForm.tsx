@@ -128,24 +128,26 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
     { value: "healthcare", label: "Healthcare" },
     { value: "retail", label: "Retail & E-commerce" },
     { value: "manufacturing", label: "Manufacturing" },
-    { value: "technology", label: "Technology" },
     { value: "education", label: "Education" },
     { value: "logistics", label: "Logistics & Supply Chain" },
+    { value: "agriculture", label: "Agriculture" },
     { value: "other", label: "Other" },
   ];
 
   const companySizes = [
-    { value: "startup", label: "Startup (1-10 employees)" },
-    { value: "small", label: "Small Business (11-50 employees)" },
-    { value: "medium", label: "Medium Enterprise (51-250 employees)" },
-    { value: "large", label: "Large Enterprise (251+ employees)" },
+    { value: "1-10", label: "1-10 employees" },
+    { value: "11-50", label: "11-50 employees" },
+    { value: "51-200", label: "51-200 employees" },
+    { value: "201-500", label: "201-500 employees" },
+    { value: "501-1000", label: "501-1000 employees" },
+    { value: "1000+", label: "1000+ employees" },
   ];
 
   const timelineOptions = [
-    { value: "immediate", label: "Immediate (1-3 months)" },
+    { value: "urgent", label: "Urgent (< 3 months)" },
     { value: "short", label: "Short term (3-6 months)" },
     { value: "medium", label: "Medium term (6-12 months)" },
-    { value: "long", label: "Long term (12+ months)" },
+    { value: "long", label: "Long term (1+ year)" },
     { value: "planning", label: "Still in planning phase" },
   ];
 
@@ -153,9 +155,9 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="bg-amber-50 p-4 rounded-lg mb-6">
-          <h3 className="font-medium text-amber-800 mb-2">Global Expansion Services</h3>
+          <h3 className="font-medium text-amber-800 mb-2">Global Expansion & Dubai Trade License</h3>
           <p className="text-sm text-gray-600">
-            Expand your business internationally with our guidance and support in Dubai and beyond.
+            Expand your business internationally with our global market entry and Dubai trade license services.
           </p>
         </div>
         
@@ -209,9 +211,9 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
             name="position"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Position/Role *</FormLabel>
+                <FormLabel>Your Position/Role *</FormLabel>
                 <FormControl>
-                  <Input placeholder="CEO / Director / Manager" {...field} />
+                  <Input placeholder="CEO, Director, Manager, etc." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -293,8 +295,9 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
               <FormItem>
                 <FormLabel>Current Markets *</FormLabel>
                 <FormControl>
-                  <Input placeholder="Philippines, etc." {...field} />
+                  <Input placeholder="e.g., Philippines" {...field} />
                 </FormControl>
+                <FormDescription>Countries where you currently operate</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -307,8 +310,9 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
               <FormItem>
                 <FormLabel>Target Markets *</FormLabel>
                 <FormControl>
-                  <Input placeholder="Dubai, UAE, etc." {...field} />
+                  <Input placeholder="e.g., Dubai, UAE, Saudi Arabia" {...field} />
                 </FormControl>
+                <FormDescription>Countries you want to expand to</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -345,10 +349,10 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
           name="expansionGoals"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Expansion Goals *</FormLabel>
+              <FormLabel>Expansion Goals and Requirements *</FormLabel>
               <FormControl>
                 <Textarea 
-                  placeholder="Describe your international expansion goals, challenges, and what you hope to achieve..."
+                  placeholder="Describe your expansion goals, requirements, and any specific questions about Dubai trade licenses..."
                   className="min-h-32"
                   {...field}
                 />
@@ -374,7 +378,7 @@ const GlobalExpansionForm = ({ navigate }: GlobalExpansionFormProps) => {
                   Subscribe to global business updates
                 </FormLabel>
                 <FormDescription>
-                  Receive news about international business opportunities
+                  Receive news about international markets and opportunities
                 </FormDescription>
               </div>
             </FormItem>

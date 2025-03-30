@@ -1,75 +1,52 @@
 
-import React from 'react';
+// Fix for error: Type '{}' is missing the following properties from type 'AIToolsHeaderProps': activeTab, setActiveTab
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import AIToolsHeader from '@/components/ai-tools/AIToolsHeader';
-import TextToSpeechTool from '@/components/ai-tools/TextToSpeechTool';
-import VoiceToTextTool from '@/components/ai-tools/VoiceToTextTool';
-import TranslationTool from '@/components/ai-tools/TranslationTool';
-import MarketingCopyTool from '@/components/ai-tools/MarketingCopyTool';
-import CodeAssistantTool from '@/components/ai-tools/CodeAssistantTool';
-import VideoGenerationTool from '@/components/ai-tools/VideoGenerationTool';
-import WebResearchTool from '@/components/ai-tools/WebResearchTool';
+import AIToolsHeader from '@/components/AIToolsHeader';
+import NLPToolsSection from '@/components/ai-tools/NLPToolsSection';
+import ImageToolsSection from '@/components/ai-tools/ImageToolsSection';
+import DataAnalysisToolsSection from '@/components/ai-tools/DataAnalysisToolsSection';
+
+// Define the tab types
+type AIToolTab = 'nlp' | 'image' | 'data';
 
 const AIToolsPage = () => {
+  // Add state for active tab
+  const [activeTab, setActiveTab] = useState<AIToolTab>('nlp');
+
   return (
     <div className="min-h-screen w-full overflow-x-hidden relative">
       <Helmet>
-        <title>AI Tools - InnovateHub</title>
-        <meta name="description" content="Access a suite of AI-powered tools designed to enhance your productivity and creativity." />
+        <title>AI Tools | InnovateHub</title>
+        <meta name="description" content="Explore InnovateHub's suite of AI tools for business automation, customer service, and data analysis." />
       </Helmet>
       
       <Navbar />
       
-      <div className="w-full py-0">
-        <AIToolsHeader />
+      <main className="w-full py-0">
+        <AIToolsHeader activeTab={activeTab} setActiveTab={setActiveTab} />
         
-        <main className="container mx-auto px-4 py-12">
-          <Tabs defaultValue="text-to-speech" className="w-full">
-            <TabsList className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 mb-8">
-              <TabsTrigger value="text-to-speech">Text to Speech</TabsTrigger>
-              <TabsTrigger value="voice-to-text">Voice to Text</TabsTrigger>
-              <TabsTrigger value="translation">Translation</TabsTrigger>
-              <TabsTrigger value="marketing-copy">Marketing Copy</TabsTrigger>
-              <TabsTrigger value="code-assistant">Code Assistant</TabsTrigger>
-              <TabsTrigger value="video-generation">Video Generation</TabsTrigger>
-              <TabsTrigger value="web-research">Web Research</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="text-to-speech">
-              <TextToSpeechTool />
+        <div className="container mx-auto px-4 py-12">
+          <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as AIToolTab)}>
+            <TabsContent value="nlp" className="mt-6">
+              <NLPToolsSection />
             </TabsContent>
             
-            <TabsContent value="voice-to-text">
-              <VoiceToTextTool />
+            <TabsContent value="image" className="mt-6">
+              <ImageToolsSection />
             </TabsContent>
             
-            <TabsContent value="translation">
-              <TranslationTool />
-            </TabsContent>
-            
-            <TabsContent value="marketing-copy">
-              <MarketingCopyTool />
-            </TabsContent>
-            
-            <TabsContent value="code-assistant">
-              <CodeAssistantTool />
-            </TabsContent>
-            
-            <TabsContent value="video-generation">
-              <VideoGenerationTool />
-            </TabsContent>
-            
-            <TabsContent value="web-research">
-              <WebResearchTool />
+            <TabsContent value="data" className="mt-6">
+              <DataAnalysisToolsSection />
             </TabsContent>
           </Tabs>
-        </main>
-        
-        <Footer />
-      </div>
+        </div>
+      </main>
+      
+      <Footer />
     </div>
   );
 };

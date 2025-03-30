@@ -11,13 +11,47 @@ const corsHeaders = {
 interface EmailRequest {
   subject: string;
   recipients: string[];
-  templateType: 'newsletter' | 'promotion' | 'welcome' | 'service';
+  templateType: 'newsletter' | 'promotion' | 'welcome' | 'service' | 'notification' | 'followup' | 'confirmation';
   templateContent: any;
+  htmlTemplate?: string; // New field for pre-generated HTML template
   scheduledAt?: string | null;
 }
 
 // Get HTML template based on template type and content
-const getHtmlTemplate = (templateType: string, content: any): string => {
+const getHtmlTemplate = (templateType: string, content: any, htmlTemplate?: string): string => {
+  // If a pre-generated HTML template was provided, use it
+  if (htmlTemplate) {
+    // Replace placeholders with content
+    let template = htmlTemplate;
+    
+    // Replace basic placeholders 
+    if (content.title) {
+      template = template.replace(/\[Title\]/g, content.title);
+    }
+    
+    if (content.message) {
+      template = template.replace(/\[Message\]/g, content.message);
+    }
+    
+    if (content.ctaText) {
+      template = template.replace(/\[CTAText\]/g, content.ctaText);
+    }
+    
+    if (content.ctaLink) {
+      template = template.replace(/\[CTALink\]/g, content.ctaLink);
+    }
+    
+    // Replace any custom placeholders based on the content object
+    for (const [key, value] of Object.entries(content)) {
+      if (typeof value === 'string') {
+        const placeholder = new RegExp(`\\[${key}\\]`, 'gi');
+        template = template.replace(placeholder, value);
+      }
+    }
+    
+    return template;
+  }
+
   // Common header and footer for all email templates
   const commonHeader = `
     <!DOCTYPE html>
@@ -255,7 +289,7 @@ serve(async (req) => {
     const emailRequest: EmailRequest = await req.json();
     
     // Validate required fields
-    if (!emailRequest.subject || !emailRequest.recipients || !emailRequest.templateType || !emailRequest.templateContent) {
+    if (!emailRequest.subject || !emailRequest.recipients || !emailRequest.templateType || (!emailRequest.templateContent && !emailRequest.htmlTemplate)) {
       return new Response(JSON.stringify({ error: 'Missing required fields' }), {
         status: 400,
         headers: {
@@ -284,7 +318,11 @@ serve(async (req) => {
     }
 
     // Generate HTML content from template
-    const htmlContent = getHtmlTemplate(emailRequest.templateType, emailRequest.templateContent);
+    const htmlContent = getHtmlTemplate(
+      emailRequest.templateType, 
+      emailRequest.templateContent,
+      emailRequest.htmlTemplate
+    );
 
     // Send the email
     const result = await sendEmail(

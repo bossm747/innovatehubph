@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart3, Users, Send, Settings, Brain, Sparkles, Gift, Target, MessageSquare } from 'lucide-react';
+import { BarChart3, Users, Send, Settings, Brain, Sparkles, Gift, Target, MessageSquare, FileType } from 'lucide-react';
 import RecipientsList from './marketing/RecipientsList';
 import CampaignManager from './marketing/CampaignManager';
 import MarketingCopyGenerator from './marketing/MarketingCopyGenerator';
@@ -13,6 +13,8 @@ import EmailTranslationTool from './marketing/EmailTranslationTool';
 import LeadsManagement from './marketing/LeadsManagement';
 import PromotionsManager from './marketing/PromotionsManager';
 import PromoCreator from './marketing/PromoCreator';
+import EmailTemplateGenerator from '../email/EmailTemplateGenerator';
+import EmailTemplatesPage from '../email/EmailTemplatesPage';
 
 const EmailMarketingTab: React.FC = () => {
   const [activeTab, setActiveTab] = useState('campaigns');
@@ -30,6 +32,8 @@ const EmailMarketingTab: React.FC = () => {
         return <PromotionsManager />;
       case 'promo-creator':
         return <PromoCreator />;
+      case 'templates':
+        return <EmailTemplatesPage />;
       case 'ai-tools':
         return <AIMarketingTools onCopyGenerated={setGeneratedContent} />;
       case 'analytics':
@@ -62,7 +66,7 @@ const EmailMarketingTab: React.FC = () => {
         onValueChange={setActiveTab}
         className="space-y-4"
       >
-        <TabsList className="grid grid-cols-8 w-full">
+        <TabsList className="grid grid-cols-9 w-full">
           <TabsTrigger value="campaigns" className="flex items-center">
             <Send className="w-4 h-4 mr-2" />
             Campaigns
@@ -82,6 +86,10 @@ const EmailMarketingTab: React.FC = () => {
           <TabsTrigger value="promo-creator" className="flex items-center">
             <MessageSquare className="w-4 h-4 mr-2" />
             Content
+          </TabsTrigger>
+          <TabsTrigger value="templates" className="flex items-center">
+            <FileType className="w-4 h-4 mr-2" />
+            Templates
           </TabsTrigger>
           <TabsTrigger value="ai-tools" className="flex items-center">
             <Sparkles className="w-4 h-4 mr-2" />
@@ -119,6 +127,11 @@ const AIMarketingTools: React.FC<{ onCopyGenerated: (content: string) => void }>
         <div className="md:w-1/2">
           <EmailTranslationTool />
         </div>
+      </div>
+      
+      <div className="mt-8 mb-4">
+        <h3 className="text-lg font-medium mb-4">Email Template Generator</h3>
+        <EmailTemplateGenerator />
       </div>
       
       <Card>

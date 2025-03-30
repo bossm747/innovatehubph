@@ -1,7 +1,6 @@
-
 import { supabase } from "@/integrations/supabase/client";
 
-export type EmailType = 'newsletter' | 'promotion' | 'announcement' | 'update';
+export type EmailType = 'newsletter' | 'promotion' | 'announcement' | 'update' | 'welcome' | 'confirmation' | 'notification' | 'followup';
 
 export interface EmailTemplate {
   id: string;
@@ -9,6 +8,7 @@ export interface EmailTemplate {
   subject: string;
   content: string;
   type: EmailType;
+  html?: string; // Added HTML field for storing generated templates
 }
 
 // Default templates for different email types
@@ -28,6 +28,22 @@ export const DEFAULT_TEMPLATES: Record<EmailType, { subject: string, content: st
   update: {
     subject: "PlataPay Product Update",
     content: "Dear [Recipient],\n\nWe've updated our PlataPay solution with new features you'll love:\n\n[Update details]\n\nLet us know if you have any questions.\n\nBest regards,\nThe InnovateHub Team"
+  },
+  welcome: {
+    subject: "Welcome to InnovateHub",
+    content: "Dear [Recipient],\n\nWelcome to InnovateHub! We're excited to have you join us.\n\n[Welcome message]\n\nBest regards,\nThe InnovateHub Team"
+  },
+  confirmation: {
+    subject: "Your Request Has Been Confirmed",
+    content: "Dear [Recipient],\n\nWe're confirming that your request has been received and processed.\n\n[Confirmation details]\n\nBest regards,\nThe InnovateHub Team"
+  },
+  notification: {
+    subject: "Important Notification from InnovateHub",
+    content: "Dear [Recipient],\n\nWe have an important notification for you.\n\n[Notification details]\n\nBest regards,\nThe InnovateHub Team"
+  },
+  followup: {
+    subject: "Following Up on Your Interest in InnovateHub",
+    content: "Dear [Recipient],\n\nWe're following up on your recent interest in our services.\n\n[Follow-up details]\n\nBest regards,\nThe InnovateHub Team"
   }
 };
 
@@ -65,6 +81,38 @@ export const getSubjectSuggestions = (type: EmailType) => {
         "Important Updates to Your PlataPay Services",
         "Product Update: New Features You'll Love",
         "Security Update: Keeping Your PlataPay Experience Safe"
+      ];
+    case 'welcome':
+      return [
+        "Welcome to InnovateHub",
+        "Join Our Community",
+        "Get Started with InnovateHub",
+        "InnovateHub: Your Digital Payment Solution",
+        "Welcome to the InnovateHub Family"
+      ];
+    case 'confirmation':
+      return [
+        "Your Request Has Been Confirmed",
+        "Thank You for Your Submission",
+        "Your Request is Complete",
+        "Your Request Has Been Processed",
+        "Your Request is Successful"
+      ];
+    case 'notification':
+      return [
+        "Important Notification from InnovateHub",
+        "Stay Informed",
+        "Important Update",
+        "New Announcement",
+        "Important Information"
+      ];
+    case 'followup':
+      return [
+        "Following Up on Your Interest in InnovateHub",
+        "Follow Up on Your Request",
+        "Follow Up on Your Interest",
+        "Follow Up on Your Inquiry",
+        "Follow Up on Your Enquiry"
       ];
     default:
       return [];
@@ -120,6 +168,50 @@ The update should:
 5. Provide resources for learning more (e.g., documentation, webinar)
 
 Use a helpful, clear tone that focuses on the practical benefits for users. The content should be about 250-300 words.`;
+
+    case 'welcome':
+      return `Create a welcome email for new users to InnovateHub.
+
+The email should:
+1. Start with a friendly greeting
+2. Introduce the company and its services
+3. Highlight the benefits of using InnovateHub
+4. Include a call to action to get started
+
+Use a warm and welcoming tone that builds trust with new users. The content should be about 150-200 words.`;
+
+    case 'confirmation':
+      return `Create a confirmation email for completed requests.
+
+The email should:
+1. Start with a friendly greeting
+2. Confirm that the request has been received and processed
+3. Include any relevant details about the request
+4. End with a call to action to follow up if needed
+
+Use a professional tone that builds trust with users. The content should be about 150-200 words.`;
+
+    case 'notification':
+      return `Create a notification email for important updates.
+
+The email should:
+1. Start with a friendly greeting
+2. Introduce the important update
+3. Include any relevant details about the update
+4. End with a call to action to learn more
+
+Use an excited and informative tone that builds trust with users. The content should be about 150-200 words.`;
+
+    case 'followup':
+      return `Create a follow-up email for inquiries.
+
+The email should:
+1. Start with a friendly greeting
+2. Follow up on the inquiry
+3. Include any relevant details about the inquiry
+4. End with a call to action to follow up if needed
+
+Use a professional tone that builds trust with users. The content should be about 150-200 words.`;
 
     default:
       return `Generate professional email content for InnovateHub, a technology company specializing in digital payment solutions including their flagship product PlataPay. The content should be engaging, informative, and include a clear call to action.`;
@@ -190,4 +282,117 @@ export const scheduleEmailCampaign = async (campaign: {
     console.error('Error scheduling email campaign:', error);
     return { success: false, error };
   }
+};
+
+// New function to generate an HTML email template
+export const generateEmailTemplate = async (
+  type: string,
+  content: {
+    subject?: string;
+    title?: string;
+    message?: string;
+    ctaText?: string;
+    ctaLink?: string;
+    brandName?: string;
+    brandColor?: string;
+    recipientName?: string;
+    additionalInfo?: string;
+    customFields?: Record<string, string>;
+  },
+  provider: string = 'gemini'
+): Promise<string> => {
+  try {
+    const { data, error } = await supabase.functions.invoke('generate-email-template', {
+      body: { type, content, provider }
+    });
+    
+    if (error) throw error;
+    
+    return data.template;
+  } catch (error) {
+    console.error('Error generating email template:', error);
+    throw error;
+  }
+};
+
+// New function to save an email template for reuse
+export const saveEmailTemplate = async (template: {
+  name: string;
+  type: string;
+  subject: string;
+  html: string;
+}): Promise<string> => {
+  try {
+    // For demo purposes, save to localStorage
+    // In a real implementation, this would save to the database
+    const savedTemplates = localStorage.getItem('innovateHubEmailTemplates');
+    const templates = savedTemplates ? JSON.parse(savedTemplates) : [];
+    
+    const newTemplate = {
+      id: Date.now().toString(),
+      ...template,
+      created_at: new Date().toISOString()
+    };
+    
+    templates.push(newTemplate);
+    localStorage.setItem('innovateHubEmailTemplates', JSON.stringify(templates));
+    
+    return newTemplate.id;
+  } catch (error) {
+    console.error('Error saving email template:', error);
+    throw error;
+  }
+};
+
+// New function to get a saved template
+export const getEmailTemplate = async (id: string): Promise<any> => {
+  try {
+    // For demo purposes, retrieve from localStorage
+    // In a real implementation, this would fetch from the database
+    const savedTemplates = localStorage.getItem('innovateHubEmailTemplates');
+    if (!savedTemplates) return null;
+    
+    const templates = JSON.parse(savedTemplates);
+    return templates.find((template: any) => template.id === id) || null;
+  } catch (error) {
+    console.error('Error getting email template:', error);
+    throw error;
+  }
+};
+
+// New function to personalize an email template with recipient data
+export const personalizeEmailTemplate = (
+  template: string,
+  recipientData: {
+    name?: string;
+    email?: string;
+    company?: string;
+    [key: string]: any;
+  }
+): string => {
+  let personalizedTemplate = template;
+  
+  // Replace standard placeholders
+  if (recipientData.name) {
+    personalizedTemplate = personalizedTemplate.replace(/\[Recipient\]/g, recipientData.name);
+    personalizedTemplate = personalizedTemplate.replace(/\[Name\]/g, recipientData.name);
+  }
+  
+  if (recipientData.email) {
+    personalizedTemplate = personalizedTemplate.replace(/\[Email\]/g, recipientData.email);
+  }
+  
+  if (recipientData.company) {
+    personalizedTemplate = personalizedTemplate.replace(/\[Company\]/g, recipientData.company);
+  }
+  
+  // Replace any other custom placeholders based on the data object
+  for (const [key, value] of Object.entries(recipientData)) {
+    if (typeof value === 'string') {
+      const placeholder = new RegExp(`\\[${key}\\]`, 'gi');
+      personalizedTemplate = personalizedTemplate.replace(placeholder, value);
+    }
+  }
+  
+  return personalizedTemplate;
 };

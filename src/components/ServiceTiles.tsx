@@ -30,7 +30,7 @@ const ServiceTiles = () => {
   const services: ServiceTile[] = [
     {
       id: 1,
-      title: "PlataPay",
+      title: "Fintech Solutions",
       description: "Digital Wallet and Financial Services Platform",
       icon: "/lovable-uploads/97f0f4de-a8d2-4527-8374-3152c6e866c4.png", // Payment/digital wallet device image
       features: [
@@ -41,7 +41,7 @@ const ServiceTiles = () => {
         "QR Payments"
       ],
       color: "bg-gradient-to-br from-innovate-500 to-innovate-700",
-      ctaText: "Learn More about PlataPay",
+      ctaText: "Learn More about Fintech Solutions",
       ctaLink: "/platapay",
       highlight: true,
       isInternalLink: true,

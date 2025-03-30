@@ -38,7 +38,7 @@ const PlatapayServices = () => {
     {
       icon: "/lovable-uploads/0e79bef6-ea26-4da9-8c17-6bb4bacc118a.png",
       title: "Agent Network",
-      description: "Become a PlataPay agent and earn commissions by offering financial services in your community."
+      description: "Become a financial agent and earn commissions by offering financial services in your community."
     }
   ];
 
@@ -53,7 +53,7 @@ const PlatapayServices = () => {
               <div className="absolute inset-0 bg-white/30 rounded-full filter blur-sm transition-all duration-300"></div>
               <img 
                 src="/lovable-uploads/a8af37d4-1b48-41f9-bd00-008fbfdb60a8.png" 
-                alt="PlataPay Logo" 
+                alt="Fintech Solutions Logo" 
                 className="h-14 w-14 relative z-10"
                 style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.3))' }}
               />
@@ -61,7 +61,7 @@ const PlatapayServices = () => {
             <h2 className="text-3xl md:text-4xl font-bold">Our Digital Finance Services</h2>
           </div>
           <p className="text-gray-600 max-w-3xl mx-auto">
-            PlataPay offers a comprehensive suite of financial services designed to make everyday transactions 
+            Our fintech platform offers a comprehensive suite of financial services designed to make everyday transactions 
             easier, faster, and more secure for individuals and businesses.
           </p>
         </div>
@@ -91,7 +91,7 @@ const PlatapayServices = () => {
         <div className="mt-16 text-center fade-up">
           <div className="p-6 bg-innovate-50 rounded-lg max-w-3xl mx-auto">
             <h3 className="text-xl font-semibold mb-3">Demo Walkthrough</h3>
-            <p className="text-gray-600 mb-6">Watch a quick demo of how PlataPay works for customers and agents</p>
+            <p className="text-gray-600 mb-6">Watch a quick demo of how our fintech platform works for customers and agents</p>
             
             <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-md">
               <div className="bg-gray-200 w-full h-full flex items-center justify-center">
@@ -100,7 +100,7 @@ const PlatapayServices = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <p className="mt-4 text-gray-500">PlataPay Demo Video</p>
+                  <p className="mt-4 text-gray-500">Fintech Solutions Demo Video</p>
                 </div>
               </div>
             </div>

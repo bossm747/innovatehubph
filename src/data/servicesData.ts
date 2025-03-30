@@ -18,7 +18,7 @@ export interface Service {
 export const servicesData: Service[] = [
   {
     id: "platapay",
-    title: "PlataPay",
+    title: "Fintech Solutions",
     description: "Digital wallet and payment solutions that empower communities and create income opportunities for agents.",
     icon: "/lovable-uploads/97f0f4de-a8d2-4527-8374-3152c6e866c4.png",
     slug: "platapay",

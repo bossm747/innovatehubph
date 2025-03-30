@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
@@ -58,7 +57,7 @@ const Navbar = () => {
                         <ListItem href="/services" title="All Services">
                           Overview of our complete service offerings
                         </ListItem>
-                        <ListItem href="/platapay" title="PlataPay">
+                        <ListItem href="/platapay" title="Fintech Solutions">
                           Digital wallet and financial solutions
                         </ListItem>
                         <ListItem href="/digital-customizations" title="Digital Customizations">
@@ -161,7 +160,7 @@ const Navbar = () => {
                   </li>
                   <li>
                     <Link to="/platapay" className="block py-1" onClick={closeMobileMenu}>
-                      PlataPay
+                      Fintech Solutions
                     </Link>
                   </li>
                   <li>

@@ -34,7 +34,7 @@ const PlataPay = () => {
             <div className="flex items-center space-x-2 mb-3">
               <img 
                 src="/lovable-uploads/e093393f-ce20-401d-be26-6d54dda3ace1.png" 
-                alt="PlataPay Logo"
+                alt="Fintech Solutions Logo"
                 className="h-8 w-8"
                 loading="eager"
               />
@@ -44,12 +44,12 @@ const PlataPay = () => {
             </div>
             
             <h2 className="text-2xl md:text-3xl font-bold mb-3 text-gray-800">
-              PlataPay: Digital Financial Solutions
+              Fintech Solutions: Digital Financial Services
             </h2>
             
             <p className="text-base md:text-lg text-gray-600 mb-4">
               Empowering micropreneurs through accessible digital finance tools. 
-              PlataPay offers a secure and income-generating platform for Filipino communities.
+              Our fintech platform offers a secure and income-generating platform for Filipino communities.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
@@ -95,7 +95,7 @@ const PlataPay = () => {
               
               <Button variant="outline" className="border-innovate-200 text-innovate-700 hover:bg-innovate-50" asChild>
                 <a href="https://platapay.ph" target="_blank" rel="noopener noreferrer">
-                  Visit PlataPay
+                  Visit Fintech Portal
                 </a>
               </Button>
             </div>
@@ -108,7 +108,7 @@ const PlataPay = () => {
               <div className="rounded-xl overflow-hidden shadow-2xl relative">
                 <img 
                   src="/lovable-uploads/91dc1ed9-e379-4449-9c47-d3194ea53cfd.png" 
-                  alt="PlataPay Digital Payment Solution"
+                  alt="Fintech Digital Payment Solution"
                   className="w-full h-auto rounded-xl"
                   loading="eager"
                 />

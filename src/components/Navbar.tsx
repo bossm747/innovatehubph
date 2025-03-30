@@ -42,20 +42,36 @@ const Navbar = () => {
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
+                    <Link to="/" className={navigationMenuTriggerStyle()}>
+                      Home
+                    </Link>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <Link to="/about" className={navigationMenuTriggerStyle()}>
+                      About
+                    </Link>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
                     <NavigationMenuTrigger>Services</NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                        <ListItem href="/services/digital-customizations" title="Digital Customizations">
-                          Crafting bespoke digital solutions for unique business needs.
+                        <ListItem href="/services" title="All Services">
+                          Overview of our complete service offerings
                         </ListItem>
-                        <ListItem href="/services/ecommerce" title="E-commerce Solutions">
-                          Building and scaling online retail experiences.
+                        <ListItem href="/platapay" title="PlataPay">
+                          Digital wallet and financial solutions
                         </ListItem>
-                        <ListItem href="/services/ai-solutions" title="AI Solutions">
-                          Leveraging artificial intelligence to drive innovation.
+                        <ListItem href="/digital-customizations" title="Digital Customizations">
+                          Crafting bespoke digital solutions for unique business needs
                         </ListItem>
-                        <ListItem href="/services/global-expansion" title="Global Expansion">
-                          Strategies for businesses venturing into new markets.
+                        <ListItem href="/ecommerce" title="E-commerce Solutions">
+                          Building and scaling online retail experiences
+                        </ListItem>
+                        <ListItem href="/ai-solutions" title="AI Solutions">
+                          Leveraging artificial intelligence to drive innovation
+                        </ListItem>
+                        <ListItem href="/global-expansion" title="Global Expansion">
+                          Strategies for businesses venturing into new markets
                         </ListItem>
                       </ul>
                     </NavigationMenuContent>
@@ -64,6 +80,9 @@ const Navbar = () => {
                     <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                        <ListItem href="/team" title="Our Team">
+                          Meet the dedicated professionals behind InnovateHub
+                        </ListItem>
                         <ListItem href="/blog" title="Blog">
                           News and articles from our team
                         </ListItem>
@@ -81,11 +100,6 @@ const Navbar = () => {
                         </ListItem>
                       </ul>
                     </NavigationMenuContent>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <Link to="/about" className={navigationMenuTriggerStyle()}>
-                      About
-                    </Link>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                     <Link to="/contact" className={navigationMenuTriggerStyle()}>
@@ -137,14 +151,44 @@ const Navbar = () => {
                   About
                 </Link>
               </li>
-              <li>
-                <Link to="/services" className="block py-2" onClick={closeMobileMenu}>
-                  Services
-                </Link>
+              <li className="py-2">
+                <p className="font-medium mb-2">Services</p>
+                <ul className="pl-4 space-y-2">
+                  <li>
+                    <Link to="/services" className="block py-1" onClick={closeMobileMenu}>
+                      All Services
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/platapay" className="block py-1" onClick={closeMobileMenu}>
+                      PlataPay
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/digital-customizations" className="block py-1" onClick={closeMobileMenu}>
+                      Digital Customizations
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/ecommerce" className="block py-1" onClick={closeMobileMenu}>
+                      E-commerce Solutions
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/ai-solutions" className="block py-1" onClick={closeMobileMenu}>
+                      AI Solutions
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/global-expansion" className="block py-1" onClick={closeMobileMenu}>
+                      Global Expansion
+                    </Link>
+                  </li>
+                </ul>
               </li>
               <li>
-                <Link to="/contact" className="block py-2" onClick={closeMobileMenu}>
-                  Contact
+                <Link to="/team" className="block py-2" onClick={closeMobileMenu}>
+                  Our Team
                 </Link>
               </li>
               <li>
@@ -157,19 +201,29 @@ const Navbar = () => {
                   Clients
                 </Link>
               </li>
-              <li>
-                <Link to="/ai-tools" className="block py-2" onClick={closeMobileMenu}>
-                  AI Tools
-                </Link>
+              <li className="py-2">
+                <p className="font-medium mb-2">AI Resources</p>
+                <ul className="pl-4 space-y-2">
+                  <li>
+                    <Link to="/ai-tools" className="block py-1" onClick={closeMobileMenu}>
+                      AI Tools
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/ai-image-processing" className="block py-1" onClick={closeMobileMenu}>
+                      AI Image Processing
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/ai-apps-management" className="block py-1" onClick={closeMobileMenu}>
+                      AI Apps Management
+                    </Link>
+                  </li>
+                </ul>
               </li>
               <li>
-                <Link to="/ai-image-processing" className="block py-2" onClick={closeMobileMenu}>
-                  AI Image Processing
-                </Link>
-              </li>
-              <li>
-                <Link to="/ai-apps-management" className="block py-2" onClick={closeMobileMenu}>
-                  AI Apps Management
+                <Link to="/contact" className="block py-2" onClick={closeMobileMenu}>
+                  Contact
                 </Link>
               </li>
             </ul>

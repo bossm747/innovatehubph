@@ -1,5 +1,5 @@
 
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import ServicesPage from './pages/ServicesPage';
@@ -21,35 +21,33 @@ import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Public routes */}
-        <Route path="/" element={<HomePage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/services" element={<ServicesPage />} />
-        <Route path="/platapay" element={<PlatapayPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        
-        {/* Admin routes */}
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<Navigate to="/admin/dashboard" replace />} />
-          <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="content" element={<AdminContentPage />} />
-          <Route path="navigation" element={<AdminNavigationPage />} />
-          <Route path="design" element={<AdminDesignPage />} />
-          <Route path="database" element={<AdminDatabasePage />} />
-          <Route path="users" element={<AdminUsersPage />} />
-          <Route path="settings" element={<AdminSettingsPage />} />
-          <Route path="email" element={<AdminEmailPage />} />
-          <Route path="ai-tools" element={<AdminAIToolsPage />} />
-          <Route path="ai-management" element={<AdminAIManagementPage />} />
-          <Route path="payments" element={<AdminPaymentsPage />} />
-        </Route>
-        
-        {/* 404 route */}
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      {/* Public routes */}
+      <Route path="/" element={<HomePage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/services" element={<ServicesPage />} />
+      <Route path="/platapay" element={<PlatapayPage />} />
+      <Route path="/contact" element={<ContactPage />} />
+      
+      {/* Admin routes */}
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<Navigate to="/admin/dashboard" replace />} />
+        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="content" element={<AdminContentPage />} />
+        <Route path="navigation" element={<AdminNavigationPage />} />
+        <Route path="design" element={<AdminDesignPage />} />
+        <Route path="database" element={<AdminDatabasePage />} />
+        <Route path="users" element={<AdminUsersPage />} />
+        <Route path="settings" element={<AdminSettingsPage />} />
+        <Route path="email" element={<AdminEmailPage />} />
+        <Route path="ai-tools" element={<AdminAIToolsPage />} />
+        <Route path="ai-management" element={<AdminAIManagementPage />} />
+        <Route path="payments" element={<AdminPaymentsPage />} />
+      </Route>
+      
+      {/* 404 route */}
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   );
 }
 

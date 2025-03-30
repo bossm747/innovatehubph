@@ -11,7 +11,7 @@ interface ServiceCard {
 const FintechServicesShowcase = () => {
   const services: ServiceCard[] = [
     {
-      icon: "/lovable-uploads/60c28117-5e6a-45ad-ae8f-38d4c7c0240f.png",
+      icon: "/lovable-uploads/543761ed-5912-49d7-b9c8-bd42d3ae0167.png",
       title: "Digital Wallet",
       description: "Secure mobile wallet for sending money, paying bills, and managing funds with just a few taps."
     },
@@ -52,8 +52,8 @@ const FintechServicesShowcase = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-100/40 to-blue-300/20 rounded-full blur-md transition-all duration-300 scale-110"></div>
               <div className="absolute inset-0 bg-white/30 rounded-full filter blur-sm transition-all duration-300"></div>
               <img 
-                src="/lovable-uploads/a8af37d4-1b48-41f9-bd00-008fbfdb60a8.png" 
-                alt="Fintech Solutions Logo" 
+                src="/lovable-uploads/9b23899d-8537-4e7c-996b-5fdc791cbde2.png" 
+                alt="PlataPay Logo" 
                 className="h-14 w-14 relative z-10"
                 style={{ filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.3))' }}
               />

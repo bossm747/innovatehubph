@@ -107,12 +107,16 @@ const FintechSolutions = () => {
               <div className="absolute -bottom-3 -right-3 w-24 h-24 bg-amber-100 rounded-lg -z-10"></div>
               <div className="rounded-xl overflow-hidden shadow-2xl relative">
                 <img 
-                  src="/lovable-uploads/91dc1ed9-e379-4449-9c47-d3194ea53cfd.png" 
+                  src="/lovable-uploads/cd9619d5-79ce-4e9a-8c8a-293137651a09.png" 
                   alt="Fintech Digital Payment Solution"
                   className="w-full h-auto rounded-xl"
                   loading="eager"
+                  style={{ 
+                    filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.2))',
+                    mixBlendMode: 'multiply'
+                  }}
                 />
-                <div className="absolute inset-0 bg-transparent"></div>
+                {/* Removed background div and used styling on the image itself */}
               </div>
             </div>
           </div>

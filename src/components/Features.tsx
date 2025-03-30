@@ -1,4 +1,3 @@
-
 import { cn } from "@/lib/utils";
 
 interface FeatureProps {
@@ -62,7 +61,7 @@ const Features = () => {
       description: "Scalable cloud solutions for global reach and seamless operations across borders."
     },
     {
-      icon: "/lovable-uploads/aa140611-8402-49e4-856c-760e84dd4a61.png",
+      icon: "/lovable-uploads/3082368f-668d-4e67-889f-a21a945e8cce.png",
       title: "Cybersecurity",
       description: "Comprehensive cybersecurity solutions to protect your business from digital threats."
     }
@@ -70,7 +69,6 @@ const Features = () => {
 
   return (
     <section className="py-20 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
-      {/* Circuit board decorative elements */}
       <div className="absolute top-0 right-0 -z-10">
         <img 
           src="/lovable-uploads/3f2bfe12-61d3-47da-b6a5-c633e9bb4d1a.png" 
@@ -86,7 +84,6 @@ const Features = () => {
         />
       </div>
       
-      {/* Network node icon */}
       <div className="absolute top-1/4 right-1/4 -z-10">
         <img 
           src="/lovable-uploads/b84a4b7b-96c8-4b01-9281-38b31f17fa75.png" 
@@ -112,7 +109,6 @@ const Features = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 relative">
-          {/* Circuit diagram in background */}
           <div className="absolute inset-0 -z-10 flex justify-center items-center opacity-5">
             <img 
               src="/lovable-uploads/c3b4d9e4-1983-4f74-845a-cdd10db3d092.png" 
@@ -131,7 +127,6 @@ const Features = () => {
             />
           ))}
           
-          {/* Toggle switches decoration */}
           <div className="absolute -bottom-4 right-4 -z-10">
             <img 
               src="/lovable-uploads/aaef245b-56e2-437c-81d7-d753e215eb60.png" 

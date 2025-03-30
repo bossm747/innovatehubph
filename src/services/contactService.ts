@@ -64,7 +64,15 @@ export const getContactSubmissions = async (): Promise<ContactSubmission[]> => {
       return [];
     }
     
-    return data as ContactSubmission[] || [];
+    return (data || []).map(item => ({
+      name: item.name,
+      email: item.email,
+      company: item.company,
+      phone: item.phone,
+      message: item.message,
+      created_at: item.created_at,
+      source: item.source || undefined
+    })) as ContactSubmission[];
   } catch (error) {
     console.error('Contact service error:', error);
     return [];

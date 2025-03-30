@@ -28,6 +28,7 @@ import AIToolsPage from '@/pages/AIToolsPage';
 import AIImageProcessingPage from '@/pages/AIImageProcessingPage';
 import AIAppsManagementPage from '@/pages/AIAppsManagementPage';
 import FileUploadPage from '@/pages/FileUploadPage';
+import PartnersPage from '@/pages/PartnersPage';
 
 // Create a query client
 const queryClient = new QueryClient();
@@ -61,6 +62,7 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/clients" element={<ClientsPage />} />
+        <Route path="/partners" element={<PartnersPage />} />
         <Route path="/facebook" element={<FacebookPage />} />
         <Route path="/inquiry" element={<InquiryPage />} />
         <Route path="/fileupload" element={<FileUploadPage />} />

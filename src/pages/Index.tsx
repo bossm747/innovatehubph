@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
@@ -13,6 +14,7 @@ import TeamPreviewSection from '@/components/home/TeamPreviewSection';
 import CTASection from '@/components/home/CTASection';
 import ClientShowcaseSection from '@/components/home/ClientShowcaseSection';
 import FeaturedVideoSection from '@/components/home/FeaturedVideoSection';
+import PartnersSection from '@/components/home/PartnersSection';
 import { Helmet } from 'react-helmet';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -99,6 +101,9 @@ const Index = () => {
         
         {/* Service Tiles Section */}
         <ServiceTiles />
+        
+        {/* Partners Section */}
+        <PartnersSection />
         
         {/* Client Showcase */}
         <ClientShowcaseSection />

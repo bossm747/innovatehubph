@@ -66,7 +66,7 @@ export const servicesData: Service[] = [
     id: "ecommerce",
     title: "E-Commerce Development",
     description: "Comprehensive online store solutions that help businesses sell products and services effectively.",
-    icon: "/lovable-uploads/d7a51504-2997-48f7-9e8a-32738ecc513d.png",
+    icon: "/lovable-uploads/e45ba6f6-0256-452d-a877-fb6a9c868d57.png",
     slug: "ecommerce",
     features: [
       {
@@ -89,7 +89,7 @@ export const servicesData: Service[] = [
     id: "ai-solutions",
     title: "AI Solutions",
     description: "Cutting-edge artificial intelligence technologies to automate processes and gain competitive advantages.",
-    icon: "/lovable-uploads/e45ba6f6-0256-452d-a877-fb6a9c868d57.png",
+    icon: "/lovable-uploads/d7a51504-2997-48f7-9e8a-32738ecc513d.png",
     slug: "ai-solutions",
     features: [
       {

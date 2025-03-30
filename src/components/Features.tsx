@@ -47,12 +47,12 @@ const Features = () => {
       description: "Comprehensive solutions to transform your business operations into digital processes."
     },
     {
-      icon: "/lovable-uploads/d7a51504-2997-48f7-9e8a-32738ecc513d.png",
+      icon: "/lovable-uploads/e45ba6f6-0256-452d-a877-fb6a9c868d57.png",
       title: "E-Commerce Solutions",
       description: "End-to-end e-commerce platforms with integrated payment and order management systems."
     },
     {
-      icon: "/lovable-uploads/e45ba6f6-0256-452d-a877-fb6a9c868d57.png",
+      icon: "/lovable-uploads/d7a51504-2997-48f7-9e8a-32738ecc513d.png",
       title: "AI & Machine Learning",
       description: "Cutting-edge AI solutions that help you leverage data for intelligent decision-making."
     },

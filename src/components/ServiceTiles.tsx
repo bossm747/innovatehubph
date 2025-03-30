@@ -68,7 +68,7 @@ const ServiceTiles = () => {
       id: 3,
       title: "E-Commerce Development",
       description: "Complete Online Store Solutions",
-      icon: "/lovable-uploads/d7a51504-2997-48f7-9e8a-32738ecc513d.png", // POS/transaction device image
+      icon: "/lovable-uploads/e45ba6f6-0256-452d-a877-fb6a9c868d57.png", // Exchanged with AI Solutions icon
       features: [
         "Online Stores",
         "Payment Integration",
@@ -85,7 +85,7 @@ const ServiceTiles = () => {
       id: 4,
       title: "AI Solutions",
       description: "Intelligent Automation for Business Growth",
-      icon: "/lovable-uploads/e45ba6f6-0256-452d-a877-fb6a9c868d57.png", // Media player/AI interface image
+      icon: "/lovable-uploads/d7a51504-2997-48f7-9e8a-32738ecc513d.png", // Exchanged with E-Commerce icon
       features: [
         "Chatbots",
         "Predictive Analytics",

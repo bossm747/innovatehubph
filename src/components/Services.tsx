@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import ServiceCard from './services/ServiceCard';
+import SimpleServiceCard from './services/SimpleServiceCard';
 import ServiceDetail from './services/ServiceDetail';
 import { servicesData } from '@/data/servicesData';
 
@@ -25,7 +25,7 @@ const Services = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-5 space-y-4">
             {services.map((service) => (
-              <ServiceCard
+              <SimpleServiceCard
                 key={service.id}
                 title={service.title}
                 description={service.description}

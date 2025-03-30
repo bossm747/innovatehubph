@@ -71,15 +71,22 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
           />
         </div>
         
-        <ul className="mb-8 space-y-2">
+        <ul className="mb-8 space-y-4">
           {service.features.map((feature, i) => (
-            <li key={i} className="flex items-start">
-              <span className="flex-shrink-0 w-5 h-5 rounded-full bg-innovate-100 flex items-center justify-center mr-2 mt-0.5">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-innovate-600" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-              </span>
-              <span className="text-gray-700">{feature.title}</span>
+            <li key={i} className="space-y-1">
+              <div className="flex items-start">
+                <span className="flex-shrink-0 w-5 h-5 rounded-full bg-innovate-100 flex items-center justify-center mr-2 mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-innovate-600" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </span>
+                <span className="text-gray-800 font-medium">{feature.title}</span>
+              </div>
+              {feature.description && (
+                <p className="text-gray-600 text-sm ml-7">
+                  {feature.description}
+                </p>
+              )}
             </li>
           ))}
         </ul>

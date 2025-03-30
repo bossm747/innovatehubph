@@ -22,13 +22,12 @@ const Hero = () => {
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-white animate-fade-in" style={{animationDelay: '200ms'}}>
               Customized Solutions for a <span className="text-blue-300">Connected World</span>
             </h1>
-            <div className="flex items-baseline text-sm md:text-base text-blue-100 mb-1 animate-fade-in" style={{animationDelay: '300ms'}}>
-              <span>InnovateHub delivers cutting-edge </span>
-              <HeroTypingText texts={typingTexts} />
-              <span> solutions</span>
+            <div className="text-sm md:text-base text-blue-100 mb-1 animate-fade-in" style={{animationDelay: '300ms'}}>
+              InnovateHub delivers cutting-edge <HeroTypingText texts={typingTexts} className="text-blue-300 font-semibold" /> solutions
+              designed to transform your business.
             </div>
             <p className="text-sm md:text-base text-blue-100 mb-3 animate-fade-in" style={{animationDelay: '400ms'}}>
-              designed to transform your business operations and drive growth in the digital economy.
+              Drive growth in the digital economy with our expertise.
             </p>
             
             <HeroButtons />

@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface HeroTypingTextProps {
   texts: string[];
@@ -7,54 +7,41 @@ interface HeroTypingTextProps {
 }
 
 const HeroTypingText = ({ texts, className = "" }: HeroTypingTextProps) => {
-  const textRef = useRef<HTMLSpanElement>(null);
-
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [fadeState, setFadeState] = useState<'in' | 'out'>('in');
+  
   useEffect(() => {
-    let currentIndex = 0;
-    let currentText = "";
-    let isDeleting = false;
-    let typingSpeed = 100;
-
     // Find the longest text to determine container width
     const maxLength = Math.max(...texts.map(text => text.length));
     
-    const type = () => {
-      const fullText = texts[currentIndex];
-      
-      if (isDeleting) {
-        currentText = fullText.substring(0, currentText.length - 1);
-        typingSpeed = 50; // Faster when deleting
-      } else {
-        currentText = fullText.substring(0, currentText.length + 1);
-        typingSpeed = 100; // Normal speed when typing
-      }
-      
-      if (textRef.current) {
-        textRef.current.textContent = currentText;
-      }
-      
-      if (!isDeleting && currentText === fullText) {
-        typingSpeed = 1500; // Wait before deleting
-        isDeleting = true;
-      } else if (isDeleting && currentText === "") {
-        isDeleting = false;
-        currentIndex = (currentIndex + 1) % texts.length;
-        typingSpeed = 500; // Wait before typing new text
-      }
-      
-      setTimeout(type, typingSpeed);
-    };
+    const intervalDuration = 3000; // Total time each word is displayed
+    const fadeTransition = 400; // Fade transition time
     
-    type();
+    const interval = setInterval(() => {
+      if (fadeState === 'in') {
+        setFadeState('out');
+        
+        // Schedule the index change after fade out completes
+        setTimeout(() => {
+          setCurrentIndex((prevIndex) => (prevIndex + 1) % texts.length);
+          setFadeState('in');
+        }, fadeTransition);
+      }
+    }, intervalDuration);
     
-    return () => {
-      // Cleanup
-    };
-  }, [texts]);
-
+    return () => clearInterval(interval);
+  }, [texts, fadeState]);
+  
+  // Determine all the possible widths to find the maximum
+  const allWidths = texts.map(text => text.length * 10); // Approximation
+  const maxWidth = Math.max(...allWidths);
+  
   return (
-    <span className={`inline-block typing-text ${className}`} style={{ minWidth: "170px" }} ref={textRef}>
-      {texts[0]}
+    <span 
+      className={`word-transition ${className} ${fadeState === 'in' ? 'fade-in' : 'fade-out'}`} 
+      style={{ minWidth: `${maxWidth}px` }}
+    >
+      {texts[currentIndex]}
     </span>
   );
 };

@@ -194,6 +194,23 @@ section {
   box-sizing: border-box;
 }
 
+.word-transition {
+  position: relative;
+  display: inline-block;
+  padding: 0 4px;
+  transition: opacity 0.4s ease-in-out;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.word-transition.fade-in {
+  opacity: 1;
+}
+
+.word-transition.fade-out {
+  opacity: 0;
+}
+
 .mobile-device {
   position: relative;
   transition: transform 0.5s ease-in-out;

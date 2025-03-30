@@ -47,46 +47,19 @@ const PlatapayAgentMap = () => {
           <div className="lg:col-span-2 fade-up">
             <Card className="h-full overflow-hidden border-none shadow-lg">
               <div className="relative h-full min-h-[400px] bg-gray-100 flex items-center justify-center">
-                <div className="absolute inset-0 bg-philippines-map bg-no-repeat bg-contain bg-center opacity-10"></div>
+                {/* Replace the old SVG map with the new Philippines map image */}
+                <img 
+                  src="/lovable-uploads/dc4ee6f7-4310-43aa-b6d7-9b430abe6306.png" 
+                  alt="Philippines Network Map" 
+                  className="w-full h-full object-contain" 
+                />
                 
-                {/* This would be replaced with an actual map integration */}
-                <div className="relative z-10 w-full h-full flex items-center justify-center">
-                  <div className="w-[70%] h-[70%] relative">
-                    {/* Simplified Philippines map representation */}
-                    <svg viewBox="0 0 600 400" className="w-full h-full">
-                      {/* Simplified Philippines map outline */}
-                      <path d="M150,50 C200,30 250,50 280,30 C310,10 350,20 380,40 C410,60 450,50 480,70 C510,90 520,130 500,160 C480,190 500,230 480,260 C460,290 420,310 390,330 C360,350 320,340 280,350 C240,360 200,350 170,330 C140,310 120,270 110,230 C100,190 120,150 130,110 C140,70 130,60 150,50 Z" 
-                        fill="#e6f7ff" stroke="#3182ce" strokeWidth="2" />
-                      
-                      {/* Agent cluster markers */}
-                      <circle cx="300" cy="100" r="15" fill="#3182ce" opacity="0.7" />
-                      <circle cx="250" cy="150" r="25" fill="#3182ce" opacity="0.7" />
-                      <circle cx="400" cy="150" r="18" fill="#3182ce" opacity="0.7" />
-                      <circle cx="200" cy="200" r="20" fill="#3182ce" opacity="0.7" />
-                      <circle cx="350" cy="200" r="15" fill="#3182ce" opacity="0.7" />
-                      <circle cx="300" cy="250" r="30" fill="#3182ce" opacity="0.7" />
-                      <circle cx="250" cy="300" r="15" fill="#3182ce" opacity="0.7" />
-                      <circle cx="400" cy="300" r="20" fill="#3182ce" opacity="0.7" />
-                      
-                      {/* Region labels */}
-                      <text x="280" y="80" fontFamily="Arial" fontSize="12" fill="#1a365d">Luzon</text>
-                      <text x="300" y="200" fontFamily="Arial" fontSize="12" fill="#1a365d">Visayas</text>
-                      <text x="330" y="320" fontFamily="Arial" fontSize="12" fill="#1a365d">Mindanao</text>
-                      
-                      {/* International connection lines */}
-                      <line x1="480" y1="50" x2="550" y2="20" stroke="#3182ce" strokeWidth="1" strokeDasharray="5,5" />
-                      <text x="520" y="15" fontFamily="Arial" fontSize="10" fill="#1a365d">Dubai</text>
-                      
-                      <line x1="490" y1="80" x2="560" y2="60" stroke="#3182ce" strokeWidth="1" strokeDasharray="5,5" />
-                      <text x="530" y="55" fontFamily="Arial" fontSize="10" fill="#1a365d">Singapore</text>
-                    </svg>
-                  </div>
-                </div>
-                
-                {/* Interactive dots that could be added with a proper map library */}
+                {/* Interactive dots overlaying the map */}
                 <div className="absolute top-1/4 left-1/3 w-4 h-4 bg-innovate-600 rounded-full animate-ping"></div>
-                <div className="absolute top-1/2 left-1/2 w-5 h-5 bg-innovate-600 rounded-full animate-ping" style={{ animationDelay: "1s" }}></div>
+                <div className="absolute top-1/2 left-1/2 w-5 h-5 bg-purple-600 rounded-full animate-ping" style={{ animationDelay: "1s" }}></div>
                 <div className="absolute bottom-1/3 right-1/3 w-4 h-4 bg-innovate-600 rounded-full animate-ping" style={{ animationDelay: "0.5s" }}></div>
+                <div className="absolute top-1/5 right-2/5 w-4 h-4 bg-cyan-400 rounded-full animate-ping" style={{ animationDelay: "1.5s" }}></div>
+                <div className="absolute bottom-1/4 left-1/4 w-4 h-4 bg-purple-600 rounded-full animate-ping" style={{ animationDelay: "2s" }}></div>
               </div>
             </Card>
           </div>

@@ -12,7 +12,7 @@ import {
   TableRow 
 } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { FileIcon, FilePdf, FileText, FileImage, FileVideo, FileArchive, File, Trash2, Download, Eye } from 'lucide-react';
+import { FileIcon, File as FileGeneral, FileText, FileImage, FileVideo, FileArchive, File, Trash2, Download, Eye } from 'lucide-react';
 import { formatDistance } from 'date-fns';
 
 interface FileListProps {
@@ -99,7 +99,7 @@ const FileList: React.FC<FileListProps> = ({ files, isLoading, onFileDeleted }) 
     
     switch (extension) {
       case 'pdf':
-        return <FilePdf className="h-5 w-5 text-red-500" />;
+        return <FileText className="h-5 w-5 text-red-500" />;
       case 'doc':
       case 'docx':
       case 'txt':

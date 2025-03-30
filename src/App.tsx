@@ -43,6 +43,7 @@ function App() {
         <Route path="ai-tools" element={<AdminAIToolsPage />} />
         <Route path="ai-management" element={<AdminAIManagementPage />} />
         <Route path="payments" element={<AdminPaymentsPage />} />
+        <Route path="portal" element={<Navigate to="/admin/dashboard" replace />} />
       </Route>
       
       {/* 404 route */}

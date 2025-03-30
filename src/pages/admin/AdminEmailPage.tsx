@@ -53,7 +53,7 @@ const AdminEmailPage: React.FC = () => {
         
         <TabsContent value="tools" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <MarketingCopyGenerator onCopyGenerated={setGeneratedContent} />
+            <MarketingCopyGenerator onCopyGenerated={(content: string) => setGeneratedContent(content)} />
             <EmailTranslationTool />
           </div>
         </TabsContent>

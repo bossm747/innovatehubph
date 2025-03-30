@@ -1,6 +1,7 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface MobileNavigationProps {
   isOpen: boolean;
@@ -8,7 +9,21 @@ interface MobileNavigationProps {
 }
 
 const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
+  const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
+
   if (!isOpen) return null;
+
+  const toggleSubmenu = (menuName: string) => {
+    if (expandedMenus.includes(menuName)) {
+      setExpandedMenus(expandedMenus.filter(item => item !== menuName));
+    } else {
+      setExpandedMenus([...expandedMenus, menuName]);
+    }
+  };
+
+  const isSubmenuExpanded = (menuName: string) => {
+    return expandedMenus.includes(menuName);
+  };
 
   return (
     <div className="fixed left-0 top-14 z-50 w-full h-[calc(100vh-3.5rem)] bg-gradient-to-b from-blue-900/95 to-purple-900/95 backdrop-blur md:hidden overflow-y-auto">
@@ -25,39 +40,51 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
             </Link>
           </li>
           <li className="py-3">
-            <p className="font-medium mb-3 px-4 text-purple-300">Services</p>
-            <ul className="pl-4 space-y-3">
-              <li>
-                <Link to="/services" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
-                  All Services
-                </Link>
-              </li>
-              <li>
-                <Link to="/fintech-solutions" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
-                  Fintech Solutions
-                </Link>
-              </li>
-              <li>
-                <Link to="/digital-customizations" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
-                  Digital Customizations
-                </Link>
-              </li>
-              <li>
-                <Link to="/ecommerce" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
-                  E-commerce Solutions
-                </Link>
-              </li>
-              <li>
-                <Link to="/ai-solutions" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
-                  AI Solutions
-                </Link>
-              </li>
-              <li>
-                <Link to="/global-expansion" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
-                  Global Expansion
-                </Link>
-              </li>
-            </ul>
+            <button 
+              onClick={() => toggleSubmenu('services')} 
+              className="flex items-center justify-between w-full px-4 py-2 text-white hover:bg-white/10 rounded-md transition-all duration-200"
+            >
+              <span className="font-medium">Services</span>
+              {isSubmenuExpanded('services') ? (
+                <ChevronUp className="h-4 w-4 text-white/70" />
+              ) : (
+                <ChevronDown className="h-4 w-4 text-white/70" />
+              )}
+            </button>
+            {isSubmenuExpanded('services') && (
+              <ul className="pl-4 space-y-3 mt-3">
+                <li>
+                  <Link to="/services" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                    All Services
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/fintech-solutions" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                    Fintech Solutions
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/digital-customizations" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                    Digital Customizations
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/ecommerce" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                    E-commerce Solutions
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/ai-solutions" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                    AI Solutions
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/global-expansion" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                    Global Expansion
+                  </Link>
+                </li>
+              </ul>
+            )}
           </li>
           <li>
             <Link to="/team" className="block py-3 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
@@ -75,24 +102,36 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
             </Link>
           </li>
           <li className="py-3">
-            <p className="font-medium mb-3 px-4 text-purple-300">AI Resources</p>
-            <ul className="pl-4 space-y-3">
-              <li>
-                <Link to="/ai-tools" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
-                  AI Tools
-                </Link>
-              </li>
-              <li>
-                <Link to="/ai-image-processing" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
-                  AI Image Processing
-                </Link>
-              </li>
-              <li>
-                <Link to="/ai-apps-management" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
-                  AI Apps Management
-                </Link>
-              </li>
-            </ul>
+            <button 
+              onClick={() => toggleSubmenu('ai-resources')}
+              className="flex items-center justify-between w-full px-4 py-2 text-white hover:bg-white/10 rounded-md transition-all duration-200"
+            >
+              <span className="font-medium">AI Resources</span>
+              {isSubmenuExpanded('ai-resources') ? (
+                <ChevronUp className="h-4 w-4 text-white/70" />
+              ) : (
+                <ChevronDown className="h-4 w-4 text-white/70" />
+              )}
+            </button>
+            {isSubmenuExpanded('ai-resources') && (
+              <ul className="pl-4 space-y-3 mt-3">
+                <li>
+                  <Link to="/ai-tools" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                    AI Tools
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/ai-image-processing" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                    AI Image Processing
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/ai-apps-management" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                    AI Apps Management
+                  </Link>
+                </li>
+              </ul>
+            )}
           </li>
           <li>
             <Link to="/contact" className="block py-3 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>

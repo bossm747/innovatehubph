@@ -59,8 +59,8 @@ const FintechSolutions = () => {
                 <div>
                   <h3 className="font-medium text-green-300">Rapid Market Expansion</h3>
                   <p className="text-sm text-gray-300 mt-1">
-                    Despite being a young startup, we've gained significant market trust with over 1,100 agents nationwide. 
-                    Our inquiries have increased by 215% this quarter, signaling strong and sustainable growth.
+                    Despite being a young startup, we've gained significant market trust with approximately 95 agent applications nationwide. 
+                    Our inquiries have increased by 215% this quarter, signaling strong and sustainable growth potential.
                   </p>
                 </div>
               </div>

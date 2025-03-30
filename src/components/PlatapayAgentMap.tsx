@@ -8,23 +8,23 @@ import { Button } from '@/components/ui/button';
 const agentRegions = [
   { 
     name: 'Luzon', 
-    count: 678, 
+    count: 58, 
     majorAreas: ['Metro Manila', 'Batangas', 'Laguna', 'Cavite', 'Bulacan', 'Pampanga', 'Tarlac']
   },
   { 
     name: 'Visayas', 
-    count: 298, 
+    count: 22, 
     majorAreas: ['Cebu', 'Iloilo', 'Bacolod', 'Bohol', 'Tacloban']
   },
   { 
     name: 'Mindanao', 
-    count: 124, 
+    count: 12, 
     majorAreas: ['Davao', 'Cagayan de Oro', 'General Santos', 'Zamboanga', 'Butuan']
   },
   { 
     name: 'International', 
-    count: 15, 
-    majorAreas: ['Dubai', 'Abu Dhabi', 'Singapore', 'Hong Kong', 'Kuala Lumpur']
+    count: 3, 
+    majorAreas: ['Dubai', 'Abu Dhabi', 'Singapore']
   }
 ];
 
@@ -37,12 +37,12 @@ const PlatapayAgentMap = () => {
       <div className="container mx-auto">
         <div className="text-center mb-12 fade-up">
           <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
-            Nationwide Network
+            Growing Network
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">PlataPay Agents Across the Philippines</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">PlataPay Agent Applications</h2>
           <p className="text-gray-600 max-w-3xl mx-auto">
-            With over {totalAgents} agents nationwide and expanding international presence, 
-            PlataPay is rapidly making financial services accessible to communities everywhere.
+            With {totalAgents} agent applications and growing interest, 
+            PlataPay is rapidly making financial services accessible to communities across the Philippines.
           </p>
         </div>
         
@@ -68,20 +68,20 @@ const PlatapayAgentMap = () => {
           
           <div className="fade-up">
             <Card className="h-full p-6 border-none shadow-lg">
-              <h3 className="text-xl font-bold mb-4">Agent Distribution</h3>
+              <h3 className="text-xl font-bold mb-4">Agent Applications</h3>
               
               <div className="space-y-6">
                 {agentRegions.map((region, index) => (
                   <div key={index} className="space-y-2">
                     <div className="flex justify-between items-center">
                       <h4 className="font-medium">{region.name}</h4>
-                      <span className="text-innovate-600 font-semibold">{region.count}+ agents</span>
+                      <span className="text-innovate-600 font-semibold">{region.count} applications</span>
                     </div>
                     
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                       <div 
                         className="bg-innovate-600 h-2.5 rounded-full" 
-                        style={{ width: `${(region.count / 700) * 100}%` }}
+                        style={{ width: `${(region.count / 60) * 100}%` }}
                       ></div>
                     </div>
                     
@@ -107,7 +107,7 @@ const PlatapayAgentMap = () => {
                     <h4 className="font-medium text-green-800">Rapid Growth Trajectory</h4>
                     <p className="text-sm text-gray-700 mt-1">
                       Despite being a startup, we've quickly gained trust in the market, with partner inquiries 
-                      increasing by 215% in the last quarter alone. Our agent network continues to expand rapidly.
+                      increasing by 215% in the last quarter alone. Our agent application numbers continue to grow weekly.
                     </p>
                   </div>
                 </div>

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
@@ -27,12 +28,13 @@ const Navbar = () => {
         <div className="flex items-center">
           <a href="/" className="mr-6 flex items-center space-x-2">
             <img 
-              src="/lovable-uploads/e0b50f3f-fb7b-4832-8041-8c82e7f630ad.png" 
+              src="/lovable-uploads/e057441a1-afb4-4ef6-9528-d2b5677d9842.png" 
               alt="InnovateHub Logo" 
-              className="h-8 w-8 mr-2"
+              className="h-8 w-auto mr-1"
             />
-            <span className="font-bold text-innovate-800">
-              InnovateHub
+            <span className="font-bold">
+              <span className="text-white">Innovate</span>
+              <span className="text-purple-500">Hub</span>
             </span>
           </a>
 

@@ -112,7 +112,7 @@ const PlataPay = () => {
                   className="w-full h-auto rounded-xl"
                   loading="eager"
                 />
-                <div className="absolute inset-0 bg-gradient-to-tr from-black/10 to-transparent"></div>
+                <div className="absolute inset-0 bg-transparent"></div>
               </div>
             </div>
           </div>

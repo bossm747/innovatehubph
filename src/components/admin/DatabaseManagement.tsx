@@ -50,7 +50,7 @@ const DatabaseManagement = () => {
   const [tableData, setTableData] = useState<any[]>([]);
   const [columns, setColumns] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [tables, setTables] = useState<AvailableTable[]>([
+  const [tables] = useState<AvailableTable[]>([
     'ai_projects', 
     'ai_generated_files', 
     'staff_profiles', 
@@ -63,12 +63,12 @@ const DatabaseManagement = () => {
   
   // State for edit dialog
   const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [editRecord, setEditRecord] = useState<any>(null);
+  const [editRecord, setEditRecord] = useState<Record<string, any> | null>(null);
   const [editedValues, setEditedValues] = useState<Record<string, any>>({});
   
   // State for delete dialog
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [recordToDelete, setRecordToDelete] = useState<any>(null);
+  const [recordToDelete, setRecordToDelete] = useState<Record<string, any> | null>(null);
 
   const fetchTableData = async () => {
     setIsLoading(true);
@@ -132,7 +132,7 @@ const DatabaseManagement = () => {
       : value;
   };
 
-  const handleEditClick = (row: any) => {
+  const handleEditClick = (row: Record<string, any>) => {
     setEditRecord(row);
     const initialValues: Record<string, any> = {};
     columns.forEach(column => {
@@ -142,7 +142,7 @@ const DatabaseManagement = () => {
     setEditDialogOpen(true);
   };
 
-  const handleDeleteClick = (row: any) => {
+  const handleDeleteClick = (row: Record<string, any>) => {
     setRecordToDelete(row);
     setDeleteDialogOpen(true);
   };
@@ -331,7 +331,7 @@ const DatabaseManagement = () => {
                   {column.replace(/_/g, ' ')}:
                 </label>
                 <Input
-                  value={editedValues[column] !== null ? editedValues[column] : ''}
+                  value={editedValues[column] !== null ? String(editedValues[column] || '') : ''}
                   onChange={(e) => handleInputChange(column, e.target.value)}
                   className="col-span-3"
                   disabled={column === 'id' || column === 'created_at' || column === 'updated_at'}

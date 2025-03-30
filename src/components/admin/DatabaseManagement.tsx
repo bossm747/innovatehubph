@@ -9,386 +9,221 @@ import {
   TableHeader, 
   TableRow 
 } from '@/components/ui/table';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogFooter, 
-  DialogTrigger, 
-  DialogDescription 
-} from '@/components/ui/dialog';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from '@/components/ui/select';
+import { RefreshCw, Database, Eye, Trash2, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Trash2, Edit, Database, RefreshCw, AlertCircle } from 'lucide-react';
-import { 
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { Skeleton } from '@/components/ui/skeleton';
 
-// Define a type for the available tables
-type AvailableTable = 'ai_projects' | 'ai_generated_files' | 'staff_profiles' | 'inquiries' | 'subscribers' | 'appointments' | 'marketing_campaigns' | 'email_logs';
-
-// Define a basic type for table record values
+// Define a more specific type for table records
 type BasicValue = string | number | boolean | null;
-
-// Define a non-recursive type for table records
-interface TableRecord {
-  [key: string]: BasicValue | BasicValue[] | { [key: string]: BasicValue } | BasicValue[][];
-}
+type TableRecord = {
+  [key: string]: BasicValue | BasicValue[] | { [key: string]: BasicValue } | BasicValue[][] | undefined;
+  id: string;
+};
 
 const DatabaseManagement = () => {
-  const [selectedTable, setSelectedTable] = useState<AvailableTable>('inquiries');
-  const [tableData, setTableData] = useState<TableRecord[]>([]);
+  const [tables, setTables] = useState<string[]>([]);
+  const [selectedTable, setSelectedTable] = useState<string>('');
+  const [records, setRecords] = useState<TableRecord[]>([]);
   const [columns, setColumns] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [tables] = useState<AvailableTable[]>([
-    'ai_projects', 
-    'ai_generated_files', 
-    'staff_profiles', 
-    'inquiries', 
-    'subscribers', 
-    'appointments',
-    'marketing_campaigns',
-    'email_logs'
-  ]);
-  
-  // State for edit dialog
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [editRecord, setEditRecord] = useState<TableRecord | null>(null);
-  const [editedValues, setEditedValues] = useState<TableRecord>({});
-  
-  // State for delete dialog
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [recordToDelete, setRecordToDelete] = useState<TableRecord | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const fetchTableData = async () => {
-    setIsLoading(true);
+  useEffect(() => {
+    fetchTables();
+  }, []);
+
+  useEffect(() => {
+    if (selectedTable) {
+      fetchRecords(selectedTable);
+    }
+  }, [selectedTable]);
+
+  const fetchTables = async () => {
     try {
       const { data, error } = await supabase
-        .from(selectedTable)
-        .select('*');
-      
+        .from('pg_catalog.pg_tables')
+        .select('tablename')
+        .eq('schemaname', 'public');
+
       if (error) throw error;
+
+      // Extract table names and sort alphabetically
+      const tableNames = data.map(table => table.tablename).sort();
+      setTables(tableNames);
       
-      if (data && data.length > 0) {
-        setTableData(data);
-        setColumns(Object.keys(data[0]).filter(col => 
-          !col.includes('password') && !col.includes('secret')
-        ));
-      } else {
-        setTableData([]);
-        // Get columns from metadata if no data
-        try {
-          const { data: tableInfo } = await supabase
-            .from(selectedTable)
-            .select('*')
-            .limit(0);
-            
-          // If we can get the structure even with no rows
-          if (tableInfo !== null) {
-            // For empty array, we'll use an empty object to get the structure
-            const columnInfo = tableInfo.length > 0 ? tableInfo[0] : {};
-            setColumns(Object.keys(columnInfo).filter(col => 
-              !col.includes('password') && !col.includes('secret')
-            ));
-          } else {
-            setColumns([]);
-          }
-        } catch (metadataError) {
-          console.error('Error fetching table structure:', metadataError);
-          setColumns([]);
-        }
+      // Set the first table as default if none is selected
+      if (tableNames.length > 0 && !selectedTable) {
+        setSelectedTable(tableNames[0]);
       }
     } catch (error) {
-      console.error('Error fetching table data:', error);
-      toast.error(`Failed to load data from ${selectedTable}`);
-    } finally {
-      setIsLoading(false);
+      console.error('Error fetching tables:', error);
+      toast.error('Failed to load database tables');
     }
   };
 
-  useEffect(() => {
-    fetchTableData();
-  }, [selectedTable]);
+  const fetchRecords = async (tableName: string) => {
+    setLoading(true);
+    try {
+      // Fetch up to 50 records to avoid overwhelming the UI
+      const { data, error } = await supabase
+        .from(tableName)
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(50);
 
-  const formatValue = (value: any): string => {
-    if (value === null) return 'null';
+      if (error) throw error;
+
+      // Extract column names from the first record
+      if (data && data.length > 0) {
+        setColumns(Object.keys(data[0]));
+      } else {
+        setColumns([]);
+      }
+
+      setRecords(data as TableRecord[] || []);
+    } catch (error) {
+      console.error(`Error fetching records from ${tableName}:`, error);
+      toast.error(`Failed to load records from ${tableName}`);
+      setRecords([]);
+      setColumns([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleTableChange = (tableName: string) => {
+    setSelectedTable(tableName);
+    setSearchTerm('');
+  };
+
+  const handleRefresh = () => {
+    if (selectedTable) {
+      fetchRecords(selectedTable);
+    }
+  };
+
+  const formatCellValue = (value: any): string => {
+    if (value === null || value === undefined) return 'NULL';
     if (typeof value === 'object') return JSON.stringify(value);
     return String(value);
   };
 
-  const truncateValue = (value: string, maxLength = 50): string => {
-    return value.length > maxLength 
-      ? `${value.substring(0, maxLength)}...` 
-      : value;
-  };
-
-  const handleEditClick = (row: TableRecord) => {
-    setEditRecord(row);
-    const initialValues: TableRecord = {};
-    columns.forEach(column => {
-      initialValues[column] = row[column];
+  const filteredRecords = records.filter(record => {
+    if (!searchTerm) return true;
+    return columns.some(column => {
+      const value = record[column];
+      return String(value).toLowerCase().includes(searchTerm.toLowerCase());
     });
-    setEditedValues(initialValues);
-    setEditDialogOpen(true);
-  };
-
-  const handleDeleteClick = (row: TableRecord) => {
-    setRecordToDelete(row);
-    setDeleteDialogOpen(true);
-  };
-
-  const handleInputChange = (column: string, value: string) => {
-    setEditedValues(prev => ({
-      ...prev,
-      [column]: value
-    }));
-  };
-
-  const saveEditedRecord = async () => {
-    if (!editRecord) return;
-    
-    setIsLoading(true);
-    try {
-      // Get primary key column (usually 'id')
-      const primaryKey = columns.includes('id') ? 'id' : columns[0];
-      
-      const { error } = await supabase
-        .from(selectedTable)
-        .update(editedValues)
-        .eq(primaryKey, editRecord[primaryKey]);
-      
-      if (error) throw error;
-      
-      toast.success('Record updated successfully');
-      setEditDialogOpen(false);
-      fetchTableData();
-    } catch (error) {
-      console.error('Error updating record:', error);
-      toast.error('Failed to update record');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const deleteRecord = async () => {
-    if (!recordToDelete) return;
-    
-    setIsLoading(true);
-    try {
-      // Get primary key column (usually 'id')
-      const primaryKey = columns.includes('id') ? 'id' : columns[0];
-      
-      const { error } = await supabase
-        .from(selectedTable)
-        .delete()
-        .eq(primaryKey, recordToDelete[primaryKey]);
-      
-      if (error) throw error;
-      
-      toast.success('Record deleted successfully');
-      setDeleteDialogOpen(false);
-      fetchTableData();
-    } catch (error) {
-      console.error('Error deleting record:', error);
-      toast.error('Failed to delete record: ' + (error as Error).message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <Database className="h-5 w-5 text-muted-foreground" />
-          <h2 className="text-2xl font-bold">Database Management</h2>
-        </div>
+        <h2 className="text-2xl font-bold flex items-center">
+          <Database className="mr-2 h-5 w-5 text-primary" />
+          Database Management
+        </h2>
         <Button 
           variant="outline" 
-          size="icon"
-          onClick={fetchTableData}
-          disabled={isLoading}
+          size="sm" 
+          onClick={handleRefresh}
+          disabled={loading}
         >
-          <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+          <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+          Refresh
         </Button>
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Tables</CardTitle>
-          <CardDescription>Select a table to view and manage data</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {tables.map((table) => (
-              <Button
-                key={table}
-                variant={selectedTable === table ? "default" : "outline"}
-                onClick={() => setSelectedTable(table)}
-                className="mb-2"
-              >
-                {table.replace(/_/g, ' ')}
-              </Button>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>{selectedTable.replace(/_/g, ' ')} Data</CardTitle>
+        <CardHeader className="pb-2">
+          <CardTitle>Browse Database Tables</CardTitle>
           <CardDescription>
-            {isLoading 
-              ? 'Loading data...' 
-              : `${tableData.length} records found`
-            }
+            View and manage the data stored in your application
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border overflow-auto max-h-[600px]">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="sticky top-0 bg-background">Actions</TableHead>
-                  {columns.map(column => (
-                    <TableHead 
-                      key={column} 
-                      className="sticky top-0 bg-background whitespace-nowrap"
-                    >
-                      {column.replace(/_/g, ' ')}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {isLoading ? (
-                  <TableRow>
-                    <TableCell colSpan={columns.length + 1} className="h-24 text-center">
-                      Loading...
-                    </TableCell>
-                  </TableRow>
-                ) : tableData.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={columns.length + 1} className="h-24 text-center">
-                      No data found
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  tableData.map((row, rowIndex) => (
-                    <TableRow key={rowIndex}>
-                      <TableCell className="whitespace-nowrap">
-                        <div className="flex space-x-2">
-                          <Button 
-                            variant="ghost" 
-                            size="icon"
-                            onClick={() => handleEditClick(row)}
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="icon"
-                            onClick={() => handleDeleteClick(row)}
-                          >
-                            <Trash2 className="h-4 w-4 text-destructive" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                      {columns.map(column => (
-                        <TableCell key={column} className="font-mono text-xs">
-                          {truncateValue(formatValue(row[column]))}
-                        </TableCell>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <Select value={selectedTable} onValueChange={handleTableChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a table" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {tables.map(table => (
+                      <SelectItem key={table} value={table}>
+                        {table}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="md:col-span-3">
+                <Input 
+                  placeholder="Search records..." 
+                  value={searchTerm} 
+                  onChange={(e) => setSearchTerm(e.target.value)} 
+                />
+              </div>
+            </div>
+
+            {loading ? (
+              <div className="space-y-2">
+                <Skeleton className="h-8 w-full" />
+                <Skeleton className="h-8 w-full" />
+                <Skeleton className="h-8 w-full" />
+              </div>
+            ) : records.length === 0 ? (
+              <div className="text-center py-8 space-y-2">
+                <AlertCircle className="h-8 w-8 mx-auto text-muted-foreground" />
+                <p className="text-muted-foreground">No records found in this table</p>
+              </div>
+            ) : (
+              <div className="border rounded-md overflow-hidden">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        {columns.map(column => (
+                          <TableHead key={column} className="whitespace-nowrap">
+                            {column}
+                          </TableHead>
+                        ))}
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredRecords.map((record, index) => (
+                        <TableRow key={index}>
+                          {columns.map(column => (
+                            <TableCell key={column} className="max-w-[200px] truncate">
+                              {formatCellValue(record[column])}
+                            </TableCell>
+                          ))}
+                          <TableCell>
+                            <div className="flex space-x-2">
+                              <Button size="icon" variant="ghost">
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                              <Button size="icon" variant="ghost">
+                                <Trash2 className="h-4 w-4 text-red-500" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
                       ))}
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
-
-      {/* Edit Record Dialog */}
-      <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Edit Record</DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            {columns.map(column => (
-              <div key={column} className="grid grid-cols-4 items-center gap-4">
-                <label className="text-right font-medium col-span-1">
-                  {column.replace(/_/g, ' ')}:
-                </label>
-                <Input
-                  value={editedValues[column] !== null ? String(editedValues[column] || '') : ''}
-                  onChange={(e) => handleInputChange(column, e.target.value)}
-                  className="col-span-3"
-                  disabled={column === 'id' || column === 'created_at' || column === 'updated_at'}
-                />
-              </div>
-            ))}
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setEditDialogOpen(false)}>Cancel</Button>
-            <Button onClick={saveEditedRecord} disabled={isLoading}>
-              {isLoading ? 'Saving...' : 'Save changes'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Delete Confirmation Dialog */}
-      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2">
-              <AlertCircle className="h-5 w-5 text-destructive" />
-              Confirm Deletion
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to delete this record? This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          {recordToDelete && (
-            <div className="py-4">
-              <p className="text-sm">
-                You are about to delete a record from the <span className="font-bold">{selectedTable}</span> table.
-              </p>
-              <div className="mt-2 p-2 bg-gray-100 rounded text-xs font-mono overflow-auto max-h-[200px]">
-                {JSON.stringify(recordToDelete, null, 2)}
-              </div>
-            </div>
-          )}
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={deleteRecord} 
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              {isLoading ? 'Deleting...' : 'Delete Record'}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 };

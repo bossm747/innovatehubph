@@ -64,6 +64,7 @@ export const getContactSubmissions = async (): Promise<ContactSubmission[]> => {
       return [];
     }
     
+    // Explicitly map the data to the ContactSubmission interface to avoid typing issues
     return (data || []).map(item => ({
       name: item.name,
       email: item.email,
@@ -71,7 +72,8 @@ export const getContactSubmissions = async (): Promise<ContactSubmission[]> => {
       phone: item.phone,
       message: item.message,
       created_at: item.created_at,
-      source: item.source || undefined
+      // Only add source if it exists in the item
+      ...(item.meta && item.meta.source ? { source: item.meta.source } : {})
     })) as ContactSubmission[];
   } catch (error) {
     console.error('Contact service error:', error);

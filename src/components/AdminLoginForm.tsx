@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
@@ -16,12 +16,14 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
+import { LoadingIndicator } from '@/components/LoadingIndicator';
 
 interface AdminLoginFormProps {
   onSuccess?: () => void;
 }
 
-// Simple schema without email domain restrictions
+// Schema with basic validation
 const formSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
@@ -30,6 +32,7 @@ const formSchema = z.object({
 const AdminLoginForm = ({ onSuccess }: AdminLoginFormProps) => {
   const [activeTab, setActiveTab] = useState<string>('signin');
   const [isLoading, setIsLoading] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -40,21 +43,57 @@ const AdminLoginForm = ({ onSuccess }: AdminLoginFormProps) => {
     },
   });
 
+  // Check if user is already logged in
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        navigate('/admin/dashboard');
+      }
+      setIsCheckingAuth(false);
+    };
+    
+    checkAuth();
+  }, [navigate]);
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     
-    // Simulate login/registration without actual authentication
-    setTimeout(() => {
-      toast.success(activeTab === 'signin' ? 'Signed in successfully' : 'Account created successfully');
-      
-      if (onSuccess) {
-        onSuccess();
+    try {
+      if (activeTab === 'signin') {
+        const { error } = await supabase.auth.signInWithPassword({
+          email: data.email,
+          password: data.password,
+        });
+        
+        if (error) throw error;
+        
+        toast.success('Signed in successfully');
+        if (onSuccess) {
+          onSuccess();
+        }
+        navigate('/admin/dashboard');
+      } else {
+        // For registration - in your case, you might want to limit this to specific emails
+        const { error } = await supabase.auth.signUp({
+          email: data.email,
+          password: data.password,
+        });
+        
+        if (error) throw error;
+        
+        toast.success('Account created successfully. Please check your email for verification.');
       }
-      
-      navigate('/admin/portal');
+    } catch (error: any) {
+      toast.error(error.message || 'Authentication failed');
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
+
+  if (isCheckingAuth) {
+    return <div className="flex justify-center items-center h-[400px]"><LoadingIndicator /></div>;
+  }
 
   return (
     <div className="w-full max-w-md mx-auto px-4 sm:px-0">

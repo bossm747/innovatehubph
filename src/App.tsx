@@ -27,6 +27,7 @@ import GlobalExpansionPage from './pages/GlobalExpansionPage';
 import MobileAppDevelopmentPage from './pages/MobileAppDevelopmentPage';
 import PartnersPage from './pages/PartnersPage';
 import TeamPage from './pages/TeamPage';
+import AdminLoginPage from './pages/AdminLoginPage';
 
 // Protected route component
 import ProtectedRoute from './components/ProtectedRoute';
@@ -64,6 +65,9 @@ function App() {
       
       {/* Utility Pages */}
       <Route path="/file-upload" element={<FileUploadPage />} />
+      
+      {/* Admin Login */}
+      <Route path="/admin/login" element={<AdminLoginPage />} />
       
       {/* Admin Routes */}
       <Route 

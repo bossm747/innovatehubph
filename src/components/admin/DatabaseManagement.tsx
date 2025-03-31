@@ -48,17 +48,21 @@ const DatabaseManagement = () => {
 
   const fetchTables = async () => {
     try {
-      // Use the from method to query pg_catalog.pg_tables
-      const { data, error } = await supabase
-        .from('pg_catalog.pg_tables')
-        .select('tablename')
-        .eq('schemaname', 'public');
+      setLoading(true);
+      // Use the Edge Function to get the tables
+      const { data, error } = await supabase.functions.invoke('database-helpers', {
+        body: { action: 'listTables' }
+      });
 
       if (error) throw error;
 
-      if (Array.isArray(data)) {
+      if (data?.data && Array.isArray(data.data)) {
         // Extract table names and sort alphabetically
-        const tableNames = data.map((table: PgTable) => table.tablename).sort();
+        const tableNames = data.data
+          .map((table: PgTable) => table.tablename)
+          .filter(Boolean)
+          .sort();
+        
         setTables(tableNames);
         
         // Set the first table as default if none is selected
@@ -69,30 +73,29 @@ const DatabaseManagement = () => {
     } catch (error) {
       console.error('Error fetching tables:', error);
       toast.error('Failed to load database tables');
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchRecords = async (tableName: string) => {
     setLoading(true);
     try {
-      // Sanitize table name to prevent SQL injection
-      if (!tableName.match(/^[a-zA-Z0-9_]+$/)) {
-        throw new Error('Invalid table name');
-      }
-      
-      // Use the rpc method to call the select_from_table function we created
-      const { data, error } = await supabase
-        .rpc('select_from_table', { 
-          table_name: tableName,
-          row_limit: 50
-        });
+      // Use the Edge Function to get the records
+      const { data, error } = await supabase.functions.invoke('database-helpers', {
+        body: { 
+          action: 'getRecords',
+          tableName,
+          limit: 50
+        }
+      });
         
       if (error) throw error;
 
       // Extract column names from the first record
-      if (Array.isArray(data) && data.length > 0) {
-        setColumns(Object.keys(data[0]));
-        setRecords(data as TableRecord[]);
+      if (data?.data && Array.isArray(data.data) && data.data.length > 0) {
+        setColumns(Object.keys(data.data[0]));
+        setRecords(data.data as TableRecord[]);
       } else {
         setColumns([]);
         setRecords([]);

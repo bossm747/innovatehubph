@@ -23,14 +23,20 @@ serve(async (req) => {
     
     const { action, tableName, limit = 50, filter, id } = await req.json();
     
+    // Log the request for debugging
+    console.log(`Database action: ${action}, table: ${tableName}`);
+    
     if (action === 'listTables') {
       // Query to get all tables in the public schema
+      // We need to use raw SQL here because we're querying system tables
       const { data, error } = await supabase
-        .from('pg_catalog.pg_tables')
-        .select('tablename')
-        .eq('schemaname', 'public');
+        .rpc('get_all_tables');
         
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching tables:', error);
+        throw error;
+      }
+      
       return new Response(JSON.stringify({ data }), { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
       });
@@ -42,14 +48,19 @@ serve(async (req) => {
         throw new Error('Invalid table name');
       }
       
-      // Execute a raw query to select data from the specified table
+      console.log(`Fetching records from ${tableName}`);
+      
+      // Use RPC to get records from the table using our database function
       const { data, error } = await supabase
-        .rpc('select_from_table', { 
-          table_name: tableName,
-          row_limit: limit
-        });
+        .rpc('get_table_records', { table_name: tableName });
         
-      if (error) throw error;
+      if (error) {
+        console.error(`Error fetching records from ${tableName}:`, error);
+        throw error;
+      }
+      
+      console.log(`Retrieved ${data?.length || 0} records from ${tableName}`);
+      
       return new Response(JSON.stringify({ data }), { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
       });
@@ -63,10 +74,10 @@ serve(async (req) => {
       
       // Get a specific record by ID
       const { data, error } = await supabase
-        .from(tableName)
-        .select('*')
-        .eq('id', id)
-        .single();
+        .rpc('get_record_by_id', { 
+          table_name: tableName,
+          record_id: id
+        });
         
       if (error) throw error;
       return new Response(JSON.stringify({ data }), { 

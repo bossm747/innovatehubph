@@ -31,7 +31,13 @@ const InquiryPage = () => {
   useEffect(() => {
     // Set loaded status after component mounts
     setIsLoaded(true);
+    console.log('InquiryPage mounted, activeService:', activeService);
   }, []);
+  
+  useEffect(() => {
+    // Log when active service changes
+    console.log('Active service changed to:', activeService);
+  }, [activeService]);
   
   const services = [
     { id: 'platapay', name: 'PlataPay', description: 'Digital Wallet & Payment Solutions' },
@@ -41,6 +47,27 @@ const InquiryPage = () => {
     { id: 'global', name: 'Global Expansion', description: 'International Market Entry' },
     { id: 'general', name: 'General Inquiry', description: 'Other Services' },
   ];
+
+  // Helper function to render the appropriate form
+  const renderForm = () => {
+    console.log('Rendering form for service:', activeService);
+    
+    switch(activeService) {
+      case 'platapay':
+        return <PlatapayForm navigate={navigate} />;
+      case 'digital':
+        return <DigitalCustomizationsForm navigate={navigate} />;
+      case 'ecommerce':
+        return <EcommerceForm navigate={navigate} />;
+      case 'ai':
+        return <AiSolutionsForm navigate={navigate} />;
+      case 'global':
+        return <GlobalExpansionForm navigate={navigate} />;
+      case 'general':
+      default:
+        return <GeneralInquiryForm navigate={navigate} />;
+    }
+  };
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden">
@@ -190,12 +217,7 @@ const InquiryPage = () => {
                 </div>
                 
                 <div className="form-container">
-                  {activeService === 'platapay' && <PlatapayForm navigate={navigate} />}
-                  {activeService === 'digital' && <DigitalCustomizationsForm navigate={navigate} />}
-                  {activeService === 'ecommerce' && <EcommerceForm navigate={navigate} />}
-                  {activeService === 'ai' && <AiSolutionsForm navigate={navigate} />}
-                  {activeService === 'global' && <GlobalExpansionForm navigate={navigate} />}
-                  {activeService === 'general' && <GeneralInquiryForm navigate={navigate} />}
+                  {renderForm()}
                 </div>
               </Card>
             </div>

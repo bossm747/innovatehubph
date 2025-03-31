@@ -3,20 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import AdminOverview from '@/components/admin/AdminOverview';
-import UserManagement from '@/components/admin/UserManagement';
-import DatabaseManagement from '@/components/admin/DatabaseManagement';
-import EmailLogViewer from '@/components/admin/EmailLogViewer';
-import SeedDatabaseButton from '@/components/admin/SeedDatabaseButton';
-import LynAgbayInquiries from '@/components/admin/LynAgbayInquiries';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Toaster } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
-import { toast, Toaster } from 'sonner';
+import { toast } from 'sonner';
 import { DashboardStats } from '@/components/admin/DashboardStats';
-import CampaignManager from '@/components/admin/marketing/CampaignManager';
-import { RefreshCw, Mail, BarChart, Database as DatabaseIcon, Users, Search } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import LynAgbayInquiries from '@/components/admin/LynAgbayInquiries';
+import DashboardHeader from '@/components/admin/dashboard/DashboardHeader';
+import QuickActions from '@/components/admin/dashboard/QuickActions';
+import DashboardOverview from '@/components/admin/dashboard/DashboardOverview';
+import DashboardTabs from '@/components/admin/dashboard/DashboardTabs';
 
 const AdminDashboardPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -85,46 +80,13 @@ const AdminDashboardPage = () => {
       
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-start mb-8">
-            <div>
-              <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-              <p className="text-muted-foreground">Manage your website content and operations</p>
-            </div>
-            
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={fetchDashboardStats}
-              disabled={isLoading}
-              className="mt-2 md:mt-0"
-            >
-              <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-              Refresh Data
-            </Button>
-          </div>
+          <DashboardHeader isLoading={isLoading} refreshData={fetchDashboardStats} />
           
           <DashboardStats stats={stats} isLoading={isLoading} />
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle>Quick Actions</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <SeedDatabaseButton refreshStats={fetchDashboardStats} />
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="md:col-span-2">
-              <CardHeader className="pb-2">
-                <CardTitle>Dashboard Overview</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>Welcome to the InnovateHub admin dashboard. From here, you can manage your website content, users, database entries, and monitor email communications. Use the tabs below to navigate through different management sections.</p>
-              </CardContent>
-            </Card>
+            <QuickActions refreshStats={fetchDashboardStats} />
+            <DashboardOverview />
           </div>
           
           {/* Add Lyn Agbay Inquiries Component */}
@@ -132,65 +94,7 @@ const AdminDashboardPage = () => {
             <LynAgbayInquiries />
           </div>
           
-          <Tabs defaultValue="overview" className="space-y-4">
-            <TabsList className="flex flex-wrap">
-              <TabsTrigger value="overview">
-                <BarChart className="h-4 w-4 mr-2" />
-                Overview
-              </TabsTrigger>
-              <TabsTrigger value="users">
-                <Users className="h-4 w-4 mr-2" />
-                Users
-              </TabsTrigger>
-              <TabsTrigger value="database">
-                <DatabaseIcon className="h-4 w-4 mr-2" />
-                Database
-              </TabsTrigger>
-              <TabsTrigger value="email-logs">
-                <Mail className="h-4 w-4 mr-2" />
-                Email Logs
-              </TabsTrigger>
-              <TabsTrigger value="email-marketing">
-                <Mail className="h-4 w-4 mr-2" />
-                Email Marketing
-              </TabsTrigger>
-              <TabsTrigger value="search-inquiries">
-                <Search className="h-4 w-4 mr-2" />
-                Search Inquiries
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="overview">
-              <AdminOverview />
-            </TabsContent>
-            
-            <TabsContent value="users">
-              <UserManagement />
-            </TabsContent>
-            
-            <TabsContent value="database">
-              <DatabaseManagement />
-            </TabsContent>
-            
-            <TabsContent value="email-logs">
-              <EmailLogViewer />
-            </TabsContent>
-            
-            <TabsContent value="email-marketing">
-              <CampaignManager />
-            </TabsContent>
-            
-            <TabsContent value="search-inquiries">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Search Inquiries</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <LynAgbayInquiries />
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+          <DashboardTabs />
         </div>
       </main>
       

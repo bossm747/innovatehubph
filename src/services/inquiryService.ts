@@ -28,6 +28,8 @@ export interface InquiryFormData {
   aiType?: string;
   dataAvailable?: string;
   subscribe: boolean;
+  // Added storeType as optional to maintain backward compatibility
+  storeType?: string;
 }
 
 export interface SubmissionResult {
@@ -43,6 +45,11 @@ export const submitInquiryForm = async (formData: InquiryFormData): Promise<Subm
     
     // In a real application, you would send this data to your backend
     // For now, we'll simulate a successful submission
+    
+    // Handle backward compatibility with storeType
+    if (formData.storeType && !formData.requirements) {
+      formData.requirements = formData.storeType;
+    }
     
     // Simulate API call with a delay
     await new Promise(resolve => setTimeout(resolve, 1500));

@@ -72,7 +72,8 @@ const EcommerceForm = ({ navigate }: EcommerceFormProps) => {
         email: data.email,
         businessName: data.businessName,
         phone: data.phone,
-        storeType: data.storeType,
+        // Store type is stored in the requirements field of InquiryFormData
+        requirements: data.storeType,
         products: data.products,
         features: data.features,
         budget: data.budget,

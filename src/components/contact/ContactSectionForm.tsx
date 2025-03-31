@@ -14,6 +14,7 @@ const ContactSectionForm = () => {
     name: '',
     email: '',
     company: '',
+    phone: '', // Added phone field
     message: '',
     subscribe: true
   });
@@ -33,7 +34,7 @@ const ContactSectionForm = () => {
     
     try {
       // Form validation
-      if (!formData.name || !formData.email || !formData.message) {
+      if (!formData.name || !formData.email || !formData.message || !formData.phone) {
         toast.error("Please fill in all required fields");
         setIsSubmitting(false);
         return;
@@ -65,6 +66,7 @@ const ContactSectionForm = () => {
           name: '',
           email: '',
           company: '',
+          phone: '',
           message: '',
           subscribe: true
         });
@@ -118,15 +120,29 @@ const ContactSectionForm = () => {
           </div>
         </div>
         
-        <div className="space-y-2">
-          <label htmlFor="company" className="text-sm font-medium text-gray-700">Company</label>
-          <Input 
-            id="company" 
-            name="company" 
-            value={formData.company} 
-            onChange={handleChange} 
-            placeholder="Your Company" 
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label htmlFor="company" className="text-sm font-medium text-gray-700">Company</label>
+            <Input 
+              id="company" 
+              name="company" 
+              value={formData.company} 
+              onChange={handleChange} 
+              placeholder="Your Company" 
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <label htmlFor="phone" className="text-sm font-medium text-gray-700">Phone</label>
+            <Input 
+              id="phone" 
+              name="phone" 
+              value={formData.phone} 
+              onChange={handleChange} 
+              placeholder="+63 9XX XXX XXXX" 
+              required 
+            />
+          </div>
         </div>
         
         <div className="space-y-2">

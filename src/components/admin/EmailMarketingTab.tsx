@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart3, Users, Send, Settings, Brain, Sparkles, Gift, Target, MessageSquare, FileType } from 'lucide-react';
+import { BarChart3, Users, Send, Settings, Brain, Sparkles, Gift, Target, MessageSquare, FileType, Robot } from 'lucide-react';
 import RecipientsList from './marketing/RecipientsList';
 import CampaignManager from './marketing/CampaignManager';
 import MarketingCopyGenerator from './marketing/MarketingCopyGenerator';
@@ -15,6 +14,7 @@ import PromotionsManager from './marketing/PromotionsManager';
 import PromoCreator from './marketing/PromoCreator';
 import EmailTemplateGenerator from '../email/EmailTemplateGenerator';
 import EmailTemplatesPage from '../email/EmailTemplatesPage';
+import AgentsEmailManager from './marketing/AgentsEmailManager';
 
 const EmailMarketingTab: React.FC = () => {
   const [activeTab, setActiveTab] = useState('campaigns');
@@ -40,6 +40,8 @@ const EmailMarketingTab: React.FC = () => {
         return <MarketingAnalytics />;
       case 'agents':
         return <AIAgentsManager />;
+      case 'ai-email':
+        return <AgentsEmailManager />;
       default:
         return <CampaignManager />;
     }
@@ -66,7 +68,7 @@ const EmailMarketingTab: React.FC = () => {
         onValueChange={setActiveTab}
         className="space-y-4"
       >
-        <TabsList className="grid grid-cols-9 w-full">
+        <TabsList className="grid grid-cols-10 w-full">
           <TabsTrigger value="campaigns" className="flex items-center">
             <Send className="w-4 h-4 mr-2" />
             Campaigns
@@ -94,6 +96,10 @@ const EmailMarketingTab: React.FC = () => {
           <TabsTrigger value="ai-tools" className="flex items-center">
             <Sparkles className="w-4 h-4 mr-2" />
             AI Tools
+          </TabsTrigger>
+          <TabsTrigger value="ai-email" className="flex items-center">
+            <Robot className="w-4 h-4 mr-2" />
+            AI Email
           </TabsTrigger>
           <TabsTrigger value="agents" className="flex items-center">
             <Brain className="w-4 h-4 mr-2" />

@@ -15,6 +15,7 @@ import AIToolsPage from './pages/AIToolsPage';
 import ClientsPage from './pages/ClientsPage';
 import AdminContentPage from './pages/AdminContentPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
+import AdminNavigationPage from './pages/admin/AdminNavigationPage';
 import AiSolutionsPage from './pages/AiSolutionsPage';
 import BlogPage from './pages/BlogPage';
 import DigitalCustomizationsPage from './pages/DigitalCustomizationsPage';
@@ -80,6 +81,14 @@ function App() {
             <AdminDashboardPage />
           </ProtectedRoute>
         } 
+      />
+      <Route
+        path="/admin/navigation"
+        element={
+          <ProtectedRoute>
+            <AdminNavigationPage />
+          </ProtectedRoute>
+        }
       />
       
       {/* 404 Route */}

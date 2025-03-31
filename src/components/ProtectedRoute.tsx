@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Session } from '@supabase/supabase-js';
-import { LoadingIndicator } from '@/components/LoadingIndicator';
+import LoadingIndicator from '@/components/LoadingIndicator';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -32,7 +32,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }, []);
 
   if (isLoading) {
-    return <div className="flex justify-center items-center h-screen"><LoadingIndicator /></div>;
+    return <div className="flex justify-center items-center h-screen"><LoadingIndicator isLoading={true} /></div>;
   }
 
   if (!isAuthenticated) {

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Navbar from '@/components/Navbar';
@@ -8,12 +9,13 @@ import UserManagement from '@/components/admin/UserManagement';
 import DatabaseManagement from '@/components/admin/DatabaseManagement';
 import EmailLogViewer from '@/components/admin/EmailLogViewer';
 import SeedDatabaseButton from '@/components/admin/SeedDatabaseButton';
+import LynAgbayInquiries from '@/components/admin/LynAgbayInquiries';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { toast, Toaster } from 'sonner';
 import { DashboardStats } from '@/components/admin/DashboardStats';
 import CampaignManager from '@/components/admin/marketing/CampaignManager';
-import { RefreshCw, Mail, BarChart, Database as DatabaseIcon, Users } from 'lucide-react';
+import { RefreshCw, Mail, BarChart, Database as DatabaseIcon, Users, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const AdminDashboardPage = () => {
@@ -125,6 +127,11 @@ const AdminDashboardPage = () => {
             </Card>
           </div>
           
+          {/* Add Lyn Agbay Inquiries Component */}
+          <div className="mb-8">
+            <LynAgbayInquiries />
+          </div>
+          
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList className="flex flex-wrap">
               <TabsTrigger value="overview">
@@ -147,6 +154,10 @@ const AdminDashboardPage = () => {
                 <Mail className="h-4 w-4 mr-2" />
                 Email Marketing
               </TabsTrigger>
+              <TabsTrigger value="search-inquiries">
+                <Search className="h-4 w-4 mr-2" />
+                Search Inquiries
+              </TabsTrigger>
             </TabsList>
             
             <TabsContent value="overview">
@@ -167,6 +178,17 @@ const AdminDashboardPage = () => {
             
             <TabsContent value="email-marketing">
               <CampaignManager />
+            </TabsContent>
+            
+            <TabsContent value="search-inquiries">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Search Inquiries</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <LynAgbayInquiries />
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>

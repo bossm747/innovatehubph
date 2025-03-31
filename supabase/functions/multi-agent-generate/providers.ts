@@ -1,4 +1,3 @@
-
 // Multiple AI provider integrations
 
 interface AIProvider {
@@ -10,7 +9,11 @@ const gemini = (apiKey: string): AIProvider => {
   return {
     generate: async (prompt: string, temperature = 0.7, maxTokens = 1000, domain = "innovatehub.ph"): Promise<string> => {
       try {
-        const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent";
+        // Determine the best Gemini model to use
+        const modelVersion = await getBestGeminiModel(apiKey);
+        console.log(`Using Gemini model: ${modelVersion}`);
+        
+        const url = `https://generativelanguage.googleapis.com/v1/models/${modelVersion}:generateContent`;
         
         const response = await fetch(`${url}?key=${apiKey}`, {
           method: "POST",
@@ -80,6 +83,52 @@ const gemini = (apiKey: string): AIProvider => {
     }
   };
 };
+
+// Utility to check for the best available Gemini model
+async function getBestGeminiModel(apiKey: string): Promise<string> {
+  const modelPreference = [
+    "gemini-2.5-pro", 
+    "gemini-2.0-pro", 
+    "gemini-1.5-pro"
+  ];
+  
+  for (const model of modelPreference) {
+    try {
+      const testResponse = await fetch(`https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: "Test prompt" }] }],
+          generationConfig: { maxOutputTokens: 1 }
+        })
+      });
+      
+      // If we get a 404, the model doesn't exist
+      if (testResponse.status === 404) {
+        console.log(`${model} is not available yet`);
+        continue;
+      }
+      
+      // Check for non-auth related errors (model exists but other issues)
+      if (!testResponse.ok) {
+        const errorData = await testResponse.json();
+        if (errorData.error?.code === 401 || errorData.error?.message?.includes("API key")) {
+          console.log(`${model} auth error, but model likely exists`);
+          continue;
+        }
+      }
+      
+      // If we get here, the model exists and is available
+      console.log(`${model} is available and will be used`);
+      return model;
+    } catch (error) {
+      console.error(`Error checking for ${model}:`, error);
+    }
+  }
+  
+  // Default fallback
+  return "gemini-1.5-pro";
+}
 
 // OpenAI provider that uses direct API calls
 const openai = (apiKey: string): AIProvider => {

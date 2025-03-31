@@ -3,7 +3,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { enhanceContent, analyzeContent, generateEmailContent, translateContent, Agent } from "./agents.ts";
 
 // Constants for API endpoints
-const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent";
+const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1";
 const OPENAI_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 const ANTHROPIC_ENDPOINT = "https://api.anthropic.com/v1/messages";
 const MISTRAL_ENDPOINT = "https://api.mistral.ai/v1/chat/completions";
@@ -40,9 +40,16 @@ interface AgentResponse {
 // Gemini Client Class
 class GeminiClient {
   private apiKey: string;
+  private modelVersion: string = "gemini-1.5-pro"; // Default model
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
+  }
+
+  async initialize(): Promise<void> {
+    // Check for best available model version
+    this.modelVersion = await this.getBestGeminiModel();
+    console.log(`Using Gemini model: ${this.modelVersion}`);
   }
 
   async generate(
@@ -53,7 +60,7 @@ class GeminiClient {
   ): Promise<string> {
     try {
       const response = await fetch(
-        `${GEMINI_ENDPOINT}?key=${this.apiKey}`,
+        `${GEMINI_ENDPOINT}/models/${this.modelVersion}:generateContent?key=${this.apiKey}`,
         {
           method: "POST",
           headers: {
@@ -84,6 +91,52 @@ class GeminiClient {
       console.error("Error in GeminiClient.generate:", error);
       throw error;
     }
+  }
+
+  // Utility to check for the best available Gemini model
+  private async getBestGeminiModel(): Promise<string> {
+    const modelPreference = [
+      "gemini-2.5-pro", 
+      "gemini-2.0-pro", 
+      "gemini-1.5-pro"
+    ];
+    
+    for (const model of modelPreference) {
+      try {
+        const testResponse = await fetch(`${GEMINI_ENDPOINT}/models/${model}:generateContent?key=${this.apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: "Test prompt" }] }],
+            generationConfig: { maxOutputTokens: 1 }
+          })
+        });
+        
+        // If we get a 404, the model doesn't exist
+        if (testResponse.status === 404) {
+          console.log(`${model} is not available yet`);
+          continue;
+        }
+        
+        // Check for non-auth related errors (model exists but other issues)
+        if (!testResponse.ok) {
+          const errorData = await testResponse.json();
+          if (errorData.error?.code === 401 || errorData.error?.message?.includes("API key")) {
+            console.log(`${model} auth error, but model likely exists`);
+            continue;
+          }
+        }
+        
+        // If we get here, the model exists and is available
+        console.log(`${model} is available and will be used`);
+        return model;
+      } catch (error) {
+        console.error(`Error checking for ${model}:`, error);
+      }
+    }
+    
+    // Default fallback
+    return "gemini-1.5-pro";
   }
 }
 
@@ -116,6 +169,7 @@ serve(async (req: Request) => {
       throw new Error("GEMINI_API_KEY not found in environment");
     }
     const geminiClient = new GeminiClient(geminiApiKey);
+    await geminiClient.initialize();
 
     // Set up the agent
     const agent: Agent = {
@@ -132,7 +186,7 @@ serve(async (req: Request) => {
         result = {
           text: await enhanceContent(content, agent, geminiClient, domain),
           provider: "gemini",
-          model: "gemini-1.5-pro"
+          model: geminiClient["modelVersion"]
         };
         break;
         
@@ -155,7 +209,7 @@ serve(async (req: Request) => {
         result = {
           text: await generateEmailContent(template, parameters, agent, geminiClient, domain),
           provider: "gemini",
-          model: "gemini-1.5-pro",
+          model: geminiClient["modelVersion"],
           metadata: { template, parameters }
         };
         break;
@@ -167,7 +221,7 @@ serve(async (req: Request) => {
         result = {
           text: await translateContent(content, targetLanguage, agent, geminiClient),
           provider: "gemini",
-          model: "gemini-1.5-pro",
+          model: geminiClient["modelVersion"],
           metadata: { targetLanguage }
         };
         break;
@@ -178,7 +232,7 @@ serve(async (req: Request) => {
         result = {
           text: await enhanceContent(content, agent, geminiClient, domain),
           provider: "gemini",
-          model: "gemini-1.5-pro"
+          model: geminiClient["modelVersion"]
         };
     }
     

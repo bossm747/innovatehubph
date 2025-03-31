@@ -52,8 +52,14 @@ export const getProviderConfig = (provider: AIProvider): ProviderConfig => {
       return {
         name: 'Google Gemini',
         description: 'Google\'s advanced large language model',
-        model: 'gemini-1.5-pro',
-        capabilities: ['Text generation', 'Content creation', 'Code writing', 'Image understanding'],
+        model: 'gemini-2.5-pro',
+        capabilities: [
+          'Text generation', 
+          'Content creation', 
+          'Code writing', 
+          'Image understanding', 
+          'Advanced reasoning'
+        ],
         icon: '🧠',
         defaultPrompt: 'Generate engaging marketing copy for a tech company specializing in digital solutions'
       };

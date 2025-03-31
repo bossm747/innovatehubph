@@ -73,11 +73,11 @@ async function generateWithGemini(
     throw new Error('GEMINI_API_KEY is not set');
   }
   
-  // Check if we can use Gemini 2.5 or fall back to 1.0
-  const modelVersionParam = await isGemini25Available() ? "gemini-2.5-pro" : "gemini-pro";
-  console.log(`Using Gemini model: ${modelVersionParam}`);
+  // Check if we can use Gemini 2.5 or fall back to 2.0 or 1.5
+  let modelVersion = await getBestGeminiModel();
+  console.log(`Using Gemini model: ${modelVersion}`);
   
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/${modelVersionParam}:generateContent?key=${apiKey}`, {
+  const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/${modelVersion}:generateContent?key=${apiKey}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -116,6 +116,55 @@ async function generateWithGemini(
   }
   
   return data.candidates[0].content.parts[0].text;
+}
+
+// Utility to check for the best available Gemini model
+async function getBestGeminiModel(): Promise<string> {
+  const apiKey = Deno.env.get('GEMINI_API_KEY');
+  if (!apiKey) return "gemini-1.5-pro";
+  
+  const modelPreference = [
+    "gemini-2.5-pro", 
+    "gemini-2.0-pro", 
+    "gemini-1.5-pro"
+  ];
+  
+  for (const model of modelPreference) {
+    try {
+      const testResponse = await fetch(`https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: "Test prompt" }] }],
+          generationConfig: { maxOutputTokens: 1 }
+        })
+      });
+      
+      // If we get a 404, the model doesn't exist
+      if (testResponse.status === 404) {
+        console.log(`${model} is not available yet`);
+        continue;
+      }
+      
+      // Check for non-auth related errors (model exists but other issues)
+      if (!testResponse.ok) {
+        const errorData = await testResponse.json();
+        if (errorData.error?.code === 401 || errorData.error?.message?.includes("API key")) {
+          console.log(`${model} auth error, but model likely exists`);
+          continue;
+        }
+      }
+      
+      // If we get here, the model exists and is available
+      console.log(`${model} is available`);
+      return model;
+    } catch (error) {
+      console.error(`Error checking for ${model}:`, error);
+    }
+  }
+  
+  // Default fallback
+  return "gemini-1.5-pro";
 }
 
 async function generateWithOpenAI(

@@ -1,103 +1,77 @@
-
-import React, { useState, useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useScrollToTop } from './hooks/useScrollToTop';
-
-// Import page components
-import Index from '@/pages/Index';
-import AboutPage from '@/pages/AboutPage';
-import ServicesPage from '@/pages/ServicesPage';
-import AllServicesPage from '@/pages/AllServicesPage';
-import TeamPage from '@/pages/TeamPage';
-import ContactPage from '@/pages/ContactPage';
-import BlogPage from '@/pages/BlogPage';
-import ClientsPage from '@/pages/ClientsPage';
-import FacebookPage from '@/pages/FacebookPage';
-import InquiryPage from '@/pages/InquiryPage';
-import FintechSolutionsPage from '@/pages/FintechSolutionsPage';
-import DigitalCustomizationsPage from '@/pages/DigitalCustomizationsPage';
-import EcommercePage from '@/pages/EcommercePage';
-import AiSolutionsPage from '@/pages/AiSolutionsPage';
-import GlobalExpansionPage from '@/pages/GlobalExpansionPage';
-import MobileAppDevelopmentPage from '@/pages/MobileAppDevelopmentPage';
-import AdminDashboardPage from '@/pages/AdminDashboardPage';
-import AdminContentPage from '@/pages/AdminContentPage';
-import NotFound from '@/pages/NotFound';
-import AIToolsPage from '@/pages/AIToolsPage';
-import AIImageProcessingPage from '@/pages/AIImageProcessingPage';
-import AIAppsManagementPage from '@/pages/AIAppsManagementPage';
-import FileUploadPage from '@/pages/FileUploadPage';
-import PartnersPage from '@/pages/PartnersPage';
-import AdminPortal from '@/components/AdminPortal';
-import AdminNavigationPage from '@/pages/admin/AdminNavigationPage';
-import AdminDesignPage from '@/pages/admin/AdminDesignPage';
-import AdminContentManagementPage from '@/pages/admin/AdminContentManagementPage';
-import AdminPageSectionsPage from '@/pages/admin/AdminPageSectionsPage';
-
-// Create a query client
-const queryClient = new QueryClient();
-
-// Create a wrapper for the QueryClientProvider
-const QueryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <QueryClientProvider client={queryClient}>
-    {children}
-  </QueryClientProvider>
-);
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import ServicesPage from './pages/ServicesPage';
+import PlatapayPage from './pages/PlatapayPage';
+import ContactPage from './pages/ContactPage';
+import BlogPage from './pages/BlogPage';
+import BlogPostPage from './pages/BlogPostPage';
+import InquiryPage from './pages/InquiryPage';
+import NotFoundPage from './pages/NotFoundPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsOfServicePage from './pages/TermsOfServicePage';
+import CareersPage from './pages/CareersPage';
+import JobPostingPage from './pages/JobPostingPage';
+import DashboardPage from './pages/dashboard/DashboardPage';
+import DashboardLoginPage from './pages/dashboard/DashboardLoginPage';
+import DashboardAnalyticsPage from './pages/dashboard/DashboardAnalyticsPage';
+import DashboardCustomersPage from './pages/dashboard/DashboardCustomersPage';
+import DashboardMarketingPage from './pages/dashboard/DashboardMarketingPage';
+import DashboardSettingsPage from './pages/dashboard/DashboardSettingsPage';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-  const location = useLocation();
-  const [isHomePage, setIsHomePage] = useState(location.pathname === '/');
-  
-  // Use the scroll to top hook
-  useScrollToTop();
-
-  useEffect(() => {
-    setIsHomePage(location.pathname === '/');
-  }, [location]);
-
   return (
-    <QueryProvider>
+    <Router>
       <Routes>
-        <Route path="/" element={<Index />} />
+        {/* Public Routes */}
+        <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/services" element={<ServicesPage />} />
-        <Route path="/all-services" element={<AllServicesPage />} />
-        <Route path="/team" element={<TeamPage />} />
+        <Route path="/platapay" element={<PlatapayPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/blog" element={<BlogPage />} />
-        <Route path="/clients" element={<ClientsPage />} />
-        <Route path="/partners" element={<PartnersPage />} />
-        <Route path="/facebook" element={<FacebookPage />} />
+        <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route path="/inquiry" element={<InquiryPage />} />
-        <Route path="/fileupload" element={<FileUploadPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+        <Route path="/careers" element={<CareersPage />} />
+        <Route path="/careers/:id" element={<JobPostingPage />} />
         
-        {/* Service Pages */}
-        <Route path="/fintech-solutions" element={<FintechSolutionsPage />} />
-        <Route path="/digital-customizations" element={<DigitalCustomizationsPage />} />
-        <Route path="/ecommerce" element={<EcommercePage />} />
-        <Route path="/ai-solutions" element={<AiSolutionsPage />} />
-        <Route path="/mobile-app-development" element={<MobileAppDevelopmentPage />} />
-        <Route path="/global-expansion" element={<GlobalExpansionPage />} />
+        {/* Dashboard Routes */}
+        <Route path="/dashboard/login" element={<DashboardLoginPage />} />
+        <Route path="/dashboard" element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/dashboard/analytics" element={
+          <ProtectedRoute>
+            <DashboardAnalyticsPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/dashboard/customers" element={
+          <ProtectedRoute>
+            <DashboardCustomersPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/dashboard/marketing" element={
+          <ProtectedRoute>
+            <DashboardMarketingPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/dashboard/settings" element={
+          <ProtectedRoute>
+            <DashboardSettingsPage />
+          </ProtectedRoute>
+        } />
         
-        {/* Admin Routes */}
-        <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-        <Route path="/admin/content" element={<AdminContentPage />} />
-        <Route path="/admin/portal" element={<AdminPortal />} />
-        <Route path="/admin/navigation" element={<AdminNavigationPage />} />
-        <Route path="/admin/design" element={<AdminDesignPage />} />
-        <Route path="/admin/content-management" element={<AdminContentManagementPage />} />
-        <Route path="/admin/page-sections/:pageId" element={<AdminPageSectionsPage />} />
-        
-        {/* AI Tools */}
-        <Route path="/ai-tools" element={<AIToolsPage />} />
-        <Route path="/ai-image-processing" element={<AIImageProcessingPage />} />
-        <Route path="/ai-apps-management" element={<AIAppsManagementPage />} />
-        
-        {/* 404 Page */}
-        <Route path="*" element={<NotFound />} />
+        {/* 404 Route */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
-    </QueryProvider>
+    </Router>
   );
 }
 

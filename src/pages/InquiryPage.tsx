@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Navbar from '@/components/Navbar';
@@ -26,6 +26,12 @@ const serviceIcons = {
 const InquiryPage = () => {
   const navigate = useNavigate();
   const [activeService, setActiveService] = useState('general');
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  useEffect(() => {
+    // Set loaded status after component mounts
+    setIsLoaded(true);
+  }, []);
   
   const services = [
     { id: 'platapay', name: 'PlataPay', description: 'Digital Wallet & Payment Solutions' },
@@ -42,6 +48,11 @@ const InquiryPage = () => {
         <title>Let's Build Together | InnovateHub Inc.</title>
         <meta name="description" content="Ready to collaborate? Tell us about your project and let's co-create your digital future." />
       </Helmet>
+      
+      {/* Test Banner - Will be visible if page renders */}
+      <div className="bg-red-500 text-white p-4 text-center font-bold">
+        InquiryPage Test: Page is rendering {isLoaded ? 'and component did mount' : 'but component is not mounted yet'}
+      </div>
       
       <CircuitBackground 
         pattern="tech-circle" 

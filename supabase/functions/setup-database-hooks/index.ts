@@ -21,6 +21,9 @@ serve(async (req) => {
   }
   
   try {
+    // First create the RPC function if it doesn't exist
+    await createWebhookRpcFunction();
+    
     // Check if the webhook already exists
     const { data: hooks, error: hooksError } = await supabase
       .from('supabase_functions.hooks')

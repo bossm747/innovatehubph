@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -77,11 +76,9 @@ const GeneralInquiryForm = ({ navigate }: GeneralInquiryFormProps) => {
       toast.dismiss(loadingToast);
       
       if (result.success) {
-        // Show success message with email status
+        // Show success message
         toast.success("Inquiry Submitted", {
-          description: result.emailSent 
-            ? "We've sent you a confirmation email. We'll get back to you soon!"
-            : "We've received your inquiry and will get back to you soon!",
+          description: "We've received your inquiry and will get back to you soon!",
         });
         
         // Reset form

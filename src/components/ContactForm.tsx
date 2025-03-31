@@ -43,8 +43,13 @@ const ContactForm = () => {
     try {
       // Add service type for general contact form
       const formData = {
-        ...data,
         service: "general",
+        name: data.name, // Ensure required fields are provided
+        email: data.email, // Ensure required fields are provided
+        company: data.company,
+        phone: data.phone,
+        message: data.message,
+        subscribe: data.subscribe,
       };
       
       // Submit to the inquiry service

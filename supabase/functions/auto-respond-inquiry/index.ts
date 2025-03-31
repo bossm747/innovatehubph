@@ -41,7 +41,11 @@ serve(async (req) => {
       
       // Skip if already processed
       if (inquiryData.processed) {
-        return new Response(JSON.stringify({ success: true, message: "Inquiry already processed" }), {
+        return new Response(JSON.stringify({ 
+          success: true, 
+          message: "Inquiry already processed",
+          emailSent: false 
+        }), {
           headers: { "Content-Type": "application/json", ...corsHeaders },
         });
       }
@@ -95,7 +99,11 @@ serve(async (req) => {
     
     // Not an inquiry insertion, just return success
     return new Response(
-      JSON.stringify({ success: true, message: "Event received but not processed" }),
+      JSON.stringify({ 
+        success: true, 
+        message: "Event received but not processed",
+        emailSent: false 
+      }),
       {
         headers: { "Content-Type": "application/json", ...corsHeaders },
       }
@@ -107,7 +115,8 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         success: false, 
-        error: error.message || "An unknown error occurred" 
+        error: error.message || "An unknown error occurred",
+        emailSent: false
       }),
       {
         status: 500,

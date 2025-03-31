@@ -39,6 +39,8 @@ export const submitInquiryForm = async (formData: InquiryFormData) => {
         location: formData.location,
         services: Array.isArray(formData.services) ? formData.services : undefined,
         subscribe: formData.subscribe,
+        status: "new",  // Set initial status to "new"
+        processed: false, // Mark as not processed initially
         
         // Specific form fields
         project_type: formData.projectType,
@@ -85,7 +87,8 @@ export const submitInquiryForm = async (formData: InquiryFormData) => {
         .upsert({
           email: formData.email,
           name: formData.name,
-          source: formData.service
+          source: formData.service,
+          active: true
         }, {
           onConflict: 'email'
         });
@@ -96,54 +99,15 @@ export const submitInquiryForm = async (formData: InquiryFormData) => {
       }
     }
     
-    // Now, call the Supabase Edge Function to send emails
-    console.log('Calling process-inquiry function with inquiry ID:', inquiryData?.id);
-    const { data: emailData, error: emailError } = await supabase.functions.invoke('process-inquiry', {
-      body: { 
-        ...formData,
-        inquiryId: inquiryData?.id 
-      },
-    });
-
-    if (emailError) {
-      console.error('Error sending notification emails:', emailError);
-      // Log the email failure but don't fail the submission
-      await supabase.from('email_logs').insert({
-        email_type: 'inquiry_notification',
-        recipient: 'businessdevelopment@innovatehub.ph',
-        subject: `New ${formData.service} Inquiry`,
-        successful: false,
-        error_message: emailError.message,
-        inquiry_id: inquiryData?.id
-      });
-      
-      console.log('Logged email failure in email_logs table');
-    } else {
-      // Log successful email
-      await supabase.from('email_logs').insert({
-        email_type: 'inquiry_notification',
-        recipient: 'businessdevelopment@innovatehub.ph',
-        subject: `New ${formData.service} Inquiry`,
-        successful: true,
-        inquiry_id: inquiryData?.id
-      });
-      
-      // Log confirmation email
-      await supabase.from('email_logs').insert({
-        email_type: 'inquiry_confirmation',
-        recipient: formData.email,
-        subject: 'Thank You for Your Inquiry - InnovateHub Inc.',
-        successful: true,
-        inquiry_id: inquiryData?.id
-      });
-      
-      console.log('Logged successful emails in email_logs table');
-    }
-
+    // Log the form submission
+    logFormSubmission(formData.service, formData);
+    
+    // The auto-respond-inquiry webhook will handle sending the personalized email automatically
+    
     return { 
       success: true, 
       data: inquiryData,
-      emailSent: !emailError
+      message: "Your inquiry has been submitted successfully. You'll receive a personalized email shortly."
     };
   } catch (error) {
     console.error('Error in submitInquiryForm:', error);
@@ -169,4 +133,54 @@ export const logFormSubmission = (service: string, formData: Record<string, any>
     phone: phone ? `${phone.substring(0, 3)}...` : undefined,
     timestamp: new Date().toISOString(),
   });
+};
+
+/**
+ * Get inquiry by ID
+ * @param id The inquiry ID
+ * @returns The inquiry data
+ */
+export const getInquiryById = async (id: string) => {
+  try {
+    const { data, error } = await supabase
+      .from('inquiries')
+      .select('*')
+      .eq('id', id)
+      .single();
+      
+    if (error) throw error;
+    
+    return { success: true, data };
+  } catch (error) {
+    console.error('Error fetching inquiry:', error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'An unknown error occurred' 
+    };
+  }
+};
+
+/**
+ * Update inquiry status
+ * @param id The inquiry ID
+ * @param status The new status
+ * @returns Success or error response
+ */
+export const updateInquiryStatus = async (id: string, status: string) => {
+  try {
+    const { data, error } = await supabase
+      .from('inquiries')
+      .update({ status })
+      .eq('id', id);
+      
+    if (error) throw error;
+    
+    return { success: true, data };
+  } catch (error) {
+    console.error('Error updating inquiry status:', error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'An unknown error occurred' 
+    };
+  }
 };

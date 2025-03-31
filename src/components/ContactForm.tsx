@@ -3,17 +3,21 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { Checkbox } from "@/components/ui/checkbox";
+import { submitInquiryForm } from "@/services/inquiryService";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
   company: z.string().optional(),
+  phone: z.string().optional(),
   message: z.string().min(10, { message: "Message must be at least 10 characters." }),
+  subscribe: z.boolean().default(true),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -27,28 +31,46 @@ const ContactForm = () => {
       name: "",
       email: "",
       company: "",
+      phone: "",
       message: "",
+      subscribe: true,
     },
   });
 
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     
-    // Simulate API call
-    console.log('Form submitted:', data);
-    
-    // Simulate delay for API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Show success toast
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for reaching out. We'll get back to you shortly.",
-    });
-    
-    // Reset form
-    form.reset();
-    setIsSubmitting(false);
+    try {
+      // Add service type for general contact form
+      const formData = {
+        ...data,
+        service: "general",
+      };
+      
+      // Submit to the inquiry service
+      const result = await submitInquiryForm(formData);
+      
+      if (result.success) {
+        // Show success toast
+        toast.success("Message Sent!", {
+          description: "Thank you for reaching out. We'll get back to you shortly.",
+        });
+        
+        // Reset form
+        form.reset();
+      } else {
+        toast.error("Error Submitting Form", {
+          description: result.error || "Please try again later.",
+        });
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("Error Submitting Form", {
+        description: "An unexpected error occurred. Please try again later.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -90,19 +112,35 @@ const ContactForm = () => {
             />
           </div>
           
-          <FormField
-            control={form.control}
-            name="company"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Company (Optional)</FormLabel>
-                <FormControl>
-                  <Input placeholder="Your Company" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FormField
+              control={form.control}
+              name="company"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Company (Optional)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your Company" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone (Optional)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="+63 912 345 6789" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           
           <FormField
             control={form.control}
@@ -118,6 +156,26 @@ const ContactForm = () => {
                   />
                 </FormControl>
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <FormField
+            control={form.control}
+            name="subscribe"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel>
+                    Subscribe to our newsletter for updates on our services and industry insights
+                  </FormLabel>
+                </div>
               </FormItem>
             )}
           />

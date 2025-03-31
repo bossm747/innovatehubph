@@ -3,15 +3,19 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { Checkbox } from "@/components/ui/checkbox";
+import { submitInquiryForm } from "@/services/inquiryService";
 
 const ContactSectionForm = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     company: '',
-    message: ''
+    message: '',
+    subscribe: true
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -19,24 +23,64 @@ const ContactSectionForm = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleCheckboxChange = (checked: boolean) => {
+    setFormData(prev => ({ ...prev, subscribe: checked }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Form validation would go here
-    console.log('Form submitted:', formData);
+    setIsSubmitting(true);
     
-    // Show success toast
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for reaching out. We'll get back to you shortly.",
-    });
-    
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      company: '',
-      message: ''
-    });
+    try {
+      // Form validation
+      if (!formData.name || !formData.email || !formData.message) {
+        toast.error("Please fill in all required fields");
+        setIsSubmitting(false);
+        return;
+      }
+      
+      if (!formData.email.includes('@')) {
+        toast.error("Please enter a valid email address");
+        setIsSubmitting(false);
+        return;
+      }
+      
+      // Add service type for general contact form
+      const inquiryData = {
+        ...formData,
+        service: "general",
+      };
+      
+      // Submit to the inquiry service
+      const result = await submitInquiryForm(inquiryData);
+      
+      if (result.success) {
+        // Show success toast
+        toast.success("Message Sent!", {
+          description: "Thank you for reaching out. We'll get back to you shortly.",
+        });
+        
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          company: '',
+          message: '',
+          subscribe: true
+        });
+      } else {
+        toast.error("Error Submitting Form", {
+          description: result.error || "Please try again later.",
+        });
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("Error Submitting Form", {
+        description: "An unexpected error occurred. Please try again later.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -98,14 +142,25 @@ const ContactSectionForm = () => {
           />
         </div>
         
+        <div className="flex items-center space-x-2">
+          <Checkbox 
+            id="subscribe" 
+            checked={formData.subscribe} 
+            onCheckedChange={handleCheckboxChange}
+          />
+          <label htmlFor="subscribe" className="text-sm text-gray-700 cursor-pointer">
+            Subscribe to our newsletter for updates
+          </label>
+        </div>
+        
         <Button 
           type="submit" 
           variant="green"
-          width="full"
+          className="w-full btn-shine"
           size="lg"
-          className="btn-shine"
+          disabled={isSubmitting}
         >
-          Send Message
+          {isSubmitting ? "Sending..." : "Send Message"}
         </Button>
         
         <p className="text-xs text-gray-500 text-center mt-4">

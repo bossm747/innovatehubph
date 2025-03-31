@@ -6,8 +6,7 @@ import {
   NavigationMenuContent, 
   NavigationMenuItem, 
   NavigationMenuList, 
-  NavigationMenuTrigger, 
-  navigationMenuTriggerStyle 
+  NavigationMenuTrigger
 } from "@/components/ui/navigation-menu";
 import ListItem from './ListItem';
 import NavItem from './NavItem';
@@ -28,8 +27,11 @@ const DesktopNavigation = () => {
               <NavigationMenuTrigger>Services</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                  <ListItem href="/services" title="All Services">
+                  <ListItem href="/all-services" title="All Services">
                     Overview of our complete service offerings
+                  </ListItem>
+                  <ListItem href="/services" title="Service Categories">
+                    Explore our services by category
                   </ListItem>
                   <ListItem href="/fintech-solutions" title="Fintech Solutions">
                     Digital wallet and financial solutions
@@ -50,7 +52,7 @@ const DesktopNavigation = () => {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavItem to="/partners">Partners</NavItem>
+              <NavItem to="/clients">Clients</NavItem>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
@@ -58,12 +60,6 @@ const DesktopNavigation = () => {
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                   <ListItem href="/team" title="Our Team">
                     Meet the dedicated professionals behind InnovateHub
-                  </ListItem>
-                  <ListItem href="/blog" title="Blog">
-                    News and articles from our team
-                  </ListItem>
-                  <ListItem href="/clients" title="Clients">
-                    Our valued clients and partnerships
                   </ListItem>
                   <ListItem href="/ai-tools" title="AI Tools">
                     Productivity tools powered by AI

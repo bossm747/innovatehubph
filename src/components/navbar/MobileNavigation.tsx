@@ -54,8 +54,13 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
             {isSubmenuExpanded('services') && (
               <ul className="pl-4 space-y-1 mt-1">
                 <li>
-                  <Link to="/services" className="block py-1.5 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                  <Link to="/all-services" className="block py-1.5 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
                     All Services
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/services" className="block py-1.5 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                    Service Categories
                   </Link>
                 </li>
                 <li>
@@ -87,23 +92,13 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
             )}
           </li>
           <li>
-            <Link to="/partners" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
-              Partners
+            <Link to="/clients" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+              Clients
             </Link>
           </li>
           <li>
             <Link to="/team" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
               Our Team
-            </Link>
-          </li>
-          <li>
-            <Link to="/blog" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
-              Blog
-            </Link>
-          </li>
-          <li>
-            <Link to="/clients" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
-              Clients
             </Link>
           </li>
           <li className="py-1">
@@ -143,9 +138,14 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
               Contact
             </Link>
           </li>
+          <li>
+            <Link to="/inquiry" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+              Inquiry
+            </Link>
+          </li>
           <li className="mt-4">
             <Link 
-              to="/admin/dashboard" 
+              to="/admin/content" 
               className="block w-full py-2 px-4 text-center bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-all duration-200 shadow-md" 
               onClick={onClose}
             >

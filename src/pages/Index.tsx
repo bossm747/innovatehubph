@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import FintechSolutions from '@/components/FintechSolutions';
@@ -19,18 +19,16 @@ import { Helmet } from 'react-helmet';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
-  // Use a ref to prevent unnecessary re-calculations
-  const observerRef = useRef<IntersectionObserver | null>(null);
   const isMobile = useIsMobile();
   
   useEffect(() => {
-    // Use Intersection Observer API for better performance
-    observerRef.current = new IntersectionObserver((entries) => {
+    // Create the observer inside the component function
+    const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('fade-in');
           // Once the animation is applied, unobserve the element
-          observerRef.current?.unobserve(entry.target);
+          observer.unobserve(entry.target);
         }
       });
     }, {
@@ -44,14 +42,12 @@ const Index = () => {
     
     // Observe each element
     fadeElements.forEach(element => {
-      observerRef.current?.observe(element);
+      observer.observe(element);
     });
     
     // Clean up
     return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
+      observer.disconnect();
     };
   }, []);
 

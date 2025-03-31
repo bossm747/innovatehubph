@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart3, Users, Send, Settings, Brain, Sparkles, Gift, Target, MessageSquare, FileType, Robot } from 'lucide-react';
+import { BarChart3, Users, Send, Settings, Brain, Sparkles, Gift, Target, MessageSquare, FileType, Bot } from 'lucide-react';
 import RecipientsList from './marketing/RecipientsList';
 import CampaignManager from './marketing/CampaignManager';
 import MarketingCopyGenerator from './marketing/MarketingCopyGenerator';
@@ -98,7 +98,7 @@ const EmailMarketingTab: React.FC = () => {
             AI Tools
           </TabsTrigger>
           <TabsTrigger value="ai-email" className="flex items-center">
-            <Robot className="w-4 h-4 mr-2" />
+            <Bot className="w-4 h-4 mr-2" />
             AI Email
           </TabsTrigger>
           <TabsTrigger value="agents" className="flex items-center">

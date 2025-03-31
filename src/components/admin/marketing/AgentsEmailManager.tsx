@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,7 +11,8 @@ import {
   Brain, 
   Languages, 
   CheckCircle2, 
-  Loader2
+  Loader2,
+  Bot
 } from 'lucide-react';
 
 const AgentsEmailManager = () => {
@@ -52,7 +52,6 @@ const AgentsEmailManager = () => {
       setEnhancedContent(data.text);
       toast.success('Email enhanced successfully!');
       
-      // Switch to the enhanced tab
       setActiveTab('enhanced');
     } catch (error) {
       console.error('Error enhancing email:', error);
@@ -85,7 +84,6 @@ const AgentsEmailManager = () => {
       setTranslatedContent(data.text);
       toast.success(`Email translated to ${translationLanguage} successfully!`);
       
-      // Switch to the translated tab
       setActiveTab('translated');
     } catch (error) {
       console.error('Error translating email:', error);

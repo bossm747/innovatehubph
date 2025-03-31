@@ -59,4 +59,28 @@ BEGIN
   RETURN QUERY EXECUTE query;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Create a function to count records in a specific table
+CREATE OR REPLACE FUNCTION count_table_records(table_name text)
+RETURNS TABLE(total_count bigint) AS $$
+DECLARE
+  query text;
+BEGIN
+  query := format('SELECT COUNT(*) FROM %I', table_name);
+  RETURN QUERY EXECUTE query;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Create a function to get a specific record by ID
+CREATE OR REPLACE FUNCTION get_record_by_id(table_name text, record_id uuid)
+RETURNS json AS $$
+DECLARE
+  query text;
+  result json;
+BEGIN
+  query := format('SELECT * FROM %I WHERE id = %L', table_name, record_id);
+  EXECUTE query INTO result;
+  RETURN result;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 `;

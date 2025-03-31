@@ -21,7 +21,7 @@ serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
     const supabase = createClient(supabaseUrl, supabaseKey);
     
-    const { action, tableName, limit = 50 } = await req.json();
+    const { action, tableName, limit = 50, filter, id } = await req.json();
     
     if (action === 'listTables') {
       // Query to get all tables in the public schema
@@ -48,6 +48,45 @@ serve(async (req) => {
           table_name: tableName,
           row_limit: limit
         });
+        
+      if (error) throw error;
+      return new Response(JSON.stringify({ data }), { 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      });
+    }
+
+    if (action === 'getRecord' && tableName && id) {
+      // Sanitize table name to prevent SQL injection
+      if (!tableName.match(/^[a-zA-Z0-9_]+$/)) {
+        throw new Error('Invalid table name');
+      }
+      
+      // Get a specific record by ID
+      const { data, error } = await supabase
+        .from(tableName)
+        .select('*')
+        .eq('id', id)
+        .single();
+        
+      if (error) throw error;
+      return new Response(JSON.stringify({ data }), { 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      });
+    }
+    
+    if (action === 'getTableSchema' && tableName) {
+      // Sanitize table name to prevent SQL injection
+      if (!tableName.match(/^[a-zA-Z0-9_]+$/)) {
+        throw new Error('Invalid table name');
+      }
+      
+      // Get the table schema from information_schema
+      const { data, error } = await supabase
+        .from('information_schema.columns')
+        .select('column_name, data_type, is_nullable, column_default')
+        .eq('table_schema', 'public')
+        .eq('table_name', tableName)
+        .order('ordinal_position');
         
       if (error) throw error;
       return new Response(JSON.stringify({ data }), { 

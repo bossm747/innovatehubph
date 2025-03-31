@@ -48,10 +48,11 @@ const DatabaseManagement = () => {
 
   const fetchTables = async () => {
     try {
-      // Execute a SQL query to get all tables in the public schema
-      const { data, error } = await supabase.query(`
-        SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname = 'public';
-      `);
+      // Use the from method to query pg_catalog.pg_tables
+      const { data, error } = await supabase
+        .from('pg_catalog.pg_tables')
+        .select('tablename')
+        .eq('schemaname', 'public');
 
       if (error) throw error;
 
@@ -74,11 +75,18 @@ const DatabaseManagement = () => {
   const fetchRecords = async (tableName: string) => {
     setLoading(true);
     try {
-      // Execute a SQL query to get records from the selected table
-      const { data, error } = await supabase.query(`
-        SELECT * FROM "${tableName}" LIMIT 50;
-      `);
-
+      // Sanitize table name to prevent SQL injection
+      if (!tableName.match(/^[a-zA-Z0-9_]+$/)) {
+        throw new Error('Invalid table name');
+      }
+      
+      // Use the rpc method to call the select_from_table function we created
+      const { data, error } = await supabase
+        .rpc('select_from_table', { 
+          table_name: tableName,
+          row_limit: 50
+        });
+        
       if (error) throw error;
 
       // Extract column names from the first record

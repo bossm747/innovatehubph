@@ -17,10 +17,12 @@ const FooterNavLinks = ({ title = "Quick Links", links }: FooterNavLinksProps) =
   const defaultLinks: NavLink[] = [
     { name: "Home", path: "/" },
     { name: "About Us", path: "/about" },
-    { name: "Services", path: "/all-services" },
+    { name: "All Services", path: "/all-services" },
+    { name: "Service Categories", path: "/services" },
+    { name: "Our Team", path: "/team" },
     { name: "Clients", path: "/clients" },
+    { name: "Partners", path: "/partners" },
     { name: "AI Tools", path: "/ai-tools" },
-    { name: "Team", path: "/team" },
     { name: "Inquiry", path: "/inquiry" },
     { name: "Contact Us", path: "/contact" }
   ];

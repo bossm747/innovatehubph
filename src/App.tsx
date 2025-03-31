@@ -14,6 +14,18 @@ import AIImageProcessingPage from './pages/AIImageProcessingPage';
 import AIToolsPage from './pages/AIToolsPage';
 import ClientsPage from './pages/ClientsPage';
 import AdminContentPage from './pages/AdminContentPage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
+import AiSolutionsPage from './pages/AiSolutionsPage';
+import BlogPage from './pages/BlogPage';
+import DigitalCustomizationsPage from './pages/DigitalCustomizationsPage';
+import EcommercePage from './pages/EcommercePage';
+import FacebookPage from './pages/FacebookPage';
+import FileUploadPage from './pages/FileUploadPage';
+import FintechSolutionsPage from './pages/FintechSolutionsPage';
+import GlobalExpansionPage from './pages/GlobalExpansionPage';
+import MobileAppDevelopmentPage from './pages/MobileAppDevelopmentPage';
+import PartnersPage from './pages/PartnersPage';
+import TeamPage from './pages/TeamPage';
 
 // Protected route component
 import ProtectedRoute from './components/ProtectedRoute';
@@ -28,11 +40,29 @@ function App() {
       <Route path="/all-services" element={<AllServicesPage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/inquiry" element={<InquiryPage />} />
+      
+      {/* AI Tools & Resources */}
       <Route path="/ai-tools" element={<AIToolsPage />} />
       <Route path="/ai-image-processing" element={<AIImageProcessingPage />} />
       <Route path="/ai-apps-management" element={<AIAppsManagementPage />} />
+      <Route path="/ai-solutions" element={<AiSolutionsPage />} />
+      
+      {/* Service Detail Pages */}
+      <Route path="/digital-customizations" element={<DigitalCustomizationsPage />} />
+      <Route path="/ecommerce" element={<EcommercePage />} />
+      <Route path="/fintech-solutions" element={<FintechSolutionsPage />} />
+      <Route path="/global-expansion" element={<GlobalExpansionPage />} />
+      <Route path="/mobile-app-development" element={<MobileAppDevelopmentPage />} />
+      
+      {/* Company Pages */}
       <Route path="/clients" element={<ClientsPage />} />
-      <Route path="/team" element={<AboutPage />} /> {/* Currently reusing AboutPage for team */}
+      <Route path="/team" element={<TeamPage />} />
+      <Route path="/partners" element={<PartnersPage />} />
+      <Route path="/blog" element={<BlogPage />} />
+      <Route path="/facebook" element={<FacebookPage />} />
+      
+      {/* Utility Pages */}
+      <Route path="/file-upload" element={<FileUploadPage />} />
       
       {/* Admin Routes */}
       <Route 
@@ -40,6 +70,14 @@ function App() {
         element={
           <ProtectedRoute>
             <AdminContentPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/admin/dashboard" 
+        element={
+          <ProtectedRoute>
+            <AdminDashboardPage />
           </ProtectedRoute>
         } 
       />

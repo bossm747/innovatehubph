@@ -39,6 +39,8 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
               About
             </Link>
           </li>
+          
+          {/* Services Submenu */}
           <li className="py-1">
             <button 
               onClick={() => toggleSubmenu('services')} 
@@ -88,32 +90,68 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
                     Global Expansion
                   </Link>
                 </li>
+                <li>
+                  <Link to="/mobile-app-development" className="block py-1.5 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                    Mobile App Development
+                  </Link>
+                </li>
               </ul>
             )}
           </li>
-          <li>
-            <Link to="/clients" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
-              Clients
-            </Link>
-          </li>
-          <li>
-            <Link to="/team" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
-              Our Team
-            </Link>
-          </li>
+          
+          {/* Company Submenu */}
           <li className="py-1">
             <button 
-              onClick={() => toggleSubmenu('ai-resources')}
+              onClick={() => toggleSubmenu('company')} 
               className="flex items-center justify-between w-full px-4 py-2 text-white hover:bg-white/10 rounded-md transition-all duration-200"
             >
-              <span className="font-medium">AI Resources</span>
-              {isSubmenuExpanded('ai-resources') ? (
+              <span className="font-medium">Company</span>
+              {isSubmenuExpanded('company') ? (
                 <ChevronUp className="h-4 w-4 text-white/70" />
               ) : (
                 <ChevronDown className="h-4 w-4 text-white/70" />
               )}
             </button>
-            {isSubmenuExpanded('ai-resources') && (
+            {isSubmenuExpanded('company') && (
+              <ul className="pl-4 space-y-1 mt-1">
+                <li>
+                  <Link to="/team" className="block py-1.5 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                    Our Team
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/clients" className="block py-1.5 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                    Clients
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/partners" className="block py-1.5 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                    Partners
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/blog" className="block py-1.5 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                    Blog
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </li>
+          
+          {/* Resources Submenu */}
+          <li className="py-1">
+            <button 
+              onClick={() => toggleSubmenu('resources')}
+              className="flex items-center justify-between w-full px-4 py-2 text-white hover:bg-white/10 rounded-md transition-all duration-200"
+            >
+              <span className="font-medium">Resources</span>
+              {isSubmenuExpanded('resources') ? (
+                <ChevronUp className="h-4 w-4 text-white/70" />
+              ) : (
+                <ChevronDown className="h-4 w-4 text-white/70" />
+              )}
+            </button>
+            {isSubmenuExpanded('resources') && (
               <ul className="pl-4 space-y-1 mt-1">
                 <li>
                   <Link to="/ai-tools" className="block py-1.5 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
@@ -130,9 +168,15 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
                     AI Apps Management
                   </Link>
                 </li>
+                <li>
+                  <Link to="/file-upload" className="block py-1.5 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
+                    File Upload
+                  </Link>
+                </li>
               </ul>
             )}
           </li>
+          
           <li>
             <Link to="/contact" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
               Contact
@@ -145,7 +189,7 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
           </li>
           <li className="mt-4">
             <Link 
-              to="/admin/content" 
+              to="/admin/dashboard" 
               className="block w-full py-2 px-4 text-center bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-all duration-200 shadow-md" 
               onClick={onClose}
             >

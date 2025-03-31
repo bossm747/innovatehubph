@@ -48,19 +48,35 @@ const DesktopNavigation = () => {
                   <ListItem href="/global-expansion" title="Global Expansion">
                     Strategies for businesses venturing into new markets
                   </ListItem>
+                  <ListItem href="/mobile-app-development" title="Mobile App Development">
+                    Custom mobile applications for iOS and Android
+                  </ListItem>
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavItem to="/clients">Clients</NavItem>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
+              <NavigationMenuTrigger>Company</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                   <ListItem href="/team" title="Our Team">
                     Meet the dedicated professionals behind InnovateHub
                   </ListItem>
+                  <ListItem href="/clients" title="Clients">
+                    Discover the businesses we've helped transform
+                  </ListItem>
+                  <ListItem href="/partners" title="Partners">
+                    Our strategic technology and business partners
+                  </ListItem>
+                  <ListItem href="/blog" title="Blog">
+                    Latest insights and industry news
+                  </ListItem>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                   <ListItem href="/ai-tools" title="AI Tools">
                     Productivity tools powered by AI
                   </ListItem>
@@ -70,11 +86,17 @@ const DesktopNavigation = () => {
                   <ListItem href="/ai-apps-management" title="AI Apps Management">
                     Manage AI resources and projects
                   </ListItem>
+                  <ListItem href="/file-upload" title="File Upload">
+                    Upload and manage your files
+                  </ListItem>
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavItem to="/contact">Contact</NavItem>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavItem to="/inquiry">Inquiry</NavItem>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>

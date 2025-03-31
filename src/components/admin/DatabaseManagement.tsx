@@ -1,32 +1,17 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from '@/components/ui/table';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { RefreshCw, Database, Eye, Trash2, AlertCircle } from 'lucide-react';
+import { RefreshCw, Database } from 'lucide-react';
 import { toast } from 'sonner';
-import { Skeleton } from '@/components/ui/skeleton';
 
-// Define a specific type for table records
-type BasicValue = string | number | boolean | null;
-type TableRecord = {
-  [key: string]: BasicValue | BasicValue[] | { [key: string]: BasicValue } | unknown;
-  id: string;
-};
-
-type PgTable = {
-  tablename: string;
-};
+// Import our new components
+import { TableSelector } from './database/TableSelector';
+import { SearchBar } from './database/SearchBar';
+import { TableView } from './database/TableView';
+import { EmptyState } from './database/EmptyState';
+import { LoadingState } from './database/LoadingState';
+import { DatabaseService, TableRecord } from './database/DatabaseService';
 
 const DatabaseManagement = () => {
   const [tables, setTables] = useState<string[]>([]);
@@ -49,26 +34,13 @@ const DatabaseManagement = () => {
   const fetchTables = async () => {
     try {
       setLoading(true);
-      // Use the Edge Function to get the tables
-      const { data, error } = await supabase.functions.invoke('database-helpers', {
-        body: { action: 'listTables' }
-      });
-
-      if (error) throw error;
-
-      if (data?.data && Array.isArray(data.data)) {
-        // Extract table names and sort alphabetically
-        const tableNames = data.data
-          .map((table: PgTable) => table.tablename)
-          .filter(Boolean)
-          .sort();
-        
-        setTables(tableNames);
-        
-        // Set the first table as default if none is selected
-        if (tableNames.length > 0 && !selectedTable) {
-          setSelectedTable(tableNames[0]);
-        }
+      const tableNames = await DatabaseService.fetchTables();
+      
+      setTables(tableNames);
+      
+      // Set the first table as default if none is selected
+      if (tableNames.length > 0 && !selectedTable) {
+        setSelectedTable(tableNames[0]);
       }
     } catch (error) {
       console.error('Error fetching tables:', error);
@@ -81,21 +53,12 @@ const DatabaseManagement = () => {
   const fetchRecords = async (tableName: string) => {
     setLoading(true);
     try {
-      // Use the Edge Function to get the records
-      const { data, error } = await supabase.functions.invoke('database-helpers', {
-        body: { 
-          action: 'getRecords',
-          tableName,
-          limit: 50
-        }
-      });
-        
-      if (error) throw error;
-
+      const tableRecords = await DatabaseService.fetchRecords(tableName);
+      
       // Extract column names from the first record
-      if (data?.data && Array.isArray(data.data) && data.data.length > 0) {
-        setColumns(Object.keys(data.data[0]));
-        setRecords(data.data as TableRecord[]);
+      if (tableRecords.length > 0) {
+        setColumns(Object.keys(tableRecords[0]));
+        setRecords(tableRecords);
       } else {
         setColumns([]);
         setRecords([]);
@@ -164,77 +127,31 @@ const DatabaseManagement = () => {
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
-                <Select value={selectedTable} onValueChange={handleTableChange}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a table" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {tables.map(table => (
-                      <SelectItem key={table} value={table}>
-                        {table}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <TableSelector 
+                  tables={tables}
+                  selectedTable={selectedTable}
+                  onTableChange={handleTableChange}
+                  isLoading={loading}
+                />
               </div>
               <div className="md:col-span-3">
-                <Input 
-                  placeholder="Search records..." 
-                  value={searchTerm} 
-                  onChange={(e) => setSearchTerm(e.target.value)} 
+                <SearchBar 
+                  searchTerm={searchTerm}
+                  onSearchChange={setSearchTerm}
                 />
               </div>
             </div>
 
             {loading ? (
-              <div className="space-y-2">
-                <Skeleton className="h-8 w-full" />
-                <Skeleton className="h-8 w-full" />
-                <Skeleton className="h-8 w-full" />
-              </div>
+              <LoadingState />
             ) : records.length === 0 ? (
-              <div className="text-center py-8 space-y-2">
-                <AlertCircle className="h-8 w-8 mx-auto text-muted-foreground" />
-                <p className="text-muted-foreground">No records found in this table</p>
-              </div>
+              <EmptyState />
             ) : (
-              <div className="border rounded-md overflow-hidden">
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        {columns.map(column => (
-                          <TableHead key={column} className="whitespace-nowrap">
-                            {column}
-                          </TableHead>
-                        ))}
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredRecords.map((record, index) => (
-                        <TableRow key={index}>
-                          {columns.map(column => (
-                            <TableCell key={column} className="max-w-[200px] truncate">
-                              {formatCellValue(record[column])}
-                            </TableCell>
-                          ))}
-                          <TableCell>
-                            <div className="flex space-x-2">
-                              <Button size="icon" variant="ghost">
-                                <Eye className="h-4 w-4" />
-                              </Button>
-                              <Button size="icon" variant="ghost">
-                                <Trash2 className="h-4 w-4 text-red-500" />
-                              </Button>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </div>
+              <TableView 
+                records={filteredRecords}
+                columns={columns}
+                formatCellValue={formatCellValue}
+              />
             )}
           </div>
         </CardContent>

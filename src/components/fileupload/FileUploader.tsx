@@ -1,6 +1,6 @@
 
 import React, { useState, useRef } from 'react';
-import { toast } from 'sonner';
+import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';

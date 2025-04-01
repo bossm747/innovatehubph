@@ -1,14 +1,11 @@
 
-// This is a wrapper around Radix UI Toast
+// This is a wrapper around sonner Toast
 import { Toast, ToastActionElement, ToastProps } from "@/components/ui/toast";
 import {
   useCallback,
   type ReactNode,
 } from "react";
-import {
-  useToast as useToastOriginal,
-  toast as toastOriginal,
-} from "sonner";
+import { toast as toastOriginal } from "sonner";
 
 type ToasterToast = ToastProps & {
   id: string;
@@ -17,14 +14,19 @@ type ToasterToast = ToastProps & {
   action?: ToastActionElement;
 };
 
-// Use a custom hook that conforms to both our toast hook shape and sonner's shape
+// Custom hook for toast functionality that works with our expected interface
 const useToast = () => {
-  const { toast: toastFn, ...rest } = useToastOriginal();
-
+  // Create a simplified interface that maintains compatibility with our app
   return {
-    ...rest,
-    toast: toastFn,
+    toast: toastOriginal,
     toasts: [] as ToasterToast[],
+    dismiss: (toastId?: string) => {
+      if (toastId) {
+        toastOriginal.dismiss(toastId);
+      } else {
+        toastOriginal.dismiss();
+      }
+    },
   };
 };
 

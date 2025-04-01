@@ -29,10 +29,10 @@ const ContactSection = () => {
             </Button>
             
             <Button asChild variant="outline" className="border-innovate-200 text-innovate-700 hover:bg-innovate-50">
-              <a href="tel:+639176851216" className="flex items-center gap-2">
+              <Link to="tel:+639176851216" className="flex items-center gap-2">
                 <PhoneCall className="h-4 w-4" />
                 Call Now
-              </a>
+              </Link>
             </Button>
           </div>
           

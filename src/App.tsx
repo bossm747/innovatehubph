@@ -6,7 +6,6 @@ import HomePage from './pages/Index';
 import AboutPage from './pages/AboutPage';
 import ServicesPage from './pages/ServicesPage';
 import ContactPage from './pages/ContactPage';
-import InquiryPage from './pages/InquiryPage';
 import NotFound from './pages/NotFound';
 import AllServicesPage from './pages/AllServicesPage';
 import AIAppsManagementPage from './pages/AIAppsManagementPage';
@@ -41,7 +40,6 @@ function App() {
       <Route path="/services" element={<ServicesPage />} />
       <Route path="/all-services" element={<AllServicesPage />} />
       <Route path="/contact" element={<ContactPage />} />
-      <Route path="/inquiry" element={<InquiryPage />} />
       
       {/* AI Tools & Resources */}
       <Route path="/ai-tools" element={<AIToolsPage />} />

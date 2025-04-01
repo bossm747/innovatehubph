@@ -182,11 +182,6 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
               Contact
             </Link>
           </li>
-          <li>
-            <Link to="/inquiry" className="block py-2 px-4 text-white hover:bg-white/10 rounded-md transition-all duration-200" onClick={onClose}>
-              Inquiry
-            </Link>
-          </li>
           <li className="mt-4">
             <Link 
               to="/admin/dashboard" 

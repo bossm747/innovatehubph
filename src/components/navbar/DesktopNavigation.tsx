@@ -95,9 +95,6 @@ const DesktopNavigation = () => {
             <NavigationMenuItem>
               <NavItem to="/contact">Contact</NavItem>
             </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavItem to="/inquiry">Inquiry</NavItem>
-            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
       </div>

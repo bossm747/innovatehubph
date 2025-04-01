@@ -15,10 +15,10 @@ import {
   ChevronDown, 
   ChevronUp,
   Building,
-  Bank,
+  Briefcase,
   Truck,
   Laptop,
-  Briefcase
+  CircleDollarSign
 } from 'lucide-react';
 
 export interface Partner {
@@ -44,7 +44,7 @@ const PartnerCard: React.FC<PartnerCardProps> = ({ partner, expanded = false }) 
   const getCategoryIcon = (category: string) => {
     switch (category.toLowerCase()) {
       case 'banking':
-        return <Bank className="h-4 w-4" />;
+        return <CircleDollarSign className="h-4 w-4" />;
       case 'financial services':
         return <Briefcase className="h-4 w-4" />;
       case 'logistics':

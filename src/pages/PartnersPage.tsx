@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -12,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { 
   ArrowLeft, 
   Building, 
-  Bank, 
+  CircleDollarSign, 
   Truck, 
   Laptop, 
   Briefcase,
@@ -73,7 +72,7 @@ const PartnersPage = () => {
   const getCategoryIcon = (category: string) => {
     switch (category.toLowerCase()) {
       case 'banking':
-        return <Bank className="h-5 w-5" />;
+        return <CircleDollarSign className="h-5 w-5" />;
       case 'financial services':
         return <Briefcase className="h-5 w-5" />;
       case 'logistics':

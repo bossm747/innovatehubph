@@ -1,8 +1,25 @@
 
-import React from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useState } from 'react';
+import { 
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle 
+} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Link as LinkIcon } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { 
+  ExternalLink, 
+  ChevronDown, 
+  ChevronUp,
+  Building,
+  Bank,
+  Truck,
+  Laptop,
+  Briefcase
+} from 'lucide-react';
 
 export interface Partner {
   id: number;
@@ -21,8 +38,26 @@ interface PartnerCardProps {
 }
 
 const PartnerCard: React.FC<PartnerCardProps> = ({ partner, expanded = false }) => {
+  const [isExpanded, setIsExpanded] = useState(expanded);
+  
+  // Get icon based on category
+  const getCategoryIcon = (category: string) => {
+    switch (category.toLowerCase()) {
+      case 'banking':
+        return <Bank className="h-4 w-4" />;
+      case 'financial services':
+        return <Briefcase className="h-4 w-4" />;
+      case 'logistics':
+        return <Truck className="h-4 w-4" />;
+      case 'technology':
+        return <Laptop className="h-4 w-4" />;
+      default:
+        return <Building className="h-4 w-4" />;
+    }
+  };
+
   return (
-    <Card className="overflow-hidden h-full transition-all hover:shadow-md">
+    <Card className="overflow-hidden h-full transition-all hover:shadow-md border border-gray-100">
       <CardHeader className="bg-white p-4">
         <div className="h-28 flex items-center justify-center overflow-hidden">
           <img 
@@ -33,12 +68,13 @@ const PartnerCard: React.FC<PartnerCardProps> = ({ partner, expanded = false }) 
         </div>
       </CardHeader>
       <CardContent className="p-5">
-        <CardTitle className="text-xl mb-1">{partner.name}</CardTitle>
-        <div className="inline-block px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded mb-3">
+        <CardTitle className="text-xl mb-3">{partner.name}</CardTitle>
+        <Badge variant="outline" className="mb-3 flex items-center gap-1 font-normal">
+          {getCategoryIcon(partner.category)}
           {partner.category}
-        </div>
+        </Badge>
         <CardDescription className="text-sm text-gray-600">
-          {expanded ? (
+          {isExpanded || (!partner.details && !partner.integrations) ? (
             <div>
               <p className="mb-3">{partner.description}</p>
               {partner.details && (
@@ -62,20 +98,38 @@ const PartnerCard: React.FC<PartnerCardProps> = ({ partner, expanded = false }) 
           )}
         </CardDescription>
       </CardContent>
-      {(expanded && partner.website) && (
-        <CardFooter className="border-t p-4 bg-gray-50">
-          <Button variant="outline" size="sm" className="w-full" asChild>
+      
+      {/* Show footer with website link or toggle button */}
+      <CardFooter className="border-t p-4 bg-gray-50 flex justify-between items-center">
+        {(partner.website) && (
+          <Button variant="outline" size="sm" asChild className="flex-1 mr-2">
             <a 
               href={partner.website} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center justify-center"
+              className="flex items-center justify-center gap-2"
             >
-              Visit Website <ExternalLink className="h-3.5 w-3.5 ml-2" />
+              Visit Website <ExternalLink className="h-3.5 w-3.5" />
             </a>
           </Button>
-        </CardFooter>
-      )}
+        )}
+        
+        {/* Only show toggle if there are details or integrations */}
+        {(partner.details || (partner.integrations && partner.integrations.length > 0)) && (
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => setIsExpanded(!isExpanded)}
+            className={partner.website ? "flex-0" : "flex-1"}
+          >
+            {isExpanded ? (
+              <>Show Less <ChevronUp className="h-4 w-4 ml-1" /></>
+            ) : (
+              <>Show More <ChevronDown className="h-4 w-4 ml-1" /></>
+            )}
+          </Button>
+        )}
+      </CardFooter>
     </Card>
   );
 };

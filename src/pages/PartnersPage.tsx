@@ -9,14 +9,30 @@ import PartnerCard, { Partner } from '@/components/partners/PartnerCard';
 import partnersData from '@/data/partnersData';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { 
+  ArrowLeft, 
+  Building, 
+  Bank, 
+  Truck, 
+  Laptop, 
+  Briefcase,
+  ArrowRight,
+  ChevronRight
+} from 'lucide-react';
 import HeroSection from '@/components/shared/HeroSection';
 import PartnersHeroBackground from '@/components/partners/PartnersHeroBackground';
 import PartnersHeroImage from '@/components/partners/PartnersHeroImage';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const PartnersPage = () => {
   const [partners, setPartners] = useState<Partner[]>(partnersData);
   const [filter, setFilter] = useState<string>('all');
+  
+  // Get unique categories for filter buttons
+  const categories = ['all', ...Array.from(new Set(partnersData.map(partner => partner.category)))];
   
   // Add scroll reveal effect
   useEffect(() => {
@@ -53,8 +69,30 @@ const PartnersPage = () => {
     }
   };
   
-  // Get unique categories for filter buttons
-  const categories = ['all', ...Array.from(new Set(partnersData.map(partner => partner.category)))];
+  // Get icon based on category
+  const getCategoryIcon = (category: string) => {
+    switch (category.toLowerCase()) {
+      case 'banking':
+        return <Bank className="h-5 w-5" />;
+      case 'financial services':
+        return <Briefcase className="h-5 w-5" />;
+      case 'logistics':
+        return <Truck className="h-5 w-5" />;
+      case 'technology':
+        return <Laptop className="h-5 w-5" />;
+      default:
+        return <Building className="h-5 w-5" />;
+    }
+  };
+  
+  // Group partners by category
+  const partnersByCategory = partnersData.reduce((acc, partner) => {
+    if (!acc[partner.category]) {
+      acc[partner.category] = [];
+    }
+    acc[partner.category].push(partner);
+    return acc;
+  }, {} as Record<string, Partner[]>);
   
   return (
     <div className="min-h-screen w-full overflow-x-hidden relative">
@@ -105,12 +143,12 @@ const PartnersPage = () => {
         ]}
       />
       
-      <div className="w-full py-10">
+      <main className="w-full py-10">
         <div className="container mx-auto px-4 md:px-8">
           <div className="mb-6">
-            <Button variant="outline" size="sm" asChild className="mb-4">
+            <Button variant="outline" size="sm" asChild className="mb-4 gap-2">
               <Link to="/" className="flex items-center">
-                <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
+                <ArrowLeft className="h-4 w-4" /> Back to Home
               </Link>
             </Button>
             <h2 className="text-3xl md:text-4xl font-bold mb-2" id="partners-grid">Our Partners</h2>
@@ -120,52 +158,85 @@ const PartnersPage = () => {
             </p>
           </div>
           
-          {/* Category filters */}
-          <div className="mb-8 fade-up">
-            <div className="flex flex-wrap items-center gap-2">
-              {categories.map((category, index) => (
-                <Button 
-                  key={index}
-                  variant={filter === category ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => filterPartners(category)}
-                  className="capitalize"
-                >
-                  {category === 'all' ? 'All Categories' : category}
-                </Button>
-              ))}
+          {/* Tabs for different views */}
+          <Tabs defaultValue="category" className="w-full mb-12 fade-up">
+            <div className="flex items-center justify-between mb-6">
+              <TabsList>
+                <TabsTrigger value="category">By Category</TabsTrigger>
+                <TabsTrigger value="all">All Partners</TabsTrigger>
+              </TabsList>
             </div>
-          </div>
-          
-          {/* Partners grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 fade-up">
-            {partners.map((partner) => (
-              <div key={partner.id} className="h-full">
-                <PartnerCard partner={partner} expanded={true} />
+            
+            <TabsContent value="category" className="space-y-8">
+              {Object.keys(partnersByCategory).map((category) => (
+                <div key={category} className="fade-up">
+                  <div className="flex items-center gap-2 mb-4">
+                    {getCategoryIcon(category)}
+                    <h3 className="text-xl font-semibold">{category}</h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {partnersByCategory[category].map((partner) => (
+                      <PartnerCard key={partner.id} partner={partner} />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </TabsContent>
+            
+            <TabsContent value="all">
+              <div className="mb-8 fade-up">
+                <div className="flex flex-wrap items-center gap-2">
+                  <ScrollArea className="w-full whitespace-nowrap">
+                    <div className="flex space-x-2 pb-4">
+                      {categories.map((category, index) => (
+                        <Button 
+                          key={index}
+                          variant={filter === category ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => filterPartners(category)}
+                          className="capitalize"
+                        >
+                          {category === 'all' ? 'All Categories' : category}
+                        </Button>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </div>
               </div>
-            ))}
-          </div>
+              
+              {/* Partners grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16 fade-up">
+                {partners.map((partner) => (
+                  <PartnerCard key={partner.id} partner={partner} />
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
           
           {/* Partnership CTA section */}
-          <div className="bg-slate-50 rounded-lg p-6 md:p-8 my-8 fade-up">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <div>
-                <h2 className="text-2xl font-bold mb-2">Interested in becoming a partner?</h2>
-                <p className="text-gray-600 mb-4">
-                  We're always looking to expand our network of partners to better serve our clients.
-                  Connect with us to explore partnership opportunities.
-                </p>
+          <Card className="bg-slate-50 my-8 fade-up border-0 shadow-sm">
+            <CardContent className="p-6 md:p-8">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                  <CardTitle className="text-2xl font-bold mb-2">Interested in becoming a partner?</CardTitle>
+                  <CardDescription className="text-gray-600 mb-4 text-base">
+                    We're always looking to expand our network of partners to better serve our clients.
+                    Connect with us to explore partnership opportunities.
+                  </CardDescription>
+                </div>
+                <Button size="lg" className="gap-2" asChild>
+                  <Link to="/contact">
+                    Contact Us <ChevronRight className="h-4 w-4" />
+                  </Link>
+                </Button>
               </div>
-              <Button size="lg" asChild>
-                <Link to="/contact">Contact Us</Link>
-              </Button>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
         
         <ContactSection />
         <Footer />
-      </div>
+      </main>
     </div>
   );
 };

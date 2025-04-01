@@ -33,6 +33,7 @@ const AdminLoginForm = ({ onSuccess }: AdminLoginFormProps) => {
   const [activeTab, setActiveTab] = useState<string>('signin');
   const [isLoading, setIsLoading] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [authError, setAuthError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -46,11 +47,19 @@ const AdminLoginForm = ({ onSuccess }: AdminLoginFormProps) => {
   // Check if user is already logged in
   useEffect(() => {
     const checkAuth = async () => {
-      const { data } = await supabase.auth.getSession();
-      if (data.session) {
-        navigate('/admin/dashboard');
+      try {
+        const { data, error } = await supabase.auth.getSession();
+        if (error) {
+          console.error("Session check error:", error);
+        }
+        if (data.session) {
+          navigate('/admin/dashboard');
+        }
+      } catch (err) {
+        console.error("Auth check error:", err);
+      } finally {
+        setIsCheckingAuth(false);
       }
-      setIsCheckingAuth(false);
     };
     
     checkAuth();
@@ -58,9 +67,11 @@ const AdminLoginForm = ({ onSuccess }: AdminLoginFormProps) => {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
+    setAuthError(null);
     
     try {
       if (activeTab === 'signin') {
+        console.log("Attempting sign in with email:", data.email);
         const { error } = await supabase.auth.signInWithPassword({
           email: data.email,
           password: data.password,
@@ -74,10 +85,15 @@ const AdminLoginForm = ({ onSuccess }: AdminLoginFormProps) => {
         }
         navigate('/admin/dashboard');
       } else {
-        // For registration - in your case, you might want to limit this to specific emails
+        console.log("Attempting sign up with email:", data.email);
+        // For registration
         const { error } = await supabase.auth.signUp({
           email: data.email,
           password: data.password,
+          options: {
+            // Don't require email verification to accelerate testing
+            emailRedirectTo: window.location.origin + '/admin/dashboard',
+          }
         });
         
         if (error) throw error;
@@ -85,6 +101,8 @@ const AdminLoginForm = ({ onSuccess }: AdminLoginFormProps) => {
         toast.success('Account created successfully. Please check your email for verification.');
       }
     } catch (error: any) {
+      console.error("Auth error:", error);
+      setAuthError(error.message);
       toast.error(error.message || 'Authentication failed');
     } finally {
       setIsLoading(false);
@@ -102,6 +120,12 @@ const AdminLoginForm = ({ onSuccess }: AdminLoginFormProps) => {
           <TabsTrigger value="signin">Sign In</TabsTrigger>
           <TabsTrigger value="signup">Register</TabsTrigger>
         </TabsList>
+        
+        {authError && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded mb-4 text-sm">
+            {authError}
+          </div>
+        )}
         
         <TabsContent value="signin">
           <Form {...form}>

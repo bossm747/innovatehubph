@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Linkedin, Twitter, Mail } from 'lucide-react';
 
 const teamMembers = [
@@ -96,17 +97,17 @@ const teamMembers = [
 const TeamSection = () => {
   return (
     <section id="team-section" className="py-16 bg-white">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-12 fade-up">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Meet Our Leadership Team</h2>
           <p className="text-base text-gray-600 max-w-2xl mx-auto">
             The talented individuals who drive our mission forward and ensure we deliver exceptional value to our clients.
           </p>
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {teamMembers.map((member, index) => (
-            <Card key={member.id} className="fade-up card-hover overflow-hidden" style={{ animationDelay: `${index * 0.1}s` }}>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4">
+          {teamMembers.map((member) => (
+            <Card key={member.id} className="overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
               <div className="aspect-square relative bg-gradient-to-br from-innovate-500/90 to-blue-600/90 flex items-center justify-center">
                 <div className="absolute inset-0 opacity-20">
                   <svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -140,7 +141,7 @@ const TeamSection = () => {
           ))}
         </div>
         
-        <div className="text-center mt-12 fade-up">
+        <div className="text-center mt-12">
           <p className="text-base text-gray-600 mb-4">
             Interested in joining our team? We're always looking for talented individuals.
           </p>

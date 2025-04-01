@@ -45,13 +45,13 @@ const AboutPage = () => {
       
       {/* Main content */}
       <Navbar />
-      <div className="w-full py-0">
+      <main className="w-full py-0">
         <AboutHero />
         <CompanyOverview />
         <TeamSection />
         <ContactSection />
-        <Footer />
-      </div>
+      </main>
+      <Footer />
     </div>
   );
 };

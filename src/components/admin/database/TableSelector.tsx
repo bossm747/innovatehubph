@@ -26,8 +26,11 @@ export const TableSelector = ({
       </SelectTrigger>
       <SelectContent>
         {tables.map(table => (
-          <SelectItem key={table} value={table || "default-value"}>
-            {table}
+          <SelectItem 
+            key={table} 
+            value={table || "unnamed-table"} // Ensuring no empty string values
+          >
+            {table || "Unnamed Table"}
           </SelectItem>
         ))}
       </SelectContent>

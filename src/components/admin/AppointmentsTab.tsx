@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -70,7 +69,6 @@ const AppointmentsTab = () => {
         throw error;
       }
 
-      // Update local state
       setAppointments(prev => 
         prev.map(app => app.id === id ? { ...app, status: newStatus as any } : app)
       );
@@ -87,12 +85,10 @@ const AppointmentsTab = () => {
     fetchAppointments();
   };
 
-  // Helper function to format date
   const formatDate = (dateString: string) => {
     return format(new Date(dateString), 'MMM d, yyyy - h:mm a');
   };
 
-  // Get status color
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending': return 'bg-yellow-100 text-yellow-800';

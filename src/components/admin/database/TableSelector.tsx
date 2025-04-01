@@ -26,7 +26,7 @@ export const TableSelector = ({
       </SelectTrigger>
       <SelectContent>
         {tables.map(table => (
-          <SelectItem key={table} value={table}>
+          <SelectItem key={table} value={table || "default-value"}>
             {table}
           </SelectItem>
         ))}

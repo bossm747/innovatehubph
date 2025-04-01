@@ -179,7 +179,7 @@ const PlatapayForm = ({ navigate }: PlatapayFormProps) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Business Type *</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select business type" />

@@ -11,9 +11,11 @@ if (!rootElement) throw new Error('Failed to find the root element');
 
 const root = createRoot(rootElement);
 root.render(
-  <BrowserRouter>
-    <QueryProvider>
-      <App />
-    </QueryProvider>
-  </BrowserRouter>
+  <React.StrictMode>
+    <BrowserRouter>
+      <QueryProvider>
+        <App />
+      </QueryProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 );

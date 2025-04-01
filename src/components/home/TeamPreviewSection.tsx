@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTeamMembers } from '@/services/teamService';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const TeamPreviewSection = () => {
   const { data: teamMembers, isLoading } = useQuery({
@@ -18,13 +19,13 @@ const TeamPreviewSection = () => {
   ).slice(0, 4) || [];
 
   return (
-    <section className="py-24 px-6 md:px-12 bg-gradient-to-r from-gray-50 to-gray-100 relative overflow-hidden">
+    <section className="py-16 md:py-20 px-4 md:px-6 bg-gradient-to-r from-gray-50 to-gray-100 relative overflow-hidden">
       <div className="container mx-auto">
-        <div className="text-center mb-16 fade-up">
+        <div className="text-center mb-10 fade-up">
           <span className="inline-block px-3 py-1 text-sm font-medium bg-innovate-100 text-innovate-800 rounded-full mb-4">
             Our Team
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Meet Our Leadership
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
@@ -32,60 +33,43 @@ const TeamPreviewSection = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
           {isLoading ? (
             // Loading placeholders
             Array(4).fill(0).map((_, index) => (
               <div 
                 key={index} 
-                className="bg-white rounded-xl overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 fade-up card-3d animate-pulse"
+                className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 fade-up"
+                style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="h-64 bg-gray-200"></div>
-                <div className="p-6">
-                  <div className="h-6 bg-gray-200 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-2/3 mb-4"></div>
-                  <div className="h-16 bg-gray-200 rounded"></div>
+                <div className="p-4 flex flex-col items-center">
+                  <div className="w-16 h-16 bg-innovate-100 rounded-full flex items-center justify-center mb-3">
+                    <Users className="h-8 w-8 text-innovate-600" />
+                  </div>
+                  <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+                  <div className="h-3 bg-gray-200 rounded w-1/2 mb-4"></div>
                 </div>
               </div>
             ))
           ) : (
-            // Actual team members
+            // Actual team members with avatar fallbacks instead of images
             leadershipMembers.map((member, index) => (
               <div 
                 key={member.id} 
-                className="bg-white rounded-xl overflow-hidden shadow-soft hover:shadow-medium transition-all duration-300 fade-up card-3d"
+                className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 fade-up"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="h-64 overflow-hidden bg-gradient-to-br from-innovate-600/80 to-blue-500/80 relative">
-                  {member.photo_url ? (
-                    <img 
-                      src={member.photo_url} 
-                      alt={member.full_name} 
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div className="absolute inset-0 bg-gradient-to-br from-innovate-600/80 to-blue-500/80"></div>
-                      <div className="absolute inset-0 opacity-20">
-                        <svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                          <defs>
-                            <pattern id={`grid-${index}`} width="10" height="10" patternUnits="userSpaceOnUse">
-                              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5" />
-                            </pattern>
-                          </defs>
-                          <rect width="100%" height="100%" fill={`url(#grid-${index})`} />
-                        </svg>
-                      </div>
-                      <div className="w-32 h-32 bg-white/10 rounded-full border-4 border-white/20 flex items-center justify-center relative z-10">
-                        <Users className="w-16 h-16 text-white" />
-                      </div>
-                    </div>
+                <div className="p-4 flex flex-col items-center">
+                  <Avatar className="w-16 h-16 border-2 border-innovate-100 mb-3">
+                    <AvatarFallback className="bg-gradient-to-br from-innovate-500 to-blue-600 text-white">
+                      {member.full_name.split(' ').map(n => n[0]).join('')}
+                    </AvatarFallback>
+                  </Avatar>
+                  <h3 className="text-base font-semibold text-center mb-1">{member.full_name}</h3>
+                  <p className="text-innovate-600 text-sm text-center mb-2">{member.position}</p>
+                  {member.bio && (
+                    <p className="text-gray-600 text-xs text-center line-clamp-2">{member.bio}</p>
                   )}
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-1">{member.full_name}</h3>
-                  <p className="text-innovate-600 mb-4">{member.position}</p>
-                  <p className="text-gray-600 text-sm line-clamp-3">{member.bio || "Experienced professional with expertise in digital innovation and business growth."}</p>
                 </div>
               </div>
             ))
@@ -95,8 +79,7 @@ const TeamPreviewSection = () => {
         <div className="text-center fade-up">
           <Button 
             variant="purple"
-            size="lg"
-            width="fixed"
+            size="sm"
             className="btn-shine group"
             asChild
           >

@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Checkbox } from "@/components/ui/checkbox";
 import { submitInquiryForm } from "@/services/inquiryService";
-import { Send } from "lucide-react";
+import { Mail, Send, User, Building, Phone } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -80,8 +80,8 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-soft overflow-hidden fade-up">
-      <div className="bg-innovate-600 py-6 px-8">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden fade-up border border-gray-100">
+      <div className="bg-gradient-to-r from-innovate-600 to-blue-600 py-6 px-8">
         <h3 className="text-2xl font-bold text-white">Send us a Message</h3>
         <p className="text-innovate-100">Fill out the form below and we'll get back to you shortly.</p>
       </div>
@@ -94,9 +94,12 @@ const ContactForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name *</FormLabel>
+                  <FormLabel className="flex items-center gap-2">
+                    <User className="h-4 w-4 text-gray-400" />
+                    Full Name <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="John Doe" {...field} />
+                    <Input placeholder="John Doe" {...field} className="rounded-md border-gray-200 focus:border-innovate-300 focus:ring focus:ring-innovate-200 focus:ring-opacity-50" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -108,9 +111,12 @@ const ContactForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email *</FormLabel>
+                  <FormLabel className="flex items-center gap-2">
+                    <Mail className="h-4 w-4 text-gray-400" />
+                    Email <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="john@example.com" {...field} />
+                    <Input placeholder="john@example.com" {...field} className="rounded-md border-gray-200 focus:border-innovate-300 focus:ring focus:ring-innovate-200 focus:ring-opacity-50" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -124,9 +130,12 @@ const ContactForm = () => {
               name="company"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Company (Optional)</FormLabel>
+                  <FormLabel className="flex items-center gap-2">
+                    <Building className="h-4 w-4 text-gray-400" />
+                    Company (Optional)
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Your Company" {...field} />
+                    <Input placeholder="Your Company" {...field} className="rounded-md border-gray-200 focus:border-innovate-300 focus:ring focus:ring-innovate-200 focus:ring-opacity-50" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -138,9 +147,12 @@ const ContactForm = () => {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone (Optional)</FormLabel>
+                  <FormLabel className="flex items-center gap-2">
+                    <Phone className="h-4 w-4 text-gray-400" />
+                    Phone (Optional)
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="+63 912 345 6789" {...field} />
+                    <Input placeholder="+63 912 345 6789" {...field} className="rounded-md border-gray-200 focus:border-innovate-300 focus:ring focus:ring-innovate-200 focus:ring-opacity-50" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -153,12 +165,16 @@ const ContactForm = () => {
             name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Message *</FormLabel>
+                <FormLabel className="flex items-center gap-2">
+                  <Mail className="h-4 w-4 text-gray-400" />
+                  Message <span className="text-red-500">*</span>
+                </FormLabel>
                 <FormControl>
                   <Textarea 
                     placeholder="Tell us about your project or inquiry..." 
                     rows={6}
-                    {...field} 
+                    {...field}
+                    className="rounded-md border-gray-200 focus:border-innovate-300 focus:ring focus:ring-innovate-200 focus:ring-opacity-50" 
                   />
                 </FormControl>
                 <FormMessage />
@@ -170,11 +186,12 @@ const ContactForm = () => {
             control={form.control}
             name="subscribe"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md p-4 bg-gray-50">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
+                    className="data-[state=checked]:bg-innovate-600 data-[state=checked]:border-innovate-600"
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
@@ -188,7 +205,7 @@ const ContactForm = () => {
           
           <Button 
             type="submit" 
-            className="w-full bg-innovate-600 hover:bg-innovate-700 text-white transition-colors btn-shine"
+            className="w-full bg-gradient-to-r from-innovate-600 to-blue-600 hover:from-innovate-700 hover:to-blue-700 text-white transition-colors btn-shine"
             disabled={isSubmitting}
           >
             {isSubmitting ? (

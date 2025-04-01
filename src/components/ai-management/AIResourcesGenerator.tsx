@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useAvailableSecrets } from "@/contexts/AvailableSecretsContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -51,7 +50,6 @@ const AIResourcesGenerator = () => {
     { id: 'huggingface', name: 'HuggingFace (SDXL)', secretName: 'HUGGINGFACE_API_KEY', type: 'image' },
   ];
 
-  // Filter providers to only show those with available API keys
   const availableTextProviders = textProviders.filter(provider => availableSecrets[provider.secretName]);
   const availableImageProviders = imageProviders.filter(provider => availableSecrets[provider.secretName]);
 
@@ -187,13 +185,10 @@ const AIResourcesGenerator = () => {
     try {
       let files = [];
       
-      // Handle saving text content
       if (generatedContent.text) {
-        // Create a blob from the text
         const textBlob = new Blob([generatedContent.text], { type: 'text/plain' });
         const textFile = new File([textBlob], `${fileName}.txt`, { type: 'text/plain' });
         
-        // Upload the text file to storage
         const textStoragePath = `text/${fileName}-${Date.now()}.txt`;
         const { data: textData, error: textError } = await supabase.storage
           .from('ai-generated')
@@ -201,7 +196,6 @@ const AIResourcesGenerator = () => {
           
         if (textError) throw textError;
         
-        // Add file info to files array
         files.push({
           filename: `${fileName}.txt`,
           type: 'text',
@@ -212,14 +206,11 @@ const AIResourcesGenerator = () => {
         });
       }
       
-      // Handle saving image content
       if (generatedContent.image) {
-        // Fetch the image and convert to blob
         const imageResponse = await fetch(generatedContent.image);
         const imageBlob = await imageResponse.blob();
         const imageFile = new File([imageBlob], `${fileName}.png`, { type: 'image/png' });
         
-        // Upload the image file to storage
         const imageStoragePath = `images/${fileName}-${Date.now()}.png`;
         const { data: imageData, error: imageError } = await supabase.storage
           .from('ai-generated')
@@ -227,7 +218,6 @@ const AIResourcesGenerator = () => {
           
         if (imageError) throw imageError;
         
-        // Add file info to files array
         files.push({
           filename: `${fileName}.png`,
           type: 'image',
@@ -238,7 +228,6 @@ const AIResourcesGenerator = () => {
         });
       }
       
-      // Insert records for all uploaded files
       if (files.length > 0) {
         const { error: insertError } = await supabase
           .from('ai_generated_files')
@@ -251,7 +240,6 @@ const AIResourcesGenerator = () => {
           description: `${files.length} file(s) saved successfully`,
         });
         
-        // Clear form
         setFileName("");
         setGeneratedContent({});
         setTextPrompt("");
@@ -291,7 +279,7 @@ const AIResourcesGenerator = () => {
             <SelectValue placeholder="Select project (optional)" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">No project</SelectItem>
+            <SelectItem value="no-project">No project</SelectItem>
             {projects.map(project => (
               <SelectItem key={project.id} value={project.id}>{project.name}</SelectItem>
             ))}

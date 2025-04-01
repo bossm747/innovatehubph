@@ -254,7 +254,7 @@ const AIFileManager = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Projects</SelectItem>
-                  <SelectItem value="">No Project</SelectItem>
+                  <SelectItem value="no-project">No Project</SelectItem>
                   {projects.map(project => (
                     <SelectItem key={project.id} value={project.id}>
                       {project.name}

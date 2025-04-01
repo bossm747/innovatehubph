@@ -20,9 +20,11 @@ const DesktopNavigation = () => {
             <NavigationMenuItem>
               <NavItem to="/">Home</NavItem>
             </NavigationMenuItem>
+            
             <NavigationMenuItem>
               <NavItem to="/about">About</NavItem>
             </NavigationMenuItem>
+            
             <NavigationMenuItem>
               <NavigationMenuTrigger>Services</NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -54,6 +56,7 @@ const DesktopNavigation = () => {
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
+            
             <NavigationMenuItem>
               <NavigationMenuTrigger>Company</NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -73,6 +76,7 @@ const DesktopNavigation = () => {
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
+            
             <NavigationMenuItem>
               <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -89,9 +93,13 @@ const DesktopNavigation = () => {
                   <ListItem href="/file-upload" title="File Upload">
                     Upload and manage your files
                   </ListItem>
+                  <ListItem href="/facebook" title="Facebook">
+                    Connect with us on Facebook
+                  </ListItem>
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
+            
             <NavigationMenuItem>
               <NavItem to="/contact">Contact</NavItem>
             </NavigationMenuItem>

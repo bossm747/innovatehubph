@@ -40,7 +40,14 @@ const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
                 />
               </svg>
             </div>
-            <span>{title}</span>
+            <div>
+              <span className="font-medium">{title}</span>
+              {children && (
+                <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                  {children}
+                </p>
+              )}
+            </div>
           </Link>
         ) : (
           <a
@@ -68,16 +75,20 @@ const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
                 />
               </svg>
             </div>
-            <span>{title}</span>
+            <div>
+              <span className="font-medium">{title}</span>
+              {children && (
+                <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                  {children}
+                </p>
+              )}
+            </div>
           </a>
         )}
-        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-          {children}
-        </p>
       </li>
-    )
+    );
   }
-)
-ListItem.displayName = "ListItem"
+);
+ListItem.displayName = "ListItem";
 
 export default ListItem;

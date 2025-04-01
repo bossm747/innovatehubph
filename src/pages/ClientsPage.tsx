@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ContactSection from '@/components/ContactSection';
@@ -9,8 +9,32 @@ import ClientsShowcase from '@/components/ClientsShowcase';
 import ServicesHero from '@/components/ServicesHero';
 import ClientsHeroImage from '@/components/clients/ClientsHeroImage';
 import ClientsHeroBackground from '@/components/clients/ClientsHeroBackground';
+import TestimonialSlider from '@/components/TestimonialSlider';
 
 const ClientsPage = () => {
+  const [selectedTestimonialType, setSelectedTestimonialType] = useState('all');
+  
+  const testimonials = [
+    {
+      quote: "We'd like to thank InnovateHub for creating our online restaurant platform with integrated payment gateway. It has streamlined our operations and significantly improved our customer experience.",
+      author: "Business Owner",
+      role: "Landos Grill",
+      avatarUrl: "/lovable-uploads/435e4809-830b-47f7-a2e1-c1667877fbc7.png"
+    },
+    {
+      quote: "Adding a point-of-sale system with QR payments through InnovateHub has transformed how we run our coffee shop. Transactions are faster and our customers love the convenience.",
+      author: "Business Owner",
+      role: "Barako Brews",
+      avatarUrl: "/lovable-uploads/c1082f13-5811-44d2-aaa4-123f819328bf.png"
+    },
+    {
+      quote: "InnovateHub created an integrated online delivery ecosystem with seamless payment integrations for both our web and mobile apps. This has revolutionized our business model completely.",
+      author: "Business Owner",
+      role: "BTS Delivery",
+      avatarUrl: "/lovable-uploads/a281e700-f986-4113-a9d3-5fcaaba04b67.png"
+    }
+  ];
+  
   // Add scroll reveal effect
   useEffect(() => {
     const handleScroll = () => {
@@ -93,6 +117,8 @@ const ClientsPage = () => {
             className="bg-gradient-to-b from-gray-50 to-white"
           />
         </div>
+        
+        <TestimonialSlider testimonials={testimonials} />
         
         <ContactSection />
         <Footer />

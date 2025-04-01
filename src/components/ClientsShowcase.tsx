@@ -10,7 +10,21 @@ import {
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Eye, User, Store, Calendar, FileText, Phone, Mail, MapPin } from "lucide-react";
+import { 
+  Eye, 
+  User, 
+  Store, 
+  Calendar, 
+  FileText, 
+  Phone, 
+  Mail, 
+  MapPin,
+  Filter,
+  LayoutGrid,
+  List
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Client {
   id: number;
@@ -226,24 +240,26 @@ const CLIENTS: Client[] = [
 
 const ClientCard = ({ client }: { client: Client }) => {
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl h-64 flex flex-col">
-      <div className="p-5 flex flex-col items-center justify-between h-full">
-        <div className="w-24 h-24 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full overflow-hidden flex items-center justify-center mb-4 border-2 border-gray-100 flex-shrink-0">
-          {/* 3D Avatar Placeholder */}
+    <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl h-64 flex flex-col group">
+      <div className="p-5 flex flex-col items-center justify-between h-full relative">
+        {/* Avatar section with gradient background */}
+        <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full overflow-hidden flex items-center justify-center mb-4 border-2 border-gray-100 flex-shrink-0 transition-all duration-300 group-hover:scale-105">
           <div className="w-full h-full flex items-center justify-center relative">
-            <div className="absolute w-full h-full bg-gradient-to-br from-blue-400/80 to-indigo-600/80 animate-pulse"></div>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 relative z-10">
+            <div className="absolute w-full h-full bg-gradient-to-br from-blue-400/80 to-indigo-600/80"></div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10 relative z-10">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
           </div>
         </div>
+        
+        {/* Client info */}
         <div className="flex flex-col items-center flex-grow justify-center">
-          <h3 className="text-lg font-semibold text-center mb-2">{client.storeName || client.name}</h3>
+          <h3 className="text-lg font-semibold text-center mb-2 line-clamp-1">{client.storeName || client.name}</h3>
           <p className="text-sm text-gray-500 mb-2">Client Partner</p>
-          <span className={`px-3 py-1 text-xs rounded-full ${getTypeColor(client.type)}`}>
+          <Badge className={`${getTypeBadgeColor(client.type)}`}>
             {formatType(client.type)}
-          </span>
+          </Badge>
           {client.joinDate && (
             <p className="text-xs text-gray-500 mt-2">
               Joined: {client.joinDate}
@@ -253,7 +269,7 @@ const ClientCard = ({ client }: { client: Client }) => {
         
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline" size="sm" className="mt-2">
+            <Button variant="outline" size="sm" className="mt-2 w-full group-hover:bg-blue-50">
               <Eye className="h-4 w-4 mr-1" /> View Details
             </Button>
           </DialogTrigger>
@@ -361,13 +377,28 @@ const ClientCard = ({ client }: { client: Client }) => {
                 </div>
               </div>
             </div>
-            
-            {/* Additional notes or details could go here */}
           </DialogContent>
         </Dialog>
       </div>
     </div>
   );
+};
+
+const getTypeBadgeColor = (type: Client['type']): string => {
+  switch (type) {
+    case 'agent':
+      return 'bg-blue-100 text-blue-800 hover:bg-blue-200';
+    case 'business':
+      return 'bg-purple-100 text-purple-800 hover:bg-purple-200';
+    case 'remittance':
+      return 'bg-green-100 text-green-800 hover:bg-green-200';
+    case 'food':
+      return 'bg-amber-100 text-amber-800 hover:bg-amber-200';
+    case 'retail':
+      return 'bg-pink-100 text-pink-800 hover:bg-pink-200';
+    default:
+      return 'bg-gray-100 text-gray-800 hover:bg-gray-200';
+  }
 };
 
 const getTypeColor = (type: Client['type']): string => {
@@ -428,6 +459,7 @@ const ClientsShowcase = ({
     showAll ? CLIENTS : CLIENTS.slice(0, maxItems)
   );
   const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards');
+  const [showFiltersMenu, setShowFiltersMenu] = useState(false);
 
   React.useEffect(() => {
     if (activeFilter === 'all') {
@@ -453,7 +485,7 @@ const ClientsShowcase = ({
 
         <div className="flex flex-wrap justify-between items-center gap-4 mb-8 fade-up">
           {showFilters && (
-            <div className="flex flex-wrap gap-2">
+            <div className="md:flex flex-wrap gap-2 hidden">
               <Button 
                 variant={activeFilter === 'all' ? "default" : "outline"} 
                 size="sm"
@@ -505,21 +537,108 @@ const ClientsShowcase = ({
             </div>
           )}
 
+          {/* Mobile filters dropdown */}
+          {showFilters && (
+            <div className="md:hidden flex items-center gap-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => setShowFiltersMenu(!showFiltersMenu)}
+                className="flex items-center"
+              >
+                <Filter className="h-4 w-4 mr-2" /> Filter
+              </Button>
+              
+              {showFiltersMenu && (
+                <div className="absolute z-10 mt-2 bg-white rounded-md shadow-lg p-2 top-full left-0 right-0 mx-6">
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button 
+                      variant={activeFilter === 'all' ? "default" : "outline"} 
+                      size="sm"
+                      onClick={() => {
+                        setActiveFilter('all');
+                        setShowFiltersMenu(false);
+                      }}
+                      className="w-full"
+                    >
+                      All
+                    </Button>
+                    <Button 
+                      variant={activeFilter === 'agent' ? "default" : "outline"} 
+                      size="sm"
+                      onClick={() => {
+                        setActiveFilter('agent');
+                        setShowFiltersMenu(false);
+                      }}
+                      className="w-full"
+                    >
+                      PlataPay Agents
+                    </Button>
+                    <Button 
+                      variant={activeFilter === 'business' ? "default" : "outline"} 
+                      size="sm"
+                      onClick={() => {
+                        setActiveFilter('business');
+                        setShowFiltersMenu(false);
+                      }}
+                      className="w-full"
+                    >
+                      Business Centers
+                    </Button>
+                    <Button 
+                      variant={activeFilter === 'food' ? "default" : "outline"} 
+                      size="sm"
+                      onClick={() => {
+                        setActiveFilter('food');
+                        setShowFiltersMenu(false);
+                      }}
+                      className="w-full"
+                    >
+                      Food & Beverage
+                    </Button>
+                    <Button 
+                      variant={activeFilter === 'remittance' ? "default" : "outline"} 
+                      size="sm"
+                      onClick={() => {
+                        setActiveFilter('remittance');
+                        setShowFiltersMenu(false);
+                      }}
+                      className="w-full"
+                    >
+                      Remittance
+                    </Button>
+                    <Button 
+                      variant={activeFilter === 'retail' ? "default" : "outline"} 
+                      size="sm"
+                      onClick={() => {
+                        setActiveFilter('retail');
+                        setShowFiltersMenu(false);
+                      }}
+                      className="w-full"
+                    >
+                      Retail
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {showAll && (
-            <div className="flex gap-2">
+            <div className="flex gap-2 ml-auto">
               <Button 
                 variant={viewMode === 'cards' ? "default" : "outline"} 
                 size="sm"
                 onClick={() => setViewMode('cards')}
               >
-                Card View
+                <LayoutGrid className="h-4 w-4 mr-2" /> Card View
               </Button>
               <Button 
                 variant={viewMode === 'table' ? "default" : "outline"} 
                 size="sm"
                 onClick={() => setViewMode('table')}
               >
-                Table View
+                <List className="h-4 w-4 mr-2" /> Table View
               </Button>
             </div>
           )}
@@ -551,108 +670,112 @@ const ClientsShowcase = ({
                 </div>
               </Carousel>
             ) : (
-              <div className="rounded-lg border overflow-hidden bg-white">
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Store Name</TableHead>
-                        <TableHead>Owner</TableHead>
-                        <TableHead>Username</TableHead>
-                        <TableHead>Email</TableHead>
-                        <TableHead>Contact</TableHead>
-                        <TableHead>Business Package</TableHead>
-                        <TableHead>Activation Date</TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {displayedClients.map((client) => (
-                        <TableRow key={client.id}>
-                          <TableCell className="font-medium">{client.storeName}</TableCell>
-                          <TableCell>{client.name}</TableCell>
-                          <TableCell>{client.username || "-"}</TableCell>
-                          <TableCell>{client.email || "-"}</TableCell>
-                          <TableCell>{client.contactNumber ? `+63 ${client.contactNumber}` : "-"}</TableCell>
-                          <TableCell>{client.businessPackage || "-"}</TableCell>
-                          <TableCell>{client.activationDate || client.joinDate || "-"}</TableCell>
-                          <TableCell>
-                            <Dialog>
-                              <DialogTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                  <Eye className="h-4 w-4" />
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent className="sm:max-w-4xl">
-                                <DialogHeader>
-                                  <DialogTitle>Client Details</DialogTitle>
-                                </DialogHeader>
-                                
-                                <div className="grid md:grid-cols-2 gap-4 mt-4">
-                                  <div className="bg-gray-50 p-5 rounded-lg">
-                                    <h3 className="text-lg font-semibold mb-4">Personal Information</h3>
-                                    <Table>
-                                      <TableBody>
-                                        <TableRow>
-                                          <TableCell className="font-medium">Name</TableCell>
-                                          <TableCell>{client.name}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                          <TableCell className="font-medium">Username</TableCell>
-                                          <TableCell>{client.username || "-"}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                          <TableCell className="font-medium">Email</TableCell>
-                                          <TableCell>{client.email || "-"}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                          <TableCell className="font-medium">Contact Number</TableCell>
-                                          <TableCell>{client.contactNumber ? `+63 ${client.contactNumber}` : "-"}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                          <TableCell className="font-medium">Address</TableCell>
-                                          <TableCell>{client.address || "-"}</TableCell>
-                                        </TableRow>
-                                      </TableBody>
-                                    </Table>
-                                  </div>
-                                  
-                                  <div className="bg-gray-50 p-5 rounded-lg">
-                                    <h3 className="text-lg font-semibold mb-4">Business Information</h3>
-                                    <Table>
-                                      <TableBody>
-                                        <TableRow>
-                                          <TableCell className="font-medium">Store Name</TableCell>
-                                          <TableCell>{client.storeName || "-"}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                          <TableCell className="font-medium">Business Type</TableCell>
-                                          <TableCell>{formatType(client.type)}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                          <TableCell className="font-medium">Business Package</TableCell>
-                                          <TableCell>{client.businessPackage || "-"}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                          <TableCell className="font-medium">TIN Number</TableCell>
-                                          <TableCell>{client.tinNumber || "-"}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                          <TableCell className="font-medium">Activation Date</TableCell>
-                                          <TableCell>{client.activationDate || client.joinDate || "-"}</TableCell>
-                                        </TableRow>
-                                      </TableBody>
-                                    </Table>
-                                  </div>
-                                </div>
-                              </DialogContent>
-                            </Dialog>
-                          </TableCell>
+              <div className="rounded-lg border overflow-hidden bg-white shadow-sm">
+                <ScrollArea className="h-[600px]">
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader className="bg-gray-50">
+                        <TableRow>
+                          <TableHead className="font-semibold">Store Name</TableHead>
+                          <TableHead className="font-semibold">Owner</TableHead>
+                          <TableHead className="font-semibold">Type</TableHead>
+                          <TableHead className="font-semibold">Contact</TableHead>
+                          <TableHead className="font-semibold">Business Package</TableHead>
+                          <TableHead className="font-semibold">Activation Date</TableHead>
+                          <TableHead className="font-semibold">Actions</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
+                      </TableHeader>
+                      <TableBody>
+                        {displayedClients.map((client) => (
+                          <TableRow key={client.id} className="hover:bg-gray-50">
+                            <TableCell className="font-medium">{client.storeName}</TableCell>
+                            <TableCell>{client.name}</TableCell>
+                            <TableCell>
+                              <Badge className={`${getTypeBadgeColor(client.type)}`}>
+                                {formatType(client.type)}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>{client.contactNumber ? `+63 ${client.contactNumber}` : "-"}</TableCell>
+                            <TableCell>{client.businessPackage || "-"}</TableCell>
+                            <TableCell>{client.activationDate || client.joinDate || "-"}</TableCell>
+                            <TableCell>
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <Button variant="ghost" size="sm" className="flex items-center">
+                                    <Eye className="h-4 w-4 mr-1" /> View
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-4xl">
+                                  <DialogHeader>
+                                    <DialogTitle>Client Details</DialogTitle>
+                                  </DialogHeader>
+                                  
+                                  <div className="grid md:grid-cols-2 gap-4 mt-4">
+                                    <div className="bg-gray-50 p-5 rounded-lg">
+                                      <h3 className="text-lg font-semibold mb-4">Personal Information</h3>
+                                      <Table>
+                                        <TableBody>
+                                          <TableRow>
+                                            <TableCell className="font-medium">Name</TableCell>
+                                            <TableCell>{client.name}</TableCell>
+                                          </TableRow>
+                                          <TableRow>
+                                            <TableCell className="font-medium">Username</TableCell>
+                                            <TableCell>{client.username || "-"}</TableCell>
+                                          </TableRow>
+                                          <TableRow>
+                                            <TableCell className="font-medium">Email</TableCell>
+                                            <TableCell>{client.email || "-"}</TableCell>
+                                          </TableRow>
+                                          <TableRow>
+                                            <TableCell className="font-medium">Contact Number</TableCell>
+                                            <TableCell>{client.contactNumber ? `+63 ${client.contactNumber}` : "-"}</TableCell>
+                                          </TableRow>
+                                          <TableRow>
+                                            <TableCell className="font-medium">Address</TableCell>
+                                            <TableCell>{client.address || "-"}</TableCell>
+                                          </TableRow>
+                                        </TableBody>
+                                      </Table>
+                                    </div>
+                                    
+                                    <div className="bg-gray-50 p-5 rounded-lg">
+                                      <h3 className="text-lg font-semibold mb-4">Business Information</h3>
+                                      <Table>
+                                        <TableBody>
+                                          <TableRow>
+                                            <TableCell className="font-medium">Store Name</TableCell>
+                                            <TableCell>{client.storeName || "-"}</TableCell>
+                                          </TableRow>
+                                          <TableRow>
+                                            <TableCell className="font-medium">Business Type</TableCell>
+                                            <TableCell>{formatType(client.type)}</TableCell>
+                                          </TableRow>
+                                          <TableRow>
+                                            <TableCell className="font-medium">Business Package</TableCell>
+                                            <TableCell>{client.businessPackage || "-"}</TableCell>
+                                          </TableRow>
+                                          <TableRow>
+                                            <TableCell className="font-medium">TIN Number</TableCell>
+                                            <TableCell>{client.tinNumber || "-"}</TableCell>
+                                          </TableRow>
+                                          <TableRow>
+                                            <TableCell className="font-medium">Activation Date</TableCell>
+                                            <TableCell>{client.activationDate || client.joinDate || "-"}</TableCell>
+                                          </TableRow>
+                                        </TableBody>
+                                      </Table>
+                                    </div>
+                                  </div>
+                                </DialogContent>
+                              </Dialog>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </ScrollArea>
               </div>
             )}
           </div>

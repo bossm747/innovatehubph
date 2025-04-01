@@ -1,5 +1,4 @@
 
-import { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface TableSelectorProps {
@@ -15,24 +14,31 @@ export const TableSelector = ({
   onTableChange,
   isLoading 
 }: TableSelectorProps) => {
+  // Ensure we filter out any empty string values before rendering
+  const validTables = tables.filter(table => table.trim() !== '');
+  
   return (
     <Select 
       value={selectedTable} 
       onValueChange={onTableChange}
       disabled={isLoading}
     >
-      <SelectTrigger>
+      <SelectTrigger className="w-full">
         <SelectValue placeholder="Select a table" />
       </SelectTrigger>
       <SelectContent>
-        {tables.map(table => (
-          <SelectItem 
-            key={table} 
-            value={table || "unnamed-table"} // Ensuring no empty string values
-          >
-            {table || "Unnamed Table"}
-          </SelectItem>
-        ))}
+        {validTables.length > 0 ? (
+          validTables.map(table => (
+            <SelectItem 
+              key={table} 
+              value={table} 
+            >
+              {table}
+            </SelectItem>
+          ))
+        ) : (
+          <SelectItem value="no-tables">No tables available</SelectItem>
+        )}
       </SelectContent>
     </Select>
   );

@@ -37,7 +37,9 @@ export const TableSelector = ({
             </SelectItem>
           ))
         ) : (
-          <SelectItem value="no-tables" disabled>No tables available</SelectItem>
+          <SelectItem value="no-tables-available" disabled>
+            No tables available
+          </SelectItem>
         )}
       </SelectContent>
     </Select>

@@ -77,20 +77,15 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
       
       const fileType = getFileType(fileName);
       if (fileType === 'audio') {
-        toast({
-          title: 'Success',
-          description: 'Audio file uploaded successfully! You can now play it from the file list.'
+        toast.success('Audio file uploaded successfully!', {
+          description: 'You can now play it from the file list.'
         });
       } else if (fileType === 'video') {
-        toast({
-          title: 'Success',
-          description: 'Video file uploaded successfully! You can now play it from the file list.'
+        toast.success('Video file uploaded successfully!', {
+          description: 'You can now play it from the file list.'
         });
       } else {
-        toast({
-          title: 'Success',
-          description: 'File uploaded successfully!'
-        });
+        toast.success('File uploaded successfully!');
       }
       
       onUploadComplete();
@@ -102,28 +97,20 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
       console.error('Error uploading file:', error.message);
       
       if (error.message?.includes('bucket') || error.message?.includes('not found')) {
-        toast({
-          title: 'Error',
-          description: 'Storage bucket not found. Please contact your administrator.',
-          variant: 'destructive'
+        toast.error('Storage bucket not found', {
+          description: 'Please contact your administrator.'
         });
       } else if (error.message?.includes('permission') || error.message?.includes('access') || error.message?.includes('policy')) {
-        toast({
-          title: 'Error',
-          description: 'Permission denied. You may not have access to upload files. Contact your administrator.',
-          variant: 'destructive'
+        toast.error('Permission denied', {
+          description: 'You may not have access to upload files. Contact your administrator.'
         });
       } else if (error.message?.includes('size')) {
-        toast({
-          title: 'Error',
-          description: `File size exceeds the maximum allowed limit (${MAX_FILE_SIZE_DISPLAY}).`,
-          variant: 'destructive'
+        toast.error(`File size exceeds the maximum allowed limit`, {
+          description: `Maximum file size is ${MAX_FILE_SIZE_DISPLAY}.`
         });
       } else {
-        toast({
-          title: 'Error',
-          description: `Error uploading file: ${error.message}`,
-          variant: 'destructive'
+        toast.error('Error uploading file', {
+          description: error.message
         });
       }
     } finally {

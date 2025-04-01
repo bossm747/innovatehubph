@@ -54,7 +54,6 @@ const useToast = () => {
         });
       }
     },
-    toasts: [] as ToasterToast[],
     dismiss: (toastId?: string) => {
       if (toastId) {
         sonnerToast.dismiss(toastId);
@@ -93,5 +92,22 @@ const toast = (params: string | ToastParameters) => {
     });
   }
 };
+
+// Add success and error methods to match the common usage pattern
+toast.success = (title: string, options?: Omit<ToastParameters, 'title' | 'variant'>) => {
+  return sonnerToast.success(title, options);
+};
+
+toast.error = (title: string, options?: Omit<ToastParameters, 'title' | 'variant'>) => {
+  return sonnerToast.error(title, options);
+};
+
+// Add other methods to match sonner's API
+toast.info = sonnerToast.info;
+toast.warning = sonnerToast.warning;
+toast.loading = sonnerToast.loading;
+toast.promise = sonnerToast.promise;
+toast.dismiss = sonnerToast.dismiss;
+toast.custom = sonnerToast.custom;
 
 export { useToast, toast };

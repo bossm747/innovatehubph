@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -15,7 +14,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Set maximum file size to 500MB
   const MAX_FILE_SIZE = 524288000; // 500MB in bytes
   const MAX_FILE_SIZE_DISPLAY = '500MB';
 
@@ -30,7 +28,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
       
       const file = event.target.files[0];
       
-      // Check file size before trying to upload
       if (file.size > MAX_FILE_SIZE) {
         throw new Error(`File size exceeds the maximum allowed limit (${MAX_FILE_SIZE_DISPLAY}).`);
       }
@@ -38,7 +35,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
       const fileExt = file.name.split('.').pop();
       const fileName = `${Math.random().toString(36).substring(2, 15)}_${new Date().getTime()}.${fileExt}`;
       
-      // Simulate upload progress (Supabase doesn't provide progress events)
       const progressInterval = setInterval(() => {
         setUploadProgress(prev => {
           if (prev >= 95) {
@@ -49,26 +45,20 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
         });
       }, 100);
 
-      // Make sure the bucket exists before uploading
       const { data: bucketExists } = await supabase
         .storage
         .getBucket('project_files');
         
-      // Create bucket if it doesn't exist
       if (!bucketExists) {
-        // This will only happen once during development
         console.log('Creating project_files bucket');
-        
-        // Create the bucket first
         await supabase
           .storage
           .createBucket('project_files', {
             public: true,
-            fileSizeLimit: MAX_FILE_SIZE, // Updated to 500MB in bytes
+            fileSizeLimit: MAX_FILE_SIZE,
           });
       }
 
-      // Now upload the file
       const { error } = await supabase.storage
         .from('project_files')
         .upload(fileName, file);
@@ -76,7 +66,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
       clearInterval(progressInterval);
       
       if (error) {
-        // Check for specific RLS policy-related errors
         if (error.message?.includes('Policy') || error.message?.includes('security')) {
           console.error('RLS policy error:', error);
           throw new Error('Permission denied. Storage security policies need to be configured.');
@@ -86,34 +75,56 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
 
       setUploadProgress(100);
       
-      // Show a specific message for audio/video files
       const fileType = getFileType(fileName);
       if (fileType === 'audio') {
-        toast.success('Audio file uploaded successfully! You can now play it from the file list.');
+        toast({
+          title: 'Success',
+          description: 'Audio file uploaded successfully! You can now play it from the file list.'
+        });
       } else if (fileType === 'video') {
-        toast.success('Video file uploaded successfully! You can now play it from the file list.');
+        toast({
+          title: 'Success',
+          description: 'Video file uploaded successfully! You can now play it from the file list.'
+        });
       } else {
-        toast.success('File uploaded successfully!');
+        toast({
+          title: 'Success',
+          description: 'File uploaded successfully!'
+        });
       }
       
       onUploadComplete();
       
-      // Reset the file input
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
     } catch (error: any) {
       console.error('Error uploading file:', error.message);
       
-      // More descriptive error message based on common issues
       if (error.message?.includes('bucket') || error.message?.includes('not found')) {
-        toast.error('Storage bucket not found. Please contact your administrator.');
+        toast({
+          title: 'Error',
+          description: 'Storage bucket not found. Please contact your administrator.',
+          variant: 'destructive'
+        });
       } else if (error.message?.includes('permission') || error.message?.includes('access') || error.message?.includes('policy')) {
-        toast.error('Permission denied. You may not have access to upload files. Contact your administrator.');
+        toast({
+          title: 'Error',
+          description: 'Permission denied. You may not have access to upload files. Contact your administrator.',
+          variant: 'destructive'
+        });
       } else if (error.message?.includes('size')) {
-        toast.error(`File size exceeds the maximum allowed limit (${MAX_FILE_SIZE_DISPLAY}).`);
+        toast({
+          title: 'Error',
+          description: `File size exceeds the maximum allowed limit (${MAX_FILE_SIZE_DISPLAY}).`,
+          variant: 'destructive'
+        });
       } else {
-        toast.error(`Error uploading file: ${error.message}`);
+        toast({
+          title: 'Error',
+          description: `Error uploading file: ${error.message}`,
+          variant: 'destructive'
+        });
       }
     } finally {
       setTimeout(() => {
@@ -123,7 +134,6 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onUploadComplete }) => {
     }
   };
 
-  // Detect file type based on extension
   const getFileType = (fileName: string): string => {
     const extension = fileName.split('.').pop()?.toLowerCase();
     

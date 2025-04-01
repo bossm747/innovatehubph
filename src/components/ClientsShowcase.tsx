@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { 
   Carousel,
   CarouselContent,
@@ -7,101 +8,218 @@ import {
   CarouselPrevious
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Eye, User, Store, Calendar, FileText, Phone, Mail, MapPin } from "lucide-react";
 
 interface Client {
   id: number;
   name: string;
   type: "agent" | "business" | "remittance" | "food" | "retail";
   joinDate?: string;
+  username?: string;
+  email?: string;
+  contactNumber?: string;
+  address?: string;
+  storeName?: string;
+  businessPackage?: string;
+  tinNumber?: string;
+  activationDate?: string;
 }
 
 const CLIENTS: Client[] = [
   {
     id: 1,
-    name: "PlataPay",
+    name: "Agent Platapay",
+    username: "platapay-agent",
+    email: "agent@platapay.ph",
+    contactNumber: "9998483938",
+    address: "Greenwoods South Batangas City",
+    storeName: "Platapay",
+    businessPackage: "PlataPay Premium Plan Subscription",
+    tinNumber: "777-777-777-777",
+    activationDate: "February 22, 2025",
     type: "agent"
   },
   {
     id: 2,
-    name: "Barako Brews",
+    name: "Lyn Agbay",
+    username: "BarakoBrews",
+    email: "platalyn@gmail.com",
+    contactNumber: "9455181139",
+    address: "Bypass Bayanan, San Pascual",
+    storeName: "BarakoBrews",
+    businessPackage: "PlataPay Basic Plan Subscription",
+    tinNumber: "193-502-851-001",
+    activationDate: "February 25, 2025",
     type: "food",
     joinDate: "February 25, 2025"
   },
   {
     id: 3,
-    name: "Maclyn Bills Payment and Remittance",
+    name: "Lyn Agbay",
+    username: "MacLyn Bills Payment and Remittance",
+    email: "govipsanantonio@gmail.com",
+    contactNumber: "9949957812",
+    address: "San Antonio, San Pascual Batangas",
+    storeName: "MacLyn Bills Payment and Remittance",
+    businessPackage: "PlataPay Enterprise Plan with Lottomatik",
+    tinNumber: "193-502-851-000",
+    activationDate: "February 26, 2025",
     type: "remittance",
     joinDate: "February 26, 2025"
   },
   {
     id: 4,
-    name: "PIO Business Center",
+    name: "Marilets Abu",
+    username: "Pio",
+    email: "Marilets.Bautista@yahoo.com",
+    contactNumber: "9531531201",
+    address: "San Felipe, Cuenca Batangas City",
+    storeName: "Pio Bills Payment and Lottomatik",
+    businessPackage: "PlataPay Enterprise Plan with Lottomatik",
+    tinNumber: "453-331-022-000",
+    activationDate: "February 26, 2025",
     type: "business",
     joinDate: "February 26, 2025"
   },
   {
     id: 5,
-    name: "TMSeven Business Center",
+    name: "Mylene Eborde",
+    username: "TeamAustria@01",
+    email: "myleneeborde12@gmail.com",
+    contactNumber: "9958744057",
+    address: "Saguing, Mabini Batangas City",
+    storeName: "TM Seven",
+    businessPackage: "PlataPay Enterprise Plan with Lottomatik",
+    tinNumber: "309-295-564-000",
+    activationDate: "February 27, 2025",
     type: "business",
     joinDate: "February 27, 2025"
   },
   {
     id: 6,
-    name: "MMHA Business Center",
+    name: "Ulysses Plata",
+    username: "MMHA Business Center",
+    email: "u01plata@gmail.com",
+    contactNumber: "9614771949",
+    address: "RR Station Barangay 24, Batangas City",
+    storeName: "Michmara Business Center",
+    businessPackage: "PlataPay Enterprise Plan with Lottomatik",
+    tinNumber: "262-152-000-000",
+    activationDate: "February 27, 2025",
     type: "business",
     joinDate: "February 27, 2025"
   },
   {
     id: 7,
-    name: "TEDBatangas",
+    name: "Lucky Plata",
+    username: "TEDBATANGAS",
+    email: "theespressodepotbatangas@gmail.com",
+    contactNumber: "9175020225",
+    address: "2nd floor Unit 4 D InnovateHubBldg., San Antonio,San Pascual,Batangas",
+    storeName: "The Espressso Depot Batangas",
+    businessPackage: "PlataPay Enterprise Plan with Lottomatik",
+    tinNumber: "656-021-732-000",
+    activationDate: "March 1, 2025",
     type: "business",
     joinDate: "March 1, 2025"
   },
   {
     id: 8,
-    name: "Miss G",
+    name: "Gladys Marco",
+    username: "Miss G",
+    email: "gladysmarco530@gmail.com",
+    contactNumber: "9658212671",
+    address: "Lutucan 1, Sitio Ulbok, Sariaya Quezon",
+    storeName: "Miss G Payment Center",
+    businessPackage: "PlataPay Enterprise Plan with Lottomatik",
+    tinNumber: "308-991-232-000",
+    activationDate: "March 04, 2025",
     type: "retail",
     joinDate: "March 04, 2025"
   },
   {
     id: 9,
-    name: "RMCL-Maricel",
+    name: "Maricel Malaso Panopio",
+    username: "Maricel",
+    email: "panopiomaricel092@gmail.com",
+    contactNumber: "9567525270",
+    address: "Alalum, Batangas City",
+    storeName: "RMCL/ PlataPay Business Center",
+    businessPackage: "PlataPay Plus Plan Subscription",
+    tinNumber: "001-813-046-000",
+    activationDate: "March 15, 2025",
     type: "business",
     joinDate: "March 15, 2025"
   },
   {
     id: 10,
-    name: "Majoy Bills Payment",
+    name: "Mary Joy Incio Dorado",
+    username: "Ma Joy",
+    email: "maryjoydorado81@gmail.com",
+    contactNumber: "9101484635",
+    address: "Sto.Niño, Batangas",
+    storeName: "Ma Joy Bills Payment",
+    businessPackage: "PlataPay Basic Plan Subscription",
+    tinNumber: "432-393-778-000",
+    activationDate: "March 15, 2025",
     type: "remittance",
     joinDate: "March 15, 2025"
   },
   {
     id: 11,
-    name: "BTS - MaryAnn Mercado",
+    name: "Mario Jr. Mercado",
+    username: "maryannlava",
+    email: "maryann_lava@yahoo.com",
+    contactNumber: "9491498223",
+    address: "Gerason Subdivision, Sta.Rita, Batangas City",
+    storeName: "BTS Business Center",
+    businessPackage: "PlataPay Premium Plan",
+    tinNumber: "453-630-778-000",
+    activationDate: "March 15, 2025",
     type: "business",
     joinDate: "March 15, 2025"
   },
   {
     id: 12,
-    name: "DIY Food Mart",
+    name: "Nicole John Paul Sevilla",
+    username: "Nikol",
+    email: "nikolsevilla15@gmail.com",
+    contactNumber: "9612450437",
+    address: "Lot 3 Paldit, Sison, Region I (Ilocos Region)",
+    storeName: "D.I.Y FOOD MART/ PLATAPAY",
+    businessPackage: "PlataPay Premium Plan plus Lottomatik",
+    tinNumber: "658-258-268-000",
+    activationDate: "March 18, 2025",
     type: "food",
     joinDate: "March 18, 2025"
   },
   {
     id: 13,
-    name: "Precy's Store",
+    name: "Rico Gutierrez Payoyo",
+    username: "Rico",
+    email: "rgpayoyo@gmail.com",
+    contactNumber: "9175485328",
+    address: "Diokno St., De Joya Capitol Village, Kumintang Ilaya, Batangas City",
+    storeName: "Precy Store",
+    businessPackage: "PlataPay Basic Plan Subscription",
+    tinNumber: "922-072-489-000",
+    activationDate: "March 20, 2025",
     type: "retail",
     joinDate: "March 20, 2025"
   },
   {
     id: 14,
-    name: "Landos Grill (Marc and Lyn Eatery)",
+    name: "Mark Rivera",
+    storeName: "Landos Grill (Marc and Lyn Eatery)",
     type: "food",
     joinDate: "February 22, 2025"
   },
   {
     id: 15,
-    name: "Flayla Snack House",
+    name: "Flay Cabral",
+    storeName: "Flayla Snack House",
     type: "food"
   }
 ];
@@ -121,7 +239,7 @@ const ClientCard = ({ client }: { client: Client }) => {
           </div>
         </div>
         <div className="flex flex-col items-center flex-grow justify-center">
-          <h3 className="text-lg font-semibold text-center mb-2">{client.name}</h3>
+          <h3 className="text-lg font-semibold text-center mb-2">{client.storeName || client.name}</h3>
           <p className="text-sm text-gray-500 mb-2">Client Partner</p>
           <span className={`px-3 py-1 text-xs rounded-full ${getTypeColor(client.type)}`}>
             {formatType(client.type)}
@@ -132,6 +250,121 @@ const ClientCard = ({ client }: { client: Client }) => {
             </p>
           )}
         </div>
+        
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" size="sm" className="mt-2">
+              <Eye className="h-4 w-4 mr-1" /> View Details
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-4xl">
+            <DialogHeader>
+              <DialogTitle>Client Details</DialogTitle>
+            </DialogHeader>
+            
+            <div className="grid md:grid-cols-2 gap-4 mt-4">
+              <div className="bg-white p-5 rounded-lg border shadow-sm">
+                <div className="flex items-center mb-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full overflow-hidden flex items-center justify-center mr-4">
+                    <User className="h-8 w-8 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold">{client.storeName}</h3>
+                    <p className="text-sm text-gray-500">{formatType(client.type)}</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="flex items-start">
+                    <User className="w-5 h-5 mt-0.5 mr-2 text-blue-600 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Owner</p>
+                      <p>{client.name}</p>
+                    </div>
+                  </div>
+                  
+                  {client.username && (
+                    <div className="flex items-start">
+                      <User className="w-5 h-5 mt-0.5 mr-2 text-blue-600 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-500">Username</p>
+                        <p>{client.username}</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {client.email && (
+                    <div className="flex items-start">
+                      <Mail className="w-5 h-5 mt-0.5 mr-2 text-blue-600 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-500">Email</p>
+                        <p>{client.email}</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {client.contactNumber && (
+                    <div className="flex items-start">
+                      <Phone className="w-5 h-5 mt-0.5 mr-2 text-blue-600 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-500">Contact Number</p>
+                        <p>+63 {client.contactNumber}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              <div className="bg-white p-5 rounded-lg border shadow-sm">
+                <h4 className="text-lg font-semibold mb-4">Business Information</h4>
+                
+                <div className="space-y-3">
+                  {client.address && (
+                    <div className="flex items-start">
+                      <MapPin className="w-5 h-5 mt-0.5 mr-2 text-indigo-600 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-500">Address</p>
+                        <p>{client.address}</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {client.businessPackage && (
+                    <div className="flex items-start">
+                      <Store className="w-5 h-5 mt-0.5 mr-2 text-indigo-600 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-500">Business Package</p>
+                        <p>{client.businessPackage}</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {client.tinNumber && (
+                    <div className="flex items-start">
+                      <FileText className="w-5 h-5 mt-0.5 mr-2 text-indigo-600 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-500">TIN Number</p>
+                        <p>{client.tinNumber}</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {client.activationDate && (
+                    <div className="flex items-start">
+                      <Calendar className="w-5 h-5 mt-0.5 mr-2 text-indigo-600 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-500">Activation Date</p>
+                        <p>{client.activationDate}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            
+            {/* Additional notes or details could go here */}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
@@ -178,6 +411,7 @@ type ClientsShowcaseProps = {
   showFilters?: boolean;
   maxItems?: number;
   className?: string;
+  showDetailView?: boolean;
 }
 
 const ClientsShowcase = ({ 
@@ -186,12 +420,14 @@ const ClientsShowcase = ({
   showAll = false,
   showFilters = true,
   maxItems = 8,
-  className = ""
+  className = "",
+  showDetailView = false
 }: ClientsShowcaseProps) => {
-  const [activeFilter, setActiveFilter] = React.useState<Client['type'] | 'all'>('all');
-  const [displayedClients, setDisplayedClients] = React.useState<Client[]>(
+  const [activeFilter, setActiveFilter] = useState<Client['type'] | 'all'>('all');
+  const [displayedClients, setDisplayedClients] = useState<Client[]>(
     showAll ? CLIENTS : CLIENTS.slice(0, maxItems)
   );
+  const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards');
 
   React.useEffect(() => {
     if (activeFilter === 'all') {
@@ -215,83 +451,210 @@ const ClientsShowcase = ({
           </p>
         </div>
 
-        {showFilters && (
-          <div className="flex flex-wrap justify-center gap-2 mb-10 fade-up">
-            <Button 
-              variant={activeFilter === 'all' ? "default" : "outline"} 
-              size="sm"
-              onClick={() => setActiveFilter('all')}
-              className="rounded-full"
-            >
-              All
-            </Button>
-            <Button 
-              variant={activeFilter === 'agent' ? "default" : "outline"} 
-              size="sm"
-              onClick={() => setActiveFilter('agent')}
-              className="rounded-full"
-            >
-              PlataPay Agents
-            </Button>
-            <Button 
-              variant={activeFilter === 'business' ? "default" : "outline"} 
-              size="sm"
-              onClick={() => setActiveFilter('business')}
-              className="rounded-full"
-            >
-              Business Centers
-            </Button>
-            <Button 
-              variant={activeFilter === 'food' ? "default" : "outline"} 
-              size="sm"
-              onClick={() => setActiveFilter('food')}
-              className="rounded-full"
-            >
-              Food & Beverage
-            </Button>
-            <Button 
-              variant={activeFilter === 'remittance' ? "default" : "outline"} 
-              size="sm"
-              onClick={() => setActiveFilter('remittance')}
-              className="rounded-full"
-            >
-              Remittance
-            </Button>
-            <Button 
-              variant={activeFilter === 'retail' ? "default" : "outline"} 
-              size="sm"
-              onClick={() => setActiveFilter('retail')}
-              className="rounded-full"
-            >
-              Retail
-            </Button>
-          </div>
-        )}
+        <div className="flex flex-wrap justify-between items-center gap-4 mb-8 fade-up">
+          {showFilters && (
+            <div className="flex flex-wrap gap-2">
+              <Button 
+                variant={activeFilter === 'all' ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setActiveFilter('all')}
+                className="rounded-full"
+              >
+                All
+              </Button>
+              <Button 
+                variant={activeFilter === 'agent' ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setActiveFilter('agent')}
+                className="rounded-full"
+              >
+                PlataPay Agents
+              </Button>
+              <Button 
+                variant={activeFilter === 'business' ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setActiveFilter('business')}
+                className="rounded-full"
+              >
+                Business Centers
+              </Button>
+              <Button 
+                variant={activeFilter === 'food' ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setActiveFilter('food')}
+                className="rounded-full"
+              >
+                Food & Beverage
+              </Button>
+              <Button 
+                variant={activeFilter === 'remittance' ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setActiveFilter('remittance')}
+                className="rounded-full"
+              >
+                Remittance
+              </Button>
+              <Button 
+                variant={activeFilter === 'retail' ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setActiveFilter('retail')}
+                className="rounded-full"
+              >
+                Retail
+              </Button>
+            </div>
+          )}
+
+          {showAll && (
+            <div className="flex gap-2">
+              <Button 
+                variant={viewMode === 'cards' ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setViewMode('cards')}
+              >
+                Card View
+              </Button>
+              <Button 
+                variant={viewMode === 'table' ? "default" : "outline"} 
+                size="sm"
+                onClick={() => setViewMode('table')}
+              >
+                Table View
+              </Button>
+            </div>
+          )}
+        </div>
         
         {displayedClients.length > 0 ? (
           <div className="fade-up">
-            <Carousel
-              opts={{
-                align: "start",
-                loop: true,
-              }}
-              className="w-full"
-            >
-              <CarouselContent className="-ml-2 md:-ml-4">
-                {displayedClients.map((client) => (
-                  <CarouselItem 
-                    key={client.id} 
-                    className="pl-2 md:pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
-                  >
-                    <ClientCard client={client} />
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <div className="hidden md:block">
-                <CarouselPrevious className="left-0" />
-                <CarouselNext className="right-0" />
+            {viewMode === 'cards' ? (
+              <Carousel
+                opts={{
+                  align: "start",
+                  loop: true,
+                }}
+                className="w-full"
+              >
+                <CarouselContent className="-ml-2 md:-ml-4">
+                  {displayedClients.map((client) => (
+                    <CarouselItem 
+                      key={client.id} 
+                      className="pl-2 md:pl-4 basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                    >
+                      <ClientCard client={client} />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <div className="hidden md:block">
+                  <CarouselPrevious className="left-0" />
+                  <CarouselNext className="right-0" />
+                </div>
+              </Carousel>
+            ) : (
+              <div className="rounded-lg border overflow-hidden bg-white">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Store Name</TableHead>
+                        <TableHead>Owner</TableHead>
+                        <TableHead>Username</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Contact</TableHead>
+                        <TableHead>Business Package</TableHead>
+                        <TableHead>Activation Date</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {displayedClients.map((client) => (
+                        <TableRow key={client.id}>
+                          <TableCell className="font-medium">{client.storeName}</TableCell>
+                          <TableCell>{client.name}</TableCell>
+                          <TableCell>{client.username || "-"}</TableCell>
+                          <TableCell>{client.email || "-"}</TableCell>
+                          <TableCell>{client.contactNumber ? `+63 ${client.contactNumber}` : "-"}</TableCell>
+                          <TableCell>{client.businessPackage || "-"}</TableCell>
+                          <TableCell>{client.activationDate || client.joinDate || "-"}</TableCell>
+                          <TableCell>
+                            <Dialog>
+                              <DialogTrigger asChild>
+                                <Button variant="ghost" size="icon">
+                                  <Eye className="h-4 w-4" />
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="sm:max-w-4xl">
+                                <DialogHeader>
+                                  <DialogTitle>Client Details</DialogTitle>
+                                </DialogHeader>
+                                
+                                <div className="grid md:grid-cols-2 gap-4 mt-4">
+                                  <div className="bg-gray-50 p-5 rounded-lg">
+                                    <h3 className="text-lg font-semibold mb-4">Personal Information</h3>
+                                    <Table>
+                                      <TableBody>
+                                        <TableRow>
+                                          <TableCell className="font-medium">Name</TableCell>
+                                          <TableCell>{client.name}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                          <TableCell className="font-medium">Username</TableCell>
+                                          <TableCell>{client.username || "-"}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                          <TableCell className="font-medium">Email</TableCell>
+                                          <TableCell>{client.email || "-"}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                          <TableCell className="font-medium">Contact Number</TableCell>
+                                          <TableCell>{client.contactNumber ? `+63 ${client.contactNumber}` : "-"}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                          <TableCell className="font-medium">Address</TableCell>
+                                          <TableCell>{client.address || "-"}</TableCell>
+                                        </TableRow>
+                                      </TableBody>
+                                    </Table>
+                                  </div>
+                                  
+                                  <div className="bg-gray-50 p-5 rounded-lg">
+                                    <h3 className="text-lg font-semibold mb-4">Business Information</h3>
+                                    <Table>
+                                      <TableBody>
+                                        <TableRow>
+                                          <TableCell className="font-medium">Store Name</TableCell>
+                                          <TableCell>{client.storeName || "-"}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                          <TableCell className="font-medium">Business Type</TableCell>
+                                          <TableCell>{formatType(client.type)}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                          <TableCell className="font-medium">Business Package</TableCell>
+                                          <TableCell>{client.businessPackage || "-"}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                          <TableCell className="font-medium">TIN Number</TableCell>
+                                          <TableCell>{client.tinNumber || "-"}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                          <TableCell className="font-medium">Activation Date</TableCell>
+                                          <TableCell>{client.activationDate || client.joinDate || "-"}</TableCell>
+                                        </TableRow>
+                                      </TableBody>
+                                    </Table>
+                                  </div>
+                                </div>
+                              </DialogContent>
+                            </Dialog>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </div>
-            </Carousel>
+            )}
           </div>
         ) : (
           <div className="text-center py-10 fade-up">

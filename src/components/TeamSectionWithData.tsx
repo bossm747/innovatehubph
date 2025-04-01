@@ -12,7 +12,9 @@ const TeamSectionWithData = () => {
 
   const { data: teamMembers, isLoading, error } = useQuery({
     queryKey: ['teamMembers'],
-    queryFn: fetchTeamMembers
+    queryFn: fetchTeamMembers,
+    retry: 2,
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const handlePrev = () => {
@@ -40,24 +42,29 @@ const TeamSectionWithData = () => {
 
   if (isLoading) {
     return (
-      <section className="py-16 bg-gray-50">
+      <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Our Team</h2>
-            <div className="w-20 h-1 bg-innovate-500 mx-auto mb-6"></div>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Loading team members...</p>
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center mb-4">
+              <Lightbulb className="h-7 w-7 text-innovate-600 mr-2" />
+              <h2 className="text-3xl font-bold">Our Team</h2>
+            </div>
+            <div className="w-20 h-1 bg-innovate-500 mx-auto mb-4"></div>
+            <p className="text-base text-gray-600 max-w-2xl mx-auto">
+              Loading our team members...
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {[1, 2, 3].map((i) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {Array.from({ length: 10 }).map((_, i) => (
               <Card key={i} className="overflow-hidden">
                 <CardContent className="p-0">
-                  <div className="aspect-square relative">
+                  <div className="aspect-square relative bg-gradient-to-br from-blue-400/40 to-blue-600/40 flex items-center justify-center">
                     <Skeleton className="absolute inset-0" />
                   </div>
-                  <div className="p-4">
-                    <Skeleton className="h-5 w-3/4 mb-2" />
-                    <Skeleton className="h-4 w-1/2 mb-2" />
-                    <Skeleton className="h-16 w-full" />
+                  <div className="p-3">
+                    <Skeleton className="h-4 w-3/4 mb-1" />
+                    <Skeleton className="h-3 w-1/2 mb-1" />
+                    <Skeleton className="h-8 w-full" />
                   </div>
                 </CardContent>
               </Card>
@@ -69,14 +76,18 @@ const TeamSectionWithData = () => {
   }
 
   if (error) {
+    console.error("Error loading team members:", error);
     return (
-      <section className="py-16 bg-gray-50">
+      <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Our Team</h2>
-            <div className="w-20 h-1 bg-innovate-500 mx-auto mb-6"></div>
-            <p className="text-lg text-red-600 max-w-2xl mx-auto">
-              Error loading team members. Please try again later.
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center mb-4">
+              <Lightbulb className="h-7 w-7 text-innovate-600 mr-2" />
+              <h2 className="text-3xl font-bold">Our Team</h2>
+            </div>
+            <div className="w-20 h-1 bg-innovate-500 mx-auto mb-4"></div>
+            <p className="text-base text-red-600 max-w-2xl mx-auto">
+              We encountered an error while loading the team information. Please refresh the page or try again later.
             </p>
           </div>
         </div>
@@ -84,15 +95,19 @@ const TeamSectionWithData = () => {
     );
   }
 
+  // Ensure we have data before rendering
   if (!teamMembers || teamMembers.length === 0) {
     return (
-      <section className="py-16 bg-gray-50">
+      <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Our Team</h2>
-            <div className="w-20 h-1 bg-innovate-500 mx-auto mb-6"></div>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              No team members found. Check back soon!
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center mb-4">
+              <Lightbulb className="h-7 w-7 text-innovate-600 mr-2" />
+              <h2 className="text-3xl font-bold">Our Team</h2>
+            </div>
+            <div className="w-20 h-1 bg-innovate-500 mx-auto mb-4"></div>
+            <p className="text-base text-gray-600 max-w-2xl mx-auto">
+              No team members found. Check back soon for updates about our amazing team!
             </p>
           </div>
         </div>
@@ -115,54 +130,60 @@ const TeamSectionWithData = () => {
         </div>
 
         <div className="flex flex-col space-y-12">
-          {departments.map((department) => (
-            <div key={department} className="mb-6">
-              <div className="flex items-center mb-6">
-                <Users className="h-5 w-5 text-innovate-600 mr-2" />
-                <h3 className="text-xl font-bold">{department}</h3>
-                <div className="h-0.5 flex-grow bg-gray-200 ml-4"></div>
-              </div>
-              
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                {departmentGroups[department].map((member) => (
-                  <Card key={member.id} className="overflow-hidden transition-all duration-300 hover:shadow-md group">
-                    <CardContent className="p-0">
-                      <div className="aspect-square relative bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-innovate-500/90 to-blue-600/90 relative">
-                          <div className="absolute inset-0 opacity-20">
-                            <svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                              <pattern id={`grid-${member.id}`} width="10" height="10" patternUnits="userSpaceOnUse">
-                                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5" />
-                              </pattern>
-                              <rect width="100%" height="100%" fill={`url(#grid-${member.id})`} />
-                            </svg>
+          {departments.length > 0 ? (
+            departments.map((department) => (
+              <div key={department} className="mb-6">
+                <div className="flex items-center mb-6">
+                  <Users className="h-5 w-5 text-innovate-600 mr-2" />
+                  <h3 className="text-xl font-bold">{department}</h3>
+                  <div className="h-0.5 flex-grow bg-gray-200 ml-4"></div>
+                </div>
+                
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                  {departmentGroups[department].map((member) => (
+                    <Card key={member.id} className="overflow-hidden transition-all duration-300 hover:shadow-md group">
+                      <CardContent className="p-0">
+                        <div className="aspect-square relative bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-innovate-500/90 to-blue-600/90 relative">
+                            <div className="absolute inset-0 opacity-20">
+                              <svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <pattern id={`grid-${member.id}`} width="10" height="10" patternUnits="userSpaceOnUse">
+                                  <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5" />
+                                </pattern>
+                                <rect width="100%" height="100%" fill={`url(#grid-${member.id})`} />
+                              </svg>
+                            </div>
+                            <div className="relative z-10 text-white text-4xl font-bold">
+                              {member.full_name.split(' ').map(name => name[0]).join('')}
+                            </div>
                           </div>
-                          <div className="relative z-10 text-white text-4xl font-bold">
-                            {member.full_name.split(' ').map(name => name[0]).join('')}
-                          </div>
+                          {member.linkedin_url && (
+                            <a 
+                              href={member.linkedin_url} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="absolute top-2 right-2 bg-white p-1.5 rounded-full shadow-sm hover:bg-blue-50 transition-colors"
+                            >
+                              <Linkedin className="h-3.5 w-3.5 text-blue-600" />
+                            </a>
+                          )}
                         </div>
-                        {member.linkedin_url && (
-                          <a 
-                            href={member.linkedin_url} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="absolute top-2 right-2 bg-white p-1.5 rounded-full shadow-sm hover:bg-blue-50 transition-colors"
-                          >
-                            <Linkedin className="h-3.5 w-3.5 text-blue-600" />
-                          </a>
-                        )}
-                      </div>
-                      <div className="p-3">
-                        <h4 className="text-sm font-bold mb-0.5 line-clamp-1">{member.full_name}</h4>
-                        <p className="text-xs text-innovate-600 mb-1 line-clamp-1">{member.position}</p>
-                        {member.bio && <p className="text-xs text-gray-600 line-clamp-2 h-8">{member.bio}</p>}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                        <div className="p-3">
+                          <h4 className="text-sm font-bold mb-0.5 line-clamp-1">{member.full_name}</h4>
+                          <p className="text-xs text-innovate-600 mb-1 line-clamp-1">{member.position}</p>
+                          {member.bio && <p className="text-xs text-gray-600 line-clamp-2 h-8">{member.bio}</p>}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </div>
+            ))
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-gray-600">No departments found.</p>
             </div>
-          ))}
+          )}
         </div>
 
         {teamMembers.length > 5 && (

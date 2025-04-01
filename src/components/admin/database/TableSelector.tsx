@@ -14,8 +14,8 @@ export const TableSelector = ({
   onTableChange,
   isLoading 
 }: TableSelectorProps) => {
-  // Ensure we filter out any empty string values before rendering
-  const validTables = tables.filter(table => table.trim() !== '');
+  // Ensure we filter out any empty string values or undefined values before rendering
+  const validTables = tables?.filter(table => table && table.trim() !== '') || [];
   
   return (
     <Select 
@@ -37,7 +37,7 @@ export const TableSelector = ({
             </SelectItem>
           ))
         ) : (
-          <SelectItem value="no-tables">No tables available</SelectItem>
+          <SelectItem value="no-tables" disabled>No tables available</SelectItem>
         )}
       </SelectContent>
     </Select>

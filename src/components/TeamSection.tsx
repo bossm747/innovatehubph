@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardDescription, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Linkedin, Twitter, Mail } from 'lucide-react';
 
 const teamMembers = [

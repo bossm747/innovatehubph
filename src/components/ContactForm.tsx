@@ -10,12 +10,13 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Checkbox } from "@/components/ui/checkbox";
 import { submitInquiryForm } from "@/services/inquiryService";
+import { Send } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Please enter a valid email address." }),
   company: z.string().optional(),
-  phone: z.string().optional(),
+  phone: z.string().min(10, { message: "Please enter a valid phone number." }).optional(),
   message: z.string().min(10, { message: "Message must be at least 10 characters." }),
   subscribe: z.boolean().default(true),
 });
@@ -44,10 +45,10 @@ const ContactForm = () => {
       // Add service type for general contact form
       const formData = {
         service: "general",
-        name: data.name, // Ensure required fields are provided
-        email: data.email, // Ensure required fields are provided
+        name: data.name,
+        email: data.email,
         company: data.company,
-        phone: data.phone,
+        phone: data.phone || "",
         message: data.message,
         subscribe: data.subscribe,
       };
@@ -93,7 +94,7 @@ const ContactForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel>Full Name *</FormLabel>
                   <FormControl>
                     <Input placeholder="John Doe" {...field} />
                   </FormControl>
@@ -107,7 +108,7 @@ const ContactForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Email *</FormLabel>
                   <FormControl>
                     <Input placeholder="john@example.com" {...field} />
                   </FormControl>
@@ -152,7 +153,7 @@ const ContactForm = () => {
             name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Message</FormLabel>
+                <FormLabel>Message *</FormLabel>
                 <FormControl>
                   <Textarea 
                     placeholder="Tell us about your project or inquiry..." 
@@ -177,7 +178,7 @@ const ContactForm = () => {
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <FormLabel>
+                  <FormLabel className="font-normal">
                     Subscribe to our newsletter for updates on our services and industry insights
                   </FormLabel>
                 </div>
@@ -190,7 +191,17 @@ const ContactForm = () => {
             className="w-full bg-innovate-600 hover:bg-innovate-700 text-white transition-colors btn-shine"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Sending..." : "Send Message"}
+            {isSubmitting ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full"></span>
+                Sending...
+              </span>
+            ) : (
+              <span className="flex items-center justify-center gap-2">
+                <Send className="h-4 w-4" />
+                Send Message
+              </span>
+            )}
           </Button>
           
           <p className="text-xs text-gray-500 text-center">

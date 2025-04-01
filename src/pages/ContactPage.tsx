@@ -4,13 +4,19 @@ import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ContactForm from '@/components/ContactForm';
-import ContactInfo from '@/components/ContactInfo';
+import ContactInfo from '@/components/contact/ContactInfo';
 import CircuitBackground from '@/components/CircuitBackground';
 import { Button } from '@/components/ui/button';
 import { Helmet } from 'react-helmet';
 import HeroBackground from '@/components/hero/HeroBackground';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
+import { ArrowRight } from 'lucide-react';
+import ClientShowcaseSection from '@/components/home/ClientShowcaseSection';
 
 const ContactPage = () => {
+  // Scroll to top on page load
+  useScrollToTop();
+  
   // Add scroll reveal effect
   useEffect(() => {
     const handleScroll = () => {
@@ -70,7 +76,7 @@ const ContactPage = () => {
       {/* Main content */}
       <Navbar />
       <div className="w-full py-0">
-        <section className="relative py-12 px-6 md:px-12 lg:px-16 overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
+        <section className="relative py-12 md:py-20 px-6 md:px-12 lg:px-16 overflow-hidden bg-gradient-to-b from-blue-800 to-blue-900 text-white">
           <HeroBackground />
           
           <div className="container mx-auto relative z-10">
@@ -86,11 +92,19 @@ const ContactPage = () => {
                   Reach out and let's co-create your digital future. We're here to help transform your business with innovative technology solutions.
                 </p>
                 
-                <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white btn-shine animate-fade-in" style={{animationDelay: '400ms'}}>
-                  <Link to="/inquiry">Service-Specific Inquiries</Link>
-                </Button>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button asChild className="bg-blue-600 hover:bg-blue-700 text-white btn-shine animate-fade-in" style={{animationDelay: '400ms'}}>
+                    <Link to="/inquiry">Service-Specific Inquiries</Link>
+                  </Button>
+                  
+                  <Button asChild variant="outline" className="bg-transparent border-white/20 text-white hover:bg-white/10 animate-fade-in" style={{animationDelay: '500ms'}}>
+                    <a href="tel:+639176851216" className="flex items-center gap-2">
+                      Call Us Directly <ArrowRight className="h-4 w-4" />
+                    </a>
+                  </Button>
+                </div>
                 
-                <div className="mt-8 flex items-center gap-6 text-blue-200 animate-fade-in" style={{animationDelay: '500ms'}}>
+                <div className="mt-8 flex items-center gap-6 text-blue-200 animate-fade-in" style={{animationDelay: '600ms'}}>
                   <div className="flex items-center">
                     <span className="h-5 w-5 mr-2 text-blue-300">•</span>
                     Quick Response
@@ -114,7 +128,7 @@ const ContactPage = () => {
           </div>
         </section>
         
-        <section className="py-16 px-6 md:px-12 lg:px-24 bg-white">
+        <section className="py-16 px-6 md:px-12 lg:px-24 bg-gray-50">
           <div className="container mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               <ContactInfo />
@@ -122,6 +136,8 @@ const ContactPage = () => {
             </div>
           </div>
         </section>
+        
+        <ClientShowcaseSection />
         
         <Footer />
       </div>

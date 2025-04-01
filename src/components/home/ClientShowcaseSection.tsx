@@ -18,7 +18,7 @@ const ClientShowcaseSection = () => {
           </p>
         </div>
         
-        <ClientsShowcase maxItems={8} />
+        <ClientsShowcase maxItems={8} autoSlide={true} />
       </div>
     </section>
   );

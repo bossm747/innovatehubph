@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Carousel,
   CarouselContent,
@@ -21,7 +21,9 @@ import {
   MapPin,
   Filter,
   LayoutGrid,
-  List
+  List,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -443,6 +445,7 @@ type ClientsShowcaseProps = {
   maxItems?: number;
   className?: string;
   showDetailView?: boolean;
+  autoSlide?: boolean;
 }
 
 const ClientsShowcase = ({ 
@@ -452,7 +455,8 @@ const ClientsShowcase = ({
   showFilters = true,
   maxItems = 8,
   className = "",
-  showDetailView = false
+  showDetailView = false,
+  autoSlide = false
 }: ClientsShowcaseProps) => {
   const [activeFilter, setActiveFilter] = useState<Client['type'] | 'all'>('all');
   const [displayedClients, setDisplayedClients] = useState<Client[]>(
@@ -460,7 +464,10 @@ const ClientsShowcase = ({
   );
   const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards');
   const [showFiltersMenu, setShowFiltersMenu] = useState(false);
+  const carouselRef = useRef<any>(null);
+  const autoSlideIntervalRef = useRef<number | null>(null);
 
+  // Filter clients based on activeFilter
   React.useEffect(() => {
     if (activeFilter === 'all') {
       setDisplayedClients(showAll ? CLIENTS : CLIENTS.slice(0, maxItems));
@@ -469,6 +476,37 @@ const ClientsShowcase = ({
       setDisplayedClients(showAll ? filtered : filtered.slice(0, maxItems));
     }
   }, [activeFilter, showAll, maxItems]);
+
+  // Set up auto-sliding if enabled
+  React.useEffect(() => {
+    if (autoSlide && carouselRef.current) {
+      const startAutoSlide = () => {
+        autoSlideIntervalRef.current = window.setInterval(() => {
+          if (carouselRef.current?.scrollNext) {
+            carouselRef.current.scrollNext();
+          }
+        }, 3000); // Slide every 3 seconds
+      };
+
+      startAutoSlide();
+
+      // Cleanup interval on unmount
+      return () => {
+        if (autoSlideIntervalRef.current !== null) {
+          clearInterval(autoSlideIntervalRef.current);
+        }
+      };
+    }
+  }, [autoSlide, displayedClients]);
+
+  // Clean up interval on component unmount
+  React.useEffect(() => {
+    return () => {
+      if (autoSlideIntervalRef.current !== null) {
+        clearInterval(autoSlideIntervalRef.current);
+      }
+    };
+  }, []);
 
   return (
     <section className={`py-16 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-white to-gray-50 ${className}`}>
@@ -648,6 +686,7 @@ const ClientsShowcase = ({
           <div className="fade-up">
             {viewMode === 'cards' ? (
               <Carousel
+                ref={carouselRef}
                 opts={{
                   align: "start",
                   loop: true,
@@ -664,9 +703,19 @@ const ClientsShowcase = ({
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <div className="hidden md:block">
-                  <CarouselPrevious className="left-0" />
-                  <CarouselNext className="right-0" />
+                <div className="mt-4 flex justify-center gap-2">
+                  <CarouselPrevious 
+                    className="static transform-none h-8 w-8 rounded-full"
+                    variant="outline"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </CarouselPrevious>
+                  <CarouselNext 
+                    className="static transform-none h-8 w-8 rounded-full"
+                    variant="outline"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </CarouselNext>
                 </div>
               </Carousel>
             ) : (

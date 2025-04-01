@@ -3,7 +3,7 @@ import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-// Create a client
+// Create a client - moved outside of the component to avoid re-creation on every render
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

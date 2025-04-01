@@ -10,8 +10,12 @@ import AllServicesHeroImage from '@/components/services/AllServicesHeroImage';
 import Features from '@/components/Features';
 import { Toaster } from 'sonner';
 import { Helmet } from 'react-helmet';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 const AllServicesPage = () => {
+  // Scroll to top on page load
+  useScrollToTop();
+  
   // Add scroll reveal effect
   useEffect(() => {
     const handleScroll = () => {
@@ -56,7 +60,7 @@ const AllServicesPage = () => {
           title="Complete Service Suite" 
           subtitle="All Our Digital Solutions" 
           description="We provide comprehensive digital transformation services tailored to your business needs"
-          primaryButtonText="Explore All Services"
+          primaryButtonText="Explore Services"
           primaryButtonLink="#all-services"
           imageComponent={<AllServicesHeroImage />}
         />

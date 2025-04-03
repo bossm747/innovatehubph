@@ -1,32 +1,17 @@
-
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchTeamMembers, TeamMember } from '@/services/teamService';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ChevronLeft, ChevronRight, Linkedin, Lightbulb, Users } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Lightbulb, Users, Linkedin } from 'lucide-react';
 
 const TeamSectionWithData = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
   const { data: teamMembers, isLoading, error } = useQuery({
     queryKey: ['teamMembers'],
     queryFn: fetchTeamMembers,
     retry: 2,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
-
-  const handlePrev = () => {
-    setCurrentSlide((prev) => (prev === 0 ? 0 : prev - 1));
-  };
-
-  const handleNext = () => {
-    if (!teamMembers) return;
-    
-    const maxSlide = Math.ceil(teamMembers.length / 3) - 1;
-    setCurrentSlide((prev) => (prev === maxSlide ? maxSlide : prev + 1));
-  };
 
   // Group team members by department
   const departmentGroups = teamMembers?.reduce((acc, member) => {
@@ -185,27 +170,6 @@ const TeamSectionWithData = () => {
             </div>
           )}
         </div>
-
-        {teamMembers.length > 5 && (
-          <div className="flex justify-center mt-6 space-x-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handlePrev}
-              disabled={currentSlide === 0}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleNext}
-              disabled={currentSlide === Math.ceil(teamMembers.length / 3) - 1}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-        )}
       </div>
     </section>
   );

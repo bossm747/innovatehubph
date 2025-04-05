@@ -43,7 +43,7 @@ const BookingPage = () => {
               
               <div className="space-y-4 mb-6">
                 <div className="flex items-start">
-                  <Phone className="h-5 w-5 text-innovate-500 mr-3 mt-0.5" />
+                  <Phone className="h-5 w-5 text-innovate-500 mr-3 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="font-medium">Phone</p>
                     <p className="text-gray-600">+63 917 685 1216</p>
@@ -51,15 +51,15 @@ const BookingPage = () => {
                 </div>
                 
                 <div className="flex items-start">
-                  <Mail className="h-5 w-5 text-innovate-500 mr-3 mt-0.5" />
+                  <Mail className="h-5 w-5 text-innovate-500 mr-3 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="font-medium">Email</p>
-                    <p className="text-gray-600">businessdevelopment@innovatehub.ph</p>
+                    <p className="text-gray-600 break-words">businessdevelopment@innovatehub.ph</p>
                   </div>
                 </div>
                 
                 <div className="flex items-start">
-                  <MapPin className="h-5 w-5 text-innovate-500 mr-3 mt-0.5" />
+                  <MapPin className="h-5 w-5 text-innovate-500 mr-3 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="font-medium">Office Location</p>
                     <p className="text-gray-600">RMCL Bldg., New Bypass Rd., Bayanan, San Pascual, Batangas</p>
@@ -67,7 +67,7 @@ const BookingPage = () => {
                 </div>
                 
                 <div className="flex items-start">
-                  <Clock className="h-5 w-5 text-innovate-500 mr-3 mt-0.5" />
+                  <Clock className="h-5 w-5 text-innovate-500 mr-3 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="font-medium">Business Hours</p>
                     <p className="text-gray-600">Monday - Friday: 9:00 AM - 5:00 PM PHT</p>

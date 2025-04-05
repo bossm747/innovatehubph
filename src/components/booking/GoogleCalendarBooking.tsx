@@ -4,7 +4,7 @@ import React from 'react';
 const GoogleCalendarBooking = () => {
   return (
     <div className="w-full rounded-lg overflow-hidden shadow-lg border border-gray-200">
-      <div className="p-4 bg-white border-b border-gray-200 text-right">
+      <div className="p-4 bg-white border-b border-gray-200">
         <h3 className="font-semibold text-lg text-innovate-600">Schedule an Appointment</h3>
         <p className="text-sm text-gray-600">Choose a convenient time from our calendar</p>
       </div>

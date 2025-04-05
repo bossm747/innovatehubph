@@ -1,12 +1,11 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Helmet } from 'react-helmet';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 import CircuitBackground from '@/components/CircuitBackground';
 import GoogleCalendarBooking from '@/components/booking/GoogleCalendarBooking';
-import { Button } from '@/components/ui/button';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import BookingButton from '@/components/booking/BookingButton';
 

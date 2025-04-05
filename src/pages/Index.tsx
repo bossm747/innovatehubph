@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import FintechSolutions from '@/components/FintechSolutions';
@@ -16,12 +16,11 @@ import ClientShowcaseSection from '@/components/home/ClientShowcaseSection';
 import FeaturedVideoSection from '@/components/home/FeaturedVideoSection';
 import PartnersSection from '@/components/home/PartnersSection';
 import { Helmet } from 'react-helmet';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
-  const isMobile = useIsMobile();
+  // Removed useIsMobile hook which was causing the issue
   
-  useEffect(() => {
+  React.useEffect(() => {
     // Create the observer inside the component function
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {

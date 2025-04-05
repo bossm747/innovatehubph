@@ -17,6 +17,7 @@ const GoogleCalendarBooking = () => {
           frameBorder="0"
           title="Google Calendar Appointment Scheduling"
           className="absolute inset-0"
+          loading="lazy"
         ></iframe>
       </div>
     </div>

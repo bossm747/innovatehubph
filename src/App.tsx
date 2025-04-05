@@ -27,6 +27,7 @@ import MobileAppDevelopmentPage from './pages/MobileAppDevelopmentPage';
 import PartnersPage from './pages/PartnersPage';
 import TeamPage from './pages/TeamPage';
 import AdminLoginPage from './pages/AdminLoginPage';
+import BookingPage from './pages/BookingPage';
 
 // Protected route component
 import ProtectedRoute from './components/ProtectedRoute';
@@ -40,6 +41,7 @@ function App() {
       <Route path="/services" element={<ServicesPage />} />
       <Route path="/all-services" element={<AllServicesPage />} />
       <Route path="/contact" element={<ContactPage />} />
+      <Route path="/booking" element={<BookingPage />} />
       
       {/* AI Tools & Resources */}
       <Route path="/ai-tools" element={<AIToolsPage />} />

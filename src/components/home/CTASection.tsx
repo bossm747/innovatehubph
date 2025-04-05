@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Phone, CheckCircle, LockKeyhole } from 'lucide-react';
+import { Phone, CheckCircle, LockKeyhole, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
@@ -56,6 +56,18 @@ const CTASection = () => {
               <Link to="/services" className="flex items-center justify-center">
                 <CheckCircle className="mr-2 h-5 w-5" />
                 Explore Services
+              </Link>
+            </Button>
+            <Button 
+              size="xl" 
+              variant="outline" 
+              width="fixed"
+              className="border-white/30 bg-blue-800 text-white hover:bg-blue-700"
+              asChild
+            >
+              <Link to="/booking" className="flex items-center justify-center">
+                <Calendar className="mr-2 h-5 w-5" />
+                Schedule a Meeting
               </Link>
             </Button>
           </div>

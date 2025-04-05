@@ -1,136 +1,98 @@
 
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { format } from 'date-fns';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogFooter, 
-  DialogHeader, 
-  DialogTitle 
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils';
-import { CalendarIcon, PhoneIcon, VideoIcon } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { Calendar } from '@/components/ui/calendar';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { format } from 'date-fns';
+import { submitBooking, getAvailableTimeSlots } from '@/services/bookingService';
+import { toast } from 'sonner';
+import GoogleCalendarBooking from './GoogleCalendarBooking';
 
-const timeSlots = [
-  '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
-  '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
-  '16:00', '16:30'
-];
-
-const durationOptions = [
-  { value: '30', label: '30 minutes' },
-  { value: '45', label: '45 minutes' },
-  { value: '60', label: '1 hour' }
-];
-
-export interface BookingDialogProps {
+interface BookingDialogProps {
   isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  meetingType: 'call' | 'video';
-  defaultTopic: string;
-  defaultEmail: string;
-  defaultName: string;
-  defaultCompany: string;
+  setIsOpen: (open: boolean) => void;
+  meetingType?: 'call' | 'video';
+  defaultTopic?: string;
+  defaultEmail?: string;
+  defaultName?: string;
+  defaultCompany?: string;
 }
-
-const formSchema = z.object({
-  name: z.string().min(2, { message: 'Name is required' }),
-  email: z.string().email({ message: 'Invalid email address' }),
-  phone: z.string().optional(),
-  company: z.string().optional(),
-  date: z.date({ required_error: 'Please select a date' }),
-  time: z.string({ required_error: 'Please select a time' }),
-  duration: z.string({ required_error: 'Please select a duration' }),
-  topic: z.string().min(2, { message: 'Topic is required' }),
-  notes: z.string().optional(),
-});
-
-type FormValues = z.infer<typeof formSchema>;
 
 const BookingDialog: React.FC<BookingDialogProps> = ({
   isOpen,
   setIsOpen,
-  meetingType,
-  defaultTopic,
-  defaultEmail,
-  defaultName,
-  defaultCompany
+  meetingType = 'call',
+  defaultTopic = '',
+  defaultEmail = '',
+  defaultName = '',
+  defaultCompany = '',
 }) => {
+  const [bookingTab, setBookingTab] = useState<'form' | 'calendar'>('calendar');
+  const [name, setName] = useState(defaultName);
+  const [email, setEmail] = useState(defaultEmail);
+  const [company, setCompany] = useState(defaultCompany);
+  const [phone, setPhone] = useState('');
+  const [date, setDate] = useState<Date | undefined>(undefined);
+  const [time, setTime] = useState<string>('');
+  const [duration, setDuration] = useState<string>('30min');
+  const [topic, setTopic] = useState(defaultTopic);
+  const [notes, setNotes] = useState('');
+  const [type, setType] = useState<'call' | 'video'>(meetingType);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
   
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: defaultName || '',
-      email: defaultEmail || '',
-      company: defaultCompany || '',
-      topic: defaultTopic || 'General Consultation',
-      duration: '30',
-    },
-  });
-
-  const onSubmit = async (data: FormValues) => {
+  const availableTimeSlots = date ? getAvailableTimeSlots(date, duration) : [];
+  
+  const resetForm = () => {
+    setName(defaultName);
+    setEmail(defaultEmail);
+    setCompany(defaultCompany);
+    setPhone('');
+    setDate(undefined);
+    setTime('');
+    setDuration('30min');
+    setTopic(defaultTopic);
+    setNotes('');
+    setType(meetingType);
+  };
+  
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!name || !email || !date || !time) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+    
     setIsSubmitting(true);
-
+    
     try {
-      // Combine date and time into a single timestamp
-      const dateTime = new Date(data.date);
-      const [hours, minutes] = data.time.split(':').map(Number);
-      dateTime.setHours(hours, minutes);
-
-      // Insert the appointment into Supabase
-      const { data: appointment, error } = await supabase
-        .from('appointments')
-        .insert({
-          name: data.name,
-          email: data.email,
-          phone: data.phone || null,
-          company: data.company || null,
-          scheduled_at: dateTime.toISOString(),
-          duration: data.duration,
-          meeting_type: meetingType,
-          topic: data.topic,
-          notes: data.notes || null,
-        })
-        .select();
-
-      if (error) {
-        throw error;
+      const result = await submitBooking({
+        name,
+        email,
+        phone,
+        company,
+        date: date as Date,
+        time,
+        duration,
+        type,
+        topic,
+        notes
+      });
+      
+      if (result.success) {
+        toast.success("Booking request submitted successfully!");
+        setIsOpen(false);
+        resetForm();
+      } else {
+        toast.error(result.error || "Failed to submit booking request");
       }
-
-      // Now process the appointment with our edge function
-      await supabase.functions.invoke('process-appointment', {
-        body: { appointmentId: appointment[0].id }
-      });
-
-      toast({
-        title: "Appointment Scheduled",
-        description: "We've received your booking request. You'll receive a confirmation email shortly.",
-      });
-
-      setIsOpen(false);
-      form.reset();
     } catch (error) {
-      console.error('Error booking appointment:', error);
-      toast({
-        title: "Booking Failed",
-        description: "We couldn't schedule your appointment. Please try again.",
-        variant: "destructive",
-      });
+      toast.error("An error occurred while submitting your booking request");
+      console.error("Booking submission error:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -138,221 +100,184 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>
-            {meetingType === 'call' ? (
-              <span className="flex items-center">
-                <PhoneIcon className="h-5 w-5 mr-2 text-innovate-600" />
-                Schedule a Call
-              </span>
-            ) : (
-              <span className="flex items-center">
-                <VideoIcon className="h-5 w-5 mr-2 text-innovate-600" />
-                Schedule a Video Meeting
-              </span>
-            )}
-          </DialogTitle>
+          <DialogTitle className="text-xl font-bold text-innovate-600">Schedule a Meeting</DialogTitle>
           <DialogDescription>
-            Book a time to discuss your project with our team
+            Choose your preferred scheduling method below.
           </DialogDescription>
         </DialogHeader>
-
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem className="col-span-2 sm:col-span-1">
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Your name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem className="col-span-2 sm:col-span-1">
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Your email" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem className="col-span-2 sm:col-span-1">
-                    <FormLabel>Phone (optional)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Your phone number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="company"
-                render={({ field }) => (
-                  <FormItem className="col-span-2 sm:col-span-1">
-                    <FormLabel>Company (optional)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Your company" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem className="col-span-2 sm:col-span-1">
-                    <FormLabel>Date</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-full pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(field.value, "PPP")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) => 
-                            date < new Date(new Date().setHours(0, 0, 0, 0)) || 
-                            date.getDay() === 0 || 
-                            date.getDay() === 6
-                          }
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="time"
-                render={({ field }) => (
-                  <FormItem className="col-span-2 sm:col-span-1">
-                    <FormLabel>Time</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a time" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {timeSlots.map((time) => (
-                          <SelectItem key={time} value={time}>
-                            {time}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <FormField
-              control={form.control}
-              name="duration"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Duration</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select duration" />
-                      </SelectTrigger>
-                    </FormControl>
+        
+        <Tabs defaultValue="calendar" onValueChange={(value) => setBookingTab(value as 'form' | 'calendar')}>
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="calendar">Google Calendar</TabsTrigger>
+            <TabsTrigger value="form">Custom Form</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="calendar" className="py-4">
+            <GoogleCalendarBooking />
+          </TabsContent>
+          
+          <TabsContent value="form">
+            <form onSubmit={handleSubmit} className="space-y-4 py-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="name" className="text-sm font-medium">Full Name *</label>
+                  <Input 
+                    id="name" 
+                    value={name} 
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Your full name"
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label htmlFor="email" className="text-sm font-medium">Email *</label>
+                  <Input 
+                    id="email" 
+                    type="email" 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="your.email@example.com"
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="company" className="text-sm font-medium">Company</label>
+                  <Input 
+                    id="company" 
+                    value={company} 
+                    onChange={(e) => setCompany(e.target.value)}
+                    placeholder="Your company name"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <label htmlFor="phone" className="text-sm font-medium">Phone Number</label>
+                  <Input 
+                    id="phone" 
+                    value={phone} 
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+63 XXX XXX XXXX"
+                  />
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <label htmlFor="topic" className="text-sm font-medium">Meeting Topic *</label>
+                <Input 
+                  id="topic" 
+                  value={topic} 
+                  onChange={(e) => setTopic(e.target.value)}
+                  placeholder="What would you like to discuss?"
+                  required
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Meeting Type</label>
+                  <Select value={type} onValueChange={(value) => setType(value as 'call' | 'video')}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select meeting type" />
+                    </SelectTrigger>
                     <SelectContent>
-                      {durationOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
+                      <SelectItem value="call">Phone Call</SelectItem>
+                      <SelectItem value="video">Video Conference</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="topic"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Topic</FormLabel>
-                  <FormControl>
-                    <Input placeholder="What would you like to discuss?" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="notes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Additional Notes (optional)</FormLabel>
-                  <FormControl>
-                    <Textarea 
-                      placeholder="Any specific questions or requirements?"
-                      className="resize-none"
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <DialogFooter>
-              <Button type="submit" disabled={isSubmitting} className="w-full">
-                {isSubmitting ? "Scheduling..." : "Schedule Meeting"}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+                </div>
+                
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Duration</label>
+                  <Select value={duration} onValueChange={setDuration}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select duration" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="30min">30 Minutes</SelectItem>
+                      <SelectItem value="60min">1 Hour</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Date & Time *</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={setDate}
+                    className="border rounded-md"
+                    disabled={{
+                      before: new Date(),
+                    }}
+                  />
+                  
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Available Time Slots</label>
+                    <Select value={time} onValueChange={setTime} disabled={!date}>
+                      <SelectTrigger>
+                        <SelectValue placeholder={date ? "Select time" : "Select a date first"} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {date ? (
+                          availableTimeSlots.length > 0 ? (
+                            availableTimeSlots.map((slot) => (
+                              <SelectItem key={slot} value={slot}>{slot}</SelectItem>
+                            ))
+                          ) : (
+                            <SelectItem value="no-slots-available" disabled>No available slots</SelectItem>
+                          )
+                        ) : (
+                          <SelectItem value="select-date-first" disabled>Select a date first</SelectItem>
+                        )}
+                      </SelectContent>
+                    </Select>
+                    
+                    {date && time && (
+                      <p className="text-sm text-gray-500">
+                        Your meeting: {format(date, 'MMMM d, yyyy')} at {time}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <label htmlFor="notes" className="text-sm font-medium">Additional Notes</label>
+                <Textarea 
+                  id="notes" 
+                  value={notes} 
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Any additional information you'd like to provide"
+                  rows={3}
+                />
+              </div>
+              
+              <div className="flex justify-end space-x-4 pt-2">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setIsOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  type="submit" 
+                  disabled={isSubmitting || !name || !email || !date || !time}
+                >
+                  {isSubmitting ? "Submitting..." : "Schedule Meeting"}
+                </Button>
+              </div>
+            </form>
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );

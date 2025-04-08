@@ -7,7 +7,7 @@ const HeroImage = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg blur-xl"></div>
       <div>
         <img 
-          src="/lovable-uploads/85b1b149-7643-4595-a973-1519f7762ba6.png" 
+          src="/lovable-uploads/c858643e-ff08-493a-877e-13aea93492c5.png" 
           alt="Digital Innovation Ecosystem" 
           className="relative z-10 rounded-lg shadow-lg w-full h-auto transform transition-all duration-500 opacity-90"
         />

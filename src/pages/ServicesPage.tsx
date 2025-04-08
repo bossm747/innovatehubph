@@ -36,7 +36,7 @@ const ServicesPage = () => {
   }, []);
   
   return (
-    <div className="min-h-screen w-full overflow-x-hidden relative bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen w-full relative bg-gradient-to-b from-gray-50 to-white">
       <Helmet>
         <title>Our Services | InnovateHub Inc.</title>
         <meta name="description" content="Discover our smart solutions for the digital economy - from Fintech Solutions to AI Solutions." />

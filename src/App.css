@@ -14,6 +14,13 @@ html, body {
   box-sizing: border-box;
   overflow-x: hidden;
   scroll-behavior: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
 body {
@@ -21,6 +28,17 @@ body {
   position: relative;
   max-width: 100vw;
   padding-top: 70px;
+}
+
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+*::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
 }
 
 .logo {

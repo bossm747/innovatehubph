@@ -23,8 +23,7 @@ const Hero = () => {
               Seamless Banking Solutions for a <span className="text-blue-300">Connected World</span>
             </h1>
             <div className="text-sm md:text-base text-blue-100 mb-1 animate-fade-in" style={{animationDelay: '300ms'}}>
-              InnovateHub delivers cutting-edge <HeroTypingText texts={typingTexts} className="text-blue-300 font-semibold" /> 
-              designed to transform your financial experience.
+              InnovateHub delivers cutting-edge <HeroTypingText texts={typingTexts} className="text-blue-300 font-semibold" /> designed to transform your financial experience.
             </div>
             <p className="text-sm md:text-base text-blue-100 mb-3 animate-fade-in" style={{animationDelay: '400ms'}}>
               Partner with leading banks and payment providers to create a seamless digital ecosystem.

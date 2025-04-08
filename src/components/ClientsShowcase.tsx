@@ -1,11 +1,8 @@
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Carousel,
   CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious
+  CarouselItem
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -21,9 +18,7 @@ import {
   MapPin,
   Filter,
   LayoutGrid,
-  List,
-  ChevronLeft,
-  ChevronRight
+  List
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -244,7 +239,6 @@ const ClientCard = ({ client }: { client: Client }) => {
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl h-64 flex flex-col group">
       <div className="p-5 flex flex-col items-center justify-between h-full relative">
-        {/* Avatar section with gradient background */}
         <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-full overflow-hidden flex items-center justify-center mb-4 border-2 border-gray-100 flex-shrink-0 transition-all duration-300 group-hover:scale-105">
           <div className="w-full h-full flex items-center justify-center relative">
             <div className="absolute w-full h-full bg-gradient-to-br from-blue-400/80 to-indigo-600/80"></div>
@@ -255,7 +249,6 @@ const ClientCard = ({ client }: { client: Client }) => {
           </div>
         </div>
         
-        {/* Client info */}
         <div className="flex flex-col items-center flex-grow justify-center">
           <h3 className="text-lg font-semibold text-center mb-2 line-clamp-1">{client.storeName || client.name}</h3>
           <p className="text-sm text-gray-500 mb-2">Client Partner</p>
@@ -464,10 +457,7 @@ const ClientsShowcase = ({
   );
   const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards');
   const [showFiltersMenu, setShowFiltersMenu] = useState(false);
-  const carouselRef = useRef<any>(null);
-  const autoSlideIntervalRef = useRef<number | null>(null);
 
-  // Filter clients based on activeFilter
   React.useEffect(() => {
     if (activeFilter === 'all') {
       setDisplayedClients(showAll ? CLIENTS : CLIENTS.slice(0, maxItems));
@@ -477,36 +467,23 @@ const ClientsShowcase = ({
     }
   }, [activeFilter, showAll, maxItems]);
 
-  // Set up auto-sliding if enabled
-  React.useEffect(() => {
-    if (autoSlide && carouselRef.current) {
-      const startAutoSlide = () => {
-        autoSlideIntervalRef.current = window.setInterval(() => {
-          if (carouselRef.current?.scrollNext) {
-            carouselRef.current.scrollNext();
-          }
-        }, 3000); // Slide every 3 seconds
-      };
-
-      startAutoSlide();
-
-      // Cleanup interval on unmount
-      return () => {
-        if (autoSlideIntervalRef.current !== null) {
-          clearInterval(autoSlideIntervalRef.current);
+  useEffect(() => {
+    if (!autoSlide) return;
+    
+    const interval = setInterval(() => {
+      const carouselElement = document.querySelector('.embla__container');
+      if (carouselElement) {
+        const scrollAmount = carouselElement.clientWidth / 4;
+        carouselElement.scrollLeft += scrollAmount;
+        
+        if (carouselElement.scrollLeft + carouselElement.clientWidth >= carouselElement.scrollWidth) {
+          carouselElement.scrollLeft = 0;
         }
-      };
-    }
-  }, [autoSlide, displayedClients]);
-
-  // Clean up interval on component unmount
-  React.useEffect(() => {
-    return () => {
-      if (autoSlideIntervalRef.current !== null) {
-        clearInterval(autoSlideIntervalRef.current);
       }
-    };
-  }, []);
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, [autoSlide, displayedClients]);
 
   return (
     <section className={`py-16 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-white to-gray-50 ${className}`}>
@@ -575,92 +552,89 @@ const ClientsShowcase = ({
             </div>
           )}
 
-          {/* Mobile filters dropdown */}
-          {showFilters && (
-            <div className="md:hidden flex items-center gap-2">
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => setShowFiltersMenu(!showFiltersMenu)}
-                className="flex items-center"
-              >
-                <Filter className="h-4 w-4 mr-2" /> Filter
-              </Button>
-              
-              {showFiltersMenu && (
-                <div className="absolute z-10 mt-2 bg-white rounded-md shadow-lg p-2 top-full left-0 right-0 mx-6">
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button 
-                      variant={activeFilter === 'all' ? "default" : "outline"} 
-                      size="sm"
-                      onClick={() => {
-                        setActiveFilter('all');
-                        setShowFiltersMenu(false);
-                      }}
-                      className="w-full"
-                    >
-                      All
-                    </Button>
-                    <Button 
-                      variant={activeFilter === 'agent' ? "default" : "outline"} 
-                      size="sm"
-                      onClick={() => {
-                        setActiveFilter('agent');
-                        setShowFiltersMenu(false);
-                      }}
-                      className="w-full"
-                    >
-                      PlataPay Agents
-                    </Button>
-                    <Button 
-                      variant={activeFilter === 'business' ? "default" : "outline"} 
-                      size="sm"
-                      onClick={() => {
-                        setActiveFilter('business');
-                        setShowFiltersMenu(false);
-                      }}
-                      className="w-full"
-                    >
-                      Business Centers
-                    </Button>
-                    <Button 
-                      variant={activeFilter === 'food' ? "default" : "outline"} 
-                      size="sm"
-                      onClick={() => {
-                        setActiveFilter('food');
-                        setShowFiltersMenu(false);
-                      }}
-                      className="w-full"
-                    >
-                      Food & Beverage
-                    </Button>
-                    <Button 
-                      variant={activeFilter === 'remittance' ? "default" : "outline"} 
-                      size="sm"
-                      onClick={() => {
-                        setActiveFilter('remittance');
-                        setShowFiltersMenu(false);
-                      }}
-                      className="w-full"
-                    >
-                      Remittance
-                    </Button>
-                    <Button 
-                      variant={activeFilter === 'retail' ? "default" : "outline"} 
-                      size="sm"
-                      onClick={() => {
-                        setActiveFilter('retail');
-                        setShowFiltersMenu(false);
-                      }}
-                      className="w-full"
-                    >
-                      Retail
-                    </Button>
-                  </div>
+          <div className="md:hidden flex items-center gap-2">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => setShowFiltersMenu(!showFiltersMenu)}
+              className="flex items-center"
+            >
+              <Filter className="h-4 w-4 mr-2" /> Filter
+            </Button>
+            
+            {showFiltersMenu && (
+              <div className="absolute z-10 mt-2 bg-white rounded-md shadow-lg p-2 top-full left-0 right-0 mx-6">
+                <div className="grid grid-cols-2 gap-2">
+                  <Button 
+                    variant={activeFilter === 'all' ? "default" : "outline"} 
+                    size="sm"
+                    onClick={() => {
+                      setActiveFilter('all');
+                      setShowFiltersMenu(false);
+                    }}
+                    className="w-full"
+                  >
+                    All
+                  </Button>
+                  <Button 
+                    variant={activeFilter === 'agent' ? "default" : "outline"} 
+                    size="sm"
+                    onClick={() => {
+                      setActiveFilter('agent');
+                      setShowFiltersMenu(false);
+                    }}
+                    className="w-full"
+                  >
+                    PlataPay Agents
+                  </Button>
+                  <Button 
+                    variant={activeFilter === 'business' ? "default" : "outline"} 
+                    size="sm"
+                    onClick={() => {
+                      setActiveFilter('business');
+                      setShowFiltersMenu(false);
+                    }}
+                    className="w-full"
+                  >
+                    Business Centers
+                  </Button>
+                  <Button 
+                    variant={activeFilter === 'food' ? "default" : "outline"} 
+                    size="sm"
+                    onClick={() => {
+                      setActiveFilter('food');
+                      setShowFiltersMenu(false);
+                    }}
+                    className="w-full"
+                  >
+                    Food & Beverage
+                  </Button>
+                  <Button 
+                    variant={activeFilter === 'remittance' ? "default" : "outline"} 
+                    size="sm"
+                    onClick={() => {
+                      setActiveFilter('remittance');
+                      setShowFiltersMenu(false);
+                    }}
+                    className="w-full"
+                  >
+                    Remittance
+                  </Button>
+                  <Button 
+                    variant={activeFilter === 'retail' ? "default" : "outline"} 
+                    size="sm"
+                    onClick={() => {
+                      setActiveFilter('retail');
+                      setShowFiltersMenu(false);
+                    }}
+                    className="w-full"
+                  >
+                    Retail
+                  </Button>
                 </div>
-              )}
-            </div>
-          )}
+              </div>
+            )}
+          </div>
 
           {showAll && (
             <div className="flex gap-2 ml-auto">
@@ -686,10 +660,10 @@ const ClientsShowcase = ({
           <div className="fade-up">
             {viewMode === 'cards' ? (
               <Carousel
-                ref={carouselRef}
                 opts={{
                   align: "start",
                   loop: true,
+                  dragFree: true
                 }}
                 className="w-full"
               >
@@ -703,20 +677,6 @@ const ClientsShowcase = ({
                     </CarouselItem>
                   ))}
                 </CarouselContent>
-                <div className="mt-4 flex justify-center gap-2">
-                  <CarouselPrevious 
-                    className="static transform-none h-8 w-8 rounded-full"
-                    variant="outline"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </CarouselPrevious>
-                  <CarouselNext 
-                    className="static transform-none h-8 w-8 rounded-full"
-                    variant="outline"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </CarouselNext>
-                </div>
               </Carousel>
             ) : (
               <div className="rounded-lg border overflow-hidden bg-white shadow-sm">

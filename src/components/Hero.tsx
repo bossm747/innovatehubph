@@ -20,13 +20,13 @@ const Hero = () => {
               Empowering Business with <span className="security-dot">Financial Technology</span>
             </span>
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-white animate-fade-in" style={{animationDelay: '200ms'}}>
-              Seamless Banking Solutions for a <span className="text-blue-300">Connected World</span>
+              Innovate Hub: Transforming Businesses Through Tailored IT Solutions
             </h1>
-            <div className="text-sm md:text-base text-blue-100 mb-1 animate-fade-in" style={{animationDelay: '300ms'}}>
-              InnovateHub delivers cutting-edge <HeroTypingText texts={typingTexts} className="text-blue-300 font-semibold" /> designed to transform your financial experience.
+            <div className="text-sm md:text-base text-blue-100 mb-3 animate-fade-in" style={{animationDelay: '300ms'}}>
+              Welcome to Innovate Hub, your premier partner for innovative technology solutions that transform business challenges into competitive advantages.
             </div>
             <p className="text-sm md:text-base text-blue-100 mb-3 animate-fade-in" style={{animationDelay: '400ms'}}>
-              Partner with leading banks and payment providers to create a seamless digital ecosystem.
+              We specialize in designing and implementing customized IT frameworks that align precisely with your organization's unique requirements, strategic objectives, and industry dynamics.
             </p>
             
             <HeroButtons />

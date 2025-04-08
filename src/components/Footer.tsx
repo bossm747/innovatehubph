@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import FooterNavLinks from '@/components/footer/FooterNavLinks';
@@ -12,7 +13,7 @@ const Footer = ({ className = "" }: FooterProps) => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className={`py-12 md:py-16 px-6 bg-slate-900 text-white relative ${className}`}>
+    <footer className={`py-12 md:py-16 px-6 bg-slate-900 text-white relative mb-0 ${className}`}>
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 lg:gap-8 mb-8">
           {/* Company Info */}

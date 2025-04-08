@@ -33,6 +33,7 @@ body {
 * {
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
+  box-sizing: border-box;
 }
 
 *::-webkit-scrollbar {
@@ -90,7 +91,7 @@ body {
   padding-right: 0 !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
-  overflow-x: hidden !important;
+  overflow: visible !important;
 }
 
 @media (max-width: 768px) {
@@ -109,7 +110,7 @@ body {
 section {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow: visible;
 }
 
 .btn-primary {

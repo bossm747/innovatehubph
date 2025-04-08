@@ -8,7 +8,6 @@ import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import CircuitBackground from '@/components/CircuitBackground';
 import ServiceTiles from '@/components/ServiceTiles';
-import YoutubeVideo from '@/components/YoutubeVideo';
 import WhyChooseUsSection from '@/components/home/WhyChooseUsSection';
 import TeamPreviewSection from '@/components/home/TeamPreviewSection';
 import CTASection from '@/components/home/CTASection';
@@ -102,9 +101,6 @@ const Index = () => {
         
         {/* CTA Section */}
         <CTASection />
-        
-        {/* Video Section */}
-        <YoutubeVideo />
         
         <ContactSection />
         <Footer />

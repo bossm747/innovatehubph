@@ -11,6 +11,7 @@ const PartnersSection = () => {
     // Banking partners
     partnersData.find(partner => partner.name === "Sterling Bank of Asia"),
     partnersData.find(partner => partner.name === "Security Bank"),
+    partnersData.find(partner => partner.name === "Netbank"),
     partnersData.find(partner => partner.name === "AllBank"),
     // Financial Services partners
     partnersData.find(partner => partner.name === "Cebuana Lhuillier"),
@@ -27,7 +28,7 @@ const PartnersSection = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 items-center justify-center mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-6 items-center justify-center mb-10">
           {featuredPartners.map((partner) => (
             <div 
               key={partner.id} 

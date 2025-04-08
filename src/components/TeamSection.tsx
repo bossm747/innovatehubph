@@ -18,6 +18,16 @@ const TeamSection = () => {
     member => member.department === 'Leadership'
   ) || [];
 
+  // Map of names that need to be replaced
+  const nameReplacements = {
+    'Zarah Ian Caparro': 'Ian Caparro'
+  };
+
+  // Function to replace names if needed
+  const getDisplayName = (originalName) => {
+    return nameReplacements[originalName] || originalName;
+  };
+
   if (isLoading) {
     return (
       <section id="team-section" className="py-16 bg-white">
@@ -72,20 +82,20 @@ const TeamSection = () => {
                     </svg>
                   </div>
                   <span className="text-white text-3xl font-bold relative z-10">
-                    {member.full_name.split(' ').map(n => n[0]).join('')}
+                    {getDisplayName(member.full_name).split(' ').map(n => n[0]).join('')}
                   </span>
                 </div>
                 <div className="p-3">
-                  <h3 className="text-sm font-semibold mb-0.5">{member.full_name}</h3>
+                  <h3 className="text-sm font-semibold mb-0.5">{getDisplayName(member.full_name)}</h3>
                   <p className="text-xs text-innovate-600 mb-1">{member.position}</p>
                   <p className="text-xs text-gray-600 line-clamp-2 h-8 mb-2">{member.bio}</p>
                   <div className="flex space-x-2 pt-1">
                     {member.linkedin_url && (
-                      <a href={member.linkedin_url} className="text-gray-500 hover:text-innovate-600 transition-colors" aria-label={`${member.full_name}'s LinkedIn`}>
+                      <a href={member.linkedin_url} className="text-gray-500 hover:text-innovate-600 transition-colors" aria-label={`${getDisplayName(member.full_name)}'s LinkedIn`}>
                         <Linkedin className="h-3.5 w-3.5" />
                       </a>
                     )}
-                    <a href={`mailto:${member.email || '#'}`} className={`${member.email ? 'text-gray-500 hover:text-innovate-600' : 'text-gray-300'} transition-colors`} aria-label={`Email ${member.full_name}`}>
+                    <a href={`mailto:${member.email || '#'}`} className={`${member.email ? 'text-gray-500 hover:text-innovate-600' : 'text-gray-300'} transition-colors`} aria-label={`Email ${getDisplayName(member.full_name)}`}>
                       <Mail className="h-3.5 w-3.5" />
                     </a>
                   </div>

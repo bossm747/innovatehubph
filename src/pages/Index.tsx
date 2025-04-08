@@ -4,7 +4,6 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import FintechSolutions from '@/components/FintechSolutions';
 import Testimonials from '@/components/Testimonials';
-import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import CircuitBackground from '@/components/CircuitBackground';
 import ServiceTiles from '@/components/ServiceTiles';
@@ -102,7 +101,6 @@ const Index = () => {
         {/* CTA Section */}
         <CTASection />
         
-        <ContactSection />
         <Footer />
       </div>
     </div>

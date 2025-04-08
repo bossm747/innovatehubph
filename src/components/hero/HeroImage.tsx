@@ -7,18 +7,14 @@ const HeroImage = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-lg blur-xl"></div>
       <div>
         <img 
-          src="/lovable-uploads/0c5a8c71-5b93-4f82-a79d-9c3def2e0515.png" 
+          src="/lovable-uploads/85b1b149-7643-4595-a973-1519f7762ba6.png" 
           alt="Digital Innovation Ecosystem" 
-          className="relative z-10 rounded-lg shadow-lg w-full h-auto transform transition-all duration-500 opacity-80"
+          className="relative z-10 rounded-lg shadow-lg w-full h-auto transform transition-all duration-500 opacity-90"
         />
         
-        {/* Banking-themed decorative elements */}
-        <div className="absolute -bottom-8 -right-8 w-20 mobile-device opacity-90">
-          <img 
-            src="/lovable-uploads/9943e545-fc96-401b-98c2-3cb582ebab57.png" 
-            alt="Security Icon" 
-            className="w-full h-auto"
-          />
+        {/* Holographic decorative element */}
+        <div className="absolute -bottom-4 -right-4 w-16 opacity-90 animate-float">
+          <div className="w-full h-full bg-gradient-to-r from-blue-400 to-purple-500 rounded-full blur-sm"></div>
         </div>
       </div>
     </div>

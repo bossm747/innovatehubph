@@ -15,7 +15,7 @@ const Hero = () => {
       
       <div className="container mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 items-center">
-          <div className="max-w-xl">
+          <div className="max-w-xl text-left">
             <span className="inline-block px-3 py-1 text-sm font-medium bg-white/10 text-blue-200 rounded-full mb-2 animate-fade-in" style={{animationDelay: '100ms'}}>
               Empowering Business with <span className="security-dot">Financial Technology</span>
             </span>

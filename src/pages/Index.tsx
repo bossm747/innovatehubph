@@ -12,7 +12,6 @@ import YoutubeVideo from '@/components/YoutubeVideo';
 import WhyChooseUsSection from '@/components/home/WhyChooseUsSection';
 import TeamPreviewSection from '@/components/home/TeamPreviewSection';
 import CTASection from '@/components/home/CTASection';
-import ClientShowcaseSection from '@/components/home/ClientShowcaseSection';
 import PartnersSection from '@/components/home/PartnersSection';
 import { Helmet } from 'react-helmet';
 
@@ -94,9 +93,6 @@ const Index = () => {
         
         {/* Partners Section */}
         <PartnersSection />
-        
-        {/* Client Showcase */}
-        <ClientShowcaseSection />
         
         {/* Testimonials Section */}
         <Testimonials />

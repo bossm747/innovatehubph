@@ -87,25 +87,6 @@ const FintechServicesShowcase = () => {
             </Card>
           ))}
         </div>
-        
-        <div className="mt-16 text-center fade-up">
-          <div className="p-6 bg-innovate-50 rounded-lg max-w-3xl mx-auto">
-            <h3 className="text-xl font-semibold mb-3">Demo Walkthrough</h3>
-            <p className="text-gray-600 mb-6">Watch a quick demo of how our fintech platform works for customers and agents</p>
-            
-            <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-md">
-              <div className="bg-gray-200 w-full h-full flex items-center justify-center">
-                <div className="text-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-innovate-600 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <p className="mt-4 text-gray-500">Fintech Solutions Demo Video</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

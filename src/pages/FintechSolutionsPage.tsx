@@ -12,7 +12,7 @@ import CircuitBackground from '@/components/CircuitBackground';
 import { Toaster } from 'sonner';
 import { Helmet } from 'react-helmet';
 import FintechSolutions from '@/components/FintechSolutions';
-import ContactSection from '@/components/ContactSection';
+import ContactForm from '@/components/ContactForm';
 
 const FintechSolutionsPage = () => {
   // Add scroll reveal effect
@@ -62,7 +62,21 @@ const FintechSolutionsPage = () => {
         <PlatapayAgentMap />
         <PlatapayPartners />
         <PlatapayTestimonials />
-        <ContactSection />
+        
+        {/* Contact Form Section */}
+        <section className="py-16 px-4 md:px-8 bg-gray-50">
+          <div className="container mx-auto max-w-5xl">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Ready to explore PlataPay solutions for your business or become an agent? 
+                Fill out the form below and our team will get back to you shortly.
+              </p>
+            </div>
+            <ContactForm />
+          </div>
+        </section>
+        
         <Footer />
       </main>
     </div>

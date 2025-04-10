@@ -5,13 +5,14 @@ import Footer from '@/components/Footer';
 import FintechHero from '@/components/FintechHero';
 import FintechServicesShowcase from '@/components/FintechServicesShowcase';
 import PlatapayAgentMap from '@/components/PlatapayAgentMap';
-import ContactSection from '@/components/ContactSection';
-import { Toaster } from 'sonner';
 import FintechComparisonTable from '@/components/FintechComparisonTable';
 import PlatapayPartners from '@/components/PlatapayPartners';
 import PlatapayTestimonials from '@/components/PlatapayTestimonials';
 import CircuitBackground from '@/components/CircuitBackground';
+import { Toaster } from 'sonner';
 import { Helmet } from 'react-helmet';
+import FintechSolutions from '@/components/FintechSolutions';
+import ContactSection from '@/components/ContactSection';
 
 const FintechSolutionsPage = () => {
   // Add scroll reveal effect
@@ -53,6 +54,7 @@ const FintechSolutionsPage = () => {
       <Navbar />
       <main className="w-full py-0">
         <FintechHero />
+        <FintechSolutions />
         <div id="fintech-services">
           <FintechServicesShowcase />
         </div>

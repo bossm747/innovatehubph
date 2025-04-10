@@ -26,6 +26,16 @@ const FooterContactInfo = () => {
       href: "tel:+639176851216" 
     },
     { 
+      icon: <Phone className="h-5 w-5 text-innovate-500" />, 
+      text: "+63 918 215 6660",
+      href: "tel:+639182156660" 
+    },
+    { 
+      icon: <Phone className="h-5 w-5 text-innovate-500" />, 
+      text: "+63 945 518 1139",
+      href: "tel:+639455181139" 
+    },
+    { 
       icon: <Mail className="h-5 w-5 text-innovate-500" />, 
       text: "businessdevelopment@innovatehub.ph",
       href: "mailto:businessdevelopment@innovatehub.ph" 

@@ -283,47 +283,37 @@ section {
   }
 }
 
-/* Custom styling for Jotform agent - smaller size on desktop, full screen on mobile */
+/* Custom styling for Jotform agent - centered and consistent margins */
 #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 {
   position: fixed !important;
   bottom: 20px !important;
-  right: 20px !important;
+  left: 50% !important;
+  transform: translateX(-50%) scale(0.85) !important;
   z-index: 9999 !important;
-  transform: scale(0.85) !important;
-  transform-origin: bottom right !important;
+  max-width: 90% !important;
+  width: 320px !important;
 }
 
-/* Make the chat bubble smaller on desktop */
+/* Make the chat bubble centered and responsive */
 #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 .agent-bubble {
   max-width: 320px !important;
+  margin: 0 auto !important;
   transition: all 0.3s ease !important;
 }
 
-/* Make the chat button smaller */
+/* Ensure the chat button is centered */
 #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 .agent-button {
   transform: scale(0.85) !important;
-  transform-origin: bottom right !important;
+  margin: 0 auto !important;
 }
 
 @media screen and (max-width: 768px) {
   /* Make chat agent full screen on mobile when expanded */
-  #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 {
-    transform: scale(1) !important;
-  }
-  
-  /* Button remains small even on mobile */
-  #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 .agent-button {
-    transform: scale(0.75) !important;
-  }
-  
-  /* When the chat is open, make it full screen */
   #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 .agent-bubble.expanded {
     max-width: 100% !important;
     width: 100vw !important;
     height: 100vh !important;
     top: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
     left: 0 !important;
     border-radius: 0 !important;
     margin: 0 !important;

@@ -1,3 +1,4 @@
+
 #root {
   max-width: 100%;
   width: 100%;
@@ -285,10 +286,12 @@ section {
 
 /* Custom styling for Jotform agent - smaller size */
 #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 {
-  position: relative;
-  z-index: 999;
-  transform: scale(0.85);
-  transform-origin: bottom right;
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  z-index: 999 !important;
+  transform: scale(0.85) !important;
+  transform-origin: bottom right !important;
 }
 
 /* Make the chat bubble smaller */
@@ -298,30 +301,16 @@ section {
 
 /* Make the chat button smaller */
 #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 .agent-button {
-  transform: scale(0.85);
-  transform-origin: bottom right;
+  transform: scale(0.85) !important;
+  transform-origin: bottom right !important;
 }
 
 @media screen and (max-width: 768px) {
   #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 {
-    transform: scale(0.75);
+    transform: scale(0.75) !important;
   }
   
   #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 .agent-bubble {
     max-width: 280px !important;
-  }
-}
-
-/* Ensure ElevenLabs agent doesn't overlap with Jotform agent */
-elevenlabs-convai {
-  position: fixed !important;
-  bottom: 70px !important; /* Adjust this value as needed to prevent overlap */
-  left: 20px !important;
-  z-index: 998 !important;
-}
-
-@media screen and (max-width: 768px) {
-  elevenlabs-convai {
-    bottom: 100px !important; /* Increase bottom spacing on mobile */
   }
 }

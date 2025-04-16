@@ -32,12 +32,46 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/lovable-uploads/a63fe766-14df-42eb-aa18-cefb71993afa.png" />
     <link rel="apple-touch-icon" href="/lovable-uploads/a63fe766-14df-42eb-aa18-cefb71993afa.png" />
+    
+    <!-- Jotform Agent Script -->
+    <script src='https://cdn.jotfor.ms/s/umd/latest/for-embedded-agent.js'></script>
   </head>
 
   <body>
     <div id="root"></div>
+    <div id="JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5"></div>
+    
+    <!-- ElevenLabs Voice Agent -->
     <elevenlabs-convai agent-id="5Hubv9UQLk9ebqXllc5Q"></elevenlabs-convai>
     <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
+    
+    <!-- Jotform Agent Initializer -->
+    <script>
+      window.addEventListener("DOMContentLoaded", function() {
+        window.AgentInitializer.init({
+          agentRenderURL: "https://agent.jotform.com/01963c23626975a1bf3c5cff1a0e569b76d5",
+          rootId: "JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5",
+          formID: "01963c23626975a1bf3c5cff1a0e569b76d5",
+          queryParams: ["skipWelcome=1", "maximizable=1"],
+          domain: "https://www.jotform.com",
+          isDraggable: false,
+          background: "linear-gradient(180deg, #a2caf0 0%, #5d6bc7 100%)",
+          buttonBackgroundColor: "#0A1551",
+          buttonIconColor: "#FFF",
+          variant: false,
+          customizations: {
+            "greeting": "Yes",
+            "greetingMessage": "Need Help? I'm Always here to assist you",
+            "openByDefault": "No",
+            "pulse": "Yes",
+            "position": "right",
+            "autoOpenChatIn": "0"
+          },
+          isVoice: false,
+        });
+      });
+    </script>
+    
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>

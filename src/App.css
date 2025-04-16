@@ -282,3 +282,23 @@ section {
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
   }
 }
+
+/* Custom styling for Jotform agent */
+#JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 {
+  position: relative;
+  z-index: 999;
+}
+
+/* Ensure ElevenLabs agent doesn't overlap with Jotform agent */
+elevenlabs-convai {
+  position: fixed !important;
+  bottom: 70px !important; /* Adjust this value as needed to prevent overlap */
+  left: 20px !important;
+  z-index: 998 !important;
+}
+
+@media screen and (max-width: 768px) {
+  elevenlabs-convai {
+    bottom: 100px !important; /* Increase bottom spacing on mobile */
+  }
+}

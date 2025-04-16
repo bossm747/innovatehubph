@@ -283,10 +283,33 @@ section {
   }
 }
 
-/* Custom styling for Jotform agent */
+/* Custom styling for Jotform agent - smaller size */
 #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 {
   position: relative;
   z-index: 999;
+  transform: scale(0.85);
+  transform-origin: bottom right;
+}
+
+/* Make the chat bubble smaller */
+#JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 .agent-bubble {
+  max-width: 320px !important;
+}
+
+/* Make the chat button smaller */
+#JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 .agent-button {
+  transform: scale(0.85);
+  transform-origin: bottom right;
+}
+
+@media screen and (max-width: 768px) {
+  #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 {
+    transform: scale(0.75);
+  }
+  
+  #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 .agent-bubble {
+    max-width: 280px !important;
+  }
 }
 
 /* Ensure ElevenLabs agent doesn't overlap with Jotform agent */

@@ -288,7 +288,7 @@ section {
   position: fixed !important;
   bottom: 20px !important;
   right: 20px !important;
-  z-index: 999 !important;
+  z-index: 9999 !important;
   transform: scale(0.85) !important;
   transform-origin: bottom right !important;
 }
@@ -296,6 +296,7 @@ section {
 /* Make the chat bubble smaller on desktop */
 #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 .agent-bubble {
   max-width: 320px !important;
+  transition: all 0.3s ease !important;
 }
 
 /* Make the chat button smaller */
@@ -326,6 +327,7 @@ section {
     left: 0 !important;
     border-radius: 0 !important;
     margin: 0 !important;
+    position: fixed !important;
   }
   
   /* Adjust the chat content to fit full screen */
@@ -337,36 +339,5 @@ section {
   /* Adjust the header for better mobile view */
   #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 .agent-bubble.expanded .agent-bubble-header {
     border-radius: 0 !important;
-  }
-}
-
-/* Custom styling for Jotform agent - smaller size */
-#JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 {
-  position: fixed !important;
-  bottom: 20px !important;
-  right: 20px !important;
-  z-index: 999 !important;
-  transform: scale(0.85) !important;
-  transform-origin: bottom right !important;
-}
-
-/* Make the chat bubble smaller */
-#JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 .agent-bubble {
-  max-width: 320px !important;
-}
-
-/* Make the chat button smaller */
-#JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 .agent-button {
-  transform: scale(0.85) !important;
-  transform-origin: bottom right !important;
-}
-
-@media screen and (max-width: 768px) {
-  #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 {
-    transform: scale(0.75) !important;
-  }
-  
-  #JotformAgent-01963c23626975a1bf3c5cff1a0e569b76d5 .agent-bubble {
-    max-width: 280px !important;
   }
 }

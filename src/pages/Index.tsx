@@ -8,7 +8,6 @@ import Footer from '@/components/Footer';
 import CircuitBackground from '@/components/CircuitBackground';
 import ServiceTiles from '@/components/ServiceTiles';
 import WhyChooseUsSection from '@/components/home/WhyChooseUsSection';
-import TeamPreviewSection from '@/components/home/TeamPreviewSection';
 import CTASection from '@/components/home/CTASection';
 import PartnersSection from '@/components/home/PartnersSection';
 import { Helmet } from 'react-helmet';
@@ -94,9 +93,6 @@ const Index = () => {
         
         {/* Testimonials Section */}
         <Testimonials />
-        
-        {/* Team Preview Section */}
-        <TeamPreviewSection />
         
         {/* CTA Section */}
         <CTASection />

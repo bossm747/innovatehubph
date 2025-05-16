@@ -25,7 +25,6 @@ import FintechSolutionsPage from './pages/FintechSolutionsPage';
 import GlobalExpansionPage from './pages/GlobalExpansionPage';
 import MobileAppDevelopmentPage from './pages/MobileAppDevelopmentPage';
 import PartnersPage from './pages/PartnersPage';
-import TeamPage from './pages/TeamPage';
 import AdminLoginPage from './pages/AdminLoginPage';
 import BookingPage from './pages/BookingPage';
 
@@ -58,7 +57,6 @@ function App() {
       
       {/* Company Pages */}
       <Route path="/clients" element={<ClientsPage />} />
-      <Route path="/team" element={<TeamPage />} />
       <Route path="/partners" element={<PartnersPage />} />
       <Route path="/blog" element={<BlogPage />} />
       <Route path="/facebook" element={<FacebookPage />} />

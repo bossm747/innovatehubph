@@ -5,10 +5,10 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface MobileNavigationProps {
   isOpen: boolean;
-  onClose: () => void;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
-const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
+const MobileNavigation = ({ isOpen, setIsOpen }: MobileNavigationProps) => {
   const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
 
   if (!isOpen) return null;
@@ -24,6 +24,8 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
   const isSubmenuExpanded = (menuName: string) => {
     return expandedMenus.includes(menuName);
   };
+
+  const onClose = () => setIsOpen(false);
 
   return (
     <div className="fixed left-0 top-14 z-50 w-full h-[calc(100vh-3.5rem)] bg-white shadow-lg overflow-y-auto md:hidden">
@@ -116,11 +118,6 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
             {isSubmenuExpanded('company') && (
               <ul className="pl-4 space-y-1 mt-1">
                 <li>
-                  <Link to="/team" className="block py-1.5 px-4 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200" onClick={onClose}>
-                    Our Team
-                  </Link>
-                </li>
-                <li>
                   <Link to="/clients" className="block py-1.5 px-4 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200" onClick={onClose}>
                     Clients
                   </Link>
@@ -165,11 +162,6 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/ai-apps-management" className="block py-1.5 px-4 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200" onClick={onClose}>
-                    AI Apps Management
-                  </Link>
-                </li>
-                <li>
                   <Link to="/file-upload" className="block py-1.5 px-4 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200" onClick={onClose}>
                     File Upload
                   </Link>
@@ -186,16 +178,6 @@ const MobileNavigation = ({ isOpen, onClose }: MobileNavigationProps) => {
           <li>
             <Link to="/contact" className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md transition-all duration-200" onClick={onClose}>
               Contact
-            </Link>
-          </li>
-          
-          <li className="mt-4">
-            <Link 
-              to="/admin/dashboard" 
-              className="block w-full py-2 px-4 text-center bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-all duration-200 shadow-md" 
-              onClick={onClose}
-            >
-              Admin Portal
             </Link>
           </li>
         </ul>

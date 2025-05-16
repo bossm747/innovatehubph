@@ -4,10 +4,7 @@ import { Helmet } from "react-helmet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import AIProjectsList from "@/components/ai-management/AIProjectsList";
-import AIResourcesGenerator from "@/components/ai-management/AIResourcesGenerator";
 import AIFileManager from "@/components/ai-management/AIFileManager";
-import { AvailableSecretsProvider } from "@/contexts/AvailableSecretsContext";
 
 const AIAppsManagementPage = () => {
   return (
@@ -27,27 +24,20 @@ const AIAppsManagementPage = () => {
           </p>
         </div>
         
-        <AvailableSecretsProvider>
-          <Tabs defaultValue="projects" className="w-full">
-            <TabsList className="grid grid-cols-3 mb-8">
-              <TabsTrigger value="projects">Projects</TabsTrigger>
-              <TabsTrigger value="generate">Generate Resources</TabsTrigger>
-              <TabsTrigger value="files">File Manager</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="projects" className="mt-4">
-              <AIProjectsList />
-            </TabsContent>
-            
-            <TabsContent value="generate" className="mt-4">
-              <AIResourcesGenerator />
-            </TabsContent>
-            
-            <TabsContent value="files" className="mt-4">
-              <AIFileManager />
-            </TabsContent>
-          </Tabs>
-        </AvailableSecretsProvider>
+        <Tabs defaultValue="files" className="w-full">
+          <TabsList className="grid grid-cols-1 mb-8">
+            <TabsTrigger value="files">File Manager</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="files" className="mt-4">
+            <div className="p-6 bg-white rounded-lg shadow">
+              <h2 className="text-xl font-semibold mb-4">AI File Management</h2>
+              <p className="text-gray-600 mb-6">
+                Organize and manage your AI-related files, including models, datasets, and generated outputs.
+              </p>
+            </div>
+          </TabsContent>
+        </Tabs>
       </main>
       
       <Footer />

@@ -45,7 +45,7 @@ const AboutUs = () => {
             <div className="relative rounded-2xl overflow-hidden shadow-medium">
               <img 
                 src="/lovable-uploads/682f90d9-02d8-49f0-b70f-855d715c4166.png" 
-                alt="Team collaboration" 
+                alt="Technology innovation" 
                 className="w-full h-auto"
               />
               <div className="absolute inset-0 bg-innovate-900/10"></div>

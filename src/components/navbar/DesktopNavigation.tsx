@@ -61,9 +61,6 @@ const DesktopNavigation = () => {
               <NavigationMenuTrigger>Company</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                  <ListItem href="/team" title="Our Team">
-                    Meet the dedicated professionals behind InnovateHub
-                  </ListItem>
                   <ListItem href="/clients" title="Clients">
                     Discover the businesses we've helped transform
                   </ListItem>

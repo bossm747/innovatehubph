@@ -6,7 +6,6 @@ import ContactSection from '@/components/ContactSection';
 import CircuitBackground from '@/components/CircuitBackground';
 import AboutHero from '@/components/AboutHero';
 import CompanyOverview from '@/components/CompanyOverview';
-import TeamSection from '@/components/TeamSection';
 import { Helmet } from 'react-helmet';
 
 const AboutPage = () => {
@@ -48,7 +47,6 @@ const AboutPage = () => {
       <main className="w-full py-0">
         <AboutHero />
         <CompanyOverview />
-        <TeamSection />
         <ContactSection />
       </main>
       <Footer />

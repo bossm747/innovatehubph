@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { 
   Table, 
@@ -37,30 +36,30 @@ interface StaffProfile {
 const MOCK_STAFF_USERS: StaffProfile[] = [
   {
     id: "1",
-    full_name: "John Doe",
+    full_name: "Staff Member 1",
     position: "Software Developer",
     department: "Engineering",
     created_at: "2023-01-15T08:30:00Z",
     avatar_url: null,
-    email: "john.doe@innovatehub.ph"
+    email: "staff1@innovatehub.ph"
   },
   {
     id: "2",
-    full_name: "Jane Smith",
+    full_name: "Staff Member 2",
     position: "Project Manager",
     department: "Operations",
     created_at: "2023-02-20T10:15:00Z",
     avatar_url: null,
-    email: "jane.smith@innovatehub.ph"
+    email: "staff2@innovatehub.ph"
   },
   {
     id: "3",
-    full_name: "Michael Johnson",
+    full_name: "Staff Member 3",
     position: "UI/UX Designer",
     department: "Design",
     created_at: "2023-03-10T09:45:00Z",
     avatar_url: null,
-    email: "michael.johnson@innovatehub.ph"
+    email: "staff3@innovatehub.ph"
   }
 ];
 

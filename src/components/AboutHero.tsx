@@ -25,12 +25,12 @@ const AboutHero = () => {
             </p>
             <div className="flex flex-wrap gap-3 animate-fade-in" style={{animationDelay: '400ms'}}>
               <Button className="bg-green-600 hover:bg-green-700 text-white" asChild>
-                <Link to="/team" className="flex items-center">
-                  Meet Our Team <ArrowRight className="ml-2 h-4 w-4" />
+                <Link to="/services" className="flex items-center">
+                  Our Services <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
               <Button variant="outline" className="border-white/20 hover:bg-white/10 text-white" asChild>
-                <Link to="/services">Our Services</Link>
+                <Link to="/contact">Contact Us</Link>
               </Button>
             </div>
             

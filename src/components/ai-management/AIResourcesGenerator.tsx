@@ -10,8 +10,7 @@ const AIResourcesGenerator = () => {
       </CardHeader>
       <CardContent>
         <p className="text-muted-foreground">
-          This is a simplified static version of the AI Resources Generator. 
-          The interactive functionality has been removed as requested.
+          This is a simplified static version of the AI Resources Generator.
         </p>
       </CardContent>
     </Card>

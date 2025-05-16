@@ -10,8 +10,7 @@ const AIFileManager = () => {
       </CardHeader>
       <CardContent>
         <p className="text-muted-foreground">
-          This is a simplified static version of the AI File Manager. 
-          The interactive functionality has been removed as requested.
+          This is a simplified static version of the AI File Manager.
         </p>
       </CardContent>
     </Card>

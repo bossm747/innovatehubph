@@ -19,10 +19,8 @@ const FooterNavLinks = ({ title = "Quick Links", links }: FooterNavLinksProps) =
     { name: "About Us", path: "/about" },
     { name: "All Services", path: "/all-services" },
     { name: "Service Categories", path: "/services" },
-    { name: "Our Team", path: "/team" },
     { name: "Clients", path: "/clients" },
     { name: "Partners", path: "/partners" },
-    { name: "AI Tools", path: "/ai-tools" },
     { name: "Inquiry", path: "/inquiry" },
     { name: "Contact Us", path: "/contact" }
   ];

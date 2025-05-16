@@ -136,45 +136,6 @@ const MobileNavigation = ({ isOpen, setIsOpen }: MobileNavigationProps) => {
             )}
           </li>
           
-          {/* Resources Submenu */}
-          <li className="py-1">
-            <button 
-              onClick={() => toggleSubmenu('resources')}
-              className="flex items-center justify-between w-full px-4 py-2 text-gray-800 hover:bg-gray-100 rounded-md transition-all duration-200"
-            >
-              <span className="font-medium">Resources</span>
-              {isSubmenuExpanded('resources') ? (
-                <ChevronUp className="h-4 w-4 text-gray-600" />
-              ) : (
-                <ChevronDown className="h-4 w-4 text-gray-600" />
-              )}
-            </button>
-            {isSubmenuExpanded('resources') && (
-              <ul className="pl-4 space-y-1 mt-1">
-                <li>
-                  <Link to="/ai-tools" className="block py-1.5 px-4 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200" onClick={onClose}>
-                    AI Tools
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/ai-image-processing" className="block py-1.5 px-4 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200" onClick={onClose}>
-                    AI Image Processing
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/file-upload" className="block py-1.5 px-4 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200" onClick={onClose}>
-                    File Upload
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/facebook" className="block py-1.5 px-4 text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200" onClick={onClose}>
-                    Facebook
-                  </Link>
-                </li>
-              </ul>
-            )}
-          </li>
-          
           <li>
             <Link to="/contact" className="block py-2 px-4 text-gray-800 hover:bg-gray-100 rounded-md transition-all duration-200" onClick={onClose}>
               Contact

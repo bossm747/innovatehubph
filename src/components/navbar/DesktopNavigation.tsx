@@ -75,29 +75,6 @@ const DesktopNavigation = () => {
             </NavigationMenuItem>
             
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                  <ListItem href="/ai-tools" title="AI Tools">
-                    Productivity tools powered by AI
-                  </ListItem>
-                  <ListItem href="/ai-image-processing" title="AI Image Processing">
-                    Generate & process images with AI
-                  </ListItem>
-                  <ListItem href="/ai-apps-management" title="AI Apps Management">
-                    Manage AI resources and projects
-                  </ListItem>
-                  <ListItem href="/file-upload" title="File Upload">
-                    Upload and manage your files
-                  </ListItem>
-                  <ListItem href="/facebook" title="Facebook">
-                    Connect with us on Facebook
-                  </ListItem>
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            
-            <NavigationMenuItem>
               <NavItem to="/contact">Contact</NavItem>
             </NavigationMenuItem>
           </NavigationMenuList>

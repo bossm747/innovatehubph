@@ -12,9 +12,6 @@ import AIAppsManagementPage from './pages/AIAppsManagementPage';
 import AIImageProcessingPage from './pages/AIImageProcessingPage';
 import AIToolsPage from './pages/AIToolsPage';
 import ClientsPage from './pages/ClientsPage';
-import AdminContentPage from './pages/AdminContentPage';
-import AdminDashboardPage from './pages/AdminDashboardPage';
-import AdminNavigationPage from './pages/admin/AdminNavigationPage';
 import AiSolutionsPage from './pages/AiSolutionsPage';
 import BlogPage from './pages/BlogPage';
 import DigitalCustomizationsPage from './pages/DigitalCustomizationsPage';
@@ -25,11 +22,7 @@ import FintechSolutionsPage from './pages/FintechSolutionsPage';
 import GlobalExpansionPage from './pages/GlobalExpansionPage';
 import MobileAppDevelopmentPage from './pages/MobileAppDevelopmentPage';
 import PartnersPage from './pages/PartnersPage';
-import AdminLoginPage from './pages/AdminLoginPage';
 import BookingPage from './pages/BookingPage';
-
-// Protected route component
-import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -63,35 +56,6 @@ function App() {
       
       {/* Utility Pages */}
       <Route path="/file-upload" element={<FileUploadPage />} />
-      
-      {/* Admin Login */}
-      <Route path="/admin/login" element={<AdminLoginPage />} />
-      
-      {/* Admin Routes */}
-      <Route 
-        path="/admin/content" 
-        element={
-          <ProtectedRoute>
-            <AdminContentPage />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/admin/dashboard" 
-        element={
-          <ProtectedRoute>
-            <AdminDashboardPage />
-          </ProtectedRoute>
-        } 
-      />
-      <Route
-        path="/admin/navigation"
-        element={
-          <ProtectedRoute>
-            <AdminNavigationPage />
-          </ProtectedRoute>
-        }
-      />
       
       {/* 404 Route */}
       <Route path="*" element={<NotFound />} />

@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
 import HomePage from './pages/Index';
 import AboutPage from './pages/AboutPage';
@@ -19,33 +19,46 @@ import MobileAppDevelopmentPage from './pages/MobileAppDevelopmentPage';
 import PartnersPage from './pages/PartnersPage';
 import BookingPage from './pages/BookingPage';
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  
+  return null;
+}
+
 function App() {
   return (
-    <Routes>
-      {/* Public Routes */}
-      <Route path="/" element={<HomePage />} />
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/services" element={<ServicesPage />} />
-      <Route path="/all-services" element={<AllServicesPage />} />
-      <Route path="/contact" element={<ContactPage />} />
-      <Route path="/booking" element={<BookingPage />} />
-      
-      {/* Service Detail Pages */}
-      <Route path="/digital-customizations" element={<DigitalCustomizationsPage />} />
-      <Route path="/ecommerce" element={<EcommercePage />} />
-      <Route path="/ai-solutions" element={<AiSolutionsPage />} />
-      <Route path="/fintech-solutions" element={<FintechSolutionsPage />} />
-      <Route path="/global-expansion" element={<GlobalExpansionPage />} />
-      <Route path="/mobile-app-development" element={<MobileAppDevelopmentPage />} />
-      
-      {/* Company Pages */}
-      <Route path="/clients" element={<ClientsPage />} />
-      <Route path="/partners" element={<PartnersPage />} />
-      <Route path="/blog" element={<BlogPage />} />
-      
-      {/* 404 Route */}
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/all-services" element={<AllServicesPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/booking" element={<BookingPage />} />
+        
+        {/* Service Detail Pages */}
+        <Route path="/digital-customizations" element={<DigitalCustomizationsPage />} />
+        <Route path="/ecommerce" element={<EcommercePage />} />
+        <Route path="/ai-solutions" element={<AiSolutionsPage />} />
+        <Route path="/fintech-solutions" element={<FintechSolutionsPage />} />
+        <Route path="/global-expansion" element={<GlobalExpansionPage />} />
+        <Route path="/mobile-app-development" element={<MobileAppDevelopmentPage />} />
+        
+        {/* Company Pages */}
+        <Route path="/clients" element={<ClientsPage />} />
+        <Route path="/partners" element={<PartnersPage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        
+        {/* 404 Route */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   );
 }
 

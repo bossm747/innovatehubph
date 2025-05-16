@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,10 +7,12 @@ import MobileNavigation from './navbar/MobileNavigation';
 import DesktopNavigation from './navbar/DesktopNavigation';
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // Using React.useState instead of the direct hook import
+  const [isScrolled, setIsScrolled] = React.useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
-  useEffect(() => {
+  // Using React.useEffect instead of the direct hook import
+  React.useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
       setIsScrolled(offset > 50);

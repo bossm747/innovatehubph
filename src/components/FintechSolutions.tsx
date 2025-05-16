@@ -1,30 +1,11 @@
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle2, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const FintechSolutions = () => {
-  const imgContainerRef = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!imgContainerRef.current) return;
-      const rect = imgContainerRef.current.getBoundingClientRect();
-      const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-      
-      if (isVisible) {
-        imgContainerRef.current.classList.add('fade-in');
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check on initial load
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  // Removed useRef and useEffect as they were causing issues
   
   return (
     <section id="fintech-solutions" className="py-16 px-4 md:px-8 bg-[#1A1F2C]">
@@ -115,7 +96,7 @@ const FintechSolutions = () => {
             </div>
           </div>
           
-          <div className="w-full lg:w-1/2 order-1 lg:order-2 fade-up" ref={imgContainerRef}>
+          <div className="w-full lg:w-1/2 order-1 lg:order-2 fade-up">
             <div className="relative">
               <div className="absolute -top-3 -left-3 w-20 h-20 bg-blue-800/30 rounded-lg -z-10"></div>
               <div className="absolute -bottom-3 -right-3 w-24 h-24 bg-amber-600/20 rounded-lg -z-10"></div>

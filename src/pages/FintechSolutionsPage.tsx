@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import FintechHero from '@/components/FintechHero';
@@ -9,8 +9,8 @@ import { Toaster } from 'sonner';
 import { Helmet } from 'react-helmet';
 
 const FintechSolutionsPage = () => {
-  // Add scroll reveal effect
-  useEffect(() => {
+  // Safely use useEffect hook
+  React.useEffect(() => {
     const handleScroll = () => {
       const fadeElements = document.querySelectorAll('.fade-up');
       fadeElements.forEach(element => {

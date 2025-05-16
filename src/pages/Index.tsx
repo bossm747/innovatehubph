@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import FintechSolutions from '@/components/FintechSolutions';
@@ -13,8 +13,8 @@ import PartnersSection from '@/components/home/PartnersSection';
 import { Helmet } from 'react-helmet';
 
 const Index = () => {
-  // Properly use the imported useEffect hook instead of React.useEffect
-  useEffect(() => {
+  // Safe way to use useEffect
+  React.useEffect(() => {
     // Create the observer inside the component function
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
